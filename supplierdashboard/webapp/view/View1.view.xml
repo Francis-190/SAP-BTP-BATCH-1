@@ -1,0 +1,278 @@
+<mvc:View
+    controllerName="supplierdashboard.controller.View1"
+    height="100%"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:tnt="sap.tnt"
+    xmlns="sap.m">
+
+    <tnt:ToolPage id="toolPage" class="entApp">
+
+        <!-- ================= HEADER ================= -->
+        <tnt:header>
+            <tnt:ToolHeader class="entHeader">
+                <Button icon="sap-icon://menu2" type="Transparent" press=".onToggleSide"/>
+                <Title text="MOBIS Spare Parts · Supplier Portal" level="H2" class="entHeaderTitle"/>
+                <ToolbarSpacer/>
+                <Label text="Viewing as" class="entHeaderLabel"/>
+                <ComboBox id="supplierSelect" width="16rem" class="supSelect"
+                          items="{sup>/list}" selectedKey="{sup>/selectedID}"
+                          selectionChange=".onSupplierChange" placeholder="Select supplier">
+                    <core:Item key="{sup>ID}" text="{sup>name}"/>
+                </ComboBox>
+                <Button icon="sap-icon://refresh" type="Transparent" tooltip="Refresh all" press=".onRefresh"/>
+                <Button icon="sap-icon://bell" type="Transparent" tooltip="POs awaiting your response" press=".onGoAwaiting">
+                    <customData>
+                        <BadgeCustomData key="badge" value="{dash>/badgeText}"/>
+                    </customData>
+                </Button>
+            </tnt:ToolHeader>
+        </tnt:header>
+
+        <!-- ================= SIDE NAVIGATION ================= -->
+        <tnt:sideContent>
+            <tnt:SideNavigation id="sideNav" expanded="true" selectedKey="pgDashboard"
+                                itemSelect=".onNavSelect" class="entSide">
+                <tnt:item>
+                    <tnt:NavigationList>
+                        <tnt:NavigationListItem text="Dashboard" icon="sap-icon://bar-chart" key="pgDashboard"/>
+                        <tnt:NavigationListItem text="Purchase Orders" icon="sap-icon://sales-order" key="pgPO"/>
+                        <tnt:NavigationListItem text="Goods Receipts" icon="sap-icon://inbox" key="pgGR"/>
+                    </tnt:NavigationList>
+                </tnt:item>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <tnt:mainContents>
+            <NavContainer id="pages" defaultTransitionName="fade">
+
+                <!-- ============ DASHBOARD ============ -->
+                <Page id="pgDashboard" showHeader="false" class="entPage">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <VBox>
+                                <Title text="{= 'Welcome, ' + (${sup>/name} || 'Supplier') }" titleStyle="H2"/>
+                                <Text text="Your purchase orders, confirmations and deliveries at a glance"/>
+                            </VBox>
+
+                            <!-- KPI cards -->
+                            <HBox wrap="Wrap" class="sapUiSmallMarginTop">
+                                <VBox class="kpi kpiOrange">
+                                    <Text text="AWAITING RESPONSE" class="kpiLabel"/>
+                                    <Title text="{dash>/awaiting}" class="kpiValue"/>
+                                    <Text text="New POs to confirm" class="kpiSub"/>
+                                </VBox>
+                                <VBox class="kpi kpiGreen">
+                                    <Text text="CONFIRMED" class="kpiLabel"/>
+                                    <Title text="{dash>/confirmed}" class="kpiValue"/>
+                                    <Text text="Ready to deliver" class="kpiSub"/>
+                                </VBox>
+                                <VBox class="kpi kpiBlue">
+                                    <Text text="PARTIALLY RECEIVED" class="kpiLabel"/>
+                                    <Title text="{dash>/partial}" class="kpiValue"/>
+                                    <Text text="Delivery in progress" class="kpiSub"/>
+                                </VBox>
+                                <VBox class="kpi kpiTeal">
+                                    <Text text="FULLY RECEIVED" class="kpiLabel"/>
+                                    <Title text="{dash>/received}" class="kpiValue"/>
+                                    <Text text="Completed deliveries" class="kpiSub"/>
+                                </VBox>
+                                <VBox class="kpi kpiRed">
+                                    <Text text="REJECTED" class="kpiLabel"/>
+                                    <Title text="{dash>/rejected}" class="kpiValue"/>
+                                    <Text text="Declined by you" class="kpiSub"/>
+                                </VBox>
+                                <VBox class="kpi kpiPurple">
+                                    <Text text="OPEN ORDER VALUE" class="kpiLabel"/>
+                                    <Title text="{dash>/openValue}" class="kpiValue"/>
+                                    <Text text="Still to be delivered" class="kpiSub"/>
+                                </VBox>
+                            </HBox>
+
+                            <!-- Charts -->
+                            <HBox wrap="Wrap" class="sapUiSmallMarginTop">
+                                <VBox class="card cardWide">
+                                    <Title text="PO Status Distribution" titleStyle="H5"/>
+                                    <core:HTML content="{dash>/donutHtml}"/>
+                                </VBox>
+                                <VBox class="card cardWide">
+                                    <Title text="Delivery Progress · Open POs" titleStyle="H5" class="sapUiSmallMarginBottom"/>
+                                    <VBox items="{dash>/openPOs}">
+                                        <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                                            <Text text="{dash>poNumber}" width="9rem"/>
+                                            <ProgressIndicator percentValue="{dash>pct}" displayValue="{dash>label}"
+                                                               state="{dash>state}" width="14rem"/>
+                                        </HBox>
+                                    </VBox>
+                                    <Text text="No open purchase orders." visible="{= ${dash>/openPOs}.length === 0 }"/>
+                                </VBox>
+                            </HBox>
+
+                            <!-- Lists -->
+                            <HBox wrap="Wrap" class="sapUiSmallMarginTop">
+                                <VBox class="card cardList">
+                                    <Title text="Needs Your Response · New Purchase Orders" titleStyle="H5"/>
+                                    <List items="{dash>/awaitingList}" noDataText="Nothing waiting 🎉" showSeparators="Inner">
+                                        <StandardListItem title="{dash>poNumber}"
+                                                          description="{path:'dash>createdAt', formatter:'.formatDate'}"
+                                                          info="Review" infoState="Warning" type="Navigation"
+                                                          icon="sap-icon://pending" press=".onReviewPO"/>
+                                    </List>
+                                </VBox>
+                                <VBox class="card cardList">
+                                    <Title text="Latest Goods Receipts" titleStyle="H5"/>
+                                    <List items="{dash>/recentGRs}" noDataText="No goods receipts yet" showSeparators="Inner">
+                                        <StandardListItem title="{dash>grNumber}"
+                                                          description="PO {dash>poNumber} · received by {dash>receivedBy}"
+                                                          info="{path:'dash>createdAt', formatter:'.formatDate'}"
+                                                          icon="sap-icon://inbox"/>
+                                    </List>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </content>
+                </Page>
+
+                <!-- ============ PURCHASE ORDERS ============ -->
+                <Page id="pgPO" showHeader="false" class="entPage">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <Title text="Purchase Orders" titleStyle="H2" class="sapUiSmallMarginBottom"/>
+                            <VBox class="card cardFull">
+                                <OverflowToolbar class="entToolbar">
+                                    <SearchField id="poSearch" width="16rem" placeholder="Search PO number"
+                                                 search=".onPOFilter" liveChange=".onPOFilter"/>
+                                    <SegmentedButton id="poStatusFilter" selectedKey="ALL" selectionChange=".onPOFilter">
+                                        <items>
+                                            <SegmentedButtonItem key="ALL" text="All"/>
+                                            <SegmentedButtonItem key="SENT_TO_SUPPLIER" text="Awaiting"/>
+                                            <SegmentedButtonItem key="CONFIRMED" text="Confirmed"/>
+                                            <SegmentedButtonItem key="PARTIALLY_RECEIVED" text="Partial"/>
+                                            <SegmentedButtonItem key="RECEIVED" text="Received"/>
+                                            <SegmentedButtonItem key="REJECTED_BY_SUPPLIER" text="Rejected"/>
+                                        </items>
+                                    </SegmentedButton>
+                                    <ToolbarSpacer/>
+                                    <Button text="Confirm PO" type="Accept" icon="sap-icon://accept"
+                                            enabled="{ui>/canRespond}" press=".onConfirmPO"/>
+                                    <Button text="Reject PO" type="Reject" icon="sap-icon://decline"
+                                            enabled="{ui>/canRespond}" press=".onRejectPO"/>
+                                </OverflowToolbar>
+
+                                <Table id="poTable" mode="SingleSelectLeft" selectionChange=".onPOSelect"
+                                       growing="true" growingThreshold="15" sticky="ColumnHeaders"
+                                       noDataText="No purchase orders for this supplier"
+                                       items="{path: '/PurchaseOrders', suspended: true, sorter: {path: 'createdAt', descending: true}}">
+                                    <columns>
+                                        <Column><Text text="PO Number"/></Column>
+                                        <Column><Text text="Purchase Requisition"/></Column>
+                                        <Column><Text text="Status"/></Column>
+                                        <Column><Text text="Created"/></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <ObjectIdentifier title="{poNumber}"/>
+                                                <Text text="{parts: ['pr_ID', 'lk>/prs'], formatter: '.formatPR'}"/>
+                                                <ObjectStatus text="{path:'status', formatter:'.formatPOLabel'}" inverted="true"
+                                                              state="{path:'status', formatter:'.formatPOState'}"/>
+                                                <Text text="{path:'createdAt', formatter:'.formatDate'}"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+
+                            <VBox class="card cardFull sapUiSmallMarginTop">
+                                <Panel id="poItemsPanel" headerText="PO Items (select a PO above)" class="entPanel">
+                                    <Table id="poItemsTable" items="{items}" noDataText="Select a PO above to see its items">
+                                        <columns>
+                                            <Column><Text text="Part"/></Column>
+                                            <Column hAlign="End"><Text text="Ordered"/></Column>
+                                            <Column hAlign="End"><Text text="Received"/></Column>
+                                            <Column hAlign="End"><Text text="Unit Price"/></Column>
+                                            <Column hAlign="End"><Text text="Line Total"/></Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <ObjectIdentifier
+                                                        title="{parts: ['part_ID', 'lk>/parts'], formatter: '.formatPartNumber'}"
+                                                        text="{parts: ['part_ID', 'lk>/parts'], formatter: '.formatPartDesc'}"/>
+                                                    <ObjectNumber number="{orderedQty}"/>
+                                                    <ObjectNumber number="{receivedQty}" state="Success"/>
+                                                    <ObjectNumber number="{unitPrice}"/>
+                                                    <ObjectNumber number="{parts: ['orderedQty', 'unitPrice'], formatter: '.formatLineTotal'}"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </Panel>
+                            </VBox>
+                        </VBox>
+                    </content>
+
+                    <dependents>
+                        <Dialog id="rejectDialog" title="Reject Purchase Order" contentWidth="26rem" draggable="true">
+                            <content>
+                                <VBox class="sapUiSmallMargin">
+                                    <MessageStrip type="Warning" showIcon="true"
+                                                  text="Procurement will be notified that you cannot fulfil this order."
+                                                  class="sapUiSmallMarginBottom"/>
+                                    <Label text="Reason for rejection" required="true" labelFor="rejectReason"/>
+                                    <TextArea id="rejectReason" rows="4" width="100%" maxLength="250" showExceededText="true"
+                                              placeholder="e.g. Part out of stock, cannot meet delivery date"/>
+                                </VBox>
+                            </content>
+                            <beginButton>
+                                <Button text="Reject PO" type="Reject" press=".onConfirmReject"/>
+                            </beginButton>
+                            <endButton>
+                                <Button text="Cancel" press=".onCancelReject"/>
+                            </endButton>
+                        </Dialog>
+                    </dependents>
+                </Page>
+
+                <!-- ============ GOODS RECEIPTS ============ -->
+                <Page id="pgGR" showHeader="false" class="entPage">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <Title text="Goods Receipts" titleStyle="H2" class="sapUiSmallMarginBottom"/>
+                            <MessageStrip type="Information" showIcon="true" class="sapUiSmallMarginBottom"
+                                          text="Goods receipts are posted by Procurement once your delivery arrives. They appear here automatically."/>
+                            <VBox class="card cardFull">
+                                <OverflowToolbar class="entToolbar">
+                                    <ToolbarSpacer/>
+                                    <Button icon="sap-icon://refresh" tooltip="Refresh" press=".onRefreshGRs"/>
+                                </OverflowToolbar>
+                                <Table id="grTable" growing="true" growingThreshold="15" sticky="ColumnHeaders"
+                                       noDataText="No goods receipts yet"
+                                       items="{path: '/GoodsReceipts', suspended: true, parameters: {$expand: 'po'}, sorter: {path: 'createdAt', descending: true}}">
+                                    <columns>
+                                        <Column><Text text="GR Number"/></Column>
+                                        <Column><Text text="PO Number"/></Column>
+                                        <Column><Text text="Received By"/></Column>
+                                        <Column><Text text="Posted On"/></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <ObjectIdentifier title="{grNumber}"/>
+                                                <Text text="{po/poNumber}"/>
+                                                <Text text="{receivedBy}"/>
+                                                <Text text="{path:'createdAt', formatter:'.formatDate'}"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </VBox>
+                    </content>
+                </Page>
+
+            </NavContainer>
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>
