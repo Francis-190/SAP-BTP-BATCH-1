@@ -1,0 +1,199 @@
+.entApp { background:#eef2f9; }
+.entHeader { background:linear-gradient(90deg,#0f2a5f 0%,#1d4ed8 60%,#06b6d4 100%) !important; }
+.entHeader .sapMBtnIcon, .entHeader .sapMBtnInner { color:#fff !important; }
+.entHeaderTitle { color:#fff !important; font-weight:600; }
+.entSide { background:white !important; }
+.entSide .sapTntNavLIItem, .entSide .sapTntNavLIItem .sapUiIcon, .entSide .sapTntNavLIItemText { color:#cbd5e1 !important; }
+.entSide .sapTntNavLIItem.sapTntNavLIItemSelected { background:linear-gradient(90deg,#2563eb,#06b6d4) !important; }
+.entSide .sapTntNavLIItemSelected, .entSide .sapTntNavLIItemSelected .sapUiIcon, .entSide .sapTntNavLIItemSelected .sapTntNavLIItemText { color:#fff !important; }
+.entPage { background:#eef2f9 !important; }
+.kpi { flex:1 1 11rem; min-width:11rem; margin:0 .75rem .75rem 0; padding:1rem 1.25rem; border-radius:14px; color:#fff;
+       box-shadow:0 6px 16px rgba(15,23,42,.18); transition:transform .15s; }
+.kpi:hover { transform:translateY(-3px); }
+.kpiBlue   { background:linear-gradient(135deg,#2563eb,#60a5fa); }
+.kpiOrange { background:linear-gradient(135deg,#f97316,#fbbf24); }
+.kpiGreen  { background:linear-gradient(135deg,#059669,#34d399); }
+.kpiPurple { background:linear-gradient(135deg,#7c3aed,#c084fc); }
+.kpiTeal   { background:linear-gradient(135deg,#0891b2,#22d3ee); }
+.kpiRed    { background:linear-gradient(135deg,#dc2626,#fb7185); }
+.kpiLabel  { color:rgba(255,255,255,.85) !important; font-size:.72rem !important; letter-spacing:.08em; font-weight:600; }
+.kpiValue, .kpiValue .sapMTitle { color:#fff !important; font-size:2.2rem !important; font-weight:700 !important; }
+.kpiSub    { color:rgba(255,255,255,.9) !important; font-size:.78rem !important; }
+.card { background:#fff; border-radius:14px; padding:1rem 1.25rem; margin:0 .75rem .75rem 0; box-shadow:0 2px 10px rgba(15,23,42,.08); }
+.cardWide { flex:1 1 20rem; min-width:20rem; }
+.cardList { flex:1 1 24rem; min-width:24rem; }
+.cardFull { width:calc(100% - .75rem); box-sizing:border-box; }
+.entToolbar { background:transparent !important; }
+.entPanel { background:transparent !important; }
+.donutWrap { display:flex; align-items:center; gap:1.25rem; padding-top:.75rem; flex-wrap:wrap; }
+.donut { width:150px; height:150px; border-radius:50%; position:relative; flex:none; }
+.donutHole { position:absolute; inset:28px; background:#fff; border-radius:50%; display:flex; flex-direction:column;
+             align-items:center; justify-content:center; font-weight:700; font-size:1.5rem; color:#0f172a; }
+.donutHole small { font-size:.65rem; font-weight:500; color:#64748b; }
+.legendRow { display:flex; align-items:center; gap:.5rem; font-size:.82rem; margin-bottom:.3rem; color:#334155; }
+.legendDot { width:11px; height:11px; border-radius:3px; flex:none; }
+.trend { display:flex; align-items:flex-end; gap:.7rem; height:170px; padding-top:1rem; }
+.trendCol { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; }
+.trendBar { width:100%; max-width:34px; border-radius:6px 6px 0 0; background:linear-gradient(180deg,#06b6d4,#2563eb); min-height:3px; }
+.trendVal { font-size:.75rem; font-weight:600; color:#0f172a; margin-bottom:3px; }
+.trendLbl { font-size:.68rem; color:#64748b; margin-top:4px; }
+
+/* ===== floating button ===== */
+.chatFab.sapMBtn {
+    position: fixed !important;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    padding: 0;
+    margin: 0;
+    z-index: 1001;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    outline: none;
+}   /* <-- this closing brace was missing */
+
+.chatFab.sapMBtn .sapMBtnInner {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFFFFF, white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+.chatFab.sapMBtn .sapMBtnIcon { color: #fff; font-size: 1.5rem; width: auto; line-height: 1; }
+.chatFab.sapMBtn:focus,
+.chatFab.sapMBtn:focus-visible,
+.chatFab.sapMBtn .sapMBtnInner:focus,
+.chatFab.sapMBtn .sapMBtnInner::after { outline: none; border-color: transparent; }
+.chatFab .sapMBtnInner { font-size: 1.6rem !important; }
+
+/* ===== window ===== */
+.chatPanel.sapMFlexBox {
+    position: fixed !important;
+    top: auto !important;
+    left: auto !important;
+    right: 1.5rem;
+    bottom: 5.8rem;
+    width: 24rem;
+    height: 36rem;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 8rem);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    z-index: 1000;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+}
+
+/* fixed-height parts never shrink or grow */
+.chatPanel > .chatPanelHeader,
+.chatPanel > .chatSuggestions,
+.chatPanel > .chatProposal,
+.chatPanel > .chatInputBar,
+.chatPanel > .chatBar,
+.chatPanel > .chatTabs,
+.chatPanel > .chatEndedBar {
+    flex: 0 0 auto;
+}
+
+/* the messages area takes all remaining space and scrolls */
+.chatPanel > .sapMScrollCont,
+.chatScrollArea {
+    flex: 1 1 0 !important;
+    height: auto !important;      /* overrides height="100%" set on the ScrollContainer */
+    min-height: 0 !important;
+    overflow-y: auto;
+}
+.chatScreen { flex: 1 1 0; min-height: 0; }
+
+/* ===== header bars ===== */
+.chatPanelHeader,
+.chatBar {
+    padding: 0.4rem 0.6rem;
+    background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
+}
+.chatPanelTitle, .chatHeroTitle { color: #fff !important; }
+.chatBarSub { color: #dbeafe; font-size: 0.75rem; }
+.chatHeaderBtn .sapMBtnIcon,
+.chatHeaderBtn .sapMBtnContent { color: #fff !important; }
+.chatAvatar { color: #1d4ed8; background: #fff; border-radius: 50%; padding: 0.3rem; margin-right: 0.5rem; }
+
+/* ===== home ===== */
+.chatHero {
+    background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
+    padding: 0.4rem 1rem 1.6rem 1rem;
+}
+.chatHeroSub { color: #dbeafe; }
+.chatHomeBody { flex: 1 1 0; min-height: 0; overflow-y: auto; padding: 1rem; }
+.chatHomeCard {
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+}
+.chatHomeCardTitle { font-weight: 600; color: #0f172a; }
+.chatMuted { color: #64748b; font-size: 0.8rem; }
+.chatSectionLabel { margin-top: 1rem; margin-bottom: 0.4rem; }
+
+/* ===== conversation list ===== */
+.chatConvRow { padding: 0.7rem 0.8rem; width: 100%; box-sizing: border-box; }
+.chatConvText { flex: 1 1 auto; min-width: 0; }
+.chatConvTitle { font-weight: 600; color: #0f172a; }
+
+/* ===== messages ===== */
+.chatMsgs { padding: 0.75rem; }
+.chatRow { margin-bottom: 0.7rem; }
+.chatSender { font-size: 0.75rem; color: #64748b; margin-bottom: 0.15rem; }
+.chatBubble { max-width: 85%; padding: 0.5rem 0.75rem; border-radius: 1rem; }
+.chatText { white-space: pre-wrap; word-break: break-word; color: #0f172a; }
+.chatTime { font-size: 0.7rem; color: #64748b; align-self: flex-end; margin-top: 0.2rem; }
+
+.chatRow[data-role="user"] .chatSender,
+.chatRow[data-role="user"] .chatBubble { align-self: flex-end; }
+.chatRow[data-role="assistant"] .chatSender,
+.chatRow[data-role="assistant"] .chatBubble { align-self: flex-start; }
+
+.chatRow[data-role="user"] .chatBubble {
+    background: #dbeafe;
+    border-bottom-right-radius: 0.25rem;
+}
+.chatRow[data-role="assistant"] .chatBubble {
+    background: #f1f5f9;
+    border-bottom-left-radius: 0.25rem;
+}
+
+/* ===== footer areas ===== */
+.chatSuggestions { padding: 0.4rem 0.75rem 0 0.75rem; }
+.chatProposal { padding: 0.5rem 0.75rem; }
+.chatInputBar { border-top: 1px solid #e2e8f0; }
+.chatEndedBar { padding: 0.6rem; border-top: 1px solid #e2e8f0; }
+
+/* ===== bottom tabs ===== */
+.chatTabs { border-top: 1px solid #e2e8f0; background: #fff; }
+.chatTabBtn.sapMBtn { background: transparent; }
+.chatTabBtn .sapMBtnInner {
+    width: 100%;
+    height: 3rem;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    box-shadow: none;
+}
+.chatTabBtn .sapMBtnIcon,
+.chatTabBtn .sapMBtnContent { color: inherit; }
+.chatTabBtn[data-active="true"] .sapMBtnInner {
+    color: #1d4ed8;
+    box-shadow: inset 0 -3px 0 #1d4ed8;
+}

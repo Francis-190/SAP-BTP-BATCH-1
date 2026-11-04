@@ -1,0 +1,155 @@
+<mvc:View controllerName="procurement.controller.PRDetail"
+    height="100%"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:f="sap.ui.layout.form">
+
+    <Page id="detailPage" title="Purchase Requisition" showNavButton="true"
+          navButtonPress=".onNavBack" enableScrolling="false" class="entPage">
+        <content>
+            <uxap:ObjectPageLayout id="prObjectPage" upperCaseAnchorBar="false"
+                                   showTitleInHeaderContent="false">
+
+                <!-- ===== title ===== -->
+                <uxap:headerTitle>
+                    <uxap:ObjectPageDynamicHeaderTitle>
+                        <uxap:expandedHeading>
+                            <Title text="{prd>/pr/prNumber}" wrapping="true"/>
+                        </uxap:expandedHeading>
+                        <uxap:snappedHeading>
+                            <Title text="{prd>/pr/prNumber}"/>
+                        </uxap:snappedHeading>
+                        <uxap:expandedContent>
+                            <Text text="Requested by: {prd>/pr/requestedBy}"/>
+                        </uxap:expandedContent>
+                        <uxap:actions>
+                            <Button icon="sap-icon://refresh" tooltip="Refresh" press=".onRefresh"/>
+                        </uxap:actions>
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                </uxap:headerTitle>
+
+                <!-- ===== header facts ===== -->
+                <uxap:headerContent>
+                    <HBox wrap="Wrap" alignItems="Start">
+                        <VBox class="sapUiMediumMarginEnd sapUiTinyMarginBottom">
+                            <Label text="Status"/>
+                            <ObjectStatus text="{prd>/pr/status}" inverted="true"
+                                          state="{path:'prd>/pr/status', formatter:'.formatPRState'}"/>
+                        </VBox>
+                        <VBox class="sapUiMediumMarginEnd sapUiTinyMarginBottom">
+                            <Label text="Location"/>
+                            <Text text="{prd>/pr/locationName}"/>
+                        </VBox>
+                        <VBox class="sapUiMediumMarginEnd sapUiTinyMarginBottom">
+                            <Label text="Requested By"/>
+                            <Text text="{prd>/pr/requestedBy}"/>
+                        </VBox>
+                        <VBox class="sapUiMediumMarginEnd sapUiTinyMarginBottom">
+                            <Label text="Created"/>
+                            <Text text="{prd>/pr/createdAt}"/>
+                        </VBox>
+                        <VBox class="sapUiMediumMarginEnd sapUiTinyMarginBottom">
+                            <Label text="Total Quantity"/>
+                            <ObjectNumber number="{prd>/pr/totalQty}" emphasized="true"/>
+                        </VBox>
+                        <VBox class="sapUiTinyMarginBottom">
+                            <Label text="Estimated Value"/>
+                            <ObjectNumber number="{prd>/pr/totalValue}" emphasized="true"/>
+                        </VBox>
+                    </HBox>
+                </uxap:headerContent>
+
+                <!-- ===== sections ===== -->
+                <uxap:sections>
+
+                    <uxap:ObjectPageSection title="Items" titleUppercase="false">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection>
+                                <Table items="{prd>/items}" noDataText="This PR has no items">
+                                    <columns>
+                                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Part"/></Column>
+                                        <Column><Text text="UoM"/></Column>
+                                        <Column hAlign="End"><Text text="Required Qty"/></Column>
+                                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Supplier"/></Column>
+                                        <Column hAlign="End" minScreenWidth="Desktop" demandPopin="true"><Text text="Rating"/></Column>
+                                        <Column hAlign="End" minScreenWidth="Desktop" demandPopin="true"><Text text="Lead Time (days)"/></Column>
+                                        <Column hAlign="End"><Text text="Unit Price"/></Column>
+                                        <Column hAlign="End"><Text text="Line Value"/></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <ObjectIdentifier title="{prd>partNumber}" text="{prd>description}"/>
+                                                <Text text="{prd>uom}"/>
+                                                <ObjectNumber number="{prd>requiredQty}"/>
+                                                <ObjectIdentifier title="{prd>supplierName}" text="{prd>supplierCode}"/>
+                                                <Text text="{prd>rating}"/>
+                                                <Text text="{prd>leadTime}"/>
+                                                <ObjectNumber number="{prd>price}"/>
+                                                <ObjectNumber number="{prd>lineValue}" emphasized="true"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection title="Purchase Orders" titleUppercase="false">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection>
+                                <Table items="{prd>/pos}" noDataText="No Purchase Order has been created for this PR yet">
+                                    <columns>
+                                        <Column><Text text="PO Number"/></Column>
+                                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Supplier"/></Column>
+                                        <Column><Text text="Status"/></Column>
+                                        <Column minScreenWidth="Desktop" demandPopin="true"><Text text="S/4 PO ID"/></Column>
+                                        <Column hAlign="End"><Text text="Items"/></Column>
+                                        <Column hAlign="End"><Text text="Total Qty"/></Column>
+                                        <Column hAlign="End"><Text text="Value"/></Column>
+                                        <Column minScreenWidth="Desktop" demandPopin="true"><Text text="Created"/></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem type="Navigation" press=".onPODetails">
+                                            <cells>
+                                                <ObjectIdentifier title="{prd>poNumber}"/>
+                                                <ObjectIdentifier title="{prd>supplierName}" text="{prd>supplierCode}"/>
+                                                <ObjectStatus text="{prd>status}" inverted="true"
+                                                              state="{path:'prd>status', formatter:'.formatPOState'}"/>
+                                                <Text text="{prd>s4POId}"/>
+                                                <ObjectNumber number="{prd>itemCount}"/>
+                                                <ObjectNumber number="{prd>totalQty}"/>
+                                                <ObjectNumber number="{prd>value}" emphasized="true"/>
+                                                <Text text="{prd>createdAt}"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection title="Approval" titleUppercase="false">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection>
+                                <f:SimpleForm editable="false" layout="ColumnLayout" columnsM="2" columnsL="2">
+                                    <Label text="Decision By"/>
+                                    <Text text="{= ${prd>/pr/approvedBy} || 'No decision yet'}"/>
+                                    <Label text="Decision Date"/>
+                                    <Text text="{= ${prd>/pr/approvedAt} || '-'}"/>
+                                    <Label text="Current Status"/>
+                                    <ObjectStatus text="{prd>/pr/status}" inverted="true"
+                                                  state="{path:'prd>/pr/status', formatter:'.formatPRState'}"/>
+                                    <Label text="Rejection Reason" visible="{= !!${prd>/pr/rejectionReason} }"/>
+                                    <Text text="{prd>/pr/rejectionReason}" visible="{= !!${prd>/pr/rejectionReason} }"/>
+                                </f:SimpleForm>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                </uxap:sections>
+            </uxap:ObjectPageLayout>
+        </content>
+    </Page>
+</mvc:View>
