@@ -1,0 +1,141 @@
+@url = http://localhost:4004
+@servicepath = /odata/v4/procurement
+@base = {{url}}{{servicepath}}
+
+### ---------- READ DATA ----------
+GET {{base}}/PurchaseRequisitions
+
+###
+GET {{base}}/PurchaseRequisitionItems
+
+###
+GET {{base}}/PurchaseOrders
+
+###
+GET {{base}}/PurchaseOrderItems
+
+###
+GET {{base}}/GoodsReceipts
+
+###
+GET {{base}}/GoodsReceiptItems
+
+###
+GET {{base}}/Suppliers
+
+###
+GET {{base}}/AlertNotifications
+
+### ---------- CREATE THE PR ----------
+# @name createPR
+POST {{base}}/PurchaseRequisitions
+Content-Type: application/json
+
+{
+  "prNumber": "PR-TEST-004",
+  "location_ID": "eb366403-27af-4380-9d74-800a53ab8081",
+  "requestedBy": "vamsi",
+  "items": [
+    {
+      "part_ID": "bd2c74bd-cc0f-4112-8fa2-101d5e36febc",
+      "requiredQty": 5,
+      "supplier_ID": "0377357c-978a-4046-a7d2-c6fd39745a1c",
+      "estimatedPrice": 100
+    }
+  ]
+}
+
+###---------- GET THE PR ----------
+GET {{base}}/PurchaseRequisitions
+
+### ---------- DRAFT -> SUBMITTED ----------
+POST  {{base}}/submitPR
+Content-Type: application/json
+
+{
+    "prID":"6cefaf36-5b22-4a24-b078-a8f5b719d059"
+}
+
+# ###
+# GET {{base}}/PurchaseRequisitionItems(e66f2ef8-4dfd-4eeb-9969-3214604e4cb7)
+
+
+# ###
+# GET {{base}}/Suppliers(2d8d45ab-3403-4be5-8a0e-cb6eb36975e0)
+
+# ###
+# PATCH {{base}}/Suppliers(2d8d45ab-3403-4be5-8a0e-cb6eb36975e0)
+# Content-Type: application/json
+
+# {
+# "isEligible": true
+# }
+
+###----------  SUBMITTED -> PENDING_APPROVAL ----------
+POST {{base}}/sendForApproval
+Content-Type: application/json
+
+{
+    "prID":"6cefaf36-5b22-4a24-b078-a8f5b719d059"
+}
+###----------  PENDING_APPROVAL -> APPROVED----------
+POST {{base}}/approvePR
+Content-Type: application/json
+
+{
+    "prID":"6cefaf36-5b22-4a24-b078-a8f5b719d059",
+    "approver": "Procurement Manager"
+}
+
+###Create the PO
+POST {{base}}/createPOFromPR
+Content-Type: application/json
+
+{
+  "prID": "6cefaf36-5b22-4a24-b078-a8f5b719d059"
+}
+
+
+###GET PO's
+GET {{base}}/PurchaseOrders(856a8335-b499-4f5e-a679-ba8d391063db)
+
+###
+POST https://1e946729trial-dev-inventory-procurement-srv.cfapps.us10-001.hana.ondemand.com/procurement/PurchaseRequisitions
+Content-Type: application/json
+
+{
+  "prNumber": "PR-3041",
+  "location_ID": "eb366403-27af-4380-9d74-800a53ab8081",
+  "requestedBy": "GUNDLAPALLE VAMSI",
+  "items": [
+    {
+      "part_ID": "bd2c74bd-cc0f-4112-8fa2-101d5e36febc",
+      "requiredQty": 5,
+      "supplier_ID": "0377357c-978a-4046-a7d2-c6fd39745a1c",
+      "estimatedPrice": 100
+    }
+  ]
+}
+
+
+###
+### 1. Is the action registered? (should contain  Action Name="chat")
+GET http://localhost:4004/procurement/$metadata
+
+### 2. Ask the chatbot
+POST http://localhost:4004/procurement/chat
+Content-Type: application/json
+
+{ "messages": [ { "role": "user", "content": "What needs attention today?" } ] }
+
+### 3. Ask about a PR
+POST http://localhost:4004/procurement/chat
+Content-Type: application/json
+
+{ "messages": [ { "role": "user", "content": "PRs awaiting approval" } ] }
+
+### 4. Action proposal (use a PR in PENDING_APPROVAL)
+POST http://localhost:4004/procurement/chat
+Content-Type: application/json
+
+{ "messages": [ { "role": "user", "content": "Approve PR-3001" } ] }

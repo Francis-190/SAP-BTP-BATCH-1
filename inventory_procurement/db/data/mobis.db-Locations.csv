@@ -1,0 +1,42 @@
+ID,locationCode,name,type,city,region,isActive,createdAt,createdBy,modifiedAt,modifiedBy
+
+dc7812b7-28e8-4668-9c9f-8ad43ab36d53,LOC-1000,South Service Center 1,SERVICE_CENTER,North Judithbury,Gyeonggi,true,2026-07-01T23:13:00Z,p.rossi,2026-07-01T23:13:00Z,p.rossi
+621dd3fb-a220-43f8-8817-cb2361ee66f3,LOC-1001,East Warehouse 2,WAREHOUSE,East Jill,Seoul,true,2025-11-21T21:23:00Z,asharma,2025-11-21T21:23:00Z,lchen
+9c009766-f0d1-4133-8643-8736c78c3b1a,LOC-1002,West Plant 3,SERVICE_CENTER,New Roberttown,Incheon,true,2026-08-14T06:48:00Z,admin,2026-08-14T06:48:00Z,admin
+759c807f-812b-496b-ae95-f989c539d42f,LOC-1003,East Dealer 4,DEALER,East Jessetown,Gyeonggi,true,2026-08-24T18:16:00Z,admin,2026-08-24T18:16:00Z,mgarcia
+bc4fa1f5-5dbf-4e32-aee6-34d3cd4071c4,LOC-1004,Central Dealer 5,DEALER,Lake Debra,Daegu,true,2026-07-06T21:36:00Z,admin,2026-07-06T21:36:00Z,jkim
+eb366403-27af-4380-9d74-800a53ab8081,LOC-1005,East Warehouse 6,DEALER,Robinsonshire,Ulsan,true,2026-01-04T06:53:00Z,lchen,2026-01-04T06:53:00Z,asharma
+aee88716-e254-467c-922e-71ac3778bde9,LOC-1006,North Dealer 7,WAREHOUSE,Lisatown,Gyeonggi,true,2026-07-23T22:18:00Z,system,2026-07-23T22:18:00Z,mgarcia
+cfb0ec19-feb6-4d4d-aa15-6bae1beb5c44,LOC-1007,South Service Center 8,DEALER,Lake Roberto,Busan,true,2026-01-07T03:07:00Z,p.rossi,2026-01-07T03:07:00Z,mgarcia
+4576857b-c5ee-4fe7-9ba9-832e5145de67,LOC-1008,North Service Center 9,SERVICE_CENTER,Ericmouth,Incheon,false,2026-07-22T04:20:00Z,mgarcia,2026-07-22T04:20:00Z,p.rossi
+e69805a1-5c4e-4512-8c7a-f4c98fc43ced,LOC-1009,South Warehouse 10,SERVICE_CENTER,North Noahstad,Seoul,true,2025-11-15T16:17:00Z,system,2025-11-15T16:17:00Z,mgarcia
+787fb9ac-b66a-4013-9d0e-600316db08a4,LOC-1010,West Dealer 11,SERVICE_CENTER,Cassandraton,Ulsan,false,2026-07-25T17:02:00Z,system,2026-07-25T17:02:00Z,p.rossi
+59f6362e-b2c8-4821-a0b0-b9a096049ab2,LOC-1011,North Service Center 12,DEALER,Herrerafurt,Ulsan,false,2026-01-05T19:44:00Z,lchen,2026-01-05T19:44:00Z,system
+60460ed3-b012-49a2-8d26-bd7a6d487ca6,LOC-1012,West Plant 13,WAREHOUSE,New Kellystad,Seoul,true,2026-02-23T16:52:00Z,asharma,2026-02-23T16:52:00Z,p.rossi
+bc95eabc-2f70-4d11-852f-fe993c45d29e,LOC-1013,West Warehouse 14,PLANT,Lake Chad,Incheon,false,2026-06-07T02:33:00Z,lchen,2026-06-07T02:33:00Z,mgarcia
+8cfe33b7-74d9-4457-a2c0-bd0fc0a85c49,LOC-1014,Central Dealer 15,DEALER,Port Keith,Seoul,true,2025-11-17T23:17:00Z,system,2025-11-17T23:17:00Z,asharma
+fe003cc5-d3e7-49d0-a320-d1278a5d8a09,LOC-1015,South Service Center 16,WAREHOUSE,Port Jesseville,Ulsan,true,2026-01-07T23:14:00Z,admin,2026-01-07T23:14:00Z,p.rossi
+26c5e83c-6987-456b-a0d9-8a09b356fd33,LOC-1016,North Dealer 17,SERVICE_CENTER,Ramirezstad,Daegu,true,2025-12-11T04:48:00Z,lchen,2025-12-11T04:48:00Z,mgarcia
+bfd240ca-32ba-4623-b26b-0c1f40b9196f,LOC-1017,South Dealer 18,SERVICE_CENTER,West Michael,Seoul,true,2025-12-20T23:53:00Z,lchen,2025-12-20T23:53:00Z,jkim
+19dae37a-da1c-418a-9f78-2ce52348d8ca,LOC-1018,Central Service Center 19,SERVICE_CENTER,Jacquelineland,Ulsan,false,2026-07-15T00:29:00Z,lchen,2026-07-15T00:29:00Z,asharma
+ca358a6f-4cad-4d90-82a8-fdc96fdf9942,LOC-1019,West Plant 20,SERVICE_CENTER,New Jessica,Daegu,true,2026-04-14T07:05:00Z,p.rossi,2026-04-14T07:05:00Z,mgarcia
+f865d5fb-7c80-46a8-9a28-cabbfa502eaa,LOC-1020,South Plant 21,PLANT,South Noah,Seoul,true,2026-02-04T02:19:00Z,asharma,2026-02-04T02:19:00Z,jkim
+bed2f070-2299-4ba2-aaf8-e0814575c541,LOC-1021,West Service Center 22,SERVICE_CENTER,Lake Mark,Seoul,true,2026-03-07T23:23:00Z,p.rossi,2026-03-07T23:23:00Z,p.rossi
+e0944a13-78fc-47e7-997b-ca9b53044bc6,LOC-1022,Central Dealer 23,WAREHOUSE,East Lydiamouth,Daegu,true,2026-07-28T16:56:00Z,mgarcia,2026-07-28T16:56:00Z,p.rossi
+51a89c75-4ec8-4de9-a1dd-2d371acf279f,LOC-1023,North Plant 24,SERVICE_CENTER,Adamsborough,Incheon,false,2025-12-22T17:26:00Z,asharma,2025-12-22T17:26:00Z,jkim
+8d38cdf8-e198-4e2f-abea-f7d3a42e1c8d,LOC-1024,South Plant 25,PLANT,Jasonfort,Incheon,true,2026-07-09T02:33:00Z,p.rossi,2026-07-09T02:33:00Z,p.rossi
+0ad37519-64dd-417b-a533-120bd1a69b6d,LOC-1025,South Warehouse 26,SERVICE_CENTER,Wilkersonmouth,Gyeonggi,true,2026-07-08T22:35:00Z,lchen,2026-07-08T22:35:00Z,system
+7420b029-22ee-4015-94d4-fb873fa6ca32,LOC-1026,South Plant 27,SERVICE_CENTER,West Donald,Seoul,false,2026-06-17T10:49:00Z,admin,2026-06-17T10:49:00Z,admin
+00cd03b3-6d69-4191-afdc-1ec2d368ab67,LOC-1027,West Warehouse 28,WAREHOUSE,Juliechester,Gyeonggi,true,2025-11-19T20:57:00Z,system,2025-11-19T20:57:00Z,system
+c0e22fb4-3407-4048-acc6-865053730c6c,LOC-1028,East Warehouse 29,SERVICE_CENTER,Coxberg,Incheon,true,2025-12-24T17:05:00Z,system,2025-12-24T17:05:00Z,mgarcia
+29ffcb7b-db6d-4792-839d-227cb9cf340e,LOC-1029,West Plant 30,SERVICE_CENTER,Daviston,Gyeonggi,true,2026-01-07T14:33:00Z,asharma,2026-01-07T14:33:00Z,jkim
+004296f6-f720-49bf-9ec4-28edc4a82da7,LOC-1030,Central Dealer 31,WAREHOUSE,East Courtneychester,Seoul,false,2025-11-04T00:26:00Z,lchen,2025-11-04T00:26:00Z,admin
+3a112cd1-76d9-4807-b433-bceb77a60ad0,LOC-1031,West Warehouse 32,SERVICE_CENTER,South Patrickmouth,Seoul,true,2025-11-29T18:57:00Z,p.rossi,2025-11-29T18:57:00Z,admin
+a027b987-01e1-4b1e-a380-1b24e693f738,LOC-1032,West Service Center 33,WAREHOUSE,Tashatown,Daegu,true,2026-04-29T11:53:00Z,system,2026-04-29T11:53:00Z,p.rossi
+fe17044a-0a91-4c99-9628-c7c2c76f5905,LOC-1033,South Dealer 34,SERVICE_CENTER,Lake Nicoleview,Ulsan,true,2025-11-02T05:27:00Z,asharma,2025-11-02T05:27:00Z,mgarcia
+3a43ca38-6b24-43ed-a264-c0a776a50297,LOC-1034,South Plant 35,DEALER,Danielchester,Seoul,true,2026-02-06T19:18:00Z,system,2026-02-06T19:18:00Z,lchen
+9700af2f-cafa-4d98-9f40-e1f13151b649,LOC-1035,West Service Center 36,DEALER,South Aaron,Gyeonggi,true,2025-11-12T20:56:00Z,jkim,2025-11-12T20:56:00Z,asharma
+322c1e37-016e-43cb-bd18-5b1321d9c55a,LOC-1036,East Dealer 37,WAREHOUSE,Teresaburgh,Ulsan,true,2026-02-19T14:50:00Z,p.rossi,2026-02-19T14:50:00Z,jkim
+4d877418-6985-4c1e-bc05-84556798ae0e,LOC-1037,Central Service Center 38,DEALER,Port Colleenhaven,Busan,true,2026-06-20T15:53:00Z,p.rossi,2026-06-20T15:53:00Z,mgarcia
+2007bcd8-2427-419a-b2d1-c4e296ae698e,LOC-1038,South Plant 39,DEALER,East Nathaniel,Seoul,true,2026-05-15T02:20:00Z,p.rossi,2026-05-15T02:20:00Z,system
+b1da6c9d-61e9-49c2-b3fa-4767b513979f,LOC-1039,South Service Center 40,DEALER,New Stephanie,Gyeonggi,false,2026-04-08T23:00:00Z,lchen,2026-04-08T23:00:00Z,p.rossi

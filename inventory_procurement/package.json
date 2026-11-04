@@ -1,0 +1,43 @@
+{
+  "name": "inventory_procurement",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cds-serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@sap-cloud-sdk/http-client": "^4.9.1",
+    "@sap/xssec": "^4",
+    "nodemailer": "^10.2.1"
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "basic",
+        "restrict_all_services": false,
+        "users": {
+          "vamsig615@gmail.com": {
+            "password": "Vamsi@2002",
+            "displayName": "Vamsi",
+            "roles": [
+              "ProcurementManager"
+            ]
+          }
+        }
+      }
+    },
+    "server": {
+      "index": true
+    }
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.4.3",
+    "@sap/cds-dk": "^9"
+  }
+}

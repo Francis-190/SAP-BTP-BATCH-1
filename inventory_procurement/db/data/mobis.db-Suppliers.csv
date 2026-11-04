@@ -1,0 +1,41 @@
+ID,supplierCode,name,email,phone,rating,leadTimeDays,isEligible,createdAt,createdBy,modifiedAt,modifiedBy
+278466be-99b9-4678-abf4-091d5e0a8c64,SUP-2000,"Sellers, George and Burns",hickmannatasha@allen-allen.org,417-618-2278,2.8,30,true,2026-01-21T07:00:00Z,lchen,2026-01-21T07:00:00Z,jkim
+708e3195-000a-4dc8-b29b-9225be0a0fe6,SUP-2001,"Brennan, Henderson and Lewis",jenniferross@santos.com,531.250.9839,2.9,6,true,2026-02-19T05:25:00Z,mgarcia,2026-02-19T05:25:00Z,mgarcia
+64f7a6f7-ce7c-4e7d-b04e-d6bac07269a1,SUP-2002,Zimmerman Inc,carlosjohnson@jones-young.info,582.399.7376,4.2,23,true,2026-08-07T12:47:00Z,mgarcia,2026-08-07T12:47:00Z,admin
+0377357c-978a-4046-a7d2-c6fd39745a1c,SUP-2003,Hopkins LLC,ujenkins@nunez.com,4658133387,4.4,9,true,2025-11-14T10:21:00Z,admin,2025-11-14T10:21:00Z,admin
+ee79cfe1-6853-471f-9026-494eaee1c844,SUP-2004,Ramirez and Sons,ramosmichelle@garcia.com,432-867-7360,2.9,12,false,2026-05-29T10:59:00Z,admin,2026-05-29T10:59:00Z,p.rossi
+43e41a8e-3152-44d1-833f-5747298c3d11,SUP-2005,Galloway LLC,smitchell@cowan.com,243.909.8050,2.9,24,true,2025-08-16T16:43:00Z,system,2025-08-16T16:43:00Z,admin
+e0fcded3-577c-436d-908c-5dbb9210b941,SUP-2006,"Calhoun, Schmidt and Brown",yorkcasey@leonard.biz,793-699-0916,3.0,16,true,2026-08-08T08:46:00Z,mgarcia,2026-08-08T08:46:00Z,admin
+385a8512-38b6-4ab4-a4f7-cb03aaee4395,SUP-2007,Santiago LLC,josephanderson@evans.com,6794911838,4.2,14,true,2026-05-03T16:59:00Z,mgarcia,2026-05-03T16:59:00Z,admin
+9045530a-97c5-42e6-9139-eed7f7a73da5,SUP-2008,Ibarra-Suarez,justin78@turner.net,4846124118,4.1,14,true,2026-07-23T15:38:00Z,jkim,2026-07-23T15:38:00Z,jkim
+572f29ae-1ec4-4f46-8275-02c314223a70,SUP-2009,Jacobs-Robbins,gracefarrell@freeman.com,+1-264-300-5242,4.9,10,true,2026-04-16T18:23:00Z,jkim,2026-04-16T18:23:00Z,lchen
+c26a7127-44ca-4be6-8261-dd85850002c6,SUP-2010,Landry Ltd,amydavenport@tran.com,4535315869,4.5,15,true,2026-01-17T12:14:00Z,system,2026-01-17T12:14:00Z,lchen
+e2b1dd94-f7d8-42ce-af93-925c8feba175,SUP-2011,Cherry and Sons,vjohnson@patton-jenkins.com,521-260-7337x54,4.3,2,true,2026-05-22T15:58:00Z,mgarcia,2026-05-22T15:58:00Z,system
+cd414ac6-9003-4640-a82c-be0a40a4e4f8,SUP-2012,"Lee, Murphy and Lin",michael86@zavala.com,329-840-1965x56,3.3,12,true,2026-07-23T02:02:00Z,p.rossi,2026-07-23T02:02:00Z,mgarcia
+805a5e4c-32c9-4678-8928-59f2503b8b59,SUP-2013,"Lee, Williams and Graham",michaeljones@mccall.com,001-448-646-564,3.5,14,true,2025-12-11T14:18:00Z,lchen,2025-12-11T14:18:00Z,asharma
+f5d93936-4e0d-479f-b56f-ec77e0b45c64,SUP-2014,Kelley-Smith,jason99@morris.net,221.248.9513x43,4.9,23,true,2026-05-21T10:18:00Z,lchen,2026-05-21T10:18:00Z,lchen
+3c938eee-4d04-49ea-abfd-0e10847817e2,SUP-2015,Riggs PLC,gibsonolivia@lee.com,(501)363-2870,4.6,11,true,2026-03-26T11:25:00Z,asharma,2026-03-26T11:25:00Z,system
+ac358f4d-c1e8-48a9-b789-fc94923fe6a9,SUP-2016,Anderson-Marshall,stephanie79@mcclain.info,(677)943-4873,3.3,16,false,2025-11-04T04:19:00Z,p.rossi,2025-11-04T04:19:00Z,asharma
+3fc4d712-3286-4e10-977c-b2e980dc105c,SUP-2017,Reeves and Sons,matthew81@hernandez.com,001-831-266-587,4.8,27,true,2025-12-09T08:10:00Z,p.rossi,2025-12-09T08:10:00Z,jkim
+cda73d18-4ab0-481c-934b-44f568638a75,SUP-2018,"James, Smith and Bell",acastaneda@adkins.com,234.867.0656x27,4.1,12,true,2026-04-04T07:18:00Z,admin,2026-04-04T07:18:00Z,admin
+50ea1592-2fcd-44f1-8676-b273912807cf,SUP-2019,"Elliott, Johnson and Day",michellewhite@gray-lewis.com,264-564-1708x05,3.1,8,true,2026-04-29T02:41:00Z,jkim,2026-04-29T02:41:00Z,jkim
+84451c87-7b31-4f0c-96fa-bc23b43d7458,SUP-2020,Combs PLC,johnwells@elliott.info,001-645-829-912,4.6,4,false,2026-04-24T08:21:00Z,system,2026-04-24T08:21:00Z,p.rossi
+9fafa317-5a69-43c2-8872-ab9097df317f,SUP-2021,David-Gonzalez,curtisbarton@burke.com,(786)951-8506x7,4.2,17,false,2025-11-06T17:15:00Z,asharma,2025-11-06T17:15:00Z,asharma
+0ee4a7b6-42bc-4a6e-ac4a-625c47299de4,SUP-2022,"Hernandez, Thompson and Boyd",christina87@graham-simon.com,431-947-3799x65,4.7,29,true,2025-09-26T02:00:00Z,admin,2025-09-26T02:00:00Z,system
+bf267091-b47c-42f6-b616-c84d68d7b981,SUP-2023,Kelly LLC,joshua94@smith.biz,783.977.7014x36,4.9,18,false,2026-05-07T18:09:00Z,jkim,2026-05-07T18:09:00Z,lchen
+91032cb1-90c3-470b-9120-c759b733f6ec,SUP-2024,"Schmidt, Coleman and Reese",michael74@king-martinez.com,618-523-3749x89,2.8,16,true,2026-04-22T20:31:00Z,admin,2026-04-22T20:31:00Z,system
+2d8d45ab-3403-4be5-8a0e-cb6eb36975e0,SUP-2025,White-Smith,joshuamccann@carter.info,209-647-7752,3.8,28,false,2025-10-18T00:03:00Z,asharma,2025-10-18T00:03:00Z,p.rossi
+5de421b0-2372-4792-85de-4cd93cf5bdb4,SUP-2026,Wilson-Jones,ojones@brown.com,831-986-9993,4.4,28,true,2025-12-27T09:44:00Z,admin,2025-12-27T09:44:00Z,admin
+d15f8f8b-7439-41c9-8531-f6ed0a7d354a,SUP-2027,Evans-Chapman,ntorres@lynch.com,001-933-641-232,3.1,16,true,2025-12-04T08:20:00Z,p.rossi,2025-12-04T08:20:00Z,mgarcia
+22ecee87-f2ec-4045-99aa-0a1bdf5e2c0b,SUP-2028,Hall Ltd,jacqueline71@hall.org,+1-636-918-3242,3.3,19,true,2026-04-29T15:39:00Z,asharma,2026-04-29T15:39:00Z,asharma
+722e546b-9611-4830-b2b3-ec65893244e3,SUP-2029,Harrison LLC,gbender@snyder.biz,001-459-940-139,2.9,8,true,2026-05-01T11:16:00Z,system,2026-05-01T11:16:00Z,system
+a5b2f72d-9e5b-4601-b872-1fd43fe1d402,SUP-2030,"Pearson, Moon and White",fwalters@harrison.com,712-356-7468x07,3.5,8,false,2026-03-11T06:31:00Z,system,2026-03-11T06:31:00Z,admin
+8304f98c-97a4-453e-88c1-4e89b40d9b34,SUP-2031,Hancock-Bryan,sandovalamy@brown-stone.org,001-577-403-482,4.6,26,false,2025-11-01T01:59:00Z,system,2025-11-01T01:59:00Z,jkim
+b86d5e19-6240-425f-aee8-61d8eb375a13,SUP-2032,Pierce-Tran,walkermaureen@murray.com,448.346.7737x82,3.5,30,false,2026-02-28T14:12:00Z,lchen,2026-02-28T14:12:00Z,p.rossi
+0a983753-985a-40a3-b68d-f473068521a0,SUP-2033,Barton-Dickerson,sarah84@campbell.org,001-872-978-755,4.0,9,false,2025-08-16T06:09:00Z,asharma,2025-08-16T06:09:00Z,mgarcia
+48c1838e-0ef1-4a4c-a31e-bca7b747bb66,SUP-2034,Kane-Pollard,ashleyhall@williams-garner.biz,(227)402-8951x7,3.5,23,false,2026-01-16T08:59:00Z,p.rossi,2026-01-16T08:59:00Z,asharma
+a26c70af-fbb2-48d4-bdc8-4b00fe1115f7,SUP-2035,Pitts-Booker,harrisontanya@hanson-sanders.com,386-357-8091x34,3.8,14,true,2025-12-31T19:21:00Z,jkim,2025-12-31T19:21:00Z,p.rossi
+5ac75889-b6ed-468a-acb9-66e94b80d4e5,SUP-2036,Jackson-Evans,williamslaura@howard-jordan.com,569.922.2196x93,3.7,3,true,2026-01-20T19:05:00Z,system,2026-01-20T19:05:00Z,mgarcia
+54ac231d-251a-47d6-b22c-2cc991cbeede,SUP-2037,"King, Scott and Smith",rsantana@moore.org,664-674-3671x36,3.3,30,false,2026-05-11T09:40:00Z,mgarcia,2026-05-11T09:40:00Z,admin
+321c16a1-8886-4dbe-880a-ea1bad755750,SUP-2038,Spence Ltd,khill@osborne.info,239-753-3942x10,2.7,2,true,2026-01-24T15:07:00Z,mgarcia,2026-01-24T15:07:00Z,asharma
+a3907809-5a5c-4477-8d32-ef9ec1a3e846,SUP-2039,"Anderson, Browning and Murphy",ithompson@walter.com,(547)845-1712,4.9,3,true,2025-09-29T21:11:00Z,asharma,2025-09-29T21:11:00Z,asharma

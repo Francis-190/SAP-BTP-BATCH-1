@@ -1,0 +1,6 @@
+ID,serviceCenterCode,name,city,region,contactPerson,phone,email,isActive
+8a1b2c3d-1111-4444-8888-000000000001,SC001,Chennai Service Center,Chennai,Tamil Nadu,Ravi Kumar,9876543210,ravi.sc001@example.com,true
+8a1b2c3d-1111-4444-8888-000000000002,SC002,Bangalore Service Center,Bangalore,Karnataka,Arun Kumar,9876543211,arun.sc002@example.com,true
+8a1b2c3d-1111-4444-8888-000000000003,SC003,Hyderabad Service Center,Hyderabad,Telangana,Suresh Reddy,9876543212,suresh.sc003@example.com,true
+8a1b2c3d-1111-4444-8888-000000000004,SC004,Mumbai Service Center,Mumbai,Maharashtra,Amit Sharma,9876543213,amit.sc004@example.com,true
+8a1b2c3d-1111-4444-8888-000000000005,SC005,Pune Service Center,Pune,Maharashtra,Prakash Patil,9876543214,prakash.sc005@example.com,true
