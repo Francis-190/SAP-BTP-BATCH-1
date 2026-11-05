@@ -1,0 +1,123 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        id="createStockDialog"
+        title="Add Stock"
+        contentWidth="500px"
+        draggable="true"
+        resizable="true">
+
+        <content>
+
+            <VBox id="createStockForm">
+
+                <Label
+                    id="createStockProductLabel"
+                    text="Product"
+                    required="true"/>
+
+                <Select
+                    id="createStockProductSelect"
+                    width="100%"
+                    items="{
+                        path: 'purchase>/Products'
+                    }">
+
+                    <core:Item
+                        key="{purchase>ID}"
+                        text="{purchase>productCode} - {purchase>productName}"/>
+
+                </Select>
+
+
+                <Label
+                    id="createStockWarehouseLabel"
+                    text="Warehouse"
+                    required="true"/>
+
+                <Select
+                    id="createStockWarehouseSelect"
+                    width="100%"
+                    items="{
+                        path: 'purchase>/warehouse'
+                    }">
+
+                    <core:Item
+                        key="{purchase>ID}"
+                        text="{purchase>warehouseCode} - {purchase>warehouseName}"/>
+
+                </Select>
+
+
+                <Label
+                    id="createStockAvailableLabel"
+                    text="Available Stock"
+                    required="true"/>
+
+                <Input
+                    id="createStockAvailableInput"
+                    type="Number"
+                    width="100%"
+                    placeholder="Enter available quantity"/>
+
+
+                <Label
+                    id="createStockReservedLabel"
+                    text="Reserved Stock"/>
+
+                <Input
+                    id="createStockReservedInput"
+                    type="Number"
+                    width="100%"
+                    value="0"/>
+
+
+                <Label
+                    id="createStockReorderLabel"
+                    text="Reorder Level"/>
+
+                <Input
+                    id="createStockReorderInput"
+                    type="Number"
+                    width="100%"
+                    value="0"/>
+
+
+                <Label
+                    id="createStockRemarksLabel"
+                    text="Remarks"/>
+
+                <TextArea
+                    id="createStockRemarksInput"
+                    width="100%"
+                    rows="3"
+                    placeholder="Enter remarks"/>
+
+            </VBox>
+
+        </content>
+
+        <beginButton>
+
+            <Button
+                id="createStockConfirmButton"
+                text="Add"
+                type="Emphasized"
+                press=".onCreateStockConfirm"/>
+
+        </beginButton>
+
+        <endButton>
+
+            <Button
+                id="createStockCancelButton"
+                text="Cancel"
+                press=".onCreateStockCancel"/>
+
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>

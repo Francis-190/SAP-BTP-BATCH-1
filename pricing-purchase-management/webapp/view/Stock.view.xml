@@ -1,0 +1,330 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.Stock"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="stockPage"
+        showHeader="false"
+        enableScrolling="true">
+
+        <content>
+
+            <VBox id="stockMainContainer">
+
+                <!-- ========================================= -->
+                <!-- TOP BAR -->
+                <!-- ========================================= -->
+
+                <Toolbar id="stockTopToolbar">
+
+                    <Button
+                        id="stockBackButton"
+                        icon="sap-icon://navigation-left-arrow"
+                        type="Transparent"
+                        tooltip="Back"
+                        press=".onNavBack"/>
+
+                    <Title
+                        id="stockPageTitle"
+                        text="Stock"
+                        level="H2"/>
+
+                    <ToolbarSpacer id="stockTopSpacer"/>
+
+                    <Button
+                        id="stockRefreshButton"
+                        icon="sap-icon://refresh"
+                        type="Transparent"
+                        tooltip="Refresh"
+                        press=".onRefresh"/>
+
+                </Toolbar>
+
+
+                <!-- ========================================= -->
+                <!-- HEADER / ACTION BAR -->
+                <!-- ========================================= -->
+
+                <Toolbar
+                    id="stockActionToolbar"
+                    class="sapUiTinyMarginTop">
+
+                    <Title
+                        id="stockListTitle"
+                        text="Stock"
+                        level="H3"/>
+
+                    <ToolbarSpacer
+                        id="stockActionSpacer"/>
+
+                    <SearchField
+                        id="stockSearchField"
+                        width="350px"
+                        placeholder="Search Product or Warehouse"
+                        liveChange=".onSearchStock"
+                        search=".onSearchStock"/>
+
+                    <Button
+                        id="addStockButton"
+                        text="Add Stock"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        press=".onAddStock"/>
+
+                </Toolbar>
+
+
+                <!-- ========================================= -->
+                <!-- FILTER BAR -->
+                <!-- ========================================= -->
+
+                <Toolbar
+                    id="stockFilterToolbar">
+
+                    <Label
+                        id="productFilterLabel"
+                        text="Product"/>
+
+                    <Select
+                        id="productFilter"
+                        width="250px"
+                        selectedKey=""
+                        forceSelection="false"
+                        items="{path: 'purchase>/Products'}"
+                        change=".onProductFilterChange">
+
+                        <core:Item id="idProductSelect"
+                            key="{purchase>ID}"
+                            text="{purchase>productCode} - {purchase>productName}"/>
+
+                    </Select>
+
+
+                    <Label
+                        id="warehouseFilterLabel"
+                        text="Warehouse"
+                        class="sapUiSmallMarginBegin"/>
+
+                    <Select
+                        id="warehouseFilter"
+                        width="310px"
+                        selectedKey=""
+                        forceSelection="false"
+                        items="{path: 'purchase>/warehouse'}"
+                        change=".onWarehouseFilterChange">
+
+                        <core:Item id="idWarehouseSelect"
+                            key="{purchase>ID}"
+                            text="{purchase>warehouseCode} - {purchase>warehouseName}"/>
+
+                    </Select>
+
+
+                    <Button
+                        id="clearStockFilterButton"
+                        icon="sap-icon://clear-filter"
+                        type="Transparent"
+                        tooltip="Clear Filters"
+                        press=".onClearFilters"/>
+
+                    <ToolbarSpacer
+                        id="stockCountSpacer"/>
+
+                    <Text
+                        id="stockCount"
+                        text="Stock Records: 0"/>
+
+                </Toolbar>
+
+
+                <!-- ========================================= -->
+                <!-- STOCK LIST HEADER -->
+                <!-- ========================================= -->
+
+                <Toolbar
+                    id="stockListToolbar"
+                    class="sapUiTinyMarginTop">
+
+                    <Title
+                        id="stockListHeaderTitle"
+                        text="Stock List"
+                        level="H3"/>
+
+                    <ToolbarSpacer
+                        id="stockListToolbarSpacer"/>
+
+                    <Button
+                        id="viewStockButton"
+                        text="View"
+                        icon="sap-icon://display"
+                        type="Transparent"
+                        enabled="false"
+                        press=".onViewStock"/>
+
+                    <Button
+                        id="editStockButton"
+                        text="Edit"
+                        icon="sap-icon://edit"
+                        type="Transparent"
+                        enabled="false"
+                        press=".onEditStock"/>
+
+                    <Button
+                        id="deleteStockButton"
+                        text="Delete"
+                        icon="sap-icon://delete"
+                        type="Reject"
+                        enabled="false"
+                        press=".onDeleteStock"/>
+
+                </Toolbar>
+
+
+                <!-- ========================================= -->
+                <!-- STOCK TABLE -->
+                <!-- ========================================= -->
+
+                <Table
+                    id="stockTable"
+                    mode="SingleSelectLeft"
+                    includeItemInSelection="true"
+                    growing="true"
+                    growingThreshold="20"
+                    growingScrollToLoad="true"
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    selectionChange=".onSelectionChange"
+                    items="{
+                        path: 'purchase>/Inventory',
+                        parameters: {
+                            $expand: 'product,warehouse'
+                        }
+                    }">
+
+                    <columns>
+
+                        <Column
+                            id="stockProductColumn"
+                            width="250px">
+
+                            <Text
+                                id="stockProductColumnText"
+                                text="Product"/>
+
+                        </Column>
+
+
+                        <Column
+                            id="stockWarehouseColumn"
+                            width="300px">
+
+                            <Text
+                                id="stockWarehouseColumnText"
+                                text="Warehouse"/>
+
+                        </Column>
+
+
+                        <Column
+                            id="stockAvailableColumn"
+                            width="160px"
+                            hAlign="End">
+
+                            <Text
+                                id="stockAvailableColumnText"
+                                text="Available Stock"/>
+
+                        </Column>
+
+
+                        <Column
+                            id="stockReservedColumn"
+                            width="140px"
+                            hAlign="End">
+
+                            <Text
+                                id="stockReservedColumnText"
+                                text="Reserved"/>
+
+                        </Column>
+
+
+                        <Column
+                            id="stockReorderColumn"
+                            width="170px"
+                            hAlign="End">
+
+                            <Text
+                                id="stockReorderColumnText"
+                                text="Reorder Level"/>
+
+                        </Column>
+
+
+                        <Column
+                            id="stockStatusColumn"
+                            width="160px">
+
+                            <Text
+                                id="stockStatusColumnText"
+                                text="Status"/>
+
+                        </Column>
+
+                    </columns>
+
+
+                    <!-- ===================================== -->
+                    <!-- TABLE ROW -->
+                    <!-- ===================================== -->
+
+                    <items>
+
+                        <ColumnListItem
+                            type="Inactive">
+
+                            <cells>
+
+                                <ObjectIdentifier
+                                    title="{purchase>product/productCode}"
+                                    text="{purchase>product/productName}"/>
+
+
+                                <ObjectIdentifier
+                                    title="{purchase>warehouse/warehouseCode}"
+                                    text="{purchase>warehouse/warehouseName}"/>
+
+
+                                <ObjectNumber
+                                    number="{purchase>availableQuantity}"
+                                    emphasized="true"/>
+
+
+                                <ObjectNumber
+                                    number="{purchase>reservedQuantity}"/>
+
+
+                                <ObjectNumber
+                                    number="{purchase>reorderLevel}"/>
+
+
+                                <ObjectStatus
+                                    text="{purchase>status}"
+                                    state="{= ${purchase>status} === 'AVAILABLE' ? 'Success' : ${purchase>status} === 'LOW_STOCK' ? 'Warning' : 'Error' }"/>
+
+                            </cells>
+
+                        </ColumnListItem>
+
+                    </items>
+
+                </Table>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

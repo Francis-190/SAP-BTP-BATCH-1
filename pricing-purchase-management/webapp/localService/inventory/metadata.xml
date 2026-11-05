@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+        <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="InventoryService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Inventory" EntityType="InventoryService.Inventory">
+                    <NavigationPropertyBinding Path="product" Target="Products"/>
+                    <NavigationPropertyBinding Path="warehouse" Target="Warehouses"/>
+                </EntitySet>
+                <EntitySet Name="Warehouses" EntityType="InventoryService.Warehouses">
+                    <NavigationPropertyBinding Path="inventory" Target="Inventory"/>
+                </EntitySet>
+                <EntitySet Name="Products" EntityType="InventoryService.Products">
+                    <NavigationPropertyBinding Path="inventory" Target="Inventory"/>
+                </EntitySet>
+                <ActionImport Name="reserveStock" Action="InventoryService.reserveStock"/>
+                <ActionImport Name="releaseStock" Action="InventoryService.releaseStock"/>
+                <FunctionImport Name="getAvailableStock" Function="InventoryService.getAvailableStock"/>
+            </EntityContainer>
+            <EntityType Name="Inventory">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="product" Type="InventoryService.Products" Partner="inventory">
+                    <ReferentialConstraint Property="product_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="product_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="warehouse" Type="InventoryService.Warehouses" Partner="inventory">
+                    <ReferentialConstraint Property="warehouse_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="warehouse_ID" Type="Edm.Guid"/>
+                <Property Name="availableQuantity" Type="Edm.Int32" DefaultValue="0"/>
+                <Property Name="reservedQuantity" Type="Edm.Int32" DefaultValue="0"/>
+                <Property Name="reorderLevel" Type="Edm.Int32" DefaultValue="0"/>
+                <Property Name="status" Type="Edm.String" DefaultValue="AVAILABLE"/>
+                <Property Name="lastStockUpdate" Type="Edm.DateTimeOffset"/>
+                <Property Name="remarks" Type="Edm.String" MaxLength="250"/>
+            </EntityType>
+            <EntityType Name="Warehouses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="warehouseCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="warehouseName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="address" Type="Edm.String" MaxLength="250"/>
+                <Property Name="city" Type="Edm.String" MaxLength="50"/>
+                <Property Name="state" Type="Edm.String" MaxLength="50"/>
+                <Property Name="region" Type="Edm.String" MaxLength="20"/>
+                <Property Name="country" Type="Edm.String" MaxLength="50"/>
+                <Property Name="active" Type="Edm.Boolean" DefaultValue="true"/>
+                <NavigationProperty Name="inventory" Type="Collection(InventoryService.Inventory)" Partner="warehouse"/>
+            </EntityType>
+            <EntityType Name="Products">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="productCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="productName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="category" Type="Edm.String" MaxLength="50"/>
+                <Property Name="active" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="unitPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <NavigationProperty Name="inventory" Type="Collection(InventoryService.Inventory)" Partner="product"/>
+            </EntityType>
+            <Action Name="reserveStock" IsBound="false">
+                <Parameter Name="productID" Type="Edm.Guid"/>
+                <Parameter Name="warehouseID" Type="Edm.Guid"/>
+                <Parameter Name="quantity" Type="Edm.Int32"/>
+                <ReturnType Type="Edm.String"/>
+            </Action>
+            <Action Name="releaseStock" IsBound="false">
+                <Parameter Name="productID" Type="Edm.Guid"/>
+                <Parameter Name="warehouseID" Type="Edm.Guid"/>
+                <Parameter Name="quantity" Type="Edm.Int32"/>
+                <ReturnType Type="Edm.String"/>
+            </Action>
+            <Function Name="getAvailableStock" IsBound="false" IsComposable="false">
+                <Parameter Name="productID" Type="Edm.Guid"/>
+                <Parameter Name="warehouseID" Type="Edm.Guid"/>
+                <ReturnType Type="Edm.Int32"/>
+            </Function>
+            <Annotations Target="InventoryService.Inventory/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Created On"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/createdBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Created By"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/modifiedAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Changed On"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/modifiedBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Changed By"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/product_ID">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/warehouse_ID">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Inventory/status">
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="AVAILABLE"/>
+                            <PropertyValue Property="Value" String="AVAILABLE"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="LOW_STOCK"/>
+                            <PropertyValue Property="Value" String="LOW_STOCK"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="OUT_OF_STOCK"/>
+                            <PropertyValue Property="Value" String="OUT_OF_STOCK"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="RESERVED"/>
+                            <PropertyValue Property="Value" String="RESERVED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="INACTIVE"/>
+                            <PropertyValue Property="Value" String="INACTIVE"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="InventoryService.Warehouses/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Warehouses/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Created On"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Warehouses/createdBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Created By"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Warehouses/modifiedAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Changed On"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Warehouses/modifiedBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Changed By"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Warehouses/warehouseName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Products/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Products/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Created On"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Products/createdBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Created By"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Products/modifiedAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Changed On"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Products/modifiedBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Changed By"/>
+            </Annotations>
+            <Annotations Target="InventoryService.Products/productName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="InventoryService.getAvailableStock(Edm.Guid,Edm.Guid)/productID">
+                <Annotation Term="Core.OptionalParameter">
+                    <Record Type="Core.OptionalParameterType"/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="InventoryService.getAvailableStock(Edm.Guid,Edm.Guid)/warehouseID">
+                <Annotation Term="Core.OptionalParameter">
+                    <Record Type="Core.OptionalParameterType"/>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

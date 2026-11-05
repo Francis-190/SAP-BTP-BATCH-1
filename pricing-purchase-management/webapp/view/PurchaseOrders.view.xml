@@ -1,0 +1,240 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.PurchaseOrders"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page
+        id="purchaseOrders_page"
+        title="Sales Orders"
+        showNavButton="true"
+        navButtonPress=".onBack">
+
+        <content>
+
+            <Toolbar id="purchaseOrders_mainToolbar">
+
+                <!-- <Title
+                    id="purchaseOrders_title"
+                    text="Purchase Orders"
+                    level="H2" /> -->
+
+                <ToolbarSpacer
+                    id="purchaseOrders_mainToolbarSpacer" />
+
+                <SearchField
+                    id="purchaseOrders_searchField"
+                    width="280px"
+                    placeholder="Search SO Number"
+                    search=".onSearch" />
+
+                <Button
+                    id="purchaseOrders_refreshButton"
+                    icon="sap-icon://refresh"
+                    tooltip="Refresh"
+                    type="Transparent"
+                    press=".onRefresh" />
+
+                <Button
+                    id="purchaseOrders_createButton"
+                    text="Create SO"
+                    icon="sap-icon://add"
+                    type="Emphasized"
+                    press=".onCreatePO" />
+
+            </Toolbar>
+
+            <Toolbar id="purchaseOrders_filterToolbar">
+
+                <Label
+                    id="purchaseOrders_statusLabel"
+                    text="Status"
+                    labelFor="purchaseOrders_statusSelect" />
+
+                <Select
+                    id="purchaseOrders_statusSelect"
+                    width="180px"
+                    selectedKey="ALL"
+                    change=".onStatusChange">
+
+                    <items>
+
+                        <core:Item
+                            key="ALL"
+                            text="All Statuses" />
+
+                        <core:Item
+                            key="PENDING"
+                            text="Pending" />
+
+                        <core:Item
+                            key="SUBMITTED"
+                            text="Submitted" />
+
+                        <core:Item
+                            key="APPROVED"
+                            text="Approved" />
+
+                        <core:Item
+                            key="DELIVERED"
+                            text="Delivered" />
+
+                        <core:Item
+                            key="REJECTED"
+                            text="Rejected" />
+
+                    </items>
+
+                </Select>
+
+                <ToolbarSpacer
+                    id="purchaseOrders_filterSpacer" />
+
+                <Text
+                    id="purchaseOrders_countText"
+                    text="Sales Orders: 0" />
+
+            </Toolbar>
+
+            <Toolbar id="purchaseOrders_actionToolbar">
+
+                <Title
+                    id="purchaseOrders_actionTitle"
+                    text="Actions"
+                    level="H4" />
+
+                <ToolbarSpacer
+                    id="purchaseOrders_actionToolbarSpacer" />
+
+                <Button
+                    id="purchaseOrders_editActionButton"
+                    text="Edit"
+                    icon="sap-icon://edit"
+                    enabled="false"
+                    press=".onEditPO" />
+
+                <Button
+                    id="purchaseOrders_submitActionButton"
+                    text="Submit"
+                    icon="sap-icon://paper-plane"
+                    type="Emphasized"
+                    enabled="false"
+                    press=".onSubmitPO" />
+
+                <Button
+                    id="purchaseOrders_deleteActionButton"
+                    text="Delete"
+                    icon="sap-icon://delete"
+                    enabled="false"
+                    press=".onDeletePO" />
+
+            </Toolbar>
+
+            <Table
+                id="purchaseOrders_table"
+                mode="MultiSelect"
+                growing="true"
+                growingThreshold="20"
+                growingScrollToLoad="true"
+                selectionChange=".onSelectionChange"
+                updateFinished=".onTableUpdateFinished"
+                items="{
+                    path: 'purchase>/PurchaseOrders',
+                    parameters: {
+                        $expand: 'dealer'
+                    }
+                }">
+
+                <columns>
+
+                    <Column id="purchaseOrders_poNumberColumn">
+                        <Text
+                            id="purchaseOrders_poNumberHeader"
+                            text="SO Number" />
+                    </Column>
+
+                    <Column id="purchaseOrders_dealerCodeColumn">
+                        <Text
+                            id="purchaseOrders_dealerCodeHeader"
+                            text="Dealer Code" />
+                    </Column>
+
+                    <Column id="purchaseOrders_dealerNameColumn">
+                        <Text
+                            id="purchaseOrders_dealerNameHeader"
+                            text="Dealer Name" />
+                    </Column>
+
+                    <Column id="purchaseOrders_orderDateColumn">
+                        <Text
+                            id="purchaseOrders_orderDateHeader"
+                            text="Order Date" />
+                    </Column>
+
+                    <Column id="purchaseOrders_totalAmountColumn">
+                        <Text
+                            id="purchaseOrders_totalAmountHeader"
+                            text="Total Amount" />
+                    </Column>
+
+                    <Column id="purchaseOrders_taxAmountColumn">
+                        <Text
+                            id="purchaseOrders_taxAmountHeader"
+                            text="Tax Amount" />
+                    </Column>
+
+                    <Column id="purchaseOrders_statusColumn">
+                        <Text
+                            id="purchaseOrders_statusHeader"
+                            text="Status" />
+                    </Column>
+
+                </columns>
+
+                <items>
+
+                    <ColumnListItem
+                        type="Navigation"
+                        press=".onPOPress">
+
+                        <cells>
+
+                            <Text text="{purchase>poNumber}" />
+
+                            <Text
+                                text="{purchase>dealer/dealerCode}" />
+
+                            <Text
+                                text="{purchase>dealer/dealerName}" />
+
+                            <Text text="{purchase>orderDate}" />
+
+                            <ObjectNumber
+                                number="{purchase>totalAmount}"
+                                unit="INR" />
+
+                            <ObjectNumber
+                                number="{purchase>taxAmount}"
+                                unit="INR" />
+
+                            <ObjectStatus
+                                text="{purchase>status}"
+                                state="{
+                                    path: 'purchase>status',
+                                    formatter: '.formatter.statusState'
+                                }" />
+
+                        </cells>
+
+                    </ColumnListItem>
+
+                </items>
+
+            </Table>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

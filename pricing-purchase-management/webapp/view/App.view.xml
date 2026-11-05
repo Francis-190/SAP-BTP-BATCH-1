@@ -1,0 +1,205 @@
+<mvc:View
+    id="appView"
+    controllerName="purchasemanagement.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt">
+
+    <tnt:ToolPage
+        id="toolPage">
+
+        <!-- ===================================================== -->
+        <!-- APPLICATION HEADER -->
+        <!-- ===================================================== -->
+
+        <tnt:header>
+
+            <tnt:ToolHeader
+                id="toolHeader">
+
+                <Button
+                    id="menuButton"
+                    icon="sap-icon://menu2"
+                    type="Transparent"
+                    tooltip="Toggle Navigation"
+                    press=".onToggleSideNavigation" />
+
+                <Title
+                    id="appTitle"
+                    text="Sales Order Management"
+                    textAlign="Center"
+                    level="H2"
+                    class="sapUiSmallMarginBegin" />
+
+                <ToolbarSpacer
+                    id="headerSpacer" />
+
+                <Button
+                    id="searchButton"
+                    icon="sap-icon://search"
+                    type="Transparent"
+                    tooltip="Search"
+                    press=".onSearch" />
+
+                <Button
+                    id="notificationButton"
+                    icon="sap-icon://bell"
+                    type="Transparent"
+                    tooltip="Notifications"
+                    press=".onNotifications" />
+
+                <Button
+                    id="userButton"
+                    icon="sap-icon://person-placeholder"
+                    type="Transparent"
+                    tooltip="User"
+                    press=".onUserPress" />
+
+            </tnt:ToolHeader>
+
+        </tnt:header>
+
+
+        <!-- ===================================================== -->
+        <!-- LEFT NAVIGATION -->
+        <!-- ===================================================== -->
+
+        <tnt:sideContent>
+
+            <tnt:SideNavigation
+                id="sideNavigation"
+                expanded="true"
+                itemSelect=".onNavigationSelect">
+
+                <tnt:NavigationList
+                    id="navigationList">
+
+
+                    <!-- ================================================= -->
+                    <!-- DASHBOARD -->
+                    <!-- ================================================= -->
+
+                    <tnt:NavigationListItem
+                        id="dashboardNavigation"
+                        key="dashboard"
+                        text="Dashboard"
+                        icon="sap-icon://home" />
+
+
+                    <!-- ================================================= -->
+                    <!-- PURCHASE ORDERS -->
+                    <!-- ================================================= -->
+
+                    <tnt:NavigationListItem
+                        id="purchaseNavigation"
+                        key="purchase"
+                        text="Sales Orders"
+                        icon="sap-icon://sales-order">
+
+                        <tnt:NavigationListItem
+                            id="allOrdersNavigation"
+                            key="allOrders"
+                            text="All Sales Orders" />
+
+                        <tnt:NavigationListItem
+                            id="createOrderNavigation"
+                            key="createOrder"
+                            text="Create Sales Order" />
+
+                    </tnt:NavigationListItem>
+
+
+                    <!-- ================================================= -->
+                    <!-- PRICING -->
+                    <!-- ================================================= -->
+
+                    <tnt:NavigationListItem
+                        id="pricingNavigation"
+                        key="pricing"
+                        text="Pricing"
+                        icon="sap-icon://money-bills">
+
+                        <!-- <tnt:NavigationListItem
+                            id="productsNavigation"
+                            key="products"
+                            text="Products" /> -->
+
+                        <tnt:NavigationListItem
+                            id="priceMasterNavigation"
+                            key="priceMaster"
+                            text="Price Master" />
+
+                        <tnt:NavigationListItem
+                            id="priceHistoryNavigation"
+                            key="priceHistory"
+                            text="Price History" />
+
+                    </tnt:NavigationListItem>
+
+
+                    <!-- ================================================= -->
+                    <!-- INVENTORY -->
+                    <!-- ================================================= -->
+
+                    <tnt:NavigationListItem
+                        id="inventoryNavigation"
+                        key="inventory"
+                        text="Inventory"
+                        icon="sap-icon://inventory">
+                    <tnt:NavigationListItem
+                            id="productsNavigation"
+                            key="products"
+                            text="Products" />
+                        <tnt:NavigationListItem
+                            id="warehouseNavigation"
+                            key="warehouses"
+                            text="Warehouses" />
+
+                        <tnt:NavigationListItem
+                            id="stockNavigation"
+                            key="stock"
+                            text="Stock" />
+
+                    </tnt:NavigationListItem>
+
+
+                    <!-- ================================================= -->
+                    <!-- ANALYTICS -->
+                    <!-- ================================================= -->
+
+                    <tnt:NavigationListItem id="navAnalytics"
+                        text="Analytics"
+                        icon="sap-icon://business-objects-experience"
+                        key="analytics"
+                        expanded="true">
+                        <tnt:items>
+                            <tnt:NavigationListItem id="navListDealer" text="Dealer Analytics"          key="dealerAnalytics"/>
+                            <tnt:NavigationListItem id="navListPurchse" text="Sales Order Analytics"  key="purchaseOrderAnalytics"/>
+                            <tnt:NavigationListItem id="navListProduct" text="Product Sales Analytics"   key="productSalesAnalytics"/>
+                            <tnt:NavigationListItem id="navListPricing" text="Pricing Analytics"         key="pricingAnalytics"/>
+                            <tnt:NavigationListItem id="navListMonthly" text="Monthly Analytics"         key="monthlyAnalytics"/>
+                        </tnt:items>
+                    </tnt:NavigationListItem>
+
+                </tnt:NavigationList>
+
+            </tnt:SideNavigation>
+
+        </tnt:sideContent>
+
+
+        <!-- ===================================================== -->
+        <!-- APPLICATION PAGES -->
+        <!-- ===================================================== -->
+
+        <tnt:mainContents>
+
+            <NavContainer
+                id="app" />
+
+        </tnt:mainContents>
+
+    </tnt:ToolPage>
+
+</mvc:View>

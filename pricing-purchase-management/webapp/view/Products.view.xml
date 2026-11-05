@@ -1,0 +1,256 @@
+
+<mvc:View
+    id="productsView"
+    controllerName="purchasemanagement.controller.Products"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="productsPage"
+        title="Products"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <headerContent>
+            <Button
+                id="productsRefreshButton"
+                icon="sap-icon://refresh"
+                tooltip="Refresh"
+                press=".onRefresh"/>
+        </headerContent>
+
+        <content>
+            <VBox
+                id="productsMainVBox"
+                width="100%">
+
+                <!-- Main Toolbar -->
+                <OverflowToolbar id="productsToolbar">
+
+                    <Title
+                        id="productsTitle"
+                        text="Products"
+                        level="H2"/>
+
+                    <ToolbarSpacer id="productsToolbarSpacer"/>
+
+                    <SearchField
+                        id="productsSearchField"
+                        width="20rem"
+                        placeholder="Search Product"
+                        liveChange=".onSearch"/>
+
+                    <Button
+                        id="productsCreateButton"
+                        text="Create"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        press=".onCreateProduct"/>
+
+                </OverflowToolbar>
+
+                <!-- Category Filter -->
+                <Toolbar id="productsFilterToolbar">
+
+                    <Label
+                        id="productsCategoryLabel"
+                        text="Category"
+                        labelFor="productsCategorySelect"/>
+
+                    <Select
+                        id="productsCategorySelect"
+                        width="16rem"
+                        selectedKey=""
+                        forceSelection="false"
+                        items="{
+                            path: 'purchase>/Products',
+                            parameters: {
+                                $apply: 'groupby((category))'
+                            }
+                        }"
+                        change=".onCategoryChange">
+
+                        <items>
+                            <core:Item
+                                id="productsCategoryItem"
+                                key="{purchase>category}"
+                                text="{purchase>category}"/>
+                        </items>
+
+                    </Select>
+
+                    <ToolbarSpacer id="productsFilterSpacer"/>
+
+                    <Text
+                        id="productsCountText"
+                        text="Products: 0"/>
+
+                </Toolbar>
+
+                <!-- Products Table -->
+                <!-- No active filter: show ACTIVE and INACTIVE products -->
+                <Table
+                    id="productsTable"
+                    width="100%"
+                    mode="SingleSelectLeft"
+                    growing="true"
+                    growingThreshold="20"
+                    fixedLayout="false"
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    selectionChange=".onSelectionChange"
+                    items="{
+                        path: 'purchase>/Products',
+                        parameters: {
+                            $expand: 'inventory'
+                        }
+                    }">
+
+                    <!-- Table Header Toolbar -->
+                    <headerToolbar>
+                        <OverflowToolbar id="productsTableToolbar">
+
+                            <Title
+                                id="productsListTitle"
+                                text="Product List"
+                                level="H3"/>
+
+                            <ToolbarSpacer id="productsListSpacer"/>
+
+                            <Button
+                                id="productsViewButton"
+                                text="View"
+                                icon="sap-icon://display"
+                                enabled="false"
+                                press=".onViewProduct"/>
+
+                            <Button
+                                id="productsEditButton"
+                                text="Edit"
+                                icon="sap-icon://edit"
+                                enabled="false"
+                                press=".onEditProduct"/>
+
+                            <Button
+                                id="productsDeleteButton"
+                                text="Delete"
+                                icon="sap-icon://delete"
+                                type="Reject"
+                                enabled="false"
+                                press=".onDeleteProduct"/>
+
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <!-- Table Columns -->
+                    <columns>
+
+                        <Column
+                            id="productsCodeColumn"
+                            width="9rem">
+                            <Text
+                                id="productsCodeHeader"
+                                text="Product Code"/>
+                        </Column>
+
+                        <Column
+                            id="productsNameColumn"
+                            width="15rem">
+                            <Text
+                                id="productsNameHeader"
+                                text="Product Name"/>
+                        </Column>
+
+                        <Column
+                            id="productsCategoryColumn"
+                            width="11rem">
+                            <Text
+                                id="productsCategoryHeader"
+                                text="Category"/>
+                        </Column>
+
+                        <Column
+                            id="productsPriceColumn"
+                            width="10rem"
+                            hAlign="End"
+                            demandPopin="true"
+                            minScreenWidth="Tablet">
+                            <Text
+                                id="productsPriceHeader"
+                                text="Unit Price"/>
+                        </Column>
+
+                        <Column
+                            id="productsStockColumn"
+                            width="8rem"
+                            hAlign="End"
+                            demandPopin="true"
+                            minScreenWidth="Tablet">
+                            <Text
+                                id="productsStockHeader"
+                                text="Stock Qty"/>
+                        </Column>
+
+                        <Column
+                            id="productsStatusColumn"
+                            width="7rem"
+                            hAlign="Center"
+                            demandPopin="true"
+                            minScreenWidth="Tablet">
+                            <Text
+                                id="productsStatusHeader"
+                                text="Status"/>
+                        </Column>
+
+                    </columns>
+
+                    <!-- Table Rows -->
+                    <items>
+                        <ColumnListItem id="productsListItem">
+
+                            <cells>
+
+                                <!-- Product Code -->
+                                <Text
+                                    id="productsCodeText"
+                                    text="{purchase>productCode}"/>
+
+                                <!-- Product Name -->
+                                <Text
+                                    id="productsNameText"
+                                    text="{purchase>productName}"/>
+
+                                <!-- Category -->
+                                <Text
+                                    id="productsCategoryText"
+                                    text="{purchase>category}"/>
+
+                                <!-- Unit Price -->
+                                <ObjectNumber
+                                    id="productsPriceNumber"
+                                    number="{purchase>unitPrice}"
+                                    unit="INR"/>
+
+                                <!-- Stock Quantity -->
+                                <ObjectNumber
+                                    id="productsStockNumber"
+                                    number="0"/>
+
+                                <!-- Product Status -->
+                                <ObjectStatus
+    id="pur"
+    text="{= ${purchase>active} ? 'ACTIVE' : 'INACTIVE' }"
+    state="{= ${purchase>active} ? 'Success' : 'Warning' }"/>
+
+                            </cells>
+
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+
+            </VBox>
+        </content>
+
+    </Page>
+</mvc:View>

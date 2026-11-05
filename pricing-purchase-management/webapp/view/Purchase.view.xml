@@ -1,0 +1,1099 @@
+<mvc:View
+    id="purchaseView"
+    controllerName="purchasemanagement.controller.Purchase"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    
+    xmlns:vbm="sap.ui.vbm"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    >
+
+    <Page
+        id="purchasePage"
+        title="Sales Order Management">
+
+        <content>
+
+            <VBox
+                id="dashboardContainer"
+                >
+
+                <!-- Welcome Banner -->
+                <HBox
+                    id="idWelcomeBanner"
+                    class="welcomeBanner"
+                    width="100%"
+                    alignItems="Start">
+                    
+                    <VBox
+                        id="idWelcomeBannerContent"
+                        class="welcomeBannerContent">
+
+                        <Title
+                            id="idWelcomeTitle"
+                            text="Welcome back, Manager!"
+                            level="H2"
+                            class="welcomeBannerTitle"/>
+
+                        <Text
+                            id="idWelcomeDescription"
+                            text="Here's your pricing performance overview."
+                            class="welcomeBannerDescription"/>
+
+                        <Text
+                            id="dashboardDescription"
+                            text="Overview of sales orders and pricing activities"
+                            />
+
+                    </VBox>
+
+                </HBox>
+
+
+                <!-- KPI Cards -->
+                <l:Grid
+                    id="kpiGrid"
+                    defaultSpan="XL3 L3 M6 S12"
+                    hSpacing="1"
+                    vSpacing="1">
+
+                    <!-- Total Purchase Orders -->
+                    <GenericTile
+                        id="totalPOTile"
+                        header="Total Sales Orders"
+                        subheader="All sales orders"
+                        press=".onPurchaseOrders">
+
+                        <TileContent
+                            id="totalPOTileContent">
+
+                            <NumericContent
+                                id="totalPOValue"
+                                value="{dashboard>/totalPOs}"
+                                icon="sap-icon://sales-order"
+                                valueColor="Neutral" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+
+                    <!-- Pending -->
+                    <GenericTile
+                        id="pendingPOTile"
+                        header="Pending Orders"
+                        subheader="Pending approval"
+                        press=".onPurchaseOrders">
+
+                        <TileContent
+                            id="pendingPOTileContent">
+
+                            <NumericContent
+                                id="pendingPOValue"
+                                value="{dashboard>/pendingPOs}"
+                                icon="sap-icon://pending"
+                                valueColor="Critical" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+
+                    <!-- Approved -->
+                    <GenericTile
+                        id="approvedPOTile"
+                        header="Approved Orders"
+                        subheader="Successfully approved"
+                        press=".onPurchaseOrders">
+
+                        <TileContent
+                            id="approvedPOTileContent">
+
+                            <NumericContent
+                                id="approvedPOValue"
+                                value="{dashboard>/approvedPOs}"
+                                icon="sap-icon://accept"
+                                valueColor="Good" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+
+                    <!-- Purchase Value -->
+                    <GenericTile
+                        id="purchaseValueTile"
+                        header="Sales Value"
+                        subheader="Total order value">
+
+                        <TileContent
+                            id="purchaseValueTileContent">
+
+                            <NumericContent
+                                id="purchaseValue"
+                                value="{dashboard>/totalValue}"
+                                scale="Lakhs INR"
+                                icon="sap-icon://money-bills"
+                                valueColor="Neutral" />
+
+                        </TileContent>
+
+                    </GenericTile>
+
+                </l:Grid>
+
+                <!-- ===================================================== -->
+                <!-- REGION ANALYTICS - ONE ROW                           -->
+                <!-- ===================================================== -->
+
+                <HBox
+                    id="idHBoxRegionAnalytics"
+                    width="100%"
+                    justifyContent="SpaceBetween"
+                    alignItems="Stretch"
+                    class="regionAnalyticsContainer">
+
+                    <!-- ================================================= -->
+                    <!-- LEFT : INDIA MAP                                 -->
+                    <!-- ================================================= -->
+
+                    <VBox
+                        id="idVBoxIndiaMap"
+                        class="indiaMapSection">
+
+                        <VBox
+                            id="idVBoxIndiaMapHeader"
+                            width="100%"
+                            class="indiaMapHeader">
+
+                            <Title
+                                id="idTitleIndiaMap"
+                                text="India Regional Insights"
+                                level="H3"
+                                class="indiaMapTitle"/>
+
+                            <Text
+                                id="idTextIndiaMapSubtitle"
+                                text="Click a region to view its insights"
+                                class="indiaMapSubtitle"/>
+
+                        </VBox>
+
+
+                        <VBox
+                            id="idVBoxAnalyticMapContainer"
+                            width="auto"
+                            class="analyticMapContainer sapUiTinyMarginBeginEnd">
+
+                            <vbm:AnalyticMap
+                                id="idAnalyticMapIndia"
+                                width="99%"
+                                height="380px"
+                                centerPosition="82.0882;23.3511"
+                                zoomlevel="4"
+                                disableZoom="true"
+                                regionClick="onRegionClick"/>
+
+                        </VBox>
+
+
+                        <HBox
+                            id="idHBoxMapInstruction"
+                            width="100%"
+                            justifyContent="Center"
+                            class="mapInstruction">
+
+                            <core:Icon
+                                id="idIconMapInstruction"
+                                src="sap-icon://cursor-arrow"
+                                class="mapInstructionIcon"/>
+
+                            <Text
+                                id="idTextMapInstruction"
+                                text="Select Northern, Eastern, Western, Central or Southern region"
+                                class="mapInstructionText"/>
+
+                        </HBox>
+
+                    </VBox>
+
+
+                    <!-- ================================================= -->
+                    <!-- MIDDLE : REGIONAL INSIGHTS                       -->
+                    <!-- ================================================= -->
+
+                    <VBox
+                        id="idVBoxRegionInsights"
+                        class="regionInsightsSection">
+
+                        <!-- HEADER -->
+
+                        <VBox
+                            id="idVBoxInsightsHeader"
+                            class="insightsHeader">
+
+                            <Text
+                                id="idTextInsightsHeaderLabel"
+                                text="REGIONAL INSIGHTS"
+                                class="insightsHeaderLabel"/>
+
+                            <Title
+                                id="idTitleSelectedRegion"
+                                text="{regionModel>/selectedRegion/regionName}"
+                                level="H2"
+                                class="selectedRegionTitle"/>
+
+                            <Text
+                                id="idTextSelectedRegionDescription"
+                                text="{regionModel>/selectedRegion/description}"
+                                class="selectedRegionDescription"/>
+
+                        </VBox>
+
+
+                        <!-- FIVE INSIGHT METRICS -->
+
+                        <VBox
+                            id="idVBoxRegionMetricStack"
+                            class="pricingSummary"
+                            height="75%"
+                            justifyContent="SpaceBetween" >
+
+                            <HBox
+                                id="idHBoxSummaryHeader"
+                                alignItems="Center"
+                                class="pricingSummaryHeader">
+
+                                <core:Icon
+                                    id="idIconSummary"
+                                    src="sap-icon://bar-chart"
+                                    class="summaryIcon"/>
+
+                                <Text
+                                    id="idTextSummaryTitle"
+                                    text="Regional Summary"
+                                    class="summaryTitle"/>
+
+                            </HBox>
+
+                            <!-- PURCHASE ORDERS -->
+
+                            <HBox
+                                id="idHBoxRegionalPurchaseOrders"
+                                class="summaryRow"
+                                width="100%"
+                                justifyContent="SpaceBetween">
+                                
+                                <HBox
+                                    id="idVBoxRegionalPurchaseOrders"
+                                    class="regionalMetricContent"
+                                    justifyContent="Start">
+
+                                    <core:Icon
+                                        id="idIconRegionalPurchaseOrders"
+                                        src="sap-icon://sales-order"
+                                        class="summaryValueIcon "/>
+
+                                    <Text
+                                        id="idTextRegionalPurchaseOrdersLabel"
+                                        text="Total Sales Orders"/>
+                                    
+                                </HBox>
+
+                                <Text
+                                    id="idTextRegionalPurchaseOrdersValue"
+                                    text="{regionModel>/selectedRegion/totalPurchaseOrdersText}"
+                                    class="summaryValue"/>
+
+                            </HBox>
+
+
+                            <!-- FINAL PRICING -->
+
+                            <HBox
+                                id="idHBoxRegionalFinalPricing"
+                                class="summaryRow"
+                                width="100%"
+                                justifyContent="SpaceBetween" >
+                                
+                                <HBox
+                                    id="idVBoxRegionalFinalPricing"
+                                    class="regionalMetricContent"
+                                    justifyContent="Start" >
+
+                                    <core:Icon
+                                        id="idIconRegionalFinalPricing"
+                                        src="sap-icon://money-bills"
+                                        class="summaryValueIcon"/>
+
+                                    <Text
+                                        id="idTextRegionalFinalPricingLabel"
+                                        text="Total Final Pricing"/>
+                                    
+                                </HBox>
+
+                                <Text
+                                    id="idTextRegionalFinalPricingValue"
+                                    text="{regionModel>/selectedRegion/totalFinalPricingText}"
+                                    class="summaryValue"/>
+
+                            </HBox>
+
+                            <!-- AVERAGE TAX -->
+
+                            <HBox
+                                id="idHBoxRegionalAverageTax"
+                                class="summaryRow"
+                                width="100%"
+                                justifyContent="SpaceBetween">
+                                
+                                <HBox
+                                    id="idVBoxRegionalAverageTax"
+                                    class="regionalMetricContent" 
+                                    justifyContent="Start" >
+
+                                    <core:Icon
+                                        id="idIconRegionalAverageTax"
+                                        src="sap-icon://receipt"
+                                        class="summaryValueIcon"/>
+
+                                    <Text
+                                        id="idTextRegionalAverageTaxLabel"
+                                        text="Average Tax" />
+                                    
+                                </HBox>
+
+                                <Text
+                                    id="idTextRegionalAverageTaxValue"
+                                    text="{regionModel>/selectedRegion/averageTaxText}"
+                                    class="summaryValue"/>
+
+                            </HBox>
+
+                            <!-- DEALERS -->
+
+                            <HBox
+                                id="idHBoxRegionalDealers"
+                                class="summaryRow"
+                                width="100%"
+                                justifyContent="SpaceBetween">
+                        
+                                <HBox
+                                    id="idVBoxRegionalDealers"
+                                    class="regionalMetricContent" 
+                                    justifyContent="Start" >
+
+                                    <core:Icon
+                                        id="idIconRegionalDealers"
+                                        src="sap-icon://employee"
+                                        class="summaryValueIcon"/>
+
+                                    <Text
+                                        id="idTextRegionalDealersLabel"
+                                        text="Total Dealers"/>                                   
+
+                                </HBox>
+
+                                <Text
+                                    id="idTextRegionalDealersValue"
+                                    text="{regionModel>/selectedRegion/totalDealersText}"
+                                    class="summaryValue"/>
+
+                            </HBox>
+
+
+                            <!-- WAREHOUSES -->
+
+                            <HBox
+                                id="idHBoxRegionalWarehouses"
+                                class="summaryRow"
+                                width="100%"
+                                justifyContent="SpaceBetween">                              
+
+                                <HBox
+                                    id="idVBoxRegionalWarehouses"
+                                    class="regionalMetricContent"
+                                    justifyContent="Start" >
+
+                                    <core:Icon
+                                        id="idIconRegionalWarehouses"
+                                        src="sap-icon://inventory"
+                                        class="summaryValueIcon"/>
+
+                                    <Text
+                                        id="idTextRegionalWarehousesLabel"
+                                        text="Total Warehouses"/>                                 
+
+                                </HBox>
+
+                                  <Text
+                                    id="idTextRegionalWarehousesValue"
+                                    text="{regionModel>/selectedRegion/totalWarehousesText}"
+                                    class="summaryValue"/>
+
+                            </HBox>
+
+                        </VBox>
+
+                    </VBox>
+
+
+                    <!-- ================================================= -->
+                    <!-- RIGHT : APPROVAL PROGRESS                        -->
+                    <!-- ================================================= -->
+
+                    <VBox
+                        id="idVBoxRegionalProgress"
+                        class="regionalProgressSection">
+
+                        <VBox
+                            id="idVBoxRegionalProgressHeader"
+                            class="regionalProgressHeader">
+
+                            <Text
+                                id="idTextRegionalProgressLabel"
+                                text="APPROVAL PROGRESS"
+                                class="insightsHeaderLabel"/>
+
+                            <Title
+                                id="idTitleRegionalProgress"
+                                text="{regionModel>/selectedRegion/regionName}"
+                                level="H3"
+                                class="regionalProgressTitle"/>
+
+                            <Text
+                                id="idTextRegionalProgressSubtitle"
+                                text="Approved, pending and rejected distribution"
+                                class="regionalProgressSubtitle"/>
+
+                        </VBox>
+
+
+                        <!-- ================================================= -->
+                        <!-- PURCHASE ORDER PROGRESS                         -->
+                        <!-- ================================================= -->
+
+                        <VBox
+                            id="idVBoxPOProgress"
+                            class="regionalProgressCard">
+
+                            <HBox
+                                id="idHBoxPOProgressHeader"
+                                justifyContent="SpaceBetween"
+                                alignItems="Center">
+
+                                <Text
+                                    id="idTextPOProgressTitle"
+                                    text="Sales Orders"
+                                    class="regionalProgressCardTitle"/>
+
+                                <Text
+                                    id="idTextPOProgressTotal"
+                                    text="{regionModel>/selectedRegion/purchaseOrdersTotalText}"
+                                    class="regionalProgressCardTotal"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxPOProgressBar"
+                                width="100%"
+                                height="6px"
+                                class="approvalProgressBar"
+                                renderType="Bare"
+                                fitContainer="true">
+
+                                <VBox
+                                    id="idPOApprovedSegment"
+                                    width="{regionModel>/selectedRegion/purchaseOrdersApprovedWidth}"
+                                    height="100%"
+                                    class="approvalSegment"
+                                    tooltip="{regionModel>/selectedRegion/purchaseOrdersApprovedText}"/>
+
+                                <VBox
+                                    id="idPOPendingSegment"
+                                    width="{regionModel>/selectedRegion/purchaseOrdersPendingWidth}"
+                                    height="100%"
+                                    class="pendingSegment"
+                                    tooltip="{regionModel>/selectedRegion/purchaseOrdersPendingText}"/>
+
+                                <VBox
+                                    id="idPORejectedSegment"
+                                    width="{regionModel>/selectedRegion/purchaseOrdersRejectedWidth}"
+                                    height="100%"
+                                    class="rejectedSegment"
+                                    tooltip="{regionModel>/selectedRegion/purchaseOrdersRejectedText}"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxPOProgressLegend"
+                                justifyContent="SpaceBetween"
+                                class="approvalLegend">
+
+                                <Text
+                                    id="idTextPOApproved"
+                                    text="{regionModel>/selectedRegion/purchaseOrdersApprovedText}"
+                                    class="approvedLegendText"/>
+
+                                <Text
+                                    id="idTextPOPending"
+                                    text="{regionModel>/selectedRegion/purchaseOrdersPendingText}"
+                                    class="pendingLegendText"/>
+
+                                <Text
+                                    id="idTextPORejected"
+                                    text="{regionModel>/selectedRegion/purchaseOrdersRejectedText}"
+                                    class="rejectedLegendText"/>
+
+                            </HBox>
+
+                        </VBox>
+
+
+                        <!-- ================================================= -->
+                        <!-- FINAL PRICING PROGRESS                           -->
+                        <!-- ================================================= -->
+
+                        <VBox
+                            id="idVBoxPricingProgress"
+                            class="regionalProgressCard">
+
+                            <HBox
+                                id="idHBoxPricingProgressHeader"
+                                justifyContent="SpaceBetween"
+                                alignItems="Center">
+
+                                <Text
+                                    id="idTextPricingProgressTitle"
+                                    text="Final Pricing"
+                                    class="regionalProgressCardTitle"/>
+
+                                <Text
+                                    id="idTextPricingProgressTotal"
+                                    text="{regionModel>/selectedRegion/finalPricingTotalText}"
+                                    class="regionalProgressCardTotal"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxPricingProgressBar"
+                                width="100%"
+                                height="6px"
+                                class="approvalProgressBar"
+                                renderType="Bare"
+                                fitContainer="true">
+
+                                <VBox
+                                    id="idPricingApprovedSegment"
+                                    width="{regionModel>/selectedRegion/finalPricingApprovedWidth}"
+                                    height="100%"
+                                    class="approvalSegment"
+                                    tooltip="{regionModel>/selectedRegion/finalPricingApprovedText}"/>
+
+                                <VBox
+                                    id="idPricingPendingSegment"
+                                    width="{regionModel>/selectedRegion/finalPricingPendingWidth}"
+                                    height="100%"
+                                    class="pendingSegment"
+                                    tooltip="{regionModel>/selectedRegion/finalPricingPendingText}"/>
+
+                                <VBox
+                                    id="idPricingRejectedSegment"
+                                    width="{regionModel>/selectedRegion/finalPricingRejectedWidth}"
+                                    height="100%"
+                                    class="rejectedSegment"
+                                    tooltip="{regionModel>/selectedRegion/finalPricingRejectedText}"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxPricingProgressLegend"
+                                justifyContent="SpaceBetween"
+                                class="approvalLegend">
+
+                                <Text
+                                    id="idTextPricingApproved"
+                                    text="{regionModel>/selectedRegion/finalPricingApprovedText}"
+                                    class="approvedLegendText"/>
+
+                                <Text
+                                    id="idTextPricingPending"
+                                    text="{regionModel>/selectedRegion/finalPricingPendingText}"
+                                    class="pendingLegendText"/>
+
+                                <Text
+                                    id="idTextPricingRejected"
+                                    text="{regionModel>/selectedRegion/finalPricingRejectedText}"
+                                    class="rejectedLegendText"/>
+
+                            </HBox>
+
+                        </VBox>
+
+
+                        <!-- ================================================= -->
+                        <!-- DEALERS PROGRESS                                -->
+                        <!-- ================================================= -->
+
+                        <VBox
+                            id="idVBoxDealerProgress"
+                            class="regionalProgressCard">
+
+                            <HBox
+                                id="idHBoxDealerProgressHeader"
+                                justifyContent="SpaceBetween"
+                                alignItems="Center">
+
+                                <Text
+                                    id="idTextDealerProgressTitle"
+                                    text="Dealers"
+                                    class="regionalProgressCardTitle"/>
+
+                                <Text
+                                    id="idTextDealerProgressTotal"
+                                    text="{regionModel>/selectedRegion/dealersTotalText}"
+                                    class="regionalProgressCardTotal"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxDealerProgressBar"
+                                width="100%"
+                                height="6px"
+                                class="approvalProgressBar"
+                                renderType="Bare"
+                                fitContainer="true">
+
+                                <VBox
+                                    id="idDealerApprovedSegment"
+                                    width="{regionModel>/selectedRegion/dealersApprovedWidth}"
+                                    height="100%"
+                                    class="approvalSegment"/>
+
+                                <VBox
+                                    id="idDealerPendingSegment"
+                                    width="{regionModel>/selectedRegion/dealersPendingWidth}"
+                                    height="100%"
+                                    class="pendingSegment"/>
+
+                                <VBox
+                                    id="idDealerRejectedSegment"
+                                    width="{regionModel>/selectedRegion/dealersRejectedWidth}"
+                                    height="100%"
+                                    class="rejectedSegment"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxDealerProgressLegend"
+                                justifyContent="SpaceBetween"
+                                class="approvalLegend">
+
+                                <Text
+                                    id="idTextDealerApproved"
+                                    text="{regionModel>/selectedRegion/dealersApprovedText}"
+                                    class="approvedLegendText"/>
+
+                                <Text
+                                    id="idTextDealerPending"
+                                    text="{regionModel>/selectedRegion/dealersPendingText}"
+                                    class="pendingLegendText"/>
+
+                                <Text
+                                    id="idTextDealerRejected"
+                                    text="{regionModel>/selectedRegion/dealersRejectedText}"
+                                    class="rejectedLegendText"/>
+
+                            </HBox>
+
+                        </VBox>
+
+
+                        <!-- ================================================= -->
+                        <!-- WAREHOUSE PROGRESS                              -->
+                        <!-- ================================================= -->
+
+                        <VBox
+                            id="idVBoxWarehouseProgress"
+                            class="regionalProgressCard">
+
+                            <HBox
+                                id="idHBoxWarehouseProgressHeader"
+                                justifyContent="SpaceBetween"
+                                alignItems="Center">
+
+                                <Text
+                                    id="idTextWarehouseProgressTitle"
+                                    text="Warehouses"
+                                    class="regionalProgressCardTitle"/>
+
+                                <Text
+                                    id="idTextWarehouseProgressTotal"
+                                    text="{regionModel>/selectedRegion/warehousesTotalText}"
+                                    class="regionalProgressCardTotal"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxWarehouseProgressBar"
+                                width="100%"
+                                height="6px"
+                                class="approvalProgressBar"
+                                renderType="Bare"
+                                fitContainer="true">
+
+                                <VBox
+                                    id="idWarehouseApprovedSegment"
+                                    width="{regionModel>/selectedRegion/warehousesApprovedWidth}"
+                                    height="100%"
+                                    class="approvalSegment"
+                                    tooltip="{regionModel>/selectedRegion/warehousesApprovedText}"/>
+
+                                <VBox
+                                    id="idWarehousePendingSegment"
+                                    width="{regionModel>/selectedRegion/warehousesPendingWidth}"
+                                    height="100%"
+                                    class="pendingSegment"
+                                    tooltip="{regionModel>/selectedRegion/warehousesPendingText}"/>
+
+                                <VBox
+                                    id="idWarehouseRejectedSegment"
+                                    width="{regionModel>/selectedRegion/warehousesRejectedWidth}"
+                                    height="100%"
+                                    class="rejectedSegment"
+                                    tooltip="{regionModel>/selectedRegion/warehousesRejectedText}"/>
+
+                            </HBox>
+
+
+                            <HBox
+                                id="idHBoxWarehouseProgressLegend"
+                                justifyContent="SpaceBetween"
+                                class="approvalLegend">
+
+                                <Text
+                                    id="idTextWarehouseApproved"
+                                    text="{regionModel>/selectedRegion/warehousesApprovedText}"
+                                    class="approvedLegendText"/>
+
+                                <Text
+                                    id="idTextWarehousePending"
+                                    text="{regionModel>/selectedRegion/warehousesPendingText}"
+                                    class="pendingLegendText"/>
+
+                                <Text
+                                    id="idTextWarehouseRejected"
+                                    text="{regionModel>/selectedRegion/warehousesRejectedText}"
+                                    class="rejectedLegendText"/>
+
+                            </HBox>
+
+                        </VBox>
+
+
+                        <Text
+                            id="idTextWarehouseProgressNote"
+                            text="Warehouse status uses ACTIVE/INACTIVE from the current warehouse data."
+                            class="warehouseProgressNote"/>
+
+                    </VBox>
+
+                </HBox>
+
+
+                <!-- Main Dashboard Content -->
+
+                <l:Grid
+                    id="idDashboardGrid"
+                    defaultSpan="L12 M12 S12"
+                    hSpacing="1"
+                    vSpacing="0"
+                    class="sapUiTinyMarginTop">
+
+                    <!-- SECTION 1: Interactive Dynamic Donut Chart -->
+                    <Panel id="idPnlDynamicDonut" expandable="false" class="dashboardPanel customPanelHeight">
+                        <headerToolbar>
+                            <OverflowToolbar id="idOFTBdonut" class="panelHeaderToolbar">
+                                <Title id="idDonutTitle" text="{chartData>/selectedTitle}" class="panelTitle" />
+                                <ToolbarSpacer id="idTBSdonut" />
+                                <Select
+                                    id="idSelectDimension"
+                                    selectedKey="PO_STATUS"
+                                    change=".onDimensionChange"
+                                    class="dimensionSelect">
+                                    <core:Item id="idCoreItmDonutPO" key="PO_STATUS" text="Sales Order" />
+                                    <core:Item id="idCoreItmDonutPricing" key="PRICING" text="Pricing" />
+                                    <core:Item id="idCoreItmDonutPDealer" key="DEALER" text="Dealer" />
+                                    <core:Item id="idCoreItmDonutWarehouse" key="WAREHOUSE" text="Warehouse" />
+                                </Select>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <content>
+                            <viz:VizFrame
+                                id="idVizFrameDonut"
+                                vizType="donut"
+                                height="280px"
+                                width="100%">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset
+                                        id="idDatasetDonut"
+                                        data="{chartData>/PO_STATUS}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition id="idDimDefDonutCat" name="Category" value="{chartData>label}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition id="idMeasDefDonutVal" name="Value" value="{chartData>value}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem id="idFeedItemCat" uid="color" type="Dimension" values="Category" />
+                                    <viz.feeds:FeedItem id="idFeedItemMeas" uid="size" type="Measure" values="Value" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </content>
+                        <layoutData>
+                            <l:GridData id="idGridDataDonut" span="L4 M7 S12" />
+                        </layoutData>
+                    </Panel>
+
+                    <!-- SECTION 2: Products Grouped by Category (Horizontal Bar Chart) -->
+                    <Panel id="idPnlProductBar" expandable="false" class="dashboardPanel customPanelHeight">
+                        
+                        <headerToolbar>
+                            <OverflowToolbar id="idOdsFTBdonut" class="panelHeaderToolbar">
+                                <Title id="idDonutTsditle" text="Products by Category" class="panelTitle" />
+                                <ToolbarSpacer id="idsdTBSdonut" />                               
+                            </OverflowToolbar>
+                        </headerToolbar>
+
+                        <content>
+                            <viz:VizFrame
+                                id="idVizFrameProductBar"
+                                vizType="column"
+                                height="250px"
+                                width="100%">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset id="idFDSBar" data="{chartData>/ProductCategories}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition id="idDimDefBar" name="Product Group" value="{chartData>group}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition id="idMeasDefBar" name="Quantity" value="{chartData>quantity}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem id="idFeedItemBarMeas" uid="valueAxis" type="Measure" values="Quantity" />
+                                    <viz.feeds:FeedItem id="idFeedItemBarDim" uid="categoryAxis" type="Dimension" values="Product Group" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </content>
+                        <layoutData>
+                            <l:GridData id="idGridDataBar" span="L5 M12 S12" />
+                        </layoutData>
+                    </Panel>
+
+                    <!-- SECTION 3: Quick Actions Panel (Provided Code) -->
+                    <Panel
+                        id="quickActionsPanel"
+                        expandable="false"
+                        class="dashboardPanel customPanelHeight">
+
+                         <headerToolbar>
+                            <OverflowToolbar id="idOdsFsdfTBdonut" class="panelHeaderToolbar">
+                                <Title id="idDonutTsditsdfle" text="Quick Actions" class="panelTitle" />
+                                <ToolbarSpacer id="idsdTsdfBSdonut" />                               
+                            </OverflowToolbar>
+                        </headerToolbar>
+
+                         <content>
+
+                            <VBox
+                                id="quickActionsContent"
+                                class="sapUiSmallMargin">
+
+                                <Button
+                                    id="createPOButton"
+                                    text="Create Sales Order"
+                                    icon="sap-icon://add-document"
+                                    type="Emphasized"
+                                    width="100%"
+                                    press=".onCreatePO" />
+
+                                <Button
+                                    id="viewPOButton"
+                                    text="View Sales Orders"
+                                    icon="sap-icon://sales-order"
+                                    width="100%"
+                                    press=".onPurchaseOrders" />
+
+                                <Button
+                                    id="productsButton"
+                                    text="Products"
+                                    icon="sap-icon://product"
+                                    width="100%"
+                                    press=".onProducts" />
+
+                                <Button
+                                    id="stockButton"
+                                    text="View Stock"
+                                    icon="sap-icon://inventory"
+                                    width="100%"
+                                    press=".onStock"/>
+
+                                <Button
+                                    id="priceMasterButton"
+                                    text="Price Master"
+                                    icon="sap-icon://money-bills"
+                                    width="100%"
+                                    press=".onPriceMaster"/>
+
+                                <Button
+                                    id="dealerButton"
+                                    text="Dealer Onboarding"
+                                    icon="sap-icon://supplier"
+                                    width="100%"
+                                    press=".onDealerOnboarding"/>
+
+                                <!-- <Button
+                                    id="analyticsButton"
+                                    text="Purchase Analytics"
+                                    icon="sap-icon://business-objects-experience"
+                                    width="100%"
+                                    press=".onAnalytics" /> -->
+
+                            </VBox>
+
+                        </content>
+
+                        <layoutData>
+                            <l:GridData id="idPnl4Lbl1QA" span="L3 M5"></l:GridData>
+                        </layoutData>
+                    </Panel>
+
+                </l:Grid>
+
+
+                <!-- Recent Purchase Orders -->
+                <Panel
+                    id="recentOrdersPanel"
+                    headerText="Recent Sales Orders">
+
+                    <Table
+                        id="recentOrdersTable"
+                        growing="true"
+                        growingThreshold="5"
+                        items="{
+                        path: 'purchase>/PurchaseOrders',
+                        parameters: {
+                            $orderby: 'createdAt desc',
+                            $expand: 'dealer'
+                        }
+                    }">
+
+                        <columns>
+
+                            <Column
+                                id="poNumberColumn">
+                                <Text
+                                    id="poNumberColumnText"
+                                    text="SO Number" />
+                            </Column>
+
+                            <Column
+                                id="dealerColumn">
+                                <Text
+                                    id="dealerColumnText"
+                                    text="Dealer" />
+                            </Column>
+
+                            <Column
+                                id="orderDateColumn">
+                                <Text
+                                    id="orderDateColumnText"
+                                    text="Order Date" />
+                            </Column>
+
+                            <Column
+                                id="amountColumn">
+                                <Text
+                                    id="amountColumnText"
+                                    text="Amount" />
+                            </Column>
+
+                            <Column
+                                id="statusColumn">
+                                <Text
+                                    id="statusColumnText"
+                                    text="Status" />
+                            </Column>
+
+                        </columns>
+
+
+                        <items>
+
+                            <ColumnListItem
+                                id="recentOrderItem"
+                                type="Navigation"
+                                press=".onPOPress">
+
+                                <cells>
+
+                                    <Text
+                                        id="poNumberText"
+                                        text="{purchase>poNumber}" />
+
+                                    <Text
+                                        id="dealerNameText"
+                                        text="{purchase>dealer/dealerName}" />
+
+                                    <Text
+                                        id="orderDateText"
+                                        text="{
+                                            path: 'purchase>orderDate',
+                                            formatter: '.formatter.formatDate'
+                                        }" />
+
+                                    <ObjectNumber
+                                        id="amountText"
+                                        number="{purchase>totalAmount}"
+                                        unit="INR" />
+
+                                    <ObjectStatus
+                                        id="statusText"
+                                        text="{purchase>status}"
+                                        state="{
+                                            path: 'purchase>status',
+                                            formatter: '.formatter.statusState'
+                                        }" />
+
+                                </cells>
+
+                            </ColumnListItem>
+
+                        </items>
+
+                    </Table>
+
+                </Panel>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

@@ -1,0 +1,105 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.PricingAnalytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+
+    <Page id="pricingAnalyticsPage" class="pricingAnalyticsPage" title="Pricing Analytics" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <VBox class="sapUiResponsiveMargin">
+
+            <!-- KPI TILES -->
+            <HBox wrap="Wrap" justifyContent="SpaceBetween" class="kpiRowClassic sapUiSmallMarginBottom">
+                <VBox class="kpiCardClassic kpiAccentBlue" alignItems="Center">
+                    <core:Icon src="sap-icon://product" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="PRICED PRODUCTS"/>
+                    <Text class="kpiValueClassic" text="{kpi>/pricedProducts}"/>
+                    <Text class="kpiSubClassic" text="With active price records"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentOrange" alignItems="Center">
+                    <core:Icon src="sap-icon://discount" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="AVG DISCOUNT"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/avgDiscountPct', formatter: '.formatPercent' }"/>
+                    <Text class="kpiSubClassic" text="Across all products"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentGreen" alignItems="Center">
+                    <core:Icon src="sap-icon://accept" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="ACTIVE PRICES"/>
+                    <Text class="kpiValueClassic" text="{kpi>/activePrices}"/>
+                    <Text class="kpiSubClassic" text="Currently valid"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentPurple" alignItems="Center">
+                    <core:Icon src="sap-icon://trend-up" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="RECENT INCREASES"/>
+                    <Text class="kpiValueClassic" text="{kpi>/priceIncreases}"/>
+                    <Text class="kpiSubClassic" text="Last price changes"/>
+                </VBox>
+            </HBox>
+
+            <!-- ===================== 2-PANEL CHART ROW ===================== -->
+            <l:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBottom sapUiSmallMarginTop">
+
+                <!-- Panel 1: Avg Discount % by Region — vertical column bars -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Avg Discount % by Region" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/regionDiscountBarsHtml}" />
+                </VBox>
+
+                <!-- Panel 2: Products by category — donut -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Products by Category" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/categoryDonutHtml}" />
+                </VBox>
+
+            </l:Grid>
+
+            <!-- EXTRA: RECENT PRICE RECORDS (reference card style — matches sample design) -->
+            <VBox class="analyticsExtraCard refTableCard">
+                <Table items="{kpi>/recentPriceRecords}" growing="true" growingThreshold="10">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Recent Submissions" level="H3"/>
+                            <ToolbarSpacer/>
+                            <Link text="View All Records" press="onNavBack"/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="Product"/></Column>
+                        <Column><Text text="Region"/></Column>
+                        <Column hAlign="End"><Text text="Base Price"/></Column>
+                        <Column hAlign="End"><Text text="Final Price"/></Column>
+                        <Column><Text text="Valid From"/></Column>
+                        <Column><Text text="Status"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <VBox>
+                                    <Text text="{kpi>productName}" class="refTablePrimaryCell"/>
+                                    <Text text="{kpi>productCode}" class="refTableSecondaryCell"/>
+                                </VBox>
+                                <Text text="{kpi>regionName}"/>
+                                <HBox justifyContent="End" alignItems="Baseline">
+                                    <Text text="{ path: 'kpi>basePrice', formatter: '.formatNumber' }" class="refTablePrimaryCell"/>
+                                    <Text text=" INR" class="refTableSecondaryCell"/>
+                                </HBox>
+                                <HBox justifyContent="End" alignItems="Baseline">
+                                    <Text text="{ path: 'kpi>finalPrice', formatter: '.formatNumber' }" class="refTableHighlightCell"/>
+                                    <Text text=" INR" class="refTableSecondaryCell"/>
+                                </HBox>
+                                <Text text="{ path: 'kpi>validFrom' }"/>
+                                <ObjectStatus
+                                    text="{kpi>priceStatus}"
+                                    state="{ path: 'kpi>priceStatus', formatter: '.formatPriceStatusState' }"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

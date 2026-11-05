@@ -1,0 +1,447 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.PriceMaster"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="priceMasterPage"
+        title="Price Master"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <content>
+
+            <VBox id="priceMasterMainVBox">
+
+                <!-- Filter Bar -->
+                <Toolbar id="priceMasterFilterToolbar" >
+                 
+                    <SearchField
+                        id="priceMasterSearchField"
+                        width="280px"
+                        placeholder="Search Product Code / Name"
+                        liveChange=".onSearch" />
+
+                    <ToolbarSeparator
+                        id="priceMasterToolbarSeparator1" />
+
+                    <Label
+                        id="priceMasterRegionLabel"
+                        text="Region"
+                        labelFor="priceMasterRegionSelect" />
+
+                    <Select
+                        id="priceMasterRegionSelect"
+                        width="180px"
+                        change=".onRegionChange">
+
+                        <items>
+
+                            <core:Item
+                                id="priceMasterRegionAllItem"
+                                key="ALL"
+                                text="All Regions" />
+
+                            <core:Item
+                                id="priceMasterRegionKAItem"
+                                key="North India"
+                                text="North India" />
+
+                            <core:Item
+                                id="priceMasterRegionTNItem"
+                                key="Central India"
+                                text="Central India" />
+
+                            <core:Item
+                                id="priceMasterRegionTSItem"
+                                key="East India"
+                                text="East India" />
+
+                            <core:Item
+                                id="priceMasterRegionAPItem"
+                                key="West India"
+                                text="West India" />
+
+                            <core:Item
+                                id="priceMasterRegionSIItem"
+                                key="South India"
+                                text="South India" />
+
+                        </items>
+
+                    </Select>
+
+                    <ToolbarSeparator
+                        id="priceMasterToolbarSeparator2" />
+
+                    <Label
+                        id="priceMasterStatusLabel"
+                        text="Status"
+                        labelFor="priceMasterStatusSelect" />
+
+                    <Select
+                        id="priceMasterStatusSelect"
+                        width="150px"
+                        change=".onStatusChange">
+
+                        <items>
+
+                            <core:Item
+                                id="priceMasterStatusAllItem"
+                                key="ALL"
+                                text="All Status" />
+
+                            <core:Item
+                                id="priceMasterStatusActiveItem"
+                                key="ACTIVE"
+                                text="Active" />
+
+                            <core:Item
+                                id="priceMasterStatusPendingItem"
+                                key="PENDING"
+                                text="Pending" />
+
+                            <core:Item
+                                id="priceMasterStatusExpiredItem"
+                                key="EXPIRED"
+                                text="Expired" />
+
+                        </items>
+
+                    </Select>
+
+                    <ToolbarSpacer
+                        id="priceMasterToolbarSpacer" />
+
+                    <Button
+                        id="priceMasterRefreshButton"
+                        icon="sap-icon://refresh"
+                        tooltip="Refresh"
+                        type="Transparent"
+                        press=".onRefresh" />
+
+                    <Button
+                        id="priceMasterCreateButton"
+                        text="Create Price"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        press=".onCreatePrice" />
+
+                </Toolbar>
+
+
+                <!-- Summary -->
+                <HBox
+                    id="priceMasterSummaryHBox"
+                    justifyContent="SpaceBetween"
+                    alignItems="Center">
+
+                    <ObjectStatus
+                        id="priceMasterSummaryStatus"
+                        text="Price Master"
+                        state="Information" 
+                        />
+
+                    <Text
+                        id="priceMasterSummaryText"
+                        text="Manage product pricing by region" />
+
+                </HBox>
+
+
+                <!-- Price Master Table -->
+                <ScrollContainer id="idPricingMasterScrollCon" width="100%"
+                    height="350px" vertical="true" horizontal="true">
+                    <Table
+                        id="priceMasterTable"
+                        mode="SingleSelectLeft"
+                        growing="true"
+                        growingThreshold="10"
+                        sticky="ColumnHeaders"
+                        fixedLayout="false"
+                        items="{
+                            path: 'purchase>/PriceMaster',
+                            parameters: {
+                                $expand: 'product,region'
+                            }
+                        }">
+
+                        <headerToolbar>
+
+                            <Toolbar
+                                id="priceMasterTableToolbar">
+
+                                <Title
+                                    id="priceMasterTableTitle"
+                                    text="Price Master" />
+
+                                <ToolbarSpacer
+                                    id="priceMasterTableToolbarSpacer" />
+
+                                <Button
+                                    id="priceMasterViewButton"
+                                    text="View"
+                                    icon="sap-icon://display"
+                                    type="Transparent"
+                                    press=".onViewPrice" />
+
+                                <!-- <Button
+                                    id="priceMasterEditButton"
+                                    text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditPrice" /> -->
+
+                                <!-- <Button
+                                    id="priceMasterRecalculateButton"
+                                    text="Recalculate"
+                                    icon="sap-icon://simulate"
+                                    type="Transparent"
+                                    press=".onRecalculatePrice" /> -->
+
+                                <Button
+                                    id="priceMasterExpireButton"
+                                    text="Expire"
+                                    icon="sap-icon://time-entry-request"
+                                    type="Transparent"
+                                    press=".onExpirePrice" />
+
+                                <Button
+                                    id="priceMasterDeleteButton"
+                                    text="Delete"
+                                    icon="sap-icon://delete"
+                                    type="Transparent"
+                                    press=".onDeletePrice" />
+
+                            </Toolbar>
+
+                        </headerToolbar>
+
+
+                        <columns>
+
+                            <Column
+                                id="priceMasterProductColumn"
+                                width="220px">
+
+                                <Text
+                                    id="priceMasterProductColumnText"
+                                    text="Product" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterRegionColumn"
+                                width="150px">
+
+                                <Text
+                                    id="priceMasterRegionColumnText"
+                                    text="Region" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterBasePriceColumn"
+                                hAlign="End"
+                                width="140px">
+
+                                <Text
+                                    id="priceMasterBasePriceColumnText"
+                                    text="Base Price" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterDiscountColumn"
+                                hAlign="End"
+                                width="120px">
+
+                                <Text
+                                    id="priceMasterDiscountColumnText"
+                                    text="Discount" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterTaxColumn"
+                                hAlign="End"
+                                width="120px">
+
+                                <Text
+                                    id="priceMasterTaxColumnText"
+                                    text="Tax" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterFinalPriceColumn"
+                                hAlign="End"
+                                width="150px">
+
+                                <Text
+                                    id="priceMasterFinalPriceColumnText"
+                                    text="Final Price" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterValidFromColumn"
+                                width="130px">
+
+                                <Text
+                                    id="priceMasterValidFromColumnText"
+                                    text="Valid From" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterValidToColumn"
+                                width="130px">
+
+                                <Text
+                                    id="priceMasterValidToColumnText"
+                                    text="Valid To" />
+
+                            </Column>
+
+
+                            <Column
+                                id="priceMasterStatusColumn"
+                                width="120px">
+
+                                <Text
+                                    id="priceMasterStatusColumnText"
+                                    text="Status" />
+
+                            </Column>
+
+                        </columns>
+
+
+                        <items>
+
+                            <ColumnListItem
+                                id="priceMasterListItem"
+                                type="Active"
+                                press=".onItemPress">
+
+                                <cells>
+
+                                    <!-- Product -->
+                                    <ObjectIdentifier
+                                        id="priceMasterProductIdentifier"
+                                        title="{purchase>product/productCode}"
+                                        text="{purchase>product/productName}" />
+
+
+                                    <!-- Region -->
+                                    <Text
+                                        id="priceMasterRegionText"
+                                        text="{purchase>region/regionName}" />
+
+
+                                    <!-- Base Price -->
+                                    <ObjectNumber
+                                        id="priceMasterBasePriceNumber"
+                                        number="{
+                                            path: 'purchase>basePrice',
+                                            type: 'sap.ui.model.type.Float',
+                                            formatOptions: {
+                                                minFractionDigits: 2,
+                                                maxFractionDigits: 2
+                                            }
+                                        }"
+                                        unit="INR" />
+
+
+                                    <!-- Discount -->
+                                    <ObjectNumber
+                                        id="priceMasterDiscountNumber"
+                                        number="{
+                                            path: 'purchase>discount',
+                                            type: 'sap.ui.model.type.Float',
+                                            formatOptions: {
+                                                minFractionDigits: 2,
+                                                maxFractionDigits: 2
+                                            }
+                                        }"
+                                        unit="INR" />
+
+
+                                    <!-- Tax -->
+                                    <ObjectNumber
+                                        id="priceMasterTaxNumber"
+                                        number="{
+                                            path: 'purchase>tax',
+                                            type: 'sap.ui.model.type.Float',
+                                            formatOptions: {
+                                                minFractionDigits: 2,
+                                                maxFractionDigits: 2
+                                            }
+                                        }"
+                                        unit="INR" />
+
+
+                                    <!-- Final Price -->
+                                    <ObjectNumber
+                                        id="priceMasterFinalPriceNumber"
+                                        number="{
+                                            path: 'purchase>finalPrice',
+                                            type: 'sap.ui.model.type.Float',
+                                            formatOptions: {
+                                                minFractionDigits: 2,
+                                                maxFractionDigits: 2
+                                            }
+                                        }"
+                                        unit="INR"
+                                        emphasized="true" />
+
+
+                                    <!-- Valid From -->
+                                    <Text
+                                        id="priceMasterValidFromText"
+                                        text="{
+                                            path: 'purchase>validFrom' 
+                                        }" />
+
+
+                                    <!-- Valid To -->
+                                    <Text
+                                        id="priceMasterValidToText"
+                                        text="{
+                                            path: 'purchase>validTo'
+                                        }" />
+
+
+                                    <!-- Status -->
+                                    <ObjectStatus
+                                        id="priceMasterStatusObject"
+                                        text="{purchase>status}"
+                                        state="{ path: 'purchase>status',
+                                                formatter: '.formatter.statusState' }" />
+
+                                </cells>
+
+                            </ColumnListItem>
+
+                        </items>
+
+                    </Table>   
+                </ScrollContainer>
+                
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

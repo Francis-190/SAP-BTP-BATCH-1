@@ -1,0 +1,3802 @@
+/* ============================================================================
+   PURCHASE ORDER MANAGEMENT - MODERN UI5 THEME
+   Based on the Pricing Master Dashboard visual language.
+
+   Covers the views present in the supplied application:
+   - App
+   - Purchase Dashboard
+   - Purchase Orders
+   - Create Purchase Order
+   - Edit Purchase Order
+   - Products
+   - Warehouses
+   - Stock
+   - Price Master
+   - Create/Edit Product dialogs
+   - Create/Edit Stock dialogs
+   ============================================================================ */
+
+:root {
+    --ui-bg: #f4f6fb;
+    --ui-surface: #ffffff;
+    --ui-surface-soft: #f8f9fd;
+    --ui-text: #171a2b;
+    --ui-text-2: #62697d;
+    --ui-text-3: #8990a3;
+    --ui-border: rgba(77, 86, 122, 0.14);
+    --ui-primary: #5b3df5;
+    --ui-primary-2: #7661ff;
+    --ui-primary-soft: #eeeaff;
+    --ui-blue: #2587ee;
+    --ui-green: #168b68;
+    --ui-red: #cc4251;
+    --ui-orange: #e88b35;
+    --ui-warning: #f59e0b;
+    --ui-shadow-sm: 0 7px 24px rgba(39, 45, 82, 0.07);
+    --ui-shadow-md: 0 14px 38px rgba(36, 42, 77, 0.11);
+    --ui-radius-sm: 11px;
+    --ui-radius-md: 18px;
+    --ui-radius-lg: 24px;
+}
+
+/* ============================================================================
+   GLOBAL
+   ============================================================================ */
+
+html,
+body,
+.sapUiBody {
+    margin: 0 !important;
+    min-height: 100%;
+    background:
+        radial-gradient(circle at 6% 0%, rgba(116, 91, 255, 0.08), transparent 25%),
+        radial-gradient(circle at 96% 3%, rgba(33, 134, 245, 0.07), transparent 24%),
+        var(--ui-bg) !important;
+    color: var(--ui-text);
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.sapMPage,
+.sapMPageBgStandard,
+.sapMPageBgSolid,
+.sapMPageBgList,
+.sapTntToolPage,
+.sapTntToolPageMain,
+.sapTntToolPageMainContent {
+    background: transparent !important;
+}
+
+.sapMPage > section {
+    background: transparent !important;
+}
+
+.sapMPageScroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(91, 61, 245, 0.30) transparent;
+}
+
+.sapMPageScroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.sapMPageScroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sapMPageScroll::-webkit-scrollbar-thumb {
+    background: rgba(91, 61, 245, 0.23);
+    border-radius: 999px;
+}
+
+/* .sapMText,
+.sapMLabel,
+.sapMTitle,
+.sapMObjectNumber,
+.sapMObjectIdentifier {
+    font-family: inherit !important;
+    font-weight: 650 !important;
+} */
+
+/* ============================================================================
+   APPLICATION HEADER
+   ============================================================================ */
+
+[id$="--toolHeader"] {
+    height: 50px !important;
+    min-height: 50px !important;
+    padding: 0 20px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-bottom: 1px solid rgba(77, 84, 119, 0.10) !important;
+    box-shadow: 0 6px 24px rgba(37, 44, 79, 0.06) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    position: relative;
+    z-index: 5;
+}
+
+[id$="--appTitle"] {
+    color: var(--ui-text) !important;
+    font-size: 1.18rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+}
+
+[id$="--menuButton"],
+[id$="--searchButton"],
+[id$="--notificationButton"],
+[id$="--userButton"] {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 13px !important;
+}
+
+[id$="--menuButton"] {
+    margin-right: 10px !important;
+}
+
+[id$="--menuButton"] .sapMBtnInner {
+    border: 0 !important;
+    border-radius: 13px !important;
+    background: #eeeaff !important;
+    color: var(--ui-primary) !important;
+}
+
+[id$="--searchButton"] .sapMBtnInner,
+[id$="--notificationButton"] .sapMBtnInner,
+[id$="--userButton"] .sapMBtnInner {
+    border: 0 !important;
+    border-radius: 13px !important;
+    background: transparent !important;
+    color: var(--ui-text-2) !important;
+}
+
+[id$="--searchButton"]:hover .sapMBtnInner,
+[id$="--notificationButton"]:hover .sapMBtnInner,
+[id$="--userButton"]:hover .sapMBtnInner {
+    background: #f0edff !important;
+    color: var(--ui-primary) !important;
+}
+
+/* ============================================================================
+   LIGHT ROBUST SIDEBAR
+   ============================================================================ */
+
+[id$="--sideNavigation"] {
+    background:
+        radial-gradient(circle at 100% 0%, rgba(178, 165, 251, 0.18), transparent 31%),
+        radial-gradient(circle at 0% 100%, rgba(33, 134, 245, 0.08), transparent 30%),
+        linear-gradient(180deg, #f5f3ff 0%, #edf3fb 100%) !important;
+    border-right: 1px solid rgba(82, 89, 124, 0.12) !important;
+    box-shadow: 10px 0 30px rgba(49, 55, 96, 0.08) !important;
+}
+
+[id$="--sideNavigation"] .sapTntSideNavigationSeparator {
+    display: none !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLI {
+    padding: 9px 10px !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItem,
+[id$="--sideNavigation"] .sapTntNavLIGroupItem {
+    min-height: 48px !important;
+    margin: 4px 7px !important;
+    border-radius: 14px !important;
+    color: #555d75 !important;
+    
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .18s ease,
+        box-shadow .18s ease !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItem .sapUiIcon,
+[id$="--sideNavigation"] .sapTntNavLIGroupItem .sapUiIcon {
+    color: #68718a !important;
+    font-weight: 700 !important;
+    transition: color .18s ease, transform .18s ease !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItem:hover,
+[id$="--sideNavigation"] .sapTntNavLIGroupItem:hover {
+    background: rgba(91, 61, 245, 0.07) !important;
+    color: #302965 !important;
+    transform: translateX(2px);
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItem:hover .sapUiIcon,
+[id$="--sideNavigation"] .sapTntNavLIGroupItem:hover .sapUiIcon {
+    color: var(--ui-primary) !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItemSelected,
+[id$="--sideNavigation"] .sapTntNavLIGroupItemSelected {
+    background: linear-gradient(135deg, #ddd8ff 0%, #c9c3ff 100%) !important;
+    color: #342c78 !important;
+    box-shadow: 0 8px 20px rgba(91, 61, 245, 0.13) !important;
+    border: 1px solid rgba(91, 61, 245, 0.12) !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItemSelected .sapUiIcon,
+[id$="--sideNavigation"] .sapTntNavLIGroupItemSelected .sapUiIcon {
+    color: #5139cf !important;
+}
+
+[id$="--sideNavigation"] .sapTntNavLIItem span,
+[id$="--sideNavigation"] .sapTntNavLIGroupItem span {
+    font-weight: 650 !important;
+}
+
+/* ============================================================================
+   PAGE HEADER / PAGE TOOLBAR
+   ============================================================================ */
+
+.sapMPageHeader .sapMBar,
+.sapMPageHeader .sapMIBar,
+.sapMPageHeader .sapMTB {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+    box-shadow: 0 5px 18px rgba(37, 44, 79, 0.05) !important;
+}
+
+.sapMPageHeader .sapMTitle {
+    color: var(--ui-text) !important;
+    font-weight: 650 !important;
+}
+
+.sapMPageHeader .sapMBtnTransparent .sapMBtnInner {
+    border: 0 !important;
+}
+
+/* ============================================================================
+   TOOLBARS
+   ============================================================================ */
+
+.sapMToolbar,
+.sapMTB,
+.sapMIBar,
+.sapMOverflowToolbar {
+    box-sizing: border-box;
+}
+
+[id$="--purchaseOrders_mainToolbar"],
+[id$="--purchaseOrders_filterToolbar"],
+[id$="--purchaseOrders_actionToolbar"],
+[id$="--productsToolbar"],
+[id$="--productsFilterToolbar"],
+[id$="--stockTopToolbar"],
+[id$="--stockActionToolbar"],
+[id$="--stockFilterToolbar"],
+[id$="--stockListToolbar"],
+[id$="--warehousesTopToolbar"],
+[id$="--warehousesFilterToolbar"],
+[id$="--warehousesTableToolbar"],
+[id$="--priceMasterFilterToolbar"],
+[id$="--priceMasterTableToolbar"],
+[id$="--itemsToolbar"],
+[id$="--createPOFooter"],
+[id$="--editPurchaseOrder_bottomToolbar"] {
+    min-height: 56px !important;
+    padding: 7px 15px !important;
+    background: linear-gradient(90deg, #ffffff 0%, #fbfaff 100%) !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+}
+
+[id$="--purchaseOrders_actionToolbar"],
+[id$="--stockListToolbar"],
+[id$="--priceMasterTableToolbar"],
+[id$="--itemsToolbar"] {
+    border-top: 1px solid rgba(77, 86, 122, 0.07) !important;
+}
+
+[id$="--purchaseOrders_mainToolbar"] .sapMTitle,
+[id$="--purchaseOrders_actionToolbar"] .sapMTitle,
+[id$="--productsToolbar"] .sapMTitle,
+[id$="--stockTopToolbar"] .sapMTitle,
+[id$="--stockActionToolbar"] .sapMTitle,
+[id$="--stockListToolbar"] .sapMTitle,
+[id$="--warehousesTopToolbar"] .sapMTitle,
+[id$="--warehousesTableToolbar"] .sapMTitle,
+[id$="--priceMasterTableToolbar"] .sapMTitle,
+[id$="--itemsToolbar"] .sapMTitle,
+[id$="--poItemsPanel"] .sapMPanelHdr,
+[id$="--poTotalsPanel"] .sapMPanelHdr,
+[id$="--poHeaderPanel"] .sapMPanelHdr {
+    color: var(--ui-text) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.018em !important;
+}
+
+/* ============================================================================
+   GLOBAL INPUTS / SEARCH / SELECT / DATEPICKER
+   ============================================================================ */
+
+.sapMInputBaseContentWrapper,
+.sapMSlt,
+.sapMInputBaseInner,
+.sapMTextAreaInner {
+    border-radius: 11px !important;
+}
+
+.sapMInputBaseContentWrapper,
+.sapMSlt {
+    border: 1px solid rgba(77, 86, 122, 0.18) !important;
+    background: #ffffff !important;
+}
+
+.sapMInputBaseInner,
+.sapMSltLabel,
+.sapMTextAreaInner {
+    color: var(--ui-text) !important;
+}
+
+.sapMInputBaseContentWrapper:hover,
+.sapMSlt:hover {
+    border-color: rgba(91, 61, 245, 0.33) !important;
+}
+
+.sapMInputBaseContentWrapper.sapMFocus,
+.sapMSlt.sapMSltFocused,
+.sapMInputBase.sapMFocus .sapMInputBaseContentWrapper {
+    border-color: var(--ui-primary) !important;
+    box-shadow: 0 0 0 3px rgba(91, 61, 245, 0.10) !important;
+}
+
+.sapMTextArea .sapMTextAreaInner:focus {
+    border-color: var(--ui-primary) !important;
+    box-shadow: 0 0 0 3px rgba(91, 61, 245, 0.10) !important;
+}
+
+.sapMSFI {
+    border-radius: 11px !important;
+}
+
+.sapMSFF {
+    border: 1px solid rgba(77, 86, 122, 0.14) !important;
+    border-radius: 11px !important;
+    background: #f8f9fd !important;
+}
+
+.sapMSFF:hover {
+    border-color: rgba(91, 61, 245, 0.28) !important;
+}
+
+.sapMSearchFieldFocused .sapMSFF {
+    border-color: var(--ui-primary) !important;
+    box-shadow: 0 0 0 3px rgba(91, 61, 245, 0.10) !important;
+}
+
+/* Search widths become fluid on smaller screens. */
+[id$="--purchaseOrders_searchField"],
+[id$="--priceMasterSearchField"],
+[id$="--warehousesSearchField"],
+[id$="--productsSearchField"],
+[id$="--stockSearchField"] {
+    max-width: 100% !important;
+}
+
+/* ============================================================================
+   BUTTONS
+   ============================================================================ */
+
+/* .sapMBtnInner {
+    border-radius: 10px !important;
+    font-weight: 650 !important;
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease !important;
+} */
+
+/* .sapMBtnTransparent .sapMBtnInner {
+    border-color: transparent !important;
+    color: var(--ui-text-2) !important;
+} */
+
+/* .sapMBtnTransparent:hover .sapMBtnInner {
+    background: #f1efff !important;
+    color: var(--ui-primary) !important;
+} */
+
+/* .sapMBtnEmphasized .sapMBtnInner,
+.sapMBtnAccept .sapMBtnInner {
+    background: linear-gradient(135deg, #6e58ff 0%, #5038d9 100%) !important;
+    border: 1px solid #4d36d1 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 18px rgba(91, 61, 245, 0.20) !important;
+} */
+
+/* .sapMBtnEmphasized:hover .sapMBtnInner,
+.sapMBtnAccept:hover .sapMBtnInner {
+    background: linear-gradient(135deg, #6049ef 0%, #4430bd 100%) !important;
+    transform: translateY(-1px);
+} */
+
+/* .sapMBtnReject .sapMBtnInner {
+    background: #bf3e4f !important;
+    border-color: #a93443 !important;
+    color: #ffffff !important;
+    box-shadow: 0 7px 15px rgba(191, 62, 79, 0.17) !important;
+}
+
+.sapMBtnReject:hover .sapMBtnInner {
+    background: #a93243 !important;
+} */
+
+[id$="--purchaseOrders_deleteActionButton"] .sapMBtnInner,
+[id$="--productsDeleteButton"] .sapMBtnInner,
+[id$="--deleteStockButton"] .sapMBtnInner,
+[id$="--warehousesDeleteButton"] .sapMBtnInner {
+    color: #b73546 !important;
+}
+
+/* ============================================================================
+   PANELS / SURFACES
+   ============================================================================ */
+
+.sapMPanel {
+    background: #ffffff !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--ui-shadow-sm) !important;
+    overflow: hidden !important;
+}
+
+.sapMPanelHdr,
+.sapMPanelWrappingDivTb {
+    background: linear-gradient(90deg, #ffffff 0%, #fbfaff 100%) !important;
+}
+
+.sapMPanelHdr {
+    min-height: 48px !important;
+    padding-left: 17px !important;
+    padding-right: 17px !important;
+    color: var(--ui-text) !important;
+    font-weight: 800 !important;
+    border-bottom: 1px solid rgba(77, 86, 122, 0.09) !important;
+}
+
+.sapMPanelContent {
+    background: #ffffff !important;
+}
+
+.sapMPanel:hover {
+    box-shadow: var(--ui-shadow-md) !important;
+}
+
+/* ============================================================================
+   TABLE POLISH
+   ============================================================================ */
+
+.sapMListTbl,
+.sapMListTblCnt {
+    background: transparent !important;
+}
+
+.sapMListTblHeaderCell {
+    background: #f7f7fc !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+}
+
+.sapMListTblHeaderCell .sapMLabel,
+.sapMListTblHeaderCell .sapMText {
+    color: #636b80 !important;
+    font-size: 0.70rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.045em;
+}
+
+.sapMListTblRow {
+    background: rgba(255, 255, 255, 0.82) !important;
+    transition: background .15s ease !important;
+}
+
+.sapMListTblRow:hover {
+    background: #f8f7ff !important;
+}
+
+.sapMListTblRow.sapMLIBSelected,
+.sapMListTblRow.sapMLIBSelected:hover {
+    background: #f0edff !important;
+}
+
+.sapMListTblCell {
+    border-bottom: 1px solid rgba(93, 102, 137, 0.08) !important;
+    padding-top: 11px !important;
+    padding-bottom: 11px !important;
+}
+
+.sapMListTblCell .sapMText,
+.sapMListTblCell .sapMObjectIdentifierTitle,
+.sapMListTblCell .sapMObjectNumberText {
+    color: var(--ui-text) !important;
+    font-weight: 600 !important;
+}
+
+.sapMListTblCell .sapMObjectIdentifierText {
+    color: var(--ui-text-3) !important;
+    font-size: 0.74rem !important;
+}
+
+.sapMListTblRow .sapMLIBSelectM {
+    color: var(--ui-primary) !important;
+}
+
+/* Keep long text from breaking table layout. */
+.sapMListTblCell .sapMText,
+.sapMListTblCell .sapMObjectIdentifierTitle,
+.sapMListTblCell .sapMObjectIdentifierText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================================================
+   OBJECT NUMBER / STATUS
+   ============================================================================ */
+
+.sapMObjectNumberText {
+    font-weight: 700 !important;
+}
+
+.sapMObjectNumberStatusInformation .sapMObjectNumberText,
+.sapMObjectNumberStatusInformation .sapMObjectNumberUnit {
+    color: var(--ui-blue) !important;
+}
+
+.sapMObjStatus {
+    border-radius: 999px !important;
+    padding: 3px 9px !important;
+    display: inline-flex !important;
+    align-items: center;
+    background: #f0f2f7 !important;
+}
+
+.sapMObjStatusSuccess {
+    background: rgba(25, 185, 133, 0.11) !important;
+}
+
+.sapMObjStatusError {
+    background: rgba(239, 91, 105, 0.11) !important;
+}
+
+.sapMObjStatusWarning {
+    background: rgba(232, 139, 53, 0.12) !important;
+}
+
+.sapMObjStatusInformation {
+    background: rgba(37, 135, 238, 0.10) !important;
+}
+
+.sapMObjStatusText {
+    font-weight: 700 !important;
+}
+
+/* ============================================================================
+   PURCHASE DASHBOARD
+   ============================================================================ */
+
+[id$="--dashboardContainer"] {
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 15px !important;
+    margin: 0 !important;
+    position: relative;
+}
+
+/* [id$="--dashboardContainer"]::before {
+    content: "";
+    display: block;
+    width: min(750px, 100%);
+    height: 100px;
+    margin: 0 auto 20px auto;
+    border-radius: 22px;
+    border: 1px solid rgba(91, 61, 245, 0.12);
+    box-shadow: 0 13px 34px rgba(54, 47, 125, 0.13);
+    background:
+        radial-gradient(circle at 82% 35%, rgba(255, 255, 255, 0.42), transparent 16%),
+        radial-gradient(circle at 12% 80%, rgba(255, 255, 255, 0.22), transparent 20%),
+        linear-gradient(135deg, #7968ff 0%, #a5a0ff 48%, #b8e6ff 100%);
+} */
+
+[id$="--pageHeader"] {
+    padding: 2px 2px 14px 2px !important;
+}
+
+[id$="--dashboardTitle"] {
+    color: #172033 !important;
+    font-size: 1.50rem !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.035em;
+}
+
+[id$="--dashboardDescription"] {
+    color: #4d9d54 !important;
+    font-size: 0.82rem !important;
+    margin-top: 25px;
+}
+
+/* KPI grid */
+[id$="--kpiGrid"] {
+    width: 100%;
+    margin: 15px 0;
+}
+
+[id$="--kpiGrid"] .sapMGT {
+    width: 100% !important;
+    height: 140px !important;
+    min-height: 10px !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(77, 86, 122, 0.10) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10) !important;
+    overflow: hidden !important;
+    transition: transform .22s ease, box-shadow .22s ease !important;
+}
+
+[id$="--kpiGrid"] .sapMGT:hover {
+    transform: translateY(-5px) scale(1.015);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+[id$="--totalPOTile"] {
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #c798f9 0%, #eedffe 100%) !important;
+}
+
+[id$="--pendingPOTile"] {
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #f8be7d 0%, #fbe4c2 100%) !important;
+}
+
+[id$="--approvedPOTile"] {
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #49dfb4 0%, #b9f8e6 100%) !important;
+}
+
+[id$="--purchaseValueTile"] {
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #89f3fb 0%, #caeaf9 100%) !important;
+}
+
+[id$="--kpiGrid"] .sapMGTHdrContent,
+[id$="--kpiGrid"] .sapMGTContent {
+    background: transparent !important;
+}
+
+[id$="--kpiGrid"] .sapMGTHdrTxt {
+    color: rgba(255, 255, 255, 0.96) !important;
+    font-weight: 750 !important;
+    font-size: 0.88rem !important;
+}
+
+[id$="--kpiGrid"] .sapMGTSubHdrTxt,
+[id$="--kpiGrid"] .sapMTileCntFtrTxt {
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-size: 0.70rem !important;
+}
+
+[id$="--kpiGrid"] .sapMNCValue,
+[id$="--kpiGrid"] .sapMNCScale,
+[id$="--kpiGrid"] .sapMNCIconImage {
+    color: #636363 !important;
+}
+
+[id$="--kpiGrid"] .sapMNCValue {
+    font-size: 1.65rem !important;
+    font-weight: 800 !important;
+}
+
+[id$="--kpiGrid"] .sapMNCScale {
+    font-weight: 700 !important;
+}
+
+[id$="--kpiGrid"] .sapMNCIconImage {
+    opacity: 0.92;
+}
+
+
+
+[id$="--idPnlChart"],
+[id$="--quickActionsPanel"],
+[id$="--recentOrdersPanel"] {
+    border-radius: 16px !important;
+}
+
+[id$="--idVizFrame"] {
+    min-height: 290px;
+    width: 100% !important;
+}
+
+[id$="--quickActionsPanel"] {
+    height: 350px !important;
+}
+
+/* [id$="--quickActionsContent"] {
+    padding: 14px !important;
+}
+
+[id$="--quickActionsContent"] .sapMBtn {
+    margin-bottom: 8px !important;
+}
+
+[id$="--quickActionsContent"] .sapMBtn:last-child {
+    margin-bottom: 0 !important;
+}
+
+[id$="--quickActionsContent"] .sapMBtnInner {
+    min-height: 42px !important;
+    text-align: left !important;
+    padding-left: 14px !important;
+} */
+
+[id$="--recentOrdersPanel"] {
+    margin-top: 0px !important;
+}
+
+/* ============================================================================
+   PURCHASE ORDERS
+   ============================================================================ */
+
+[id$="--purchaseOrders_page"] .sapMPageContent {
+    padding: 0 !important;
+}
+
+[id$="--purchaseOrders_mainToolbar"],
+[id$="--purchaseOrders_filterToolbar"],
+[id$="--purchaseOrders_actionToolbar"] {
+    margin: 0 18px !important;
+    border-left: 1px solid var(--ui-border) !important;
+    border-right: 1px solid var(--ui-border) !important;
+}
+
+[id$="--purchaseOrders_mainToolbar"] {
+    margin-top: 18px !important;
+    border-top-left-radius: 14px !important;
+    border-top-right-radius: 14px !important;
+}
+
+[id$="--purchaseOrders_actionToolbar"] {
+    border-bottom: 0 !important;
+}
+
+[id$="--purchaseOrders_table"] {
+    margin: 0 18px 18px 18px !important;
+    width: calc(100% - 36px) !important;
+    border: 1px solid var(--ui-border) !important;
+    border-top: 0 !important;
+    border-radius: 0 0 14px 14px !important;
+    overflow: hidden !important;
+}
+
+[id$="--purchaseOrders_countText"] {
+    color: var(--ui-text-2) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+}
+
+/* ============================================================================
+   PRODUCT PAGE
+   ============================================================================ */
+
+[id$="--productsMainVBox"] {
+    box-sizing: border-box;
+    padding: 18px !important;
+}
+
+[id$="--productsToolbar"],
+[id$="--productsFilterToolbar"] {
+    border: 1px solid var(--ui-border) !important;
+}
+
+[id$="--productsToolbar"] {
+    border-radius: 14px 14px 0 0 !important;
+}
+
+[id$="--productsFilterToolbar"] {
+    border-top: 0 !important;
+}
+
+[id$="--productsCountText"] {
+    color: var(--ui-text-2) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+}
+
+[id$="--productsTable"] {
+    margin-top: 10px !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: var(--ui-shadow-sm) !important;
+}
+
+[id$="--productsPriceNumber"] .sapMObjectNumberText,
+[id$="--productsStockNumber"] .sapMObjectNumberText {
+    font-weight: 750 !important;
+}
+
+/* ============================================================================
+   STOCK PAGE
+   ============================================================================ */
+
+[id$="--stockMainContainer"] {
+    padding: 0 18px 18px 18px !important;
+    box-sizing: border-box;
+}
+
+[id$="--stockTopToolbar"] {
+    margin-top: 0 !important;
+    border: 1px solid var(--ui-border) !important;
+    border-top: 0 !important;
+    border-radius: 0 0 14px 14px !important;
+}
+
+[id$="--stockActionToolbar"],
+[id$="--stockFilterToolbar"],
+[id$="--stockListToolbar"] {
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 12px !important;
+}
+
+[id$="--stockActionToolbar"],
+[id$="--stockFilterToolbar"],
+[id$="--stockListToolbar"] {
+    margin-top: 10px !important;
+}
+
+[id$="--stockCount"] {
+    color: var(--ui-text-2) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+}
+
+[id$="--stockTable"] {
+    margin-top: 8px !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: var(--ui-shadow-sm) !important;
+}
+
+/* ============================================================================
+   WAREHOUSE PAGE
+   ============================================================================ */
+
+[id$="--warehousesMainVBox"] {
+    box-sizing: border-box;
+    padding: 18px !important;
+}
+
+[id$="--warehousesTopToolbar"],
+[id$="--warehousesFilterToolbar"] {
+    border: 1px solid var(--ui-border) !important;
+}
+
+[id$="--warehousesTopToolbar"] {
+    border-radius: 14px 14px 0 0 !important;
+}
+
+[id$="--warehousesFilterToolbar"] {
+    border-top: 0 !important;
+}
+
+[id$="--warehousesCountValue"] {
+    color: var(--ui-primary) !important;
+    font-weight: 800 !important;
+}
+
+[id$="--warehousesTable"] {
+    margin-top: 10px !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: var(--ui-shadow-sm) !important;
+}
+
+/* ============================================================================
+   PRICE MASTER PAGE
+   ============================================================================ */
+
+[id$="--priceMasterMainVBox"] {
+    box-sizing: border-box;
+    padding: 0 18px 18px 18px !important;
+}
+
+[id$="--priceMasterFilterToolbar"] {
+    margin-top: 18px !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 14px !important;
+}
+
+[id$="--priceMasterSummaryHBox"] {
+    margin: 12px 2px !important;
+    padding: 8px 4px !important;
+}
+
+[id$="--priceMasterSummaryStatus"] {
+    font-size: 0.78rem !important;
+}
+
+[id$="--priceMasterSummaryText"] {
+    color: var(--ui-text-2) !important;
+    font-size: 0.74rem !important;
+}
+
+[id$="--priceMasterTable"] {
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: var(--ui-shadow-sm) !important;
+}
+
+[id$="--priceMasterTableToolbar"] {
+    min-height: 54px !important;
+}
+
+[id$="--priceMasterProductIdentifier"] .sapMObjectIdentifierTitle {
+    color: var(--ui-text) !important;
+    font-weight: 700 !important;
+}
+
+[id$="--priceMasterProductIdentifier"] .sapMObjectIdentifierText {
+    color: var(--ui-text-3) !important;
+}
+
+[id$="--priceMasterFinalPriceNumber"] .sapMObjectNumberText,
+[id$="--priceMasterFinalPriceNumber"] .sapMObjectNumberUnit {
+    color: var(--ui-green) !important;
+    font-weight: 800 !important;
+}
+
+/* ============================================================================
+   CREATE PURCHASE ORDER PAGE
+   ============================================================================ */
+
+[id$="--createPOContainer"] {
+    box-sizing: border-box;
+    padding: 18px !important;
+}
+
+[id$="--poHeaderPanel"],
+[id$="--poItemsPanel"],
+[id$="--poTotalsPanel"] {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+[id$="--idGrid2"] {
+    padding: 16px 14px 4px 14px !important;
+    box-sizing: border-box;
+}
+
+[id$="--idGrid2"] .sapMLabel,
+[id$="--createPOContainer"] .sapMLabel {
+    color: var(--ui-text-2) !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+}
+
+[id$="--poItemsPanel"] {
+    margin-top: 14px !important;
+}
+
+[id$="--poItemsTable"] {
+    border-top: 1px solid rgba(77, 86, 122, 0.08) !important;
+}
+
+[id$="--unitPriceValue"] .sapMObjectNumberText,
+[id$="--lineTotalValue"] .sapMObjectNumberText {
+    font-weight: 750 !important;
+}
+
+[id$="--poTotalsPanel"] {
+    margin-top: 14px !important;
+}
+
+[id$="--poTotalsContent"] {
+    padding: 16px !important;
+}
+
+[id$="--subtotalRow"],
+[id$="--taxRow"] {
+    min-height: 34px !important;
+    align-items: center !important;
+    border-bottom: 1px solid #e9eef4;
+}
+
+[id$="--subtotalLabel"],
+[id$="--taxLabel"] {
+    color: var(--ui-text-2) !important;
+    font-size: 0.78rem !important;
+}
+
+[id$="--subtotalValue"],
+[id$="--taxValue"] {
+    color: var(--ui-text) !important;
+    font-weight: 700 !important;
+}
+
+[id$="--totalRow"] {
+    padding-top: 11px !important;
+    align-items: center !important;
+}
+
+[id$="--totalLabel"] {
+    color: #172033 !important;
+    font-weight: 800 !important;
+}
+
+[id$="--totalValue"] .sapMObjectNumberText,
+[id$="--totalValue"] .sapMObjectNumberUnit {
+    color: var(--ui-primary) !important;
+    font-weight: 850 !important;
+}
+
+[id$="--createPOFooter"] {
+    border-top: 1px solid var(--ui-border) !important;
+    box-shadow: 0 -5px 18px rgba(37, 44, 79, 0.05) !important;
+}
+
+/* ============================================================================
+   EDIT PURCHASE ORDER PAGE
+   ============================================================================ */
+
+[id$="--editPurchaseOrder_mainVBox"] {
+    box-sizing: border-box;
+    padding: 18px !important;
+}
+
+[id$="--editPurchaseOrder_informationPanel"],
+[id$="--editPurchaseOrder_itemsPanel"],
+[id$="--editPurchaseOrder_amountPanel"] {
+    width: 100% !important;
+}
+
+[id$="--editPurchaseOrder_informationForm"] {
+    padding: 14px 12px !important;
+}
+
+[id$="--editPurchaseOrder_informationForm"] .sapMLabel {
+    color: var(--ui-text-2) !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+}
+
+[id$="--editPurchaseOrder_informationForm"] .sapMInputBaseInner {
+    font-weight: 650 !important;
+}
+
+[id$="--editPurchaseOrder_itemsPanel"] {
+    margin-top: 14px !important;
+}
+
+[id$="--editPurchaseOrder_itemsTable"] {
+    border-top: 1px solid rgba(77, 86, 122, 0.08) !important;
+}
+
+[id$="--editPurchaseOrder_amountPanel"] {
+    margin-top: 14px !important;
+}
+
+[id$="--editPurchaseOrder_amountVBox"] {
+    padding: 16px !important;
+}
+
+[id$="--editPurchaseOrder_totalHBox"],
+[id$="--editPurchaseOrder_taxHBox"] {
+    min-height: 36px !important;
+    align-items: center !important;
+    border-bottom: 1px solid #e9eef4;
+}
+
+[id$="--editPurchaseOrder_totalLabel"],
+[id$="--editPurchaseOrder_taxLabel"] {
+    color: var(--ui-text-2) !important;
+    font-size: 0.78rem !important;
+    font-weight: 650 !important;
+}
+
+[id$="--editPurchaseOrder_totalValue"] .sapMObjectNumberText,
+[id$="--editPurchaseOrder_taxValue"] .sapMObjectNumberText {
+    font-weight: 800 !important;
+}
+
+[id$="--editPurchaseOrder_totalValue"] .sapMObjectNumberText {
+    color: var(--ui-primary) !important;
+}
+
+[id$="--editPurchaseOrder_bottomToolbar"] {
+    margin-top: 14px !important;
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 12px !important;
+}
+
+/* ============================================================================
+   FORM / FIELD GROUP POLISH
+   ============================================================================ */
+
+.sapMLabelRequired::before {
+    color: var(--ui-primary) !important;
+}
+
+.sapUiForm .sapMLabel,
+.sapUiForm .sapMText {
+    font-size: 0.78rem !important;
+}
+
+.sapUiForm .sapMLabel {
+    color: var(--ui-text-2) !important;
+    font-weight: 700 !important;
+}
+
+/* ============================================================================
+   PRODUCT / STOCK DIALOGS
+   ============================================================================ */
+
+.sapMDialog {
+    border-radius: 18px !important;
+    border: 1px solid rgba(77, 86, 122, 0.12) !important;
+    box-shadow: 0 20px 55px rgba(34, 40, 73, 0.20) !important;
+    overflow: hidden !important;
+}
+
+.sapMDialogTitle {
+    color: var(--ui-text) !important;
+    font-weight: 800 !important;
+}
+
+.sapMDialog .sapMDialogScrollCont {
+    background: #ffffff !important;
+}
+
+[id$="--cpVbox001"],
+[id$="--epVbox001"],
+[id$="--createStockForm"],
+[id$="--editStockForm"] {
+    padding: 20px !important;
+    box-sizing: border-box;
+}
+
+[id$="--cpVbox001"] .sapMLabel,
+[id$="--epVbox001"] .sapMLabel,
+[id$="--createStockForm"] .sapMLabel,
+[id$="--editStockForm"] .sapMLabel {
+    margin-top: 9px !important;
+    margin-bottom: 5px !important;
+    color: var(--ui-text-2) !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+}
+
+[id$="--cpVbox001"] .sapMLabel:first-child,
+[id$="--epVbox001"] .sapMLabel:first-child,
+[id$="--createStockForm"] .sapMLabel:first-child,
+[id$="--editStockForm"] .sapMLabel:first-child {
+    margin-top: 0 !important;
+}
+
+[id$="--cpDlg001"],
+[id$="--epDlg001"],
+[id$="--createStockDialog"],
+[id$="--editStockDialog"] {
+    max-width: calc(100vw - 24px) !important;
+}
+
+/* ============================================================================
+   MAP-LIKE / EMPTY / SOFT CONTAINERS FOR FUTURE PAGE EXTENSIONS
+   ============================================================================ */
+
+.cardSurface {
+    background: #ffffff;
+    border: 1px solid var(--ui-border);
+    border-radius: 16px;
+    box-shadow: var(--ui-shadow-sm);
+}
+
+.softSurface {
+    background: var(--ui-surface-soft);
+    border: 1px solid rgba(77, 86, 122, 0.10);
+    border-radius: 14px;
+}
+
+/* ============================================================================
+   RESPONSIVE - LARGE TABLET
+   ============================================================================ */
+
+@media (max-width: 1100px) {
+
+    [id$="--dashboardContainer"] {
+        padding: 15px !important;
+    }
+
+    [id$="--dashboardContainer"]::before {
+        width: 100%;
+        height: 96px;
+        margin-bottom: 15px;
+    }
+
+    [id$="--kpiGrid"] .sapMGT {
+        height: 135px !important;
+        min-height: 135px !important;
+    }
+
+    [id$="--kpiGrid"] .sapMNCValue {
+        font-size: 1.45rem !important;
+    }
+
+    [id$="--purchaseOrders_mainToolbar"],
+    [id$="--purchaseOrders_filterToolbar"],
+    [id$="--purchaseOrders_actionToolbar"] {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+    }
+
+    [id$="--purchaseOrders_table"] {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        width: calc(100% - 24px) !important;
+    }
+
+    [id$="--createPOContainer"],
+    [id$="--editPurchaseOrder_mainVBox"] {
+        padding: 14px !important;
+    }
+}
+
+/* ============================================================================
+   RESPONSIVE - TABLET
+   ============================================================================ */
+
+@media (max-width: 900px) {
+
+    [id$="--appTitle"] {
+        font-size: 1.05rem !important;
+    }
+
+    [id$="--toolHeader"] {
+        padding: 0 12px !important;
+    }
+
+    [id$="--dashboardTitle"] {
+        font-size: 1.45rem !important;
+    }
+
+    [id$="--dashboardContainer"]::before {
+        height: 92px;
+    }
+
+    [id$="--productsMainVBox"],
+    [id$="--warehousesMainVBox"],
+    [id$="--stockMainContainer"],
+    [id$="--priceMasterMainVBox"] {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    [id$="--purchaseOrders_searchField"],
+    [id$="--productsSearchField"],
+    [id$="--warehousesSearchField"],
+    [id$="--stockSearchField"],
+    [id$="--priceMasterSearchField"] {
+        width: min(100%, 280px) !important;
+    }
+
+    [id$="--stockSearchField"] {
+        width: min(100%, 300px) !important;
+    }
+
+    [id$="--quickActionsPanel"] {
+        height: auto !important;
+        min-height: 320px;
+    }
+
+    [id$="--idVizFrame"] {
+        min-height: 260px;
+    }
+
+    [id$="--priceMasterRegionSelect"],
+    [id$="--priceMasterStatusSelect"],
+    [id$="--productsCategorySelect"],
+    [id$="--productFilter"],
+    [id$="--warehouseFilter"] {
+        max-width: 100% !important;
+    }
+}
+
+/* ============================================================================
+   RESPONSIVE - SMALL TABLET / PHONE
+   ============================================================================ */
+
+@media (max-width: 700px) {
+
+    [id$="--toolHeader"] {
+        height: 62px !important;
+        min-height: 62px !important;
+        padding: 0 8px !important;
+    }
+
+    [id$="--appTitle"] {
+        font-size: 0.96rem !important;
+    }
+
+    [id$="--menuButton"],
+    [id$="--searchButton"],
+    [id$="--notificationButton"],
+    [id$="--userButton"] {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+    }
+
+    [id$="--notificationButton"] {
+        display: none !important;
+    }
+
+    [id$="--dashboardContainer"] {
+        padding: 10px !important;
+    }
+
+    [id$="--dashboardContainer"]::before {
+        height: 84px;
+        border-radius: 18px;
+        margin-bottom: 12px;
+    }
+
+    [id$="--dashboardTitle"] {
+        font-size: 1.22rem !important;
+    }
+
+    [id$="--dashboardDescription"] {
+        font-size: 0.70rem !important;
+    }
+
+    [id$="--kpiGrid"] .sapMGT {
+        height: 135px !important;
+        min-height: 135px !important;
+    }
+
+    [id$="--kpiGrid"] .sapMNCValue {
+        font-size: 1.35rem !important;
+    }
+
+    [id$="--purchaseOrders_mainToolbar"],
+    [id$="--purchaseOrders_filterToolbar"],
+    [id$="--purchaseOrders_actionToolbar"] {
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+    }
+
+    [id$="--purchaseOrders_table"] {
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+        width: calc(100% - 16px) !important;
+    }
+
+    [id$="--productsMainVBox"],
+    [id$="--warehousesMainVBox"],
+    [id$="--stockMainContainer"],
+    [id$="--priceMasterMainVBox"],
+    [id$="--createPOContainer"],
+    [id$="--editPurchaseOrder_mainVBox"] {
+        padding: 9px !important;
+    }
+
+    [id$="--productsToolbar"],
+    [id$="--productsFilterToolbar"],
+    [id$="--warehousesTopToolbar"],
+    [id$="--warehousesFilterToolbar"],
+    [id$="--priceMasterFilterToolbar"],
+    [id$="--stockActionToolbar"],
+    [id$="--stockFilterToolbar"],
+    [id$="--stockListToolbar"] {
+        min-height: 52px !important;
+        padding: 6px 9px !important;
+    }
+
+    [id$="--stockTopToolbar"] {
+        min-height: 52px !important;
+        padding: 6px 9px !important;
+    }
+
+    [id$="--productsTable"],
+    [id$="--warehousesTable"],
+    [id$="--stockTable"],
+    [id$="--priceMasterTable"] {
+        border-radius: 11px !important;
+    }
+
+    .sapMListTblHeaderCell .sapMLabel,
+    .sapMListTblHeaderCell .sapMText {
+        font-size: 0.62rem !important;
+    }
+
+    .sapMListTblCell {
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+    }
+
+    .sapMListTblCell .sapMText,
+    .sapMListTblCell .sapMObjectIdentifierTitle,
+    .sapMListTblCell .sapMObjectNumberText {
+        font-size: 0.72rem !important;
+    }
+
+    [id$="--cpDlg001"],
+    [id$="--epDlg001"],
+    [id$="--createStockDialog"],
+    [id$="--editStockDialog"] {
+        width: calc(100vw - 20px) !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+}
+
+/* ============================================================================
+   RESPONSIVE - MOBILE
+   ============================================================================ */
+
+@media (max-width: 480px) {
+
+    [id$="--appTitle"] {
+        max-width: 46vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    [id$="--searchButton"] {
+        display: none !important;
+    }
+
+    [id$="--dashboardContainer"]::before {
+        height: 76px;
+        border-radius: 16px;
+    }
+
+    [id$="--dashboardTitle"] {
+        font-size: 1.08rem !important;
+    }
+
+    [id$="--dashboardDescription"] {
+        font-size: 0.66rem !important;
+    }
+
+    [id$="--kpiGrid"] .sapMGT {
+        height: 108px !important;
+        min-height: 108px !important;
+    }
+
+    [id$="--kpiGrid"] .sapMGTHdrTxt {
+        font-size: 0.76rem !important;
+    }
+
+    [id$="--kpiGrid"] .sapMGTSubHdrTxt,
+    [id$="--kpiGrid"] .sapMTileCntFtrTxt {
+        font-size: 0.62rem !important;
+    }
+
+    [id$="--kpiGrid"] .sapMNCValue {
+        font-size: 1.2rem !important;
+    }
+
+    [id$="--priceMasterSummaryHBox"] {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    [id$="--purchaseOrders_countText"],
+    [id$="--productsCountText"],
+    [id$="--stockCount"],
+    [id$="--warehousesCountLabel"],
+    [id$="--warehousesCountValue"] {
+        font-size: 0.62rem !important;
+    }
+
+    .sapMBtnInner {
+        font-size: 0.72rem !important;
+    }
+
+    .sapMPanelHdr {
+        font-size: 0.84rem !important;
+    }
+
+    /* Do not force narrow tables to wrap every value. Let UI5 handle pop-ins. */
+    .sapMListTblCell .sapMText,
+    .sapMListTblCell .sapMObjectIdentifierTitle,
+    .sapMListTblCell .sapMObjectIdentifierText {
+        white-space: nowrap;
+    }
+
+    [id$="--createPOFooter"],
+    [id$="--editPurchaseOrder_bottomToolbar"] {
+        padding: 7px 9px !important;
+    }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* Welcome Banner */
+.welcomeBanner {
+    position: relative;
+    min-height: 200px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 10px 0;
+
+    background-image: url("../images/TAFE-home-banner.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.welcomeBannerContent {
+    position: relative;
+    z-index: 2;
+    padding: 20px 28px;
+    max-width: 65%;
+}
+
+.welcomeBannerTitle {
+    color: #096e0e !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
+.welcomeBannerDescription {
+    color: #096e0e !important;
+    font-size: 14px !important;
+    margin-top: 6px;
+}
+
+
+
+
+/* ================================================================ */
+/* THREE-COLUMN REGIONAL ANALYTICS ROW                              */
+/* INDIA MAP | REGIONAL INSIGHTS | APPROVAL PROGRESS               */
+/* ================================================================ */
+
+.regionAnalyticsContainer {
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+
+    align-items: stretch !important;
+
+    gap: 14px;
+
+    margin: 0 0 20px 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    overflow: visible !important;
+}
+
+
+/* ================================================================ */
+/* INDIA MAP - LEFT SECTION                                         */
+/* ================================================================ */
+
+.regionAnalyticsContainer .indiaMapSection {
+
+    width: 35%;
+    height: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+
+    box-shadow:
+        0 4px 16px rgba(15, 23, 42, 0.07);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+}
+
+
+/* ================================================================ */
+/* INDIA MAP HEADER                                                  */
+/* ================================================================ */
+
+.regionAnalyticsContainer .indiaMapHeader {
+
+    width: 100% !important;
+
+    padding:
+        17px
+        20px
+        8px
+        20px;
+
+    box-sizing: border-box;
+
+    flex-shrink: 0;
+}
+
+
+.regionAnalyticsContainer .indiaMapTitle {
+
+    margin:
+        0 0 3px 0 !important;
+
+    color:
+        #172033 !important;
+
+    font-size:
+        1.05rem !important;
+
+    font-weight:
+        750 !important;
+
+    line-height:
+        1.25;
+}
+
+
+.regionAnalyticsContainer .indiaMapSubtitle {
+
+    color:
+        #64748b;
+
+    font-size:
+        0.74rem;
+
+    line-height:
+        1.3;
+}
+
+
+/* ================================================================ */
+/* ANALYTIC MAP                                                      */
+/* ================================================================ */
+
+.regionAnalyticsContainer .analyticMapContainer {
+
+    margin: 3px auto 0 auto;
+
+    background: #f8fbff;
+
+    border: 1px solid #e6edf4;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+}
+
+
+/* ================================================================ */
+/* MAP FOOTER                                                        */
+/* ================================================================ */
+
+.regionAnalyticsContainer .mapInstruction {
+
+    width:
+        100% !important;
+
+    margin:
+        7px 0 0 0 !important;
+
+    padding:
+        0 12px;
+
+    box-sizing:
+        border-box;
+
+    flex-shrink:
+        0;
+}
+
+
+.regionAnalyticsContainer .mapInstructionIcon {
+
+    color:
+        #2563eb;
+
+    font-size:
+        0.75rem;
+
+    margin-right:
+        6px;
+}
+
+
+.regionAnalyticsContainer .mapInstructionText {
+
+    color:
+        #64748b;
+
+    font-size:
+        0.61rem;
+
+    line-height:
+        1.3;
+
+    text-align:
+        center;
+}
+
+
+/* ================================================================ */
+/* REGIONAL INSIGHTS - MIDDLE SECTION                               */
+/* ================================================================ */
+
+.regionAnalyticsContainer .regionInsightsSection {
+
+    width: 30%;
+    height: 488px;
+
+    padding: 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.07);
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+/* ================================================================ */
+/* REGIONAL INSIGHTS HEADER                                         */
+/* ================================================================ */
+
+.regionAnalyticsContainer .insightsHeader {
+
+    padding-bottom: 9px;
+
+    border-bottom: 1px solid #edf1f5;
+}
+
+
+.regionAnalyticsContainer .insightsHeaderLabel {
+
+    color:#64748b;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    line-height: 1.2;
+}
+
+
+.regionAnalyticsContainer .selectedRegionTitle {
+
+    margin-top: 3px;
+
+    margin-bottom: 2px;
+
+    font-size: 1.65rem !important;
+
+    font-weight: 700 !important;
+
+    color: #162033 !important;
+}
+
+
+.regionAnalyticsContainer .selectedRegionDescription {
+
+    color:#64748b;
+
+    font-size:0.84rem;
+
+    line-height:1.3;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* ================================================================ */
+/* PRICING SUMMARY                                                   */
+/* ================================================================ */
+
+.regionAnalyticsContainer .pricingSummary {
+
+    width:
+        100%;
+
+    margin-top:
+        11px;
+
+    padding:
+        11px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e7edf4;
+
+    border-radius:
+        11px;
+
+    box-sizing:
+        border-box;
+
+    flex-shrink:
+        0;
+}
+
+
+.regionAnalyticsContainer .pricingSummaryHeader {
+
+    margin-bottom: 7px;
+}
+
+
+.regionAnalyticsContainer .summaryIcon {
+
+    color:#5b3df5;
+
+    font-size: 0.96rem;
+
+    margin-right: 8px;
+}
+
+
+.regionAnalyticsContainer .summaryTitle {
+
+    color:
+        #24324a;
+
+    font-size:
+        0.80rem;
+
+    font-weight: 700;
+}
+
+
+.regionAnalyticsContainer .summaryRow {
+
+    width: 100% !important;
+
+    min-height: 25px;
+
+    padding: 6px 0;
+
+    border-bottom: 1px solid #e9eef4;
+
+    box-sizing: border-box;
+}
+.regionAnalyticsContainer .summaryValueIcon {
+
+    color:#9b711c;
+
+    font-size: 1.2rem;
+
+    margin-right: 8px;
+}
+
+.regionAnalyticsContainer .summaryValue {
+
+    color:#25344b;
+
+    font-size: 0.9rem;
+
+    font-weight: 700;
+}
+
+
+.regionAnalyticsContainer .finalSummaryRow {
+
+    margin-top:
+        3px;
+
+    padding-top:
+        7px;
+
+    border-top:
+        1px solid #dfe6ee;
+}
+
+
+.regionAnalyticsContainer .finalSummaryLabel {
+
+    color:
+        #18253a !important;
+
+    font-weight:
+        750 !important;
+}
+
+
+.regionAnalyticsContainer .finalSummaryValue {
+
+    color:
+        #4f36d5 !important;
+
+    font-weight:
+        800 !important;
+}
+
+
+/* ================================================================ */
+/* SELECTION MESSAGE                                                 */
+/* ================================================================ */
+
+.regionAnalyticsContainer .selectionMessage {
+
+    width:
+        100% !important;
+
+    margin-top:
+        8px;
+
+    padding:
+        7px 8px;
+
+    background:
+        #f5f7ff;
+
+    border:
+        1px solid #e5e7f5;
+
+    border-radius:
+        8px;
+
+    box-sizing:
+        border-box;
+
+    flex-shrink:
+        0;
+}
+
+
+.regionAnalyticsContainer .selectionMessageIcon {
+
+    color:
+        #5b3df5;
+
+    font-size:
+        0.68rem;
+
+    margin-right:
+        5px;
+}
+
+
+.regionAnalyticsContainer .selectionMessageText {
+
+    color:
+        #6b7280;
+
+    font-size:
+        0.55rem;
+
+    line-height:
+        1.3;
+}
+
+
+/* ================================================================ */
+/* APPROVAL PROGRESS - RIGHT SECTION                                */
+/* ================================================================ */
+
+.regionAnalyticsContainer .regionalProgressSection {
+
+    flex: 1.05 1 0 !important;
+
+    width:
+        auto !important;
+
+    min-width:
+        0 !important;
+
+    height:
+        auto !important;
+
+    padding:
+        15px;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid #e2e8f0;
+
+    border-radius:
+        18px;
+
+    box-shadow:
+        0 4px 16px rgba(15, 23, 42, 0.07);
+
+    box-sizing:
+        border-box;
+
+    overflow:
+        hidden;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+}
+
+
+/* ================================================================ */
+/* PROGRESS HEADER                                                    */
+/* ================================================================ */
+
+.regionAnalyticsContainer .regionalProgressHeader {
+
+    padding-bottom:
+        8px;
+
+    margin-bottom:
+        8px;
+
+    border-bottom:
+        1px solid #edf1f5;
+
+    flex-shrink:
+        0;
+}
+
+
+.regionAnalyticsContainer .regionalProgressTitle {
+
+    color:
+        #162033 !important;
+
+    font-size:
+        0.95rem !important;
+
+    font-weight:
+        750 !important;
+
+    margin:
+        3px 0 1px 0 !important;
+}
+
+
+.regionAnalyticsContainer .regionalProgressSubtitle {
+
+    color:
+        #64748b;
+
+    font-size:
+        0.58rem;
+
+    line-height:
+        1.25;
+}
+
+
+/* ================================================================ */
+/* INDIVIDUAL PROGRESS CARD                                         */
+/* ================================================================ */
+
+.regionAnalyticsContainer .regionalProgressCard {
+
+    width:
+        100%;
+
+    padding:
+        9px 10px;
+
+    margin-bottom:
+        7px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e7edf3;
+
+    border-radius:
+        10px;
+
+    box-sizing:
+        border-box;
+
+    flex-shrink:
+        0;
+}
+
+
+/* ================================================================ */
+/* PROGRESS CARD HEADER                                               */
+/* ================================================================ */
+
+.regionAnalyticsContainer .regionalProgressCardTitle {
+
+    color:
+        #334155;
+
+    font-size:
+        0.63rem;
+
+    font-weight:
+        700;
+}
+
+
+.regionAnalyticsContainer .regionalProgressCardTotal {
+
+    color:
+        #64748b;
+
+    font-size:
+        0.54rem;
+
+    white-space:
+        nowrap;
+}
+
+
+/* ================================================================ */
+/* CONTINUOUS THREE-COLOR PROGRESS BAR                              */
+/* ================================================================ */
+
+.regionAnalyticsContainer .approvalProgressBar {
+
+    width:
+        100% !important;
+
+    height:
+        8px;
+
+    margin-top:
+        7px;
+
+    border-radius:
+        5px;
+
+    overflow:
+        hidden;
+
+    background:
+        #e9eef4;
+
+    box-sizing:
+        border-box;
+
+    display:
+        flex;
+}
+
+
+.regionAnalyticsContainer .approvalSegment {
+
+    height: 100%;
+
+    min-width: 0;
+
+    background: rgba( 34, 160, 107, 0.6 );
+
+    transition: width .5s ease;
+}
+
+
+.regionAnalyticsContainer .pendingSegment {
+
+    height: 100%;
+
+    min-width: 0;
+
+    background: rgba( 245, 158, 11, 0.6 );
+
+    transition: width .5s ease;
+}
+
+
+.regionAnalyticsContainer .rejectedSegment {
+
+    height: 100%;
+
+    min-width: 0;
+
+    background: rgba( 220, 53, 69, 0.6 );
+
+    transition: width .5s ease;
+}
+
+
+/* ================================================================ */
+/* PROGRESS LEGEND                                                   */
+/* ================================================================ */
+
+.regionAnalyticsContainer .approvalLegend {
+
+    width: 100% !important;
+
+    margin-top: 5px;
+
+    gap: 3px;
+}
+
+
+.regionAnalyticsContainer .approvedLegendText {
+
+    color:#168b68;
+
+    font-size: 0.51rem;
+
+    font-weight: 650;
+
+    white-space: nowrap;
+}
+
+
+.regionAnalyticsContainer .pendingLegendText {
+
+    color: #d97706;
+
+    font-size:  0.51rem;
+
+    font-weight: 650;
+
+    white-space: nowrap;
+}
+
+
+.regionAnalyticsContainer .rejectedLegendText {
+
+    color: #cc4251;
+
+    font-size: 0.51rem;
+
+    font-weight: 650;
+
+    white-space: nowrap;
+}
+
+
+/* ================================================================ */
+/* WAREHOUSE NOTE                                                    */
+/* ================================================================ */
+
+.regionAnalyticsContainer .warehouseProgressNote {
+
+    margin-top:
+        1px;
+
+    color: #94a3b8;
+
+    font-size: 0.51rem;
+
+    line-height: 1.25;
+}
+
+
+/* ================================================================ */
+/* LARGE DESKTOP                                                     */
+/* ================================================================ */
+
+@media (min-width: 1400px) {
+
+    .regionAnalyticsContainer {
+
+        gap:
+            16px;
+    }
+
+
+    .regionAnalyticsContainer .indiaMapHeader {
+
+        padding:
+            19px 22px 9px 22px;
+    }
+
+
+    .regionAnalyticsContainer .analyticMapContainer {
+
+        height:
+            390px !important;
+    }
+
+
+    .regionAnalyticsContainer .selectedRegionTitle {
+
+        font-size:
+            1.4rem !important;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressCard {
+
+        padding:
+            10px 11px;
+    }
+
+}
+
+
+/* ================================================================ */
+/* LAPTOP / SMALL DESKTOP                                            */
+/* ================================================================ */
+
+@media (max-width: 1200px) {
+
+    .regionAnalyticsContainer {
+
+        gap:
+            10px;
+    }
+
+
+    .regionAnalyticsContainer .indiaMapHeader {
+
+        padding:
+            15px 16px 7px 16px;
+    }
+
+
+    .regionAnalyticsContainer .analyticMapContainer {
+
+        width:
+            calc(100% - 16px) !important;
+
+        height:
+            350px !important;
+    }
+
+
+    .regionAnalyticsContainer .regionInsightsSection,
+    .regionAnalyticsContainer .regionalProgressSection {
+
+        padding: 12px;
+    }
+
+
+    .regionAnalyticsContainer .regionalMetricValue {
+
+        font-size:
+            0.58rem;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressCard {
+
+        padding:
+            8px;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressCardTitle {
+
+        font-size:
+            0.59rem;
+    }
+
+
+    .regionAnalyticsContainer .approvedLegendText,
+    .regionAnalyticsContainer .pendingLegendText,
+    .regionAnalyticsContainer .rejectedLegendText {
+
+        font-size: 0.48rem;
+    }
+
+}
+
+
+/* ================================================================ */
+/* TABLET                                                            */
+/* ================================================================ */
+
+@media (max-width: 900px) {
+
+    .regionAnalyticsContainer {
+
+        gap:
+            8px;
+    }
+
+
+    .regionAnalyticsContainer .analyticMapContainer {
+
+        height:
+            320px !important;
+    }
+
+
+    .regionAnalyticsContainer .indiaMapTitle {
+
+        font-size:
+            0.92rem !important;
+    }
+
+
+    .regionAnalyticsContainer .indiaMapSubtitle {
+
+        font-size:
+            0.67rem;
+    }
+
+
+    .regionAnalyticsContainer .selectedRegionTitle {
+
+        font-size:1.2rem !important;
+    }
+
+
+    .regionAnalyticsContainer .selectedRegionDescription {
+
+        font-size: 1rem;
+    }
+
+
+    .regionAnalyticsContainer .pricingSummary {
+
+        padding:
+            9px;
+    }
+
+
+    .regionAnalyticsContainer .summaryRow {
+
+        min-height:
+            23px;
+    }
+
+
+    .regionAnalyticsContainer .summaryRow
+    .sapMText:first-child,
+    .regionAnalyticsContainer .summaryValue {
+
+        font-size:
+            0.56rem;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressTitle {
+
+        font-size:
+            0.85rem !important;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressSubtitle {
+
+        font-size:
+            0.53rem;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressCard {
+
+        padding:
+            7px;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressCardTotal {
+
+        font-size:
+            0.48rem;
+    }
+
+}
+
+
+/* ================================================================ */
+/* MOBILE                                                            */
+/* ================================================================ */
+
+@media (max-width: 767px) {
+
+    .regionAnalyticsContainer {
+
+        flex-direction:
+            column !important;
+
+        gap:
+            14px;
+
+        width:
+            100% !important;
+    }
+
+
+    .regionAnalyticsContainer .indiaMapSection,
+    .regionAnalyticsContainer .regionInsightsSection,
+    .regionAnalyticsContainer .regionalProgressSection {
+
+        flex: none !important;
+
+        width: 100% !important;
+
+        min-width: 100% !important;
+    }
+
+
+    .regionAnalyticsContainer .analyticMapContainer {
+
+        height:
+            340px !important;
+    }
+
+
+    .regionAnalyticsContainer .mapInstructionText {
+
+        font-size:
+            0.62rem;
+    }
+
+
+    .regionAnalyticsContainer .regionInsightsSection,
+    .regionAnalyticsContainer .regionalProgressSection {
+
+        padding: 14px;
+    }
+
+
+    .regionAnalyticsContainer .regionMetricStack {
+
+        margin-top: 17px;
+
+        padding: 15px 17px;
+
+        background: #f8fafc;
+
+        border: 1px solid #e7edf3;
+
+        border-radius: 13px;
+
+        display: grid;
+
+        grid-template-columns: repeat( 2, minmax(0, 1fr) );
+
+        gap: 8px;
+    }
+
+}
+
+
+/* ================================================================ */
+/* SMALL MOBILE                                                      */
+/* ================================================================ */
+
+@media (max-width: 480px) {
+
+    .regionAnalyticsContainer {
+
+        gap:
+            10px;
+    }
+
+
+    .regionAnalyticsContainer .indiaMapHeader {
+
+        padding:
+            13px 14px 7px 14px;
+    }
+
+
+    .regionAnalyticsContainer .analyticMapContainer {
+
+        width:
+            calc(100% - 12px) !important;
+
+        height:
+            310px !important;
+    }
+
+
+    .regionAnalyticsContainer .mapInstruction {
+
+        padding:
+            0 8px;
+    }
+
+
+    .regionAnalyticsContainer .mapInstructionText {
+
+        font-size:
+            0.56rem;
+    }
+
+
+    .regionAnalyticsContainer .regionInsightsSection,
+    .regionAnalyticsContainer .regionalProgressSection {
+
+        padding: 11px;
+    }
+
+
+    .regionAnalyticsContainer .selectedRegionTitle {
+
+        font-size:0.9rem !important;
+    }
+
+
+    .regionAnalyticsContainer .selectedRegionDescription {
+
+        font-size: 0.7rem;
+    }
+
+
+    .regionAnalyticsContainer .pricingSummary {
+
+        padding:
+            8px;
+    }
+
+
+    .regionAnalyticsContainer .summaryRow {
+
+        min-height:
+            22px;
+    }
+
+
+    .regionAnalyticsContainer .summaryRow
+    .sapMText:first-child,
+    .regionAnalyticsContainer .summaryValue {
+
+        font-size:
+            0.54rem;
+    }
+
+
+    .regionAnalyticsContainer .regionalProgressCard {
+
+        padding:
+            8px;
+    }
+
+
+    .regionAnalyticsContainer .approvalProgressBar {
+
+        height:
+            7px;
+    }
+
+
+    .regionAnalyticsContainer .approvedLegendText,
+    .regionAnalyticsContainer .pendingLegendText,
+    .regionAnalyticsContainer .rejectedLegendText {
+
+        font-size:
+            0.48rem;
+    }
+
+}
+
+/* Ensure all three panels match in height for a clean UI */
+.customPanelHeight {
+    height: 280px !important; 
+}
+
+/* Panel Styling */
+.dashboardPanel {
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+/* Header Tweaks for Dynamic Donut Panel */
+.panelHeaderToolbar {
+    background: transparent !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding: 0 1rem !important;
+}
+
+.panelTitle {
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    color: #444444 !important;
+}
+
+/* Make Dropdown prominent */
+.dimensionSelect {
+    width: 140px !important;
+}
+
+/* Quick Actions List Spacing */
+/* #quickActionsContent {
+    padding-top: 0.5rem;
+}
+
+#quickActionsContent .sapMBtn {
+    margin-bottom: 0.75rem !important;
+}
+
+.quickActionBtn {
+    background-color: #2587ee;
+    margin-bottom: 50px;
+} */
+
+
+
+/* ANALYTICS TAB */
+
+/* css file */
+
+/* =========================================================
+   SHARED KPI TILE BASE
+   ========================================================= */
+.kpiCard {
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    min-height: 6.5rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.kpiCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+.kpiLabel {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.kpiValue {
+    color: #ffffff;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0.15rem 0;
+}
+.kpiSub {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.72rem;
+}
+
+/* =========================================================
+   1. DEALER ANALYTICS — Teal / Cyan
+   ========================================================= */
+.dealerAnalyticsPage .kpiCard:nth-of-type(4n+1) { background: linear-gradient(135deg, #0f4c5c, #17a2b8); }
+.dealerAnalyticsPage .kpiCard:nth-of-type(4n+2) { background: linear-gradient(135deg, #0b3d43, #0fb8ad); }
+.dealerAnalyticsPage .kpiCard:nth-of-type(4n+3) { background: linear-gradient(135deg, #086972, #20c9c9); }
+.dealerAnalyticsPage .kpiCard:nth-of-type(4n+4) { background: linear-gradient(135deg, #003c43, #00838f); }
+
+/* =========================================================
+   2. MONTHLY ANALYTICS — Purple / Indigo
+   ========================================================= */
+.monthlyAnalyticsPage .kpiCard:nth-of-type(4n+1) { background: linear-gradient(135deg, #4a148c, #7b1fa2); }
+.monthlyAnalyticsPage .kpiCard:nth-of-type(4n+2) { background: linear-gradient(135deg, #311b92, #5e35b1); }
+.monthlyAnalyticsPage .kpiCard:nth-of-type(4n+3) { background: linear-gradient(135deg, #3f0d5c, #8e24aa); }
+.monthlyAnalyticsPage .kpiCard:nth-of-type(4n+4) { background: linear-gradient(135deg, #1a0033, #6a1b9a); }
+
+/* =========================================================
+   3. PRICING ANALYTICS — Amber / Orange
+   ========================================================= */
+.pricingAnalyticsPage .kpiCard:nth-of-type(4n+1) { background: linear-gradient(135deg, #e65100, #ff9800); }
+.pricingAnalyticsPage .kpiCard:nth-of-type(4n+2) { background: linear-gradient(135deg, #bf360c, #ff7043); }
+.pricingAnalyticsPage .kpiCard:nth-of-type(4n+3) { background: linear-gradient(135deg, #d84315, #ffab40); }
+.pricingAnalyticsPage .kpiCard:nth-of-type(4n+4) { background: linear-gradient(135deg, #8d3400, #ff6f00); }
+
+/* =========================================================
+   4. PRODUCT SALES ANALYTICS — Green
+   ========================================================= */
+.productSalesAnalyticsPage .kpiCard:nth-of-type(4n+1) { background: linear-gradient(135deg, #1b5e20, #43a047); }
+.productSalesAnalyticsPage .kpiCard:nth-of-type(4n+2) { background: linear-gradient(135deg, #0d3d13, #2e7d32); }
+.productSalesAnalyticsPage .kpiCard:nth-of-type(4n+3) { background: linear-gradient(135deg, #154021, #66bb6a); }
+.productSalesAnalyticsPage .kpiCard:nth-of-type(4n+4) { background: linear-gradient(135deg, #002d14, #00695c); }
+
+/* =========================================================
+   5. PURCHASE ORDER ANALYTICS — Crimson / Red
+   ========================================================= */
+.purchaseOrderAnalyticsPage .kpiCard:nth-of-type(4n+1) { background: linear-gradient(135deg, #8b0000, #e53935); }
+.purchaseOrderAnalyticsPage .kpiCard:nth-of-type(4n+2) { background: linear-gradient(135deg, #6a0000, #ef5350); }
+.purchaseOrderAnalyticsPage .kpiCard:nth-of-type(4n+3) { background: linear-gradient(135deg, #4a0000, #d32f2f); }
+.purchaseOrderAnalyticsPage .kpiCard:nth-of-type(4n+4) { background: linear-gradient(135deg, #330000, #c62828); }
+
+/* Delta indicators used on Pricing page */
+.deltaUp   { color: #2e7d32; font-weight: 700; }
+.deltaDown { color: #c62828; font-weight: 700; }
+
+/* Section card wrapper for the "extra" widget on each page */
+.analyticsExtraCard {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+/* ===================================================================
+   Classic KPI tile style — colored tinted background, centered
+   content, spaced evenly across the row, icon badge, hover lift.
+   Used on Product Sales Analytics KPI row.
+   =================================================================== */
+
+.kpiRowClassic {
+	gap: 1.75rem;
+	margin-top: 0.25rem;
+}
+
+.kpiCardClassic {
+	border-radius: 14px;
+	border-top: 4px solid transparent;
+	padding: 1.1rem 1rem 0.9rem;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+	transition: box-shadow 0.22s ease, transform 0.22s ease;
+	cursor: pointer;
+	flex: 1 1 0;
+	min-width: 11rem;
+	text-align: center;
+}
+
+.kpiCardClassic:hover {
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14);
+	transform: translateY(-4px);
+}
+
+.kpiIconClassic {
+	font-size: 1.2rem;
+	width: 2.2rem;
+	height: 2.2rem;
+	line-height: 2.2rem;
+	border-radius: 50%;
+	margin-bottom: 0.45rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.kpiLabelClassic {
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	color: #6a6d70;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.kpiValueClassic {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #1d2d3e;
+	margin: 0.25rem 0 0.1rem;
+	display: block;
+	text-align: center;
+}
+
+.kpiSubClassic {
+	font-size: 0.68rem;
+	color: #8b8f94;
+	text-align: center;
+}
+
+/* Distinct tinted background + accent color per tile */
+.kpiAccentBlue   { background: #eaf6fd; border-top-color: #2D9CDB; }
+.kpiAccentGreen  { background: #eafaf1; border-top-color: #27AE60; }
+.kpiAccentPurple { background: #f5eefc; border-top-color: #9B51E0; }
+.kpiAccentOrange { background: #fef3e9; border-top-color: #F2994A; }
+
+.kpiAccentBlue   .kpiLabelClassic { color: #1c7fb8; }
+.kpiAccentGreen  .kpiLabelClassic { color: #1f8a4c; }
+.kpiAccentPurple .kpiLabelClassic { color: #7d33bd; }
+.kpiAccentOrange .kpiLabelClassic { color: #c96f24; }
+
+.kpiAccentBlue   .kpiIconClassic { background: #2D9CDB; color: #ffffff; }
+.kpiAccentGreen  .kpiIconClassic { background: #27AE60; color: #ffffff; }
+.kpiAccentPurple .kpiIconClassic { background: #9B51E0; color: #ffffff; }
+.kpiAccentOrange .kpiIconClassic { background: #F2994A; color: #ffffff; }
+
+
+.analyticsExtraCard {
+	background: #ffffff;
+	border-radius: 14px;
+	padding: 1.3rem 1.3rem 1.6rem;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+	min-height: 20rem;
+}
+
+.analyticsExtraCard:hover {
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+	transform: translateY(-2px);
+}
+
+.chartEmptyState {
+	color: #6a6d70;
+	font-size: 0.85rem;
+	padding: 1.5rem 0;
+	text-align: center;
+}
+
+/* ---------- Panel 1: horizontal bar list ---------- */
+.chartBarList {
+	display: flex;
+	flex-direction: column;
+	gap: 0.95rem;
+	margin-top: 0.3rem;
+}
+
+.chartBarRow {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.chartBarLabel {
+	flex: 0 0 5.5rem;
+	font-size: 0.78rem;
+	color: #32363a;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.chartBarTrack {
+	flex: 1 1 auto;
+	background: #f1f2f6;
+	border-radius: 999px;
+	height: 0.6rem;
+	overflow: hidden;
+}
+
+.chartBarFill {
+	height: 100%;
+	border-radius: 999px;
+	transition: width 0.4s ease;
+}
+
+.chartBarPercent {
+	flex: 0 0 2.2rem;
+	text-align: right;
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: #32363a;
+}
+
+/* ---------- Panel 3: donut + legend ---------- */
+.donutWrapper {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.donutRing {
+	position: relative;
+	width: 9.5rem;
+	height: 9.5rem;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.donutCenter {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 6rem;
+	height: 6rem;
+	border-radius: 50%;
+	background: #ffffff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.donutCenterValue {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: #32363a;
+	line-height: 1.1;
+}
+
+.donutCenterLabel {
+	font-size: 0.6rem;
+	color: #6a6d70;
+	margin-top: 0.15rem;
+}
+
+.donutLegend {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	flex: 1 1 auto;
+	min-width: 8rem;
+}
+
+.donutLegendRow {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.donutLegendDot {
+	width: 0.6rem;
+	height: 0.6rem;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.donutLegendLabel {
+	flex: 1 1 auto;
+	font-size: 0.75rem;
+	color: #32363a;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.donutLegendPct {
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: #32363a;
+}
+
+/* ===================================================================
+   Dealer Analytics chart styles — leaderboard + stacked status bar.
+   Distinct visual language from Product Sales Analytics
+   (bar-list + donut). Relies on the shared .kpiCardClassic /
+   .kpiAccent* / .analyticsExtraCard / .chartEmptyState rules already
+   defined in productCharts.css — load both files together.
+   =================================================================== */
+
+/* ---------- Panel 1: leaderboard ---------- */
+.leaderboardList {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+	margin-top: 0.3rem;
+}
+
+.leaderRow {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+}
+
+.leaderRank {
+	flex: 0 0 1.6rem;
+	width: 1.6rem;
+	height: 1.6rem;
+	border-radius: 50%;
+	color: #ffffff;
+	font-size: 0.75rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.leaderAvatar {
+	flex: 0 0 2.1rem;
+	width: 2.1rem;
+	height: 2.1rem;
+	border-radius: 50%;
+	background: #eef2fb;
+	color: #3f5b8c;
+	font-weight: 700;
+	font-size: 0.85rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.leaderInfo {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.leaderName {
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: #32363a;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: 0.25rem;
+}
+
+.leaderTrack {
+	background: #f1f2f6;
+	border-radius: 999px;
+	height: 0.45rem;
+	overflow: hidden;
+}
+
+.leaderFill {
+	height: 100%;
+	border-radius: 999px;
+	background: linear-gradient(90deg, #2D9CDB, #5B86E5);
+	transition: width 0.4s ease;
+}
+
+.leaderRevenue {
+	flex: 0 0 auto;
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: #1d2d3e;
+	white-space: nowrap;
+}
+
+/* ---------- Panel 2: stacked status bar ---------- */
+.stackedBarTrack {
+	display: flex;
+	width: 100%;
+	height: 1.1rem;
+	border-radius: 999px;
+	overflow: hidden;
+	background: #f1f2f6;
+	margin-top: 0.4rem;
+}
+
+.stackedSegment {
+	height: 100%;
+	transition: width 0.4s ease;
+}
+
+.stackedLegend {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.stackedLegendRow {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.stackedLegendDot {
+	width: 0.65rem;
+	height: 0.65rem;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.stackedLegendLabel {
+	flex: 1 1 auto;
+	font-size: 0.78rem;
+	color: #32363a;
+	font-weight: 600;
+}
+
+.stackedLegendValue {
+	font-size: 0.78rem;
+	color: #6a6d70;
+}
+
+/* ===================================================================
+   Shared chart + table styles for Monthly, Pricing, and Purchase
+   Order Analytics. Depends on .kpiCardClassic / .kpiAccent* /
+   .analyticsExtraCard / .chartEmptyState / .donutWrapper family
+   already defined in productCharts.css — load both together.
+   =================================================================== */
+
+/* A 5th accent color, needed for Purchase Order Analytics' Rejected tile */
+.kpiAccentRed { background: #fdecec; border-top-color: #EB5757; }
+.kpiAccentRed .kpiLabelClassic { color: #c73e3e; }
+.kpiAccentRed .kpiIconClassic { background: #EB5757; color: #ffffff; }
+
+/* ---------- Vertical column bar chart (Monthly Analytics) ---------- */
+.vBarChart {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 0.6rem;
+	height: 11rem;
+	padding-top: 0.5rem;
+}
+
+.vBarCol {
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+}
+
+.vBarValue {
+	font-size: 0.7rem;
+	font-weight: 700;
+	color: #32363a;
+	margin-bottom: 0.25rem;
+}
+
+.vBarTrack {
+	flex: 1 1 auto;
+	width: 1.4rem;
+	display: flex;
+	align-items: flex-end;
+	background: #f1f2f6;
+	border-radius: 6px 6px 0 0;
+	overflow: hidden;
+}
+
+.vBarFill {
+	width: 100%;
+	background: linear-gradient(180deg, #9B51E0, #6C3FC5);
+	border-radius: 6px 6px 0 0;
+	transition: height 0.4s ease;
+}
+
+.vBarLabel {
+	font-size: 0.68rem;
+	color: #6a6d70;
+	margin-top: 0.4rem;
+	white-space: nowrap;
+}
+
+/* ---------- Diverging bar chart (Pricing Analytics) ---------- */
+.divergeChart {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	margin-top: 0.3rem;
+}
+
+.divergeRow {
+	display: grid;
+	grid-template-columns: 6.5rem 1fr 2px 1fr 3.2rem;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.divergeLabel {
+	font-size: 0.75rem;
+	color: #32363a;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.divergeTrackLeft {
+	display: flex;
+	justify-content: flex-end;
+	height: 0.6rem;
+}
+
+.divergeFillLeft {
+	height: 100%;
+	border-radius: 4px 0 0 4px;
+}
+
+.divergeAxis {
+	width: 2px;
+	height: 1.1rem;
+	background: #d5d7db;
+}
+
+.divergeTrackRight {
+	height: 0.6rem;
+}
+
+.divergeFill {
+	height: 100%;
+	border-radius: 0 4px 4px 0;
+}
+
+.divergeValue {
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-align: right;
+}
+
+/* ---------- Reference-style table card (matches the sample design) ---------- */
+.refTableCard {
+	padding: 0;
+	overflow: hidden;
+}
+
+.refTableCard .sapMListTbl {
+	border-collapse: collapse;
+}
+
+.refTableCard .sapMListTblHeader,
+.refTableCard .sapMListHdr {
+	background: #f8f9fb;
+}
+
+.refTableCard .sapMListTblHeaderCell {
+	text-transform: uppercase;
+	font-size: 0.68rem;
+	font-weight: 700;
+	color: #6a6d70;
+	letter-spacing: 0.02em;
+}
+
+.refTableCard .sapMListTblRow:hover {
+	background: #f8f9fb;
+}
+
+.refTablePrimaryCell {
+	font-weight: 700;
+	color: #1d2d3e;
+	font-size: 0.85rem;
+}
+
+.refTableSecondaryCell {
+	font-size: 0.72rem;
+	color: #8b8f94;
+}
+
+.refTableHighlightCell {
+	font-weight: 700;
+	color: #2D9CDB;
+}
+
+/* Pill-style status badges — targets SAPUI5's built-in ObjectStatus
+   state classes so no custom control is needed */
+.refTableCard .sapMObjStatusSuccess,
+.refTableCard .sapMObjectStatusText.sapMObjStatusSuccess {
+	background: #eafaf1;
+	color: #1f8a4c;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusWarning,
+.refTableCard .sapMObjectStatusText.sapMObjStatusWarning {
+	background: #fef3e9;
+	color: #c96f24;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusError,
+.refTableCard .sapMObjectStatusText.sapMObjStatusError {
+	background: #fdecec;
+	color: #c73e3e;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+/* ===================================================================
+   Shared chart + table styles for Monthly, Pricing, and Purchase
+   Order Analytics. Depends on .kpiCardClassic / .kpiAccent* /
+   .analyticsExtraCard / .chartEmptyState / .donutWrapper family
+   already defined in productCharts.css — load both together.
+   =================================================================== */
+
+/* A 5th accent color, needed for Purchase Order Analytics' Rejected tile */
+.kpiAccentRed { background: #fdecec; border-top-color: #EB5757; }
+.kpiAccentRed .kpiLabelClassic { color: #c73e3e; }
+.kpiAccentRed .kpiIconClassic { background: #EB5757; color: #ffffff; }
+
+/* ---------- Vertical column bar chart (Monthly Analytics) ---------- */
+.vBarChart {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 0.6rem;
+	height: 11rem;
+	padding-top: 0.5rem;
+}
+
+.vBarCol {
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100%;
+}
+
+.vBarValue {
+	font-size: 0.7rem;
+	font-weight: 700;
+	color: #32363a;
+	margin-bottom: 0.25rem;
+}
+
+.vBarTrack {
+	flex: 1 1 auto;
+	width: 1.4rem;
+	display: flex;
+	align-items: flex-end;
+	background: #f1f2f6;
+	border-radius: 6px 6px 0 0;
+	overflow: hidden;
+}
+
+.vBarFill {
+	width: 100%;
+	background: linear-gradient(180deg, #9B51E0, #6C3FC5);
+	border-radius: 6px 6px 0 0;
+	transition: height 0.4s ease;
+}
+
+.vBarLabel {
+	font-size: 0.68rem;
+	color: #6a6d70;
+	margin-top: 0.4rem;
+	white-space: nowrap;
+}
+
+/* ---------- Diverging bar chart (Pricing Analytics) ---------- */
+.divergeChart {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	margin-top: 0.3rem;
+}
+
+.divergeRow {
+	display: grid;
+	grid-template-columns: 6.5rem 1fr 2px 1fr 3.2rem;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.divergeLabel {
+	font-size: 0.75rem;
+	color: #32363a;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.divergeTrackLeft {
+	display: flex;
+	justify-content: flex-end;
+	height: 0.6rem;
+}
+
+.divergeFillLeft {
+	height: 100%;
+	border-radius: 4px 0 0 4px;
+}
+
+.divergeAxis {
+	width: 2px;
+	height: 1.1rem;
+	background: #d5d7db;
+}
+
+.divergeTrackRight {
+	height: 0.6rem;
+}
+
+.divergeFill {
+	height: 100%;
+	border-radius: 0 4px 4px 0;
+}
+
+.divergeValue {
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-align: right;
+}
+
+/* ---------- Reference-style table card (matches the sample design) ---------- */
+.refTableCard {
+	padding: 0;
+	overflow: hidden;
+	min-height: auto;
+}
+
+.refTableCard .sapMListTbl {
+	border-collapse: collapse;
+}
+
+.refTableCard .sapMListTblHeader,
+.refTableCard .sapMListHdr {
+	background: #f8f9fb;
+}
+
+.refTableCard .sapMListTblHeaderCell {
+	text-transform: uppercase;
+	font-size: 0.68rem;
+	font-weight: 700;
+	color: #6a6d70;
+	letter-spacing: 0.02em;
+}
+
+.refTableCard .sapMListTblRow:hover {
+	background: #f8f9fb;
+}
+
+.refTablePrimaryCell {
+	font-weight: 700;
+	color: #1d2d3e;
+	font-size: 0.85rem;
+}
+
+.refTableSecondaryCell {
+	font-size: 0.72rem;
+	color: #8b8f94;
+}
+
+.refTableHighlightCell {
+	font-weight: 700;
+	color: #2D9CDB;
+}
+
+/* Pill-style status badges — targets SAPUI5's built-in ObjectStatus
+   state classes so no custom control is needed */
+.refTableCard .sapMObjStatusSuccess,
+.refTableCard .sapMObjectStatusText.sapMObjStatusSuccess {
+	background: #eafaf1;
+	color: #1f8a4c;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusWarning,
+.refTableCard .sapMObjectStatusText.sapMObjStatusWarning {
+	background: #fef3e9;
+	color: #c96f24;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusError,
+.refTableCard .sapMObjectStatusText.sapMObjStatusError {
+	background: #fdecec;
+	color: #c73e3e;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+/* ===================================================================
+   Dealer Analytics chart styles — leaderboard + stacked status bar.
+   Distinct visual language from Product Sales Analytics
+   (bar-list + donut). Relies on the shared .kpiCardClassic /
+   .kpiAccent* / .analyticsExtraCard / .chartEmptyState rules already
+   defined in productCharts.css — load both files together.
+   =================================================================== */
+
+/* ---------- Panel 1: leaderboard ---------- */
+.leaderboardList {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+	margin-top: 0.3rem;
+}
+
+.leaderRow {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+}
+
+.leaderRank {
+	flex: 0 0 1.6rem;
+	width: 1.6rem;
+	height: 1.6rem;
+	border-radius: 50%;
+	color: #ffffff;
+	font-size: 0.75rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.leaderAvatar {
+	flex: 0 0 2.1rem;
+	width: 2.1rem;
+	height: 2.1rem;
+	border-radius: 50%;
+	background: #eef2fb;
+	color: #3f5b8c;
+	font-weight: 700;
+	font-size: 0.85rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.leaderInfo {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.leaderName {
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: #32363a;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: 0.25rem;
+}
+
+.leaderTrack {
+	background: #f1f2f6;
+	border-radius: 999px;
+	height: 0.45rem;
+	overflow: hidden;
+}
+
+.leaderFill {
+	height: 100%;
+	border-radius: 999px;
+	background: linear-gradient(90deg, #2D9CDB, #5B86E5);
+	transition: width 0.4s ease;
+}
+
+.leaderRevenue {
+	flex: 0 0 auto;
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: #1d2d3e;
+	white-space: nowrap;
+}
+
+/* ---------- Panel 2: stacked status bar ---------- */
+.stackedBarTrack {
+	display: flex;
+	width: 100%;
+	height: 1.1rem;
+	border-radius: 999px;
+	overflow: hidden;
+	background: #f1f2f6;
+	margin-top: 0.4rem;
+}
+
+.stackedSegment {
+	height: 100%;
+	transition: width 0.4s ease;
+}
+
+.stackedLegend {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.stackedLegendRow {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.stackedLegendDot {
+	width: 0.65rem;
+	height: 0.65rem;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.stackedLegendLabel {
+	flex: 1 1 auto;
+	font-size: 0.78rem;
+	color: #32363a;
+	font-weight: 600;
+}
+
+.stackedLegendValue {
+	font-size: 0.78rem;
+	color: #6a6d70;
+}
+
+/* ---------- Reference-style table card (shared look with Pricing / Purchase
+   Order / Monthly Analytics — duplicated here so this page doesn't depend
+   on loading monthlyPricingPOCharts.css just for these rules) ---------- */
+.refTableCard {
+	padding: 0;
+	overflow: hidden;
+	min-height: auto;
+}
+
+.refTableCard .sapMListTbl {
+	border-collapse: collapse;
+}
+
+.refTableCard .sapMListTblHeader,
+.refTableCard .sapMListHdr {
+	background: #f8f9fb;
+}
+
+.refTableCard .sapMListTblHeaderCell {
+	text-transform: uppercase;
+	font-size: 0.68rem;
+	font-weight: 700;
+	color: #6a6d70;
+	letter-spacing: 0.02em;
+}
+
+.refTableCard .sapMListTblRow:hover {
+	background: #f8f9fb;
+}
+
+.refTablePrimaryCell {
+	font-weight: 700;
+	color: #1d2d3e;
+	font-size: 0.85rem;
+}
+
+.refTableSecondaryCell {
+	font-size: 0.72rem;
+	color: #8b8f94;
+}
+
+.refTableHighlightCell {
+	font-weight: 700;
+	color: #2D9CDB;
+}
+
+/* Pill-style status badges — targets SAPUI5's built-in ObjectStatus
+   state classes so no custom control is needed */
+.refTableCard .sapMObjStatusSuccess,
+.refTableCard .sapMObjectStatusText.sapMObjStatusSuccess {
+	background: #eafaf1;
+	color: #1f8a4c;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusWarning,
+.refTableCard .sapMObjectStatusText.sapMObjStatusWarning {
+	background: #fef3e9;
+	color: #c96f24;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusError,
+.refTableCard .sapMObjectStatusText.sapMObjStatusError {
+	background: #fdecec;
+	color: #c73e3e;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}
+
+.refTableCard .sapMObjStatusInformation,
+.refTableCard .sapMObjectStatusText.sapMObjStatusInformation {
+	background: #eaf6fd;
+	color: #1c7fb8;
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.7rem;
+}

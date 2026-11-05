@@ -1,0 +1,71 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.ProductSalesAnalytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+
+    <Page id="productSalesAnalyticsPage" class="productSalesAnalyticsPage" title="Product Sales Analytics" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+
+            <!-- KPI TILES -->
+            <HBox wrap="Wrap" justifyContent="SpaceBetween" class="kpiRowClassic sapUiSmallMargin">
+                <VBox class="kpiCardClassic kpiAccentBlue" alignItems="Center">
+                    <core:Icon src="sap-icon://product" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL QTY SOLD"/>
+                    <Text class="kpiValueClassic" text="{kpi>/totalQtySold}"/>
+                    <Text class="kpiSubClassic" text="Units across all products"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentGreen" alignItems="Center">
+                    <core:Icon src="sap-icon://money-bills" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL REVENUE"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/totalRevenue', formatter: '.formatCurrency' }"/>
+                    <Text class="kpiSubClassic" text="From product sales"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentPurple" alignItems="Center">
+                    <core:Icon src="sap-icon://star" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOP PRODUCT"/>
+                    <Text class="kpiValueClassic" text="{kpi>/topProductName}"/>
+                    <Text class="kpiSubClassic" text="Highest revenue"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentOrange" alignItems="Center">
+                    <core:Icon src="sap-icon://kpi-managing-my-area" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="AVG UNIT PRICE"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/avgUnitPrice', formatter: '.formatCurrency' }"/>
+                    <Text class="kpiSubClassic" text="Across catalog"/>
+                </VBox>
+            </HBox>
+
+            <!-- ===================== 2-PANEL CHART ROW ===================== -->
+            <l:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" class="sapUiMediumMarginBottom sapUiMediumMarginTop">
+
+                <!-- Panel 1: Top Products by Revenue — horizontal bar list -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Top Products by Revenue" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/topRevenueBarsHtml}" />
+                </VBox>
+
+                <!-- Panel 2: Revenue Share — donut with center total -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Revenue Share" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/revenueShareHtml}" />
+                </VBox>
+
+            </l:Grid>
+
+            <!-- EXTRA: TOP 5 PRODUCTS LIST -->
+            <VBox class="analyticsExtraCard sapUiSmallMargin">
+                <Title text="Top 5 Products by Revenue" level="H3" class="sapUiTinyMarginBottom"/>
+                <List items="{kpi>/topProducts}">
+                    <StandardListItem
+                        title="{kpi>productName}"
+                        description="{kpi>category}"
+                        info="{ path: 'kpi>totalRevenue', formatter: '.formatCurrency' }"
+                        infoState="Success"/>
+                </List>
+            </VBox>
+
+        </content>
+    </Page>
+</mvc:View>

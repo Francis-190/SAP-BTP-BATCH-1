@@ -1,0 +1,97 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.DealerAnalytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+
+    <Page id="dealerAnalyticsPage" class="dealerAnalyticsPage" title="Dealer Analytics" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <VBox class="sapUiResponsiveMargin">
+
+            <!-- KPI TILES -->
+            <HBox wrap="Wrap" justifyContent="SpaceBetween" class="kpiRowClassic sapUiSmallMarginBottom">
+                <VBox class="kpiCardClassic kpiAccentBlue" alignItems="Center">
+                    <core:Icon src="sap-icon://customer" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL DEALERS"/>
+                    <Text class="kpiValueClassic" text="{kpi>/totalDealers}"/>
+                    <Text class="kpiSubClassic" text="Active in system"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentPurple" alignItems="Center">
+                    <core:Icon src="sap-icon://sales-order-item" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL ORDERS"/>
+                    <Text class="kpiValueClassic" text="{kpi>/totalOrders}"/>
+                    <Text class="kpiSubClassic" text="All dealers combined"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentGreen" alignItems="Center">
+                    <core:Icon src="sap-icon://money-bills" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL REVENUE"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/totalRevenue', formatter: '.formatCurrency' }"/>
+                    <Text class="kpiSubClassic" text="Across all POs"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentOrange" alignItems="Center">
+                    <core:Icon src="sap-icon://pending" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="PENDING ORDERS"/>
+                    <Text class="kpiValueClassic" text="{kpi>/pendingOrders}"/>
+                    <Text class="kpiSubClassic" text="Awaiting approval"/>
+                </VBox>
+            </HBox>
+
+            <!-- ===================== 2-PANEL CHART ROW ===================== -->
+
+            <l:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBottom sapUiSmallMarginTop">
+
+                <!-- Panel 1: Dealer leaderboard — rank badges + progress bars -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Top Dealers Leaderboard" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/leaderboardHtml}" />
+                </VBox>
+
+                <!-- Panel 2: Order status — horizontal stacked percentage bar -->
+                <VBox class="analyticsExtraCard ">
+                    <Title text="Order Status Overview" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/statusStackedBarHtml}" />
+                </VBox>
+
+            </l:Grid>
+
+            <!-- EXTRA: TOP DEALERS TABLE (reference card style) -->
+            <VBox class="analyticsExtraCard refTableCard">
+                <Table items="{kpi>/topDealers}" growing="true" growingThreshold="10" >
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Top Dealers by Revenue" level="H3"/>
+                            <ToolbarSpacer/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="28%"><Text text="Dealer"/></Column>
+                        <Column width="16%"><Text text="City"/></Column>
+                        <Column width="14%" hAlign="End"><Text text="Orders"/></Column>
+                        <Column width="22%" hAlign="End"><Text text="Revenue"/></Column>
+                        <Column width="20%"><Text text="Status"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <VBox>
+                                    <Text text="{kpi>dealerName}" class="refTablePrimaryCell"/>
+                                    <Text text="{kpi>dealerCode}" class="refTableSecondaryCell"/>
+                                </VBox>
+                                <Text text="{kpi>city}"/>
+                                <Text text="{kpi>totalOrders}"/>
+                                <Text text="{ path: 'kpi>totalRevenue', formatter: '.formatCurrency' }" class="refTableHighlightCell"/>
+                                <ObjectStatus
+                                    text="{kpi>status}"
+                                    state="{ path: 'kpi>status', formatter: '.formatStatusState' }"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

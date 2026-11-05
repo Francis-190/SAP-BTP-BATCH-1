@@ -1,0 +1,467 @@
+<mvc:View
+    id="createPOView"
+    controllerName="purchasemanagement.controller.CreatePurchaseOrder"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout" >
+
+    <Page
+        id="createPOPage"
+        title="Create Sales Order"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <content>
+
+            <VBox
+                id="createPOContainer"
+                class="sapUiMediumMargin">
+
+
+                <!-- ============================= -->
+                <!-- PURCHASE ORDER INFORMATION    -->
+                <!-- ============================= -->
+
+                <Panel
+                    id="poHeaderPanel"
+                    headerText="Sales Order Information"
+                    expandable="false"
+                    class="sapUiSmallMarginBottom">
+
+                    <l:Grid id="idGrid2" vSpacing="0" >
+                        <Label
+                            id="dealerLabel"
+                            text="Dealer"
+                            required="true"
+                            class="sapUiTinyMarginTop">
+                             <layoutData>
+                                <l:GridData id="idPnl4Lbl1Gd" span="L2 M2" ></l:GridData>
+                            </layoutData>    
+                        </Label>
+
+                        <Select
+                            id="dealerSelect"
+                            width="100%"
+                            selectedKey="{po>/dealer_ID}"
+                            forceSelection="false"
+                            change=".onDealerChange"
+                            class="sapUiTinyMarginBottom">
+
+                                <items>
+
+                                    <core:Item
+                                        id="dealerItem"
+                                        key="{purchase>ID}"
+                                        text="{purchase>dealerCode} - {purchase>dealerName}" />
+
+                                </items>
+
+                                <layoutData>
+                                    <l:GridData id="idPnl4In1Gd" span="L4 M4"></l:GridData>
+                                </layoutData>
+
+                            </Select>
+
+                             <!-- Order Date -->
+
+                            <Label
+                                id="orderDateLabel"
+                                text="Order Date"
+                                required="true" 
+                                class="sapUiTinyMarginTop" >
+                                <layoutData>
+                                    <l:GridData id="idPnl4Lbl2Gd" span="L3 M3"></l:GridData>
+                                </layoutData>
+                            </Label>
+
+                            <DatePicker
+                                id="orderDatePicker"
+                                width="100%"
+                                value="{po>/orderDate}"
+                                valueFormat="yyyy-MM-dd"
+                                displayFormat="dd-MM-yyyy"
+                                class="sapUiTinyMarginBottom" >
+                                <layoutData>
+                                    <l:GridData id="idPnl4In2Gd" span="L3 M3"></l:GridData>
+                                </layoutData>    
+                            </DatePicker>
+                             
+                            <Label
+                                id="dealerRegionLabel"
+                                text="Dealer Region"
+                                class="sapUiSmallMarginTop" />
+
+                            <Text id="dealerRegionTxt" text="" class="sapUiSmallMarginTop" />
+
+                             <Label
+                                id="statusLabel"
+                                text="Status"
+                                class="sapUiSmallMarginTop" />
+
+                            <ObjectStatus
+                                id="statusValue"
+                                text="PENDING"
+                                state="Warning"
+                                class="sapUiTinyMarginTop" />
+                        
+                    </l:Grid>
+                    
+
+                </Panel>
+
+
+                <!-- ============================= -->
+                <!-- PURCHASE ORDER ITEMS          -->
+                <!-- ============================= -->
+
+                <Panel
+                    id="poItemsPanel"
+                    headerText="Purchase Order Items"
+                    expandable="false"
+                    class="sapUiSmallMarginBottom">
+
+                    <headerToolbar>
+
+                        <Toolbar
+                            id="itemsToolbar">
+
+                            <Title
+                                id="itemsTitle"
+                                text="Items"
+                                level="H3" />
+
+                            <ToolbarSpacer
+                                id="itemsToolbarSpacer" />
+
+                            <Button
+                                id="addItemButton"
+                                text="Add Item"
+                                icon="sap-icon://add"
+                                type="Emphasized"
+                                press=".onAddItem" />
+
+                            <Button
+                                id="removeItemButton"
+                                text="Remove"
+                                icon="sap-icon://delete"
+                                type="Transparent"
+                                press=".onRemoveItem" />
+
+                        </Toolbar>
+
+                    </headerToolbar>
+
+
+                    <content>
+
+                        <Table
+                            id="poItemsTable"
+                            mode="MultiSelect"
+                            growing="true"
+                            growingThreshold="10"
+                            items="{po>/items}">
+
+                            <columns>
+
+
+                                <!-- Item -->
+
+                                <Column
+                                    id="itemNumberColumn"
+                                    width="4rem">
+
+                                    <Text
+                                        id="itemNumberHeader"
+                                        text="#" />
+
+                                </Column>
+
+
+                                <!-- Product -->
+
+                                <Column
+                                    id="productColumn"
+                                    width="25rem">
+
+                                    <Text
+                                        id="productHeader"
+                                        text="Product"
+                                        class="sapUiTinyMarginEnd" />
+
+                                </Column>
+
+
+                                <!-- Quantity -->
+
+                                <Column
+                                    id="quantityColumn"
+                                    width="10rem"
+                                    hAlign="End">
+
+                                    <Text
+                                        id="quantityHeader"
+                                        text="Quantity" />
+
+                                </Column>
+
+
+                                <!-- Unit Price -->
+
+                                <Column
+                                    id="unitPriceColumn"
+                                    width="12rem"
+                                    hAlign="End">
+
+                                    <Text
+                                        id="unitPriceHeader"
+                                        text="Unit Price" />
+
+                                </Column>
+
+                                <!-- Final Price -->
+
+                                <Column
+                                    id="finalPriceColumn"
+                                    width="12rem"
+                                    hAlign="End">
+
+                                    <Text
+                                        id="finalPriceHeader"
+                                        text="Final Price" />
+
+                                </Column>
+
+
+                                <!-- Line Total -->
+
+                                <Column
+                                    id="lineTotalColumn"
+                                    width="14rem"
+                                    hAlign="End">
+
+                                    <Text
+                                        id="lineTotalHeader"
+                                        text="Line Total" />
+
+                                </Column>
+
+                            </columns>
+
+
+                            <items>
+
+                                <ColumnListItem
+                                    id="poItemRow">
+
+                                    <cells>
+
+
+                                        <!-- Item Number -->
+
+                                        <Text
+                                            id="itemNumberText"
+                                            text="{po>itemNumber}" />
+
+
+                                        <!-- Product -->
+
+                                        <Select
+                                            id="productSelect"
+                                            width="100%"
+                                            selectedKey="{po>product_ID}"
+                                            forceSelection="false"
+                                            change=".onProductChange"
+                                            items="{products>/}">
+
+                                            <core:Item
+                                                id="productItem"
+                                                key="{products>ID}"
+                                                text="{products>productCode} - {products>productName}" />
+
+                                        </Select>
+
+
+                                        <!-- Quantity -->
+
+                                        <StepInput
+                                            id="quantityInput"
+                                            min="1"
+                                            max="999999"
+                                            step="1"
+                                            value="{po>quantity}"
+                                            change=".onQuantityChange"
+                                            width="80%" />
+
+
+                                        <!-- Unit Price -->
+
+                                        <ObjectNumber
+                                            id="unitPriceValue"
+                                            number="{po>unitPrice}"
+                                            unit="INR" />
+
+                                        <!-- Final Price -->
+
+                                        <ObjectNumber
+                                            id="FinalPriceValue"
+                                            number="{po>finalPrice}"
+                                            unit="INR" />
+
+
+
+                                        <!-- Line Total -->
+
+                                        <ObjectNumber
+                                            id="lineTotalValue"
+                                            number="{po>lineTotal}"
+                                            unit="INR" />
+
+                                    </cells>
+
+                                </ColumnListItem>
+
+                            </items>
+
+                        </Table>
+
+                    </content>
+
+                </Panel>
+
+
+                <!-- ============================= -->
+                <!-- ORDER SUMMARY                 -->
+                <!-- ============================= -->
+
+                <Panel
+                    id="poTotalsPanel"
+                    headerText="Order Summary"
+                    expandable="false">
+
+                    <content>
+
+                        <VBox
+                            id="poTotalsContent"
+                            class="sapUiSmallMargin">
+
+
+                            <!-- Subtotal -->
+
+                            <HBox
+                                id="subtotalRow"
+                                justifyContent="SpaceBetween">
+
+                                <Text
+                                    id="subtotalLabel"
+                                    text="Sub Total" />
+
+                                <ObjectNumber
+                                    id="subtotalValue"
+                                    number="{po>/subtotal}"
+                                    unit="INR" />
+
+                            </HBox>
+
+                            
+                             <!-- Discount -->
+
+                            <HBox
+                                id="discountRow"
+                                justifyContent="SpaceBetween"
+                                class="sapUiTinyMarginTop">
+
+                                <Text
+                                    id="discountLabel"
+                                    text="Discount" />
+
+                                <ObjectNumber
+                                    id="discountValue"
+                                    number="{po>/totalDiscount}"
+                                    unit="INR" />
+
+                            </HBox>
+
+
+                            <!-- Tax -->
+
+                            <HBox
+                                id="taxRow"
+                                justifyContent="SpaceBetween"
+                                class="sapUiTinyMarginTop">
+
+                                <Text
+                                    id="taxLabel"
+                                    text="Tax" />
+
+                                <ObjectNumber
+                                    id="taxValue"
+                                    number="{po>/taxAmount}"
+                                    unit="INR" />
+
+                            </HBox>
+
+
+                            <!-- Total -->
+
+                            <HBox
+                                id="totalRow"
+                                justifyContent="SpaceBetween"
+                                class="sapUiSmallMarginTop">
+
+                                <Title
+                                    id="totalLabel"
+                                    text="Total Amount"
+                                    level="H3" />
+
+                                <ObjectNumber
+                                    id="totalValue"
+                                    number="{po>/totalAmount}"
+                                    unit="INR"
+                                    emphasized="true" />
+
+                            </HBox>
+
+                        </VBox>
+
+                    </content>
+
+                </Panel>
+
+            </VBox>
+
+        </content>
+
+
+        <!-- ============================= -->
+        <!-- FOOTER                        -->
+        <!-- ============================= -->
+
+        <footer>
+
+            <Toolbar
+                id="createPOFooter">
+
+                <ToolbarSpacer
+                    id="footerSpacer" />
+
+                <Button
+                    id="cancelButton"
+                    text="Cancel"
+                    type="Transparent"
+                    press=".onCancel" />
+
+                <Button
+                    id="createButton"
+                    text="Create Sales Order"
+                    icon="sap-icon://save"
+                    type="Emphasized"
+                    press=".onCreatePO" />
+
+            </Toolbar>
+
+        </footer>
+
+    </Page>
+
+</mvc:View>

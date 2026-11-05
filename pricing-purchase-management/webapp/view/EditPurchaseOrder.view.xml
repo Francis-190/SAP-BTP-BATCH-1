@@ -1,0 +1,262 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.EditPurchaseOrder"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    displayBlock="true">
+
+    <Page
+        id="editPurchaseOrder_page"
+        title="Edit Sales Order"
+        showNavButton="true"
+        navButtonPress=".onCancel">
+
+        <headerContent>
+
+            <Button
+                id="editPurchaseOrder_headerSaveButton"
+                text="Save Changes"
+                icon="sap-icon://save"
+                type="Emphasized"
+                press=".onSave" />
+
+            <Button
+                id="editPurchaseOrder_headerCancelButton"
+                text="Cancel Changes"
+                icon="sap-icon://decline"
+                press=".onCancel" />
+
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="editPurchaseOrder_mainVBox"
+                class="sapUiMediumMargin">
+
+                <Panel
+                    id="editPurchaseOrder_informationPanel"
+                    headerText="Sales Order Information">
+
+                    <content>
+
+                        <form:SimpleForm
+                            id="editPurchaseOrder_informationForm"
+                            editable="true"
+                            layout="ResponsiveGridLayout">
+
+                            <Label
+                                id="editPurchaseOrder_poNumberLabel"
+                                text="SO Number" />
+
+                            <Input
+                                id="editPurchaseOrder_poNumberInput"
+                                value="{purchase>poNumber}"
+                                editable="false" />
+
+                            <Label
+                                id="editPurchaseOrder_orderDateLabel"
+                                text="Order Date" />
+
+                            <DatePicker
+                                id="editPurchaseOrder_orderDateInput"
+                                value="{purchase>orderDate}"
+                                valueFormat="yyyy-MM-dd"
+                                displayFormat="dd-MM-yyyy" />
+
+                            <Label
+                                id="editPurchaseOrder_statusLabel"
+                                text="Status" />
+
+                            <Input
+                                id="editPurchaseOrder_statusInput"
+                                value="{purchase>status}"
+                                editable="false" />
+
+                            <Label
+                                id="editPurchaseOrder_dealerCodeLabel"
+                                text="Dealer Code" />
+
+                            <Input
+                                id="editPurchaseOrder_dealerCodeInput"
+                                value="{purchase>dealer/dealerCode}"
+                                editable="false" />
+
+                            <Label
+                                id="editPurchaseOrder_dealerNameLabel"
+                                text="Dealer Name" />
+
+                            <Input
+                                id="editPurchaseOrder_dealerNameInput"
+                                value="{purchase>dealer/dealerName}"
+                                editable="false" />
+
+                        </form:SimpleForm>
+
+                    </content>
+
+                </Panel>
+
+                <Panel
+                    id="editPurchaseOrder_itemsPanel"
+                    headerText="Sales Order Items"
+                    class="sapUiMediumMarginTop">
+
+                    <content>
+
+                        <Table
+                            id="editPurchaseOrder_itemsTable"
+                            items="{purchase>items}">
+
+                            <columns>
+
+                                <Column
+                                    id="editPurchaseOrder_productColumn">
+
+                                    <Text
+                                        id="editPurchaseOrder_productHeader"
+                                        text="Product" />
+
+                                </Column>
+
+                                <Column
+                                    id="editPurchaseOrder_quantityColumn">
+
+                                    <Text
+                                        id="editPurchaseOrder_quantityHeader"
+                                        text="Quantity" />
+
+                                </Column>
+
+                                <Column
+                                    id="editPurchaseOrder_unitPriceColumn">
+
+                                    <Text
+                                        id="editPurchaseOrder_unitPriceHeader"
+                                        text="Unit Price" />
+
+                                </Column>
+
+                                <Column
+                                    id="editPurchaseOrder_lineTotalColumn">
+
+                                    <Text
+                                        id="editPurchaseOrder_lineTotalHeader"
+                                        text="Line Total" />
+
+                                </Column>
+
+                            </columns>
+
+                            <items>
+
+                                <ColumnListItem>
+
+                                    <cells>
+
+                                        <Text
+                                            text="{purchase>product/productName}" />
+
+                                        <StepInput
+                                            value="{purchase>quantity}"
+                                            min="1"
+                                            step="1"
+                                            change=".onQuantityChange" />
+
+                                        <Input
+                                            value="{purchase>unitPrice}"
+                                            type="Number"
+                                            editable="false" />
+
+                                        <ObjectNumber
+                                            number="{purchase>lineTotal}"
+                                            unit="INR" />
+
+                                    </cells>
+
+                                </ColumnListItem>
+
+                            </items>
+
+                        </Table>
+
+                    </content>
+
+                </Panel>
+
+                <Panel
+                    id="editPurchaseOrder_amountPanel"
+                    headerText="Amount Summary"
+                    class="sapUiMediumMarginTop">
+
+                    <content>
+
+                        <VBox
+                            id="editPurchaseOrder_amountVBox"
+                            class="sapUiMediumMargin">
+
+                            <HBox
+                                id="editPurchaseOrder_totalHBox"
+                                justifyContent="SpaceBetween">
+
+                                <Text
+                                    id="editPurchaseOrder_totalLabel"
+                                    text="Total Amount" />
+
+                                <ObjectNumber
+                                    id="editPurchaseOrder_totalValue"
+                                    number="{purchase>totalAmount}"
+                                    unit="INR" />
+
+                            </HBox>
+
+                            <HBox
+                                id="editPurchaseOrder_taxHBox"
+                                justifyContent="SpaceBetween">
+
+                                <Text
+                                    id="editPurchaseOrder_taxLabel"
+                                    text="Tax Amount" />
+
+                                <ObjectNumber
+                                    id="editPurchaseOrder_taxValue"
+                                    number="{purchase>taxAmount}"
+                                    unit="INR" />
+
+                            </HBox>
+
+                        </VBox>
+
+                    </content>
+
+                </Panel>
+
+                <Toolbar
+                    id="editPurchaseOrder_bottomToolbar"
+                    class="sapUiMediumMarginTop">
+
+                    <ToolbarSpacer
+                        id="editPurchaseOrder_bottomSpacer" />
+
+                    <Button
+                        id="editPurchaseOrder_bottomSaveButton"
+                        text="Save Changes"
+                        icon="sap-icon://save"
+                        type="Emphasized"
+                        press=".onSave" />
+
+                    <Button
+                        id="editPurchaseOrder_bottomCancelButton"
+                        text="Cancel Changes"
+                        icon="sap-icon://decline"
+                        press=".onCancel" />
+
+                </Toolbar>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

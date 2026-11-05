@@ -1,0 +1,119 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        id="editStockDialog"
+        title="Edit Stock"
+        contentWidth="500px"
+        draggable="true"
+        resizable="true">
+
+        <content>
+
+            <VBox id="editStockForm">
+
+                <Label
+                    id="editStockProductLabel"
+                    text="Product"/>
+
+                <Select
+                    id="editStockProductSelect"
+                    width="100%"
+                    enabled="false"
+                    items="{
+                        path: 'purchase>/Products'
+                    }">
+
+                    <core:Item
+                        key="{purchase>ID}"
+                        text="{purchase>productCode} - {purchase>productName}"/>
+
+                </Select>
+
+
+                <Label
+                    id="editStockWarehouseLabel"
+                    text="Warehouse"/>
+
+                <Select
+                    id="editStockWarehouseSelect"
+                    width="100%"
+                    enabled="false"
+                    items="{
+                        path: 'purchase>/warehouse'
+                    }">
+
+                    <core:Item
+                        key="{purchase>ID}"
+                        text="{purchase>warehouseCode} - {purchase>warehouseName}"/>
+
+                </Select>
+
+
+                <Label
+                    id="editStockAvailableLabel"
+                    text="Available Stock"
+                    required="true"/>
+
+                <Input
+                    id="editStockAvailableInput"
+                    type="Number"
+                    width="100%"/>
+
+
+                <Label
+                    id="editStockReservedLabel"
+                    text="Reserved Stock"/>
+
+                <Input
+                    id="editStockReservedInput"
+                    type="Number"
+                    width="100%"/>
+
+
+                <Label
+                    id="editStockReorderLabel"
+                    text="Reorder Level"/>
+
+                <Input
+                    id="editStockReorderInput"
+                    type="Number"
+                    width="100%"/>
+
+
+                <Label
+                    id="editStockRemarksLabel"
+                    text="Remarks"/>
+
+                <TextArea
+                    id="editStockRemarksInput"
+                    width="100%"
+                    rows="3"/>
+
+            </VBox>
+
+        </content>
+
+        <beginButton>
+
+            <Button
+                id="editStockSaveButton"
+                text="Save"
+                type="Emphasized"
+                press=".onEditStockConfirm"/>
+
+        </beginButton>
+
+        <endButton>
+
+            <Button
+                id="editStockCancelButton"
+                text="Cancel"
+                press=".onEditStockCancel"/>
+
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>

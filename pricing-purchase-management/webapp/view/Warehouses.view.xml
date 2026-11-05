@@ -1,0 +1,354 @@
+<mvc:View
+    id="warehousesView"
+    controllerName="purchasemanagement.controller.Warehouses"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page
+        id="warehousesPage"
+        title="Warehouses"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <headerContent>
+
+            <Button
+                id="warehousesRefreshButton"
+                icon="sap-icon://refresh"
+                tooltip="Refresh Warehouses"
+                type="Transparent"
+                press=".onRefresh" />
+
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="warehousesMainVBox"
+                class="sapUiSmallMargin">
+
+                <!-- TOP TOOLBAR -->
+                <Toolbar
+                    id="warehousesTopToolbar">
+
+                    <Title
+                        id="warehousesTopTitle"
+                        text="Warehouses"
+                        level="H2" />
+
+                    <ToolbarSpacer
+                        id="warehousesTopSpacer" />
+
+                    <SearchField
+                        id="warehousesSearchField"
+                        width="25rem"
+                        placeholder="Search Warehouse Code, Name or City"
+                        liveChange=".onSearch" />
+
+                    <Button
+                        id="warehousesCreateButton"
+                        text="Create Warehouse"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        press=".onCreateWarehouse" />
+
+                </Toolbar>
+
+
+                <!-- FILTER TOOLBAR -->
+                <Toolbar
+                    id="warehousesFilterToolbar"
+                    class="sapUiTinyMarginBottom">
+
+                    <Label
+                        id="warehousesStatusLabel"
+                        text="Status"
+                        labelFor="warehousesStatusSelect" />
+
+                    <Select
+                        id="warehousesStatusSelect"
+                        width="12rem"
+                        selectedKey=""
+                        change=".onFilterChange">
+
+                        <core:Item
+                            id="warehousesStatusAll"
+                            key=""
+                            text="All" />
+
+                        <core:Item
+                            id="warehousesStatusActive"
+                            key="true"
+                            text="ACTIVE" />
+
+                        <core:Item
+                            id="warehousesStatusInactive"
+                            key="false"
+                            text="INACTIVE" />
+
+                    </Select>
+
+                    <ToolbarSpacer
+                        id="warehousesCountSpacer" />
+
+                    <Text
+                        id="warehousesCountLabel"
+                        text="Warehouses:" />
+
+                    <Text
+                        id="warehousesCountValue"
+                        text="0"
+                        class="sapUiTinyMarginBegin" />
+
+                </Toolbar>
+
+
+                <!-- WAREHOUSE TABLE -->
+                <Table
+                    id="warehousesTable"
+                    items="{
+                        path: 'purchase>/warehouse'
+                    }"
+                    mode="SingleSelectLeft"
+                    selectionChange=".onSelectionChange"
+                    growing="true"
+                    growingThreshold="20"
+                    growingScrollToLoad="true"
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    width="100%"
+                    fixedLayout="false"
+                    popinLayout="GridSmall">
+
+
+                    <!-- TABLE HEADER -->
+                    <headerToolbar>
+
+                        <OverflowToolbar
+                            id="warehousesTableToolbar">
+
+                            <Title
+                                id="warehousesTableTitle"
+                                text="Warehouse List"
+                                level="H3" />
+
+                            <ToolbarSpacer
+                                id="warehousesTableSpacer" />
+
+                            <Button
+                                id="warehousesViewButton"
+                                text="View"
+                                icon="sap-icon://display"
+                                enabled="false"
+                                press=".onViewWarehouse" />
+
+                            <Button
+                                id="warehousesEditButton"
+                                text="Edit"
+                                icon="sap-icon://edit"
+                                enabled="false"
+                                press=".onEditWarehouse" />
+
+                            <Button
+                                id="warehousesToggleButton"
+                                text="Deactivate"
+                                icon="sap-icon://activate"
+                                enabled="false"
+                                press=".onToggleWarehouse" />
+
+                            <Button
+                                id="warehousesDeleteButton"
+                                text="Delete"
+                                icon="sap-icon://delete"
+                                type="Reject"
+                                enabled="false"
+                                press=".onDeleteWarehouse" />
+
+                        </OverflowToolbar>
+
+                    </headerToolbar>
+
+
+                    <!-- COLUMNS -->
+                    <columns>
+
+                        <!-- Warehouse Code -->
+                        <Column
+                            id="warehouseCodeColumn"
+                            width="13rem"
+                            demandPopin="false"
+                            minScreenWidth="Tablet">
+
+                            <Text
+                                id="warehouseCodeHeader"
+                                text="Warehouse Code" />
+
+                        </Column>
+
+
+                        <!-- Warehouse Name -->
+                        <Column
+                            id="warehouseNameColumn"
+                            width="22rem"
+                            demandPopin="false"
+                            minScreenWidth="Tablet">
+
+                            <Text
+                                id="warehouseNameHeader"
+                                text="Warehouse Name" />
+
+                        </Column>
+
+
+                        <!-- City -->
+                        <Column
+                            id="warehouseCityColumn"
+                            width="13rem"
+                            demandPopin="true"
+                            minScreenWidth="Tablet">
+
+                            <Text
+                                id="warehouseCityHeader"
+                                text="City" />
+
+                        </Column>
+
+
+                        <!-- State -->
+                        <Column
+                            id="warehouseStateColumn"
+                            width="15rem"
+                            demandPopin="true"
+                            minScreenWidth="Desktop">
+
+                            <Text
+                                id="warehouseStateHeader"
+                                text="State" />
+
+                        </Column>
+
+
+                        <!-- Country -->
+                        <Column
+                            id="warehouseCountryColumn"
+                            width="13rem"
+                            demandPopin="true"
+                            minScreenWidth="Desktop">
+
+                            <Text
+                                id="warehouseCountryHeader"
+                                text="Country" />
+
+                        </Column>
+
+
+                        <!-- Address -->
+                        <Column
+                            id="warehouseAddressColumn"
+                            width="28rem"
+                            demandPopin="true"
+                            minScreenWidth="Large">
+
+                            <Text
+                                id="warehouseAddressHeader"
+                                text="Address" />
+
+                        </Column>
+
+
+                        <!-- Status -->
+                        <Column
+                            id="warehouseActiveColumn"
+                            width="11rem"
+                            hAlign="Center"
+                            demandPopin="false"
+                            minScreenWidth="Tablet">
+
+                            <Text
+                                id="warehouseActiveHeader"
+                                text="Status" />
+
+                        </Column>
+
+                    </columns>
+
+
+                    <!-- TABLE ROWS -->
+                    <items>
+
+                        <ColumnListItem
+                            id="warehouseListItem"
+                            type="Active">
+
+                            <cells>
+
+                                <!-- Warehouse Code -->
+                                <Text
+                                    id="warehouseCodeText"
+                                    text="{purchase>warehouseCode}"
+                                    wrapping="false" />
+
+
+                                <!-- Warehouse Name -->
+                                <Text
+                                    id="warehouseNameText"
+                                    text="{purchase>warehouseName}"
+                                    wrapping="false" />
+
+
+                                <!-- City -->
+                                <Text
+                                    id="warehouseCityText"
+                                    text="{purchase>city}"
+                                    wrapping="false" />
+
+
+                                <!-- State -->
+                                <Text
+                                    id="warehouseStateText"
+                                    text="{purchase>state}"
+                                    wrapping="false" />
+
+
+                                <!-- Country -->
+                                <Text
+                                    id="warehouseCountryText"
+                                    text="{purchase>country}"
+                                    wrapping="false" />
+
+
+                                <!-- Address -->
+                                <Text
+                                    id="warehouseAddressText"
+                                    text="{purchase>address}"
+                                    wrapping="false" />
+
+
+                                <!-- Status -->
+                                <ObjectStatus
+                                    id="warehouseStatusObject"
+                                    text="{
+                                        path: 'purchase>active',
+                                        formatter: '.formatStatusText'
+                                    }"
+                                    state="{
+                                        path: 'purchase>active',
+                                        formatter: '.formatStatusState'
+                                    }" />
+
+                            </cells>
+
+                        </ColumnListItem>
+
+                    </items>
+
+                </Table>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

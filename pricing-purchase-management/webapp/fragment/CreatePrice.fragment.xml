@@ -1,0 +1,101 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        id="cpriceDlg001"
+        title="Create Product"
+        contentWidth="32rem"
+        draggable="true"
+        resizable="false"
+        >
+
+        <content>
+            <VBox id="cVbox001" class="sapUiSmallMargin" >
+
+                 <Label
+                    id="cpriceLblName001"
+                    text="Product Name"
+                    required="true"/>
+
+                <Select id="CpriceMasterProductSelect" items="{path: '/Products', parameters: {$select: 'ID,productCode,productName,category,unitPrice,active'} }" 
+                        selectedKey="" forceSelection="false" change="onChangeSltProduct" width="100%" >
+                    <items>
+                        <core:Item id="idCoreItmMultiValue" text="{productCode} - {productName}" key="{productCode}"></core:Item>
+                    </items>
+                </Select>
+
+                <Label
+                    id="CpriceMasterRegionLabel"
+                    text="Region"
+                    labelFor="priceMasterRegionSelect" />
+
+                <Select id="CpriceMasterRegionSelect" items="{path: 'pricing>/Regions', parameters: {$select: 'ID,regionCode,regionName'} }" 
+                        selectedKey="" forceSelection="false" change="onChangeSltRegion" width="180px" >
+                    <items>
+                        <core:Item id="idCoreItmRegMultiValue" text="{pricing>regionCode} - {pricing>regionName}" key="{pricing>regionCode}"></core:Item>
+                    </items>
+                </Select>
+
+                <Label
+                    id="cpriceLblPrice001"
+                    text="Base Price"
+                    required="true"/>
+
+                <Input
+                    id="cpriceInpPrice001"
+                    value="0"
+                    editable="false"
+                    width="100%"/>
+
+                <Label
+                    id="cpriceLblDisc001"
+                    text="Discount"
+                    required="true"/>
+
+                <Input
+                    id="cpriceInpDisc001"
+                    type="Number"
+                    placeholder="Enter Discount"
+                    width="100%"/>
+
+                <Label
+                    id="cpriceLblTax001"
+                    text="Tax"
+                    required="true"/>
+
+                <Input
+                    id="cpriceInpTax001"
+                    type="Number"
+                    placeholder="Enter Tax"
+                    width="100%"/>
+
+                <Label id="idLblFormValidFrom" text="Valid From Date" required="true" />
+                <DatePicker id="idDatePckFormValidFrom" value="" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" />
+
+                <Label id="idLblFormValidTo" text="Valid To Date" required="true"/>
+                <DatePicker id="idDatePckFormValidTo" value="" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" />
+
+
+
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button
+                id="cpriceBtnCreate001"
+                text="Create"
+                type="Emphasized"
+                press=".onCreatePriceConfirm"/>
+        </beginButton>
+
+        <endButton>
+            <Button
+                id="cpriceBtnCancel001"
+                text="Cancel"
+                press=".onCreatePriceCancel"/>
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>

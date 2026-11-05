@@ -1,0 +1,91 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.MonthlyAnalytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+
+    <Page id="monthlyAnalyticsPage" class="monthlyAnalyticsPage" title="Monthly Analytics" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <VBox class="sapUiResponsiveMargin">
+
+            <!-- KPI TILES -->
+            <HBox wrap="Wrap" justifyContent="SpaceBetween" class="kpiRowClassic sapUiSmallMarginBottom">
+                <VBox class="kpiCardClassic kpiAccentBlue" alignItems="Center">
+                    <core:Icon src="sap-icon://money-bills" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL REVENUE"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/totalRevenue', formatter: '.formatCurrency' }"/>
+                    <Text class="kpiSubClassic" text="Year to date"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentPurple" alignItems="Center">
+                    <core:Icon src="sap-icon://sales-order-item" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL ORDERS"/>
+                    <Text class="kpiValueClassic" text="{kpi>/totalOrders}"/>
+                    <Text class="kpiSubClassic" text="Year to date"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentGreen" alignItems="Center">
+                    <core:Icon src="sap-icon://kpi-managing-my-area" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="AVG ORDER VALUE"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/avgOrderValue', formatter: '.formatCurrency' }"/>
+                    <Text class="kpiSubClassic" text="Per purchase order"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentOrange" alignItems="Center">
+                    <core:Icon src="sap-icon://sales-quote" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL TAX"/>
+                    <Text class="kpiValueClassic" text="{ path: 'kpi>/totalTax', formatter: '.formatCurrency' }"/>
+                    <Text class="kpiSubClassic" text="Collected YTD"/>
+                </VBox>
+            </HBox>
+
+            <!-- ===================== 2-PANEL CHART ROW ===================== -->
+            <l:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBottom sapUiSmallMarginTop">
+
+                <!-- Panel 1: Revenue trend — SVG filled area chart -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Revenue Trend (Last 6 Months)" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/trendAreaSvg}" />
+                </VBox>
+
+                <!-- Panel 2: Orders per month — vertical column bars -->
+                <VBox class="analyticsExtraCard">
+                    <Title text="Orders per Month" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/orderCountBarsHtml}" />
+                </VBox>
+
+            </l:Grid>
+
+            <!-- EXTRA: MONTHLY BREAKDOWN TABLE (reference card style) -->
+            <VBox class="analyticsExtraCard refTableCard">
+                <Table items="{kpi>/monthlyBreakdown}" growing="true" growingThreshold="12" fixedLayout="Strict">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Monthly Breakdown" level="H3"/>
+                            <ToolbarSpacer/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="18%"><Text text="Month"/></Column>
+                        <Column width="16%" hAlign="End"><Text text="Orders"/></Column>
+                        <Column width="22%" hAlign="End"><Text text="Revenue"/></Column>
+                        <Column width="20%" hAlign="End"><Text text="Tax"/></Column>
+                        <Column width="24%" hAlign="End"><Text text="Avg Order Value"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{kpi>monthLabel}" class="refTablePrimaryCell"/>
+                                <Text text="{kpi>orderCount}"/>
+                                <Text text="{ path: 'kpi>monthlyRevenue', formatter: '.formatCurrency' }" class="refTableHighlightCell"/>
+                                <Text text="{ path: 'kpi>monthlyTax', formatter: '.formatCurrency' }"/>
+                                <Text text="{ path: 'kpi>avgOrderValue', formatter: '.formatCurrency' }"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

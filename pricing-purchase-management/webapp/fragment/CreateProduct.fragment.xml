@@ -1,0 +1,88 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        id="cpDlg001"
+        title="Create Product"
+        contentWidth="32rem"
+        draggable="true"
+        resizable="false">
+
+        <content>
+            <VBox id="cpVbox001">
+
+                <Label
+                    id="cpLblName001"
+                    text="Product Name"
+                    required="true"/>
+
+                <Input
+                    id="cpInpName001"
+                    placeholder="Enter Product Name"
+                    width="100%"/>
+
+                <!-- <Label
+                    id="cpLblCode001"
+                    text="Product Code"
+                    required="true"/> -->
+
+                <!-- <Input
+                    id="cpInpCode001"
+                    placeholder="Enter Product Code"
+                    width="100%"/> -->
+
+                <Label
+                    id="cpLblCat001"
+                    text="Category"
+                    required="true"/>
+
+                <Select
+                    id="cpSelCat001"
+                    width="100%"
+                    forceSelection="false"
+                    selectedKey=""
+                    items="{
+                        path: 'purchase>/Products',
+                        parameters: { $apply: 'groupby((category))' }
+                    }">
+
+                    <core:Item
+                        id="cpItemCat001"
+                        key="{purchase>category}"
+                        text="{purchase>category}"/>
+
+                </Select>
+
+                <Label
+                    id="cpLblPrice001"
+                    text="Unit Price"
+                    required="true"/>
+
+                <Input
+                    id="cpInpPrice001"
+                    type="Number"
+                    placeholder="Enter unit price"
+                    width="100%"/>
+
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button
+                id="cpBtnCreate001"
+                text="Create"
+                type="Emphasized"
+                press=".onCreateProductConfirm"/>
+        </beginButton>
+
+        <endButton>
+            <Button
+                id="cpBtnCancel001"
+                text="Cancel"
+                press=".onCreateProductCancel"/>
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>

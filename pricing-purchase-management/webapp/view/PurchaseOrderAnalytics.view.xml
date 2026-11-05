@@ -1,0 +1,115 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.PurchaseOrderAnalytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true">
+
+    <Page id="purchaseOrderAnalyticsPage" class="purchaseOrderAnalyticsPage" title="Sales Order Analytics" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <VBox class="sapUiResponsiveMargin">
+
+            <!-- KPI TILES -->
+            <HBox wrap="Wrap" justifyContent="SpaceBetween" class="kpiRowClassic sapUiSmallMarginBottom">
+                <VBox class="kpiCardClassic kpiAccentBlue" alignItems="Center">
+                    <core:Icon src="sap-icon://list" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="TOTAL ORDERS"/>
+                    <Text class="kpiValueClassic" text="{kpi>/totalOrders}"/>
+                    <Text class="kpiSubClassic" text="All statuses"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentGreen" alignItems="Center">
+                    <core:Icon src="sap-icon://accept" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="APPROVED"/>
+                    <Text class="kpiValueClassic" text="{kpi>/approvedOrders}"/>
+                    <Text class="kpiSubClassic" text="Approved + Delivered"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentOrange" alignItems="Center">
+                    <core:Icon src="sap-icon://pending" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="PENDING"/>
+                    <Text class="kpiValueClassic" text="{kpi>/pendingOrders}"/>
+                    <Text class="kpiSubClassic" text="Submitted + Pending"/>
+                </VBox>
+                <VBox class="kpiCardClassic kpiAccentRed" alignItems="Center">
+                    <core:Icon src="sap-icon://decline" class="kpiIconClassic"/>
+                    <Text class="kpiLabelClassic" text="REJECTED"/>
+                    <Text class="kpiValueClassic" text="{kpi>/rejectedOrders}"/>
+                    <Text class="kpiSubClassic" text="Needs review"/>
+                </VBox>
+            </HBox>
+
+            <!-- ===================== 2-PANEL CHART ROW ===================== -->
+            <l:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" class=" sapUiSmallMarginBottom sapUiSmallMarginTop ">
+
+                <!-- Panel 1: Status donut — 3-way Approved/Pending/Rejected -->
+                <VBox class="POAanalyticsChartRow analyticsExtraCard ">
+                    <Title text="Status Split" level="H3" class="sapUiTinyMarginBottom"/>
+                    <core:HTML content="{kpi>/statusDonutHtml}" />
+                </VBox>
+
+                <!-- Panel 2: Order Status Distribution — colorful progress bars -->
+                <VBox class=" analyticsExtraCard">
+                    <Title text="Order Status Distribution" level="H3" class="sapUiTinyMarginBottom"/>
+                    <VBox items="{kpi>/statusSummary}">
+                        <items>
+                            <HBox alignItems="Center" width="100%" class="sapUiTinyMarginBottom">
+                                <Text text="{kpi>status}" width="6.5rem" class="refTablePrimaryCell">
+                                    <layoutData>
+                                        <FlexItemData growFactor="0" shrinkFactor="0"/>
+                                    </layoutData>
+                                </Text>
+                                <ProgressIndicator
+                                    width="100%"
+                                    percentValue="{ path: 'kpi>orderCount', formatter: '.formatPercentOfTotal' }"
+                                    displayValue="{kpi>orderCount} orders"
+                                    state="{ path: 'kpi>status', formatter: '.formatStatusState' }">
+                                    <layoutData>
+                                        <FlexItemData growFactor="1" shrinkFactor="1" minWidth="0"/>
+                                    </layoutData>
+                                </ProgressIndicator>
+                                <Text text="{ path: 'kpi>totalValue', formatter: '.formatCurrency' }" class="sapUiTinyMarginBegin refTableHighlightCell" width="7rem" textAlign="End">
+                                    <layoutData>
+                                        <FlexItemData growFactor="0" shrinkFactor="0"/>
+                                    </layoutData>
+                                </Text>
+                            </HBox>
+                        </items>
+                    </VBox>
+                </VBox>
+
+            </l:Grid>
+
+            <!-- EXTRA: STATUS SUMMARY TABLE (reference card style) -->
+            <VBox class="analyticsExtraCard refTableCard sapUiSmallMarginTop">
+                <Table items="{kpi>/statusSummary}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Status Summary" level="H3"/>
+                            <ToolbarSpacer/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="Status"/></Column>
+                        <Column hAlign="End"><Text text="Order Count"/></Column>
+                        <Column hAlign="End"><Text text="Total Value"/></Column>
+                        <Column hAlign="End"><Text text="Avg Order Value"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectStatus
+                                    text="{kpi>status}"
+                                    state="{ path: 'kpi>status', formatter: '.formatStatusState' }"/>
+                                <Text text="{kpi>orderCount}"/>
+                                <Text text="{ path: 'kpi>totalValue', formatter: '.formatCurrency' }" class="refTableHighlightCell"/>
+                                <Text text="{ path: 'kpi>avgOrderValue', formatter: '.formatCurrency' }"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

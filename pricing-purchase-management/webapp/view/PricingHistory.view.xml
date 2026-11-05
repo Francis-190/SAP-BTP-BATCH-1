@@ -1,0 +1,55 @@
+<mvc:View
+    controllerName="purchasemanagement.controller.PricingHistory"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    
+    <Page id="pagePricingHistory" title="Pricing Audit &amp; History Logs" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <Panel id="idPnlPricingHistory" class="sapUiResponsiveMargin" width="auto">
+                <Table
+                    id="idTablePricingHistory"
+                    items="{path: '/PriceHistory'}"
+                    growing="true"
+                    growingThreshold="15">
+                    
+                    <headerToolbar>
+                        <OverflowToolbar id="otbHistory">
+                            <Title id="titleHistory" text="Historical Price Entries" level="H2"/>
+                            <ToolbarSpacer id="spacerHistory"/>
+                            <SearchField id="searchHistory" width="30%" search=".onSearchHistory" placeholder="Search by Product ID..."/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    
+                    <columns>
+                        <Column id="colHistId" width="10rem" ><Text id="txtHistId" text="Log ID"/></Column>
+                        <Column id="colHistProd" width="10rem" ><Text id="txtHistProd" text="Product"/></Column>
+                        <Column id="colHistReg" width="7rem" ><Text id="txtHistReg" text="Region"/></Column>
+                        <Column id="colHistBase" width="10rem" ><Text id="txtHistBase" text="Old Final Price"/></Column>
+                        <Column id="colHistFinal" width="10rem" ><Text id="txtHistFinal" text="New Final Price"/></Column>
+                        <Column id="colHistAction" width="15rem" ><Text id="txtHistAction" text="Change Reason"/></Column>
+                        <Column id="colHistChangeOn" width="7rem" ><Text id="txtHistChangeOn" text="Change On"/></Column>
+                        <Column id="colHistChangeBy" width="15rem" ><Text id="txtHistChangeBy" text="Change By"/></Column>
+                    </columns>
+                    
+                    <items>
+                        <ColumnListItem id="idCLIHistory">
+                            <cells>
+                                <ObjectIdentifier id="idOIHistID" title="{ID}"/>
+                                <ObjectIdentifier id="idOIHistProduct" title="{priceMaster/product/productName}" text="{priceMaster/region/regionName}" />
+                                <Text id="idTxtHistReg" text="{priceMaster/region/regionName}"/>
+                                <ObjectNumber id="idONHistBase" number="{oldFinalPrice}" unit="INR"/>
+                                <ObjectNumber id="idONHistFinal" number="{newFinalPrice}" unit="INR" state="Information"/>
+                                <Text id="idTxtHistChangeReason" text="{changeReason}"/>
+                                <Text id="idTxtHistChangedOn" text="{changedOn}"/>
+                                <Text id="idTxtHistDate" text="{changedBy}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+            
+        </content>
+    </Page>
+    
+</mvc:View>

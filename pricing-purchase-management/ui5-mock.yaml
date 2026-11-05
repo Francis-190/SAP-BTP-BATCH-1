@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "4.0"
+metadata:
+  name: purchasemanagement
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /odata
+            url: https://c03c15a0trial-dev-tafe-srv.cfapps.us10-001.hana.ondemand.com
+            destination: TAFE_BACKEND
+          - path: /odata/v4/analytics/
+            url: https://c03c15a0trial-dev-tafe-srv.cfapps.us10-001.hana.ondemand.com
+            destination: TAFE_BACKEND
+          - path: /odata/v4/dealer/
+            url: https://c03c15a0trial-dev-tafe-srv.cfapps.us10-001.hana.ondemand.com
+            destination: TAFE_BACKEND
+          - path: /inventory/
+            url: https://c03c15a0trial-dev-tafe-srv.cfapps.us10-001.hana.ondemand.com
+            destination: TAFE_BACKEND
+          - path: /pricing/
+            url: https://c03c15a0trial-dev-tafe-srv.cfapps.us10-001.hana.ondemand.com
+            destination: TAFE_BACKEND
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+          path: test/flpSandbox.html
+          intent:
+            object: purchasemanagement
+            action: display
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /odata/v4/purchase-order
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+          - urlPath: /odata/v4/analytics
+            metadataPath: ./webapp/localService/analytics/metadata.xml
+            mockdataPath: ./webapp/localService/analytics/data
+            generateMockData: true
+          - urlPath: /odata/v4/dealer
+            metadataPath: ./webapp/localService/dealer/metadata.xml
+            mockdataPath: ./webapp/localService/dealer/data
+            generateMockData: true
+          - urlPath: /inventory
+            metadataPath: ./webapp/localService/inventory/metadata.xml
+            mockdataPath: ./webapp/localService/inventory/data
+            generateMockData: true
+          - urlPath: /pricing
+            metadataPath: ./webapp/localService/pricing/metadata.xml
+            mockdataPath: ./webapp/localService/pricing/data
+            generateMockData: true
+        annotations: []
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
