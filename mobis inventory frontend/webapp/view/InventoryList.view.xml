@@ -1,0 +1,93 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar" xmlns:core="sap.ui.core" controllerName="inventorytest.controller.InventoryList">
+<Page id="inventoryListPage" class="pgPage" title="Inventory List" showNavButton="true" navButtonPress="onNavBack">
+<content>
+<VBox class="pgBody">
+<Text text="Browse stock by location and part. Use the filters to narrow the list." class="pgIntro"/>
+<!--  FILTER BAR  -->
+<VBox class="pgCard pgFilter">
+<Toolbar class="dashPanelToolbar">
+<core:Icon src="sap-icon://filter" class="panelHeaderIcon"/>
+<Title text="Filters" level="H3" class="sapUiTinyMarginBegin"/>
+</Toolbar>
+<fb:FilterBar id="inventoryFilterBar" useToolbar="true" showGoOnFB="true" showClearOnFB="true" search="onFilterSearch" clear="onFilterClear" showFilterConfiguration="false">
+<fb:filterGroupItems>
+<!--  LOCATION FILTER  -->
+<fb:FilterGroupItem id="locationFilterItem" name="Location" label="Location" groupName="inventoryFilters" visibleInFilterBar="true">
+<fb:control>
+<Select id="locationFilterSelect" width="100%" selectedKey="" forceSelection="false" change="onLocationFilterChange" items="{inventoryList>/locations}">
+<core:Item key="" text="All Locations"/>
+<core:Item key="{inventoryList>key}" text="{inventoryList>text}"/>
+</Select>
+</fb:control>
+</fb:FilterGroupItem>
+<!--  PART NUMBER FILTER  -->
+<fb:FilterGroupItem id="partFilterItem" name="PartNumber" label="Part No." groupName="inventoryFilters" visibleInFilterBar="true">
+<fb:control>
+<Select id="partFilterSelect" width="100%" selectedKey="" forceSelection="false" items="{inventoryList>/filterParts}">
+<core:Item key="" text="All Parts"/>
+<core:Item key="{inventoryList>partNumber}" text="{inventoryList>partNumber}"/>
+</Select>
+</fb:control>
+</fb:FilterGroupItem>
+</fb:filterGroupItems>
+</fb:FilterBar>
+</VBox>
+<!--  INVENTORY TABLE  -->
+<VBox class="pgCard">
+<Toolbar class="dashPanelToolbar">
+<core:Icon src="sap-icon://list" class="panelHeaderIcon"/>
+<Title text="Inventory Records" level="H3" class="sapUiTinyMarginBegin"/>
+<ToolbarSpacer/>
+<Text text="{= ${inventoryList>/items}.length} records" class="pgMuted"/>
+<Text text="Updated {inventoryList>/lastUpdated}" class="pgMuted sapUiTinyMarginBegin"/>
+<Button icon="sap-icon://refresh" type="Transparent" tooltip="Refresh now" press="onRefreshInventory"/>
+</Toolbar>
+<Table id="invTable" class="recentTable" growing="true" growingThreshold="20" noDataText="No inventory records found" items="{inventoryList>/items}">
+<columns>
+<Column>
+<Text text="Warehouse"/>
+</Column>
+<Column>
+<Text text="Part No."/>
+</Column>
+<Column minScreenWidth="Tablet" demandPopin="true">
+<Text text="Description"/>
+</Column>
+<Column hAlign="End">
+<Text text="On Hand"/>
+</Column>
+<Column hAlign="End" minScreenWidth="Tablet" demandPopin="true">
+<Text text="Reorder Level"/>
+</Column>
+<Column>
+<Text text="Status"/>
+</Column>
+<Column hAlign="End" visible="{inventoryList>/showRaisePR}">
+<Text text="Action"/>
+</Column>
+</columns>
+<items>
+<ColumnListItem class="invRow">
+<customData>
+<core:CustomData key="state" value="{inventoryList>statusState}" writeToDom="true"/>
+</customData>
+<cells>
+<Text text="{inventoryList>locationName}"/>
+<ObjectIdentifier title="{inventoryList>partNumber}"/>
+<Text text="{inventoryList>description}"/>
+<HBox alignItems="Center" justifyContent="End" class="stockCell">
+<Text text="{inventoryList>quantityOnHand}" class="pgNum"/>
+<ProgressIndicator class="stockBar" showValue="false" width="4.5rem" height="0.4rem" percentValue="{= ${inventoryList>reorderLevel} ? Math.min(100, Math.round(${inventoryList>quantityOnHand} * 100 / ${inventoryList>reorderLevel})) : 100 }"/>
+</HBox>
+<Text text="{inventoryList>reorderLevel}"/>
+<ObjectStatus text="{inventoryList>status}" inverted="true" state="{inventoryList>statusState}"/>
+<Button text="Raise PR" icon="sap-icon://add-document" type="Emphasized" press=".onRaisePRPress" visible="{inventoryList>/showRaisePR}"/>
+</cells>
+</ColumnListItem>
+</items>
+</Table>
+</VBox>
+</VBox>
+</content>
+</Page>
+</mvc:View>

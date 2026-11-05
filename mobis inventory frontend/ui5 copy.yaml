@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+specVersion: "4.0"
+
+metadata:
+  name: inventory-test
+
+type: application
+
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+
+        backend:
+          - path: /inventory
+            url: https://3c318b49trial-dev-mobis-spare-parts-portal-srv.cfapps.us10-001.hana.ondemand.com
+            destination: Inventory_project_Test
+
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+          path: test/flpSandbox.html
+          intent:
+            object: inventory-test
+            action: display
+
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**

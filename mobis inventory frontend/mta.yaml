@@ -1,0 +1,91 @@
+_schema-version: "3.3"
+ID: inventory-test
+description: An SAP Fiori application.
+version: 0.0.1
+
+modules:
+  - name: inventory-test
+    type: html5
+    path: .
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+
+  - name: inventory-test-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: inventory-test-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - inventory-test.zip
+          name: inventory-test
+          target-path: resources/
+
+  - name: inventory-test-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: inventory-test-destination-service
+        parameters:
+          content-target: true
+      - name: inventory-test-html5-repo-host
+        parameters:
+          service-key:
+            name: inventory-test-repo-host-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: inventory_test_html_repo_host
+              ServiceInstanceName: inventory-test-html5-repo-host
+              ServiceKeyName: inventory-test-repo-host-key
+              sap.cloud.service: inventory-test
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+
+resources:
+  - name: inventory-test-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      service-name: inventory-test-html5-repo-host
+
+  - name: inventory-test-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      service-name: inventory-test-destination-service
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Name: Inventory_project_Test
+                Authentication: NoAuthentication
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://3c318b49trial-dev-mobis-spare-parts-portal-srv.cfapps.us10-001.hana.ondemand.com
+
+              - Name: ui5
+                Authentication: NoAuthentication
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+
+            existing_destinations_policy: update
+        version: 1.0.0
+
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true

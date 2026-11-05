@@ -1,0 +1,65 @@
+
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" controllerName="inventorytest.controller.PurchaseRequisitions">
+<Page id="prPage" class="pgPage" title="Purchase Requisitions" showNavButton="true" navButtonPress="onNavBack">
+<content>
+<VBox class="pgBody">
+<Text text="Requisitions raised from the Low Stock list. Newest first." class="pgIntro"/>
+<VBox class="pgCard">
+<Toolbar class="dashPanelToolbar">
+<core:Icon src="sap-icon://documents" class="panelHeaderIcon"/>
+<Title text="Requisitions" level="H3" class="sapUiTinyMarginBegin"/>
+<ToolbarSpacer/>
+<Select id="prStatusSelect" width="11rem" selectedKey="" forceSelection="false" change="onStatusChange" items="{prList>/statusOptions}">
+<core:Item key="" text="All Statuses"/>
+<core:Item key="{prList>key}" text="{prList>text}"/>
+</Select>
+<Text text="{= ${prList>/items}.length} lines" class="pgMuted"/>
+<Button icon="sap-icon://refresh" type="Transparent" tooltip="Refresh" press="onRefresh"/>
+</Toolbar>
+<Table id="prTable" class="recentTable" busy="{prList>/busy}" growing="true" growingThreshold="20" noDataText="No purchase requisitions yet. Raise one from the Low Stock list." items="{prList>/items}">
+<columns>
+<Column>
+<Text text="PR Number"/>
+</Column>
+<Column>
+<Text text="Part No."/>
+</Column>
+<Column minScreenWidth="Tablet" demandPopin="true">
+<Text text="Description"/>
+</Column>
+<Column minScreenWidth="Tablet" demandPopin="true">
+<Text text="Warehouse"/>
+</Column>
+<Column hAlign="End">
+<Text text="Quantity"/>
+</Column>
+<Column>
+<Text text="Status"/>
+</Column>
+<Column minScreenWidth="Desktop" demandPopin="true">
+<Text text="Requested By"/>
+</Column>
+<Column minScreenWidth="Desktop" demandPopin="true">
+<Text text="Created"/>
+</Column>
+</columns>
+<items>
+<ColumnListItem>
+<cells>
+<ObjectIdentifier title="{prList>prNumber}"/>
+<Text text="{prList>partNumber}"/>
+<Text text="{prList>description}"/>
+<Text text="{prList>locationName}"/>
+<Text text="{prList>requiredQty}" class="pgNum"/>
+<ObjectStatus text="{prList>status}" inverted="true" state="{prList>statusState}"/>
+<Text text="{prList>requestedBy}"/>
+<Text text="{ path: 'prList>createdAt', type: 'sap.ui.model.type.DateTime', formatOptions: { style: 'medium' } }"/>
+</cells>
+</ColumnListItem>
+</items>
+</Table>
+</VBox>
+</VBox>
+</content>
+</Page>
+</mvc:View>

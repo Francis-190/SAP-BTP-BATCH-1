@@ -1,0 +1,454 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* =====================================================================
+   FONT + TOKENS  (original blue / neutral palette)
+   ===================================================================== */
+.appShell {
+    --sapFontFamily: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sapFontHeaderFamily: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sapFontSemiboldFamily: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sapFontBoldFamily: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.appShell,
+.dashPage,
+.pgPage {
+    --dashBg: #f3f5f9;
+    --dashCard: #ffffff;
+    --dashLine: #e4e8f0;
+    --dashInk: #1b2437;
+    --dashMuted: #6b7488;
+    --dashPrimary: #1d4ed8;
+    --dashTint: #e8efff;
+    --dashHover: #f6f8fd;
+    --dashShadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 4px 14px rgba(16, 24, 40, 0.05);
+    --dashShadowHover: 0 8px 20px rgba(16, 24, 40, 0.12);
+    --heroGradient: linear-gradient(120deg, #1e3a8a 0%, #2563eb 55%, #60a5fa 100%);
+    --heroShadow: 0 8px 22px rgba(37, 99, 235, 0.25);
+}
+
+.dashPage,
+.dashPage > section,
+.dashPage .sapMPageEnableScrolling,
+.pgPage,
+.pgPage > section,
+.pgPage .sapMPageEnableScrolling {
+    background: var(--dashBg);
+}
+
+/* soft entrance */
+@keyframes dashFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.dashSection, .pgCard, .pgIntro { animation: dashFadeUp 0.45s ease both; }
+@media (prefers-reduced-motion: reduce) {
+    .dashSection, .pgCard, .pgIntro { animation: none; }
+}
+
+
+/* =====================================================================
+   APP SHELL: header + side navigation  (default light look, refined)
+   ===================================================================== */
+.appShell .sapTntToolHeader {
+    border-bottom: 1px solid var(--dashLine);
+    box-shadow: none;
+}
+
+.appBrandBlock { justify-content: center; }
+
+.appBrandTitle {
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.1;
+    color: var(--dashInk);
+}
+
+.appBrandSubtitle {
+    font-size: 0.72rem;
+    line-height: 1.1;
+    color: var(--dashMuted);
+}
+
+.appGlobalSearch { max-width: 22rem; }
+
+.appShell .sapTntSideNavigation { border-right: 1px solid var(--dashLine); }
+
+.appShell .sapTntNLI.sapTntNLISelected,
+.appShell .sapTntNLIFirstLevel.sapTntNLISelected {
+    background: var(--dashTint);
+    border-radius: 0.6rem;
+}
+
+.appShell .sapTntNLI:hover { border-radius: 0.6rem; }
+
+
+/* =====================================================================
+   DASHBOARD
+   ===================================================================== */
+.dashSection { padding: 0 1.5rem; margin-bottom: 1.5rem; }
+.dashSectionFirst { padding-top: 1.25rem; }
+.dashSectionLast { margin-bottom: 2rem; }
+
+.dashSectionTitle {
+    display: block;
+    margin-bottom: 0.75rem;
+    padding-left: 0.6rem;
+    border-left: 4px solid var(--dashPrimary);
+    color: var(--dashInk);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* ---- hero banner ---- */
+.welcomeBanner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.1rem;
+    padding: 2rem 2.25rem;
+    background: var(--heroGradient);
+    box-shadow: var(--heroShadow);
+}
+
+.welcomeBanner::before {
+    content: "";
+    position: absolute;
+    top: -70px;
+    right: -50px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.welcomeBanner::after {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    right: 110px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.welcomeTitle {
+    position: relative;
+    z-index: 1;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.9rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.welcomeSubtitle {
+    position: relative;
+    z-index: 1;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.95rem;
+    margin-top: 0.4rem;
+    display: block;
+    max-width: 34rem;
+}
+
+.welcomeChips {
+    position: relative;
+    z-index: 1;
+    margin-top: 1rem;
+    width: fit-content;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.welcomeChipIcon { color: #ffffff; font-size: 0.9rem; margin-right: 0.4rem; }
+.welcomeChipText { color: #ffffff; font-size: 0.82rem; font-weight: 600; }
+
+/* ---- KPI cards (tone comes from data-tone written by CustomData) ---- */
+.dashKpiGrid.sapFGridList,
+.dashKpiGrid .sapMListUl { background: transparent; }
+
+.kpiCard.sapMLIB {
+    position: relative;
+    border-radius: 0.9rem;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    background: var(--dashCard);
+    border: 1px solid var(--dashLine);
+    border-left: 4px solid var(--tone);
+    box-shadow: var(--dashShadow);
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.kpiCard:hover { box-shadow: var(--dashShadowHover); transform: translateY(-2px); }
+
+.kpiCard { --tone: #2563eb; --toneBg: #dbeafe; --toneInk: #1d4ed8; }
+.kpiCard[data-tone="kpiBlue"]   { --tone: #2563eb; --toneBg: #dbeafe; --toneInk: #1d4ed8; }
+.kpiCard[data-tone="kpiOrange"] { --tone: #f59e0b; --toneBg: #fef3c7; --toneInk: #d97706; }
+.kpiCard[data-tone="kpiRed"]    { --tone: #dc2626; --toneBg: #fee2e2; --toneInk: #b91c1c; }
+.kpiCard[data-tone="kpiGreen"]  { --tone: #16a34a; --toneBg: #dcfce7; --toneInk: #15803d; }
+
+.kpiCardInner { width: 100%; gap: 0.5rem; }
+
+.kpiIcon {
+    width: 2.4rem;
+    height: 2.4rem;
+    min-width: 2.4rem;
+    border-radius: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    background: var(--toneBg);
+    color: var(--tone);
+}
+
+.kpiCardTitle { font-weight: 700; font-size: 0.92rem; color: var(--dashInk); display: block; }
+.kpiCardSubtitle { font-size: 0.75rem; color: var(--dashMuted); display: block; }
+.kpiValueRow { margin-top: 0.35rem; gap: 0.4rem; }
+
+.kpiCardValue {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    display: block;
+    color: var(--toneInk);
+}
+
+.kpiCardUnit { font-size: 0.78rem; color: var(--dashMuted); }
+
+/* ---- panels ---- */
+.dashPanel.sapMPanel {
+    background: var(--dashCard);
+    border: 1px solid var(--dashLine);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--dashShadow);
+}
+
+.dashPanel .sapMPanelContent {
+    background: transparent;
+    border: 0;
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+.dashPanelToolbar.sapMTB {
+    background: transparent;
+    border-bottom: 1px solid var(--dashLine);
+    height: 3.25rem;
+}
+
+.dashPanelToolbar .sapMTitle { font-weight: 700; font-size: 0.95rem; color: var(--dashInk); }
+
+.panelHeaderIcon {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 0.55rem;
+    background: var(--dashTint);
+    color: var(--dashPrimary);
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---- donut chart: centre label + legend ---- */
+.donutWrapper {
+    margin-top: 20px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.donutWrapper > * { grid-area: 1 / 1; }
+
+.donutCenterLabel {
+    text-align: center;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translate(0, 0);
+    margin-bottom: 20px;
+}
+
+.donutCenterValue { font-size: 2rem; font-weight: 800; color: var(--dashInk); display: block; line-height: 1.3; margin: 0; }
+.donutCenterUnit { font-size: 0.8rem; color: var(--dashMuted); display: block; margin: 0; }
+
+.legendList {
+    flex: 1 1 14rem;
+    min-width: 14rem;
+    max-width: 22rem;
+    margin-top: 1rem;
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.legendItem { padding: 0.3rem 0.5rem; border-radius: 0.5rem; width: 100%; }
+.legendItem:hover { background: var(--dashHover); }
+.legendRow { padding: 0.2rem 0; width: 100%; }
+.legendSwatch { font-size: 0.65rem; flex-shrink: 0; margin-inline-end: 0.6rem; }
+
+.legendLabel {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dashInk);
+}
+
+.legendPct { flex-shrink: 0; font-size: 0.75rem; color: var(--dashMuted); margin-inline-start: 0.5rem; }
+.legendCount { font-weight: 700; flex-shrink: 0; margin-inline-start: 0.6rem; min-width: 1.5rem; text-align: end; color: var(--dashInk); }
+
+.legendBar.sapMPI {
+    margin: 0 0 0.15rem 1.25rem;
+    width: calc(100% - 1.25rem);
+    background: #eef1f7;
+    border-radius: 0.3rem;
+}
+
+.legendBar .sapMPIBar { border-radius: 0.3rem; background: #60a5fa; }
+
+/* ---- action center ---- */
+.attnList.sapMList { background: transparent; }
+.attnItem.sapMLIB { background: transparent; border-bottom: 1px solid var(--dashLine); padding: 0; }
+.attnItem.sapMLIB:hover { background: var(--dashHover); }
+.attnBox { width: 100%; padding: 0.65rem 0.25rem; gap: 0.35rem; }
+.attnPart { font-weight: 700; color: var(--dashInk); display: block; }
+.attnMeta { font-size: 0.78rem; color: var(--dashMuted); display: block; }
+.attnBar.sapMPI { border-radius: 0.3rem; background: #eef1f7; }
+.attnItem .attnBar .sapMPIBar { background: #d97706; }
+.attnItem[data-status="Out of Stock"] .attnBar .sapMPIBar { background: #dc2626; }
+
+.actionGridList.sapFGridList,
+.actionGridList .sapMListUl { background: transparent; }
+
+.actionCard.sapMLIB {
+    border: 1px solid var(--dashLine);
+    border-radius: 0.8rem;
+    background: var(--dashCard);
+    padding: 0;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.actionCard.sapMLIB:hover { border-color: var(--dashPrimary); background: var(--dashHover); transform: translateY(-1px); }
+.actionCardInner { padding: 0.9rem; gap: 0.75rem; width: 100%; }
+.actionCardIcon { font-size: 1.3rem; color: var(--dashPrimary); }
+.actionCardTitle { font-weight: 700; color: var(--dashInk); display: block; }
+.actionCardSub { font-size: 0.75rem; color: var(--dashMuted); display: block; }
+
+.actionCardPrimary.sapMLIB { background: var(--dashPrimary); border-color: var(--dashPrimary); }
+.actionCardPrimary.sapMLIB:hover { background: var(--dashPrimary); filter: brightness(1.08); }
+.actionCardPrimary .actionCardIcon,
+.actionCardPrimary .actionCardTitle,
+.actionCardPrimary .actionCardSub { color: #ffffff; }
+.actionCardPrimary .actionCardSub { opacity: 0.8; }
+
+
+/* =====================================================================
+   SHARED TABLE STYLE
+   ===================================================================== */
+.recentTable .sapMListTblHeaderCell,
+.recentTable th {
+    background: var(--dashHover);
+    color: var(--dashMuted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--dashLine);
+}
+
+.recentTable .sapMListTblRow:hover { background: var(--dashHover); }
+.recentTable .sapMListTblCell { padding-top: 0.8rem; padding-bottom: 0.8rem; }
+
+.appShell .sapMObjStatusInverted { border-radius: 99px; padding: 0.1rem 0.65rem; font-weight: 700; }
+
+
+/* =====================================================================
+   INNER PAGES: Inventory List, Issue Stock, Stock Transfer
+   ===================================================================== */
+.pgPage > header .sapMTitle { font-weight: 700; }
+
+.pgBody {
+    padding: 1.25rem 1.5rem 2rem;
+    width: 100%;
+    max-width: 90rem;
+    margin: 0 auto;
+}
+
+.pgIntro { display: block; margin-bottom: 1rem; color: var(--dashMuted); font-size: 0.9rem; }
+
+.pgCard {
+    background: var(--dashCard);
+    border: 1px solid var(--dashLine);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--dashShadow);
+    margin-bottom: 1.25rem;
+}
+
+.pgCard .sapMList, .pgCard .sapMListUl, .pgCard .sapMListTbl { background: transparent; }
+.pgCard .sapMTB.dashPanelToolbar { background: transparent; }
+.pgFilter .sapUiCompFilterBar, .pgFilter .sapUiCompFilterBarPaddingClass { background: transparent; }
+.pgCard .recentTable { padding: 0 0.75rem 0.5rem; }
+
+.pgNum { font-weight: 700; color: var(--dashInk); }
+.pgMuted { color: var(--dashMuted); font-size: 0.78rem; }
+
+/* ---- inventory: stock level bar in the On Hand cell ---- */
+.stockCell { gap: 0.65rem; }
+.stockBar.sapMPI { border-radius: 0.3rem; background: #eef1f7; }
+.stockBar .sapMPIBar { background: #60a5fa; border-radius: 0.3rem; }
+.invRow[data-state="Success"] .stockBar .sapMPIBar { background: #16a34a; }
+.invRow[data-state="Warning"] .stockBar .sapMPIBar { background: #d97706; }
+.invRow[data-state="Error"] .stockBar .sapMPIBar { background: #dc2626; }
+
+/* ---- forms ---- */
+.pgForm.sapUiForm, .pgForm { padding: 0.75rem 1.25rem 0.25rem; background: transparent; }
+
+.pgForm .sapUiFormTitle {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--dashPrimary);
+}
+
+.pgPage .sapMInputBaseContentWrapper { border-radius: 0.5rem; }
+
+.pgFormBody { padding: 1rem 1.25rem 0.5rem; gap: 1rem; }
+
+.formStep { display: block; font-weight: 700; font-size: 0.9rem; color: var(--dashPrimary); }
+.routeRow { gap: 1rem; width: 100%; }
+.formRow { gap: 1rem; width: 100%; }
+.formField { flex: 1 1 14rem; min-width: 12rem; gap: 0.3rem; }
+
+.routeArrow {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--dashTint);
+    color: var(--dashPrimary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.15rem;
+}
+
+.pgActions {
+    padding: 0.75rem 1.25rem;
+    gap: 0.6rem;
+    border-top: 1px solid var(--dashLine);
+    background: var(--dashHover);
+}
+
+.pgPrimaryBtn.sapMBtn { border-radius: 0.6rem; min-width: 9rem; font-weight: 600; }

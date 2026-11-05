@@ -1,0 +1,203 @@
+{
+  "_version": "1.86.0",
+  "sap.app": {
+    "id": "inventorytest",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.31.1",
+      "toolsId": "96df6d40-9e34-4c47-8837-0dd9a0787725"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/inventory/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "inventorymgmt-display": {
+          "semanticObject": "inventorymgmt",
+          "action": "display",
+          "title": "{{inventorymgmt-display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.151.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.ui.layout": {},
+        "sap.tnt": {},
+        "sap.viz": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "inventorytest.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "appContent",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "inventorytest.view",
+        "async": true,
+        "viewPath": "inventorytest.view"
+      },
+      "routes": [
+        {
+          "name": "dashboard",
+          "pattern": ":?query:",
+          "target": [
+            "Dashboard"
+          ]
+        },
+        {
+          "name": "inventory",
+          "pattern": "inventory/{filter}",
+          "target": [
+            "InventoryList"
+          ]
+        },
+        {
+          "name": "issue",
+          "pattern": "issue",
+          "target": [
+            "IssueStock"
+          ]
+        },
+        {
+          "name": "serviceCenter",
+          "pattern": "service-center",
+          "target": [
+            "ServiceCenter"
+          ]
+        },
+        {
+          "name": "transfer",
+          "pattern": "transfer",
+          "target": [
+            "StockTransfer"
+          ]
+        },
+        {
+  "name": "purchaseRequisitions",
+  "pattern": "purchase-requisitions",
+  "target": [
+    "PurchaseRequisitions"
+  ]
+},
+{
+  "name": "inspection",
+  "pattern": "inspection",
+  "target": "inspection"
+}
+      ],
+      "targets": {
+        "Dashboard": {
+          "id": "Dashboard",
+          "name": "Dashboard"
+        },
+        "InventoryList": {
+          "id": "InventoryList",
+          "name": "InventoryList"
+        },
+        "IssueStock": {
+          "id": "IssueStock",
+          "name": "IssueStock"
+        },
+        "ServiceCenter": {
+          "id": "ServiceCenter",
+          "name": "ServiceCenter"
+        },
+        "StockTransfer": {
+          "id": "StockTransfer",
+          "name": "StockTransfer"
+        },
+        "PurchaseRequisitions": {
+  "id": "PurchaseRequisitions",
+  "name": "PurchaseRequisitions"
+},
+"inspection": {
+  "viewName": "Inspection",
+  "viewId": "inspection"
+}
+      }
+    },
+    "rootView": {
+      "viewName": "inventorytest.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "inventory-test"
+  }
+}

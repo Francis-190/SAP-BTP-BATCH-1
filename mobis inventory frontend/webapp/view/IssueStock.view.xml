@@ -1,0 +1,284 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    controllerName="inventorytest.controller.IssueStock">
+
+    <Page
+        class="pgPage"
+        title="Issue Stock"
+        showNavButton="true"
+        navButtonPress="onNavBack">
+
+        <content>
+            <VBox class="pgBody">
+
+                <Text
+                    text="Record stock issued from a warehouse to a service order or customer."
+                    class="pgIntro"/>
+
+                <!-- ISSUE STOCK FORM -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+                        <core:Icon
+                            src="sap-icon://outbox"
+                            class="panelHeaderIcon"/>
+
+                        <Title
+                            text="Issue Details"
+                            level="H3"
+                            class="sapUiTinyMarginBegin"/>
+                    </Toolbar>
+
+                    <f:SimpleForm
+                        class="pgForm"
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="12"
+                        labelSpanL="12"
+                        labelSpanM="12"
+                        labelSpanS="12"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1">
+
+                        <core:Title
+                            text="1 · Stock Source &amp; Part Details"/>
+
+                        <Label text="From Warehouse"/>
+
+                        <Select
+                            id="issueLocSelect"
+                            width="100%"
+                            items="{/Locations}"
+                            forceSelection="false"
+                            change="onLocationChange">
+
+                            <core:Item
+                                key="{ID}"
+                                text="{name} ({locationCode})"/>
+                        </Select>
+
+                        <Label text="Spare Part"/>
+
+                        <Select
+                            id="issuePartSelect"
+                            width="100%"
+                            items="{issueParts>/items}"
+                            forceSelection="false">
+
+                            <core:Item
+                                key="{issueParts>ID}"
+                                text="{issueParts>partNumber} — {issueParts>description}"/>
+                        </Select>
+
+                        <core:Title
+                            text="2 · Issue Quantity &amp; Reference"/>
+
+                        <Label text="Quantity"/>
+
+                        <Input
+                            id="issueQtyInput"
+                            type="Number"
+                            placeholder="e.g. 5"/>
+
+                        <Label text="Description"/>
+
+                        <Input
+                            id="issueRefInput"
+                            />
+
+                        <Label
+                            text="Service Center"
+                            required="true"/>
+
+                        <Select
+                            id="issueServiceCenterSelect"
+                            width="100%"
+                            forceSelection="false"
+                            selectedKey=""
+                            items="{
+                                path: '/ServiceCenters',
+                                filters: [{
+                                    path: 'isActive',
+                                    operator: 'EQ',
+                                    value1: true
+                                }]
+                            }">
+
+                            <core:Item
+                                key="{ID}"
+                                text="{name} ({serviceCenterCode})"/>
+                        </Select>
+
+                    </f:SimpleForm>
+
+                    <HBox
+                        justifyContent="End"
+                        class="pgActions">
+
+                        <Button
+                            text="Service Center Issues"
+                            icon="sap-icon://action-settings"
+                            type="Transparent"
+                            press="onGoToServiceCenter"/>
+
+                        <Button
+                            text="Cancel"
+                            press="onNavBack"/>
+
+                        <Button
+                            text="Issue Stock"
+                            icon="sap-icon://outbox"
+                            type="Emphasized"
+                            class="pgPrimaryBtn"
+                            press="onIssueStock"/>
+                    </HBox>
+
+                </VBox>
+
+                <!-- ALL STOCK ISSUES -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+
+                        <core:Icon
+                            src="sap-icon://history"
+                            class="panelHeaderIcon"/>
+
+                        <Title
+                            text="All Stock Issues"
+                            level="H3"
+                            class="sapUiTinyMarginBegin"/>
+
+                        <ToolbarSpacer/>
+
+                        <Button
+                            icon="sap-icon://refresh"
+                            type="Transparent"
+                            tooltip="Refresh stock issues"
+                            press="onRefreshIssues"/>
+                    </Toolbar>
+
+                    <!-- FILTER BAR -->
+                    <Toolbar class="sapUiTinyMarginTopBottom" style="Clear">
+
+                        <Select
+                            id="filterServiceCenter"
+                            width="14rem"
+                            items="{ui>/scOptions}"
+                            change="onFilterChange">
+                            <core:Item
+                                key="{ui>key}"
+                                text="{ui>text}"/>
+                        </Select>
+
+                    </Toolbar>
+
+                    <Table
+                        id="allIssuesTable"
+                        class="recentTable"
+                        noDataText="No stock issues found"
+                        items="{issues>/items}">
+
+                        <columns>
+                            <Column>
+                                <Text text="Service Center"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Part Number"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Warehouse"/>
+                            </Column>
+
+                            <Column hAlign="End">
+                                <Text text="Quantity"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true">
+                                <Text text="Reference"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Status"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Date / Time"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+
+                                    <ObjectIdentifier
+                                        title="{issues>serviceCenter}"
+                                        text="{issues>serviceCenterCode}"/>
+
+                                    <ObjectIdentifier
+                                        title="{issues>partNumber}"
+                                        text="{issues>description}"/>
+
+                                    <Text text="{issues>warehouse}"/>
+
+                                    <ObjectNumber
+                                        number="{issues>quantity}"
+                                        unit="units"
+                                        emphasized="true"
+                                        state="Information"/>
+
+                                    <Text text="{issues>reference}"/>
+
+                                    <ObjectStatus
+                                        text="{issues>status}"
+                                        inverted="true"
+                                        state="{= ${issues>status} === 'RECONCILED' ? 'Success' : 'Warning'}"/>
+
+                                    <Text text="{issues>dateTime}"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                    <!-- PAGINATION -->
+                    <Toolbar class="sapUiTinyMarginTop" style="Clear">
+
+                        <ToolbarSpacer/>
+
+                        <HBox items="{ui>/pages}">
+                            <Button
+                                text="{ui>label}"
+                                type="{ui>type}"
+                                enabled="{ui>enabled}"
+                                tooltip="{ui>tooltip}"
+                                class="sapUiTinyMarginBeginEnd"
+                                press="onPageButtonPress"/>
+                        </HBox>
+
+                        <ToolbarSpacer/>
+
+                    </Toolbar>
+
+                </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

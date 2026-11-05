@@ -1,0 +1,6 @@
+node_modules/
+dist/
+mta_archives/
+gen/
+.appGenInfo.json
+resources/*.zip

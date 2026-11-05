@@ -1,0 +1,127 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar" xmlns="sap.m" controllerName="inventorytest.controller.StockTransfer">>
+<Page class="pgPage" title="Stock Transfer" showNavButton="true" navButtonPress="onNavBack">
+<content>
+<VBox class="pgBody">
+<Text text="Move stock between locations and track transfer requests." class="pgIntro"/>
+<!--  TRANSFER FORM  -->
+<VBox class="pgCard">
+<Toolbar class="dashPanelToolbar">
+<core:Icon src="sap-icon://shipping-status" class="panelHeaderIcon"/>
+<Title text="Transfer Details" level="H3" class="sapUiTinyMarginBegin"/>
+</Toolbar>
+<VBox class="pgFormBody">
+<Text text="1 · Transfer Locations" class="formStep"/>
+<HBox class="routeRow" wrap="Wrap" alignItems="End">
+<VBox class="formField">
+<Label text="From Location" labelFor="transferFromSelect"/>
+<Select id="transferFromSelect" width="100%" items="{/Locations}" forceSelection="false" change="onFromLocationChange">
+<core:Item key="{ID}" text="{name} ({locationCode})"/>
+</Select>
+</VBox>
+<core:Icon src="sap-icon://arrow-right" class="routeArrow"/>
+<VBox class="formField">
+<Label text="To Location" labelFor="transferToSelect"/>
+<Select id="transferToSelect" width="100%" items="{/Locations}" forceSelection="false">
+<core:Item key="{ID}" text="{name} ({locationCode})"/>
+</Select>
+</VBox>
+</HBox>
+<Text text="2 · Transfer Details" class="formStep"/>
+<HBox class="formRow" wrap="Wrap">
+<VBox class="formField">
+<Label text="Spare Part" labelFor="transferPartSelect"/>
+<Select id="transferPartSelect" width="100%" items="{transferParts>/items}" forceSelection="false">
+<core:Item key="{transferParts>ID}" text="{transferParts>partNumber} — {transferParts>description}"/>
+</Select>
+</VBox>
+<VBox class="formField">
+<Label text="Quantity" labelFor="transferQtyInput"/>
+<Input id="transferQtyInput" type="Number" placeholder="e.g. 10"/>
+</VBox>
+</HBox>
+<VBox class="formField">
+<Label text="Reference" labelFor="transferRefInput"/>
+<Input id="transferRefInput" placeholder="e.g. Rebalancing WH-HYD to WH-CHN"/>
+</VBox>
+</VBox>
+<HBox justifyContent="End" class="pgActions">
+<Button text="Cancel" press="onNavBack"/>
+<Button text="Create Transfer" icon="sap-icon://shipping-status" type="Emphasized" class="pgPrimaryBtn" press="onTransfer"/>
+</HBox>
+</VBox>
+<!--  RECENT TRANSFERS  -->
+<VBox class="pgCard pgFilter">
+<Toolbar class="dashPanelToolbar">
+<core:Icon src="sap-icon://history" class="panelHeaderIcon"/>
+<Title text="Recent Transfers" level="H3" class="sapUiTinyMarginBegin"/>
+</Toolbar>
+<!--  FILTER BAR  -->
+<fb:FilterBar id="transferFilterBar" useToolbar="true" showGoOnFB="true" showClearOnFB="true" search="onFilterSearch" clear="onFilterClear" showFilterConfiguration="false">
+<fb:filterGroupItems>
+<fb:FilterGroupItem name="FromLocation" label="From Location" groupName="Basic" visibleInFilterBar="true">
+<fb:control>
+<Input id="transferFromFilter" placeholder="Enter From Location"/>
+</fb:control>
+</fb:FilterGroupItem>
+<fb:FilterGroupItem name="ToLocation" label="To Location" groupName="Basic" visibleInFilterBar="true">
+<fb:control>
+<Input id="transferToFilter" placeholder="Enter To Location"/>
+</fb:control>
+</fb:FilterGroupItem>
+<fb:FilterGroupItem name="PartNumber" label="Part No." groupName="Basic" visibleInFilterBar="true">
+<fb:control>
+<Input id="transferPartFilter" placeholder="Enter Part No."/>
+</fb:control>
+</fb:FilterGroupItem>
+<!--  STATUS FILTER  -->
+<fb:FilterGroupItem name="Status" label="Status" groupName="Basic" visibleInFilterBar="true">
+<fb:control>
+<Select id="transferStatusFilter" selectedKey="">
+<core:Item key="" text="All"/>
+<core:Item key="PENDING" text="Pending"/>
+<core:Item key="APPROVED" text="Approved"/>
+<core:Item key="REJECTED" text="Rejected"/>
+</Select>
+</fb:control>
+</fb:FilterGroupItem>
+</fb:filterGroupItems>
+</fb:FilterBar>
+<Table id="transferTable" class="recentTable" items="{ path: '/StockTransferRequests', sorter: { path: 'createdAt', descending: true } }" growing="true">
+<columns>
+<Column minScreenWidth="Desktop" demandPopin="true">
+<Text text="Transaction ID"/>
+</Column>
+<Column>
+<Text text="Part"/>
+</Column>
+<Column>
+<Text text="From"/>
+</Column>
+<Column>
+<Text text="To"/>
+</Column>
+<Column hAlign="End">
+<Text text="Qty"/>
+</Column>
+<Column>
+<Text text="Status"/>
+</Column>
+</columns>
+<items>
+<ColumnListItem>
+<cells>
+<Text text="{ID}" maxLines="1" class="pgMuted"/>
+<ObjectIdentifier title="{part/partNumber}"/>
+<Text text="{fromLocation/name}"/>
+<Text text="{toLocation/name}"/>
+<Text text="{quantity}" class="pgNum"/>
+<ObjectStatus inverted="true" text="{= ${status} ? ${status}.toUpperCase() : '' }" state="{= ${status} ? (${status}.toUpperCase() === 'APPROVED' ? 'Success' : ${status}.toUpperCase() === 'REJECTED' ? 'Error' : ${status}.toUpperCase() === 'PENDING' ? 'Warning' : 'None') : 'None' }"/>
+</cells>
+</ColumnListItem>
+</items>
+</Table>
+</VBox>
+</VBox>
+</content>
+</Page>
+</mvc:View>

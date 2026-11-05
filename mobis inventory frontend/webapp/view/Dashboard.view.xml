@@ -1,0 +1,334 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.f"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:layout="sap.ui.layout"
+    xmlns:cssgrid="sap.ui.layout.cssgrid"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    controllerName="inventorytest.controller.Dashboard">
+
+    <Page id="dashboardPage" class="dashPage" showHeader="false">
+        <content>
+            <!-- =====================================================
+                 WELCOME HERO BANNER
+                 ===================================================== -->
+            <VBox class="dashSection dashSectionFirst">
+                <VBox class="welcomeBanner">
+                    <Title text="Welcome to Mobis Spare Parts" level="H1" class="welcomeTitle"/>
+                    <Text text="Track inventory, stock movements, and warehouse performance in one place." class="welcomeSubtitle"/>
+                    <HBox class="welcomeChips" alignItems="Center">
+                        <core:Icon src="sap-icon://product" class="welcomeChipIcon"/>
+                        <Text text="{kpi>/total} items tracked" class="welcomeChipText"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- =====================================================
+                 KPI AREA
+                 ===================================================== -->
+            <VBox class="dashSection">
+                <Title text="Inventory Overview" level="H2" class="dashSectionTitle"/>
+                <f:GridList id="kpiGridList" class="dashKpiGrid" items="{kpiTiles>/items}">
+                    <f:customLayout>
+                        <cssgrid:GridBoxLayout boxMinWidth="14rem"/>
+                    </f:customLayout>
+                    <f:items>
+                        <CustomListItem type="Active" press="onKpiTilePress" class="kpiCard">
+                            <customData>
+                                <core:CustomData key="tone" value="{kpiTiles>cssClass}" writeToDom="true"/>
+                            </customData>
+                            <VBox class="kpiCardInner">
+                                <HBox justifyContent="SpaceBetween" alignItems="Start" width="100%">
+                                    <VBox>
+                                        <Text text="{kpiTiles>title}" class="kpiCardTitle"/>
+                                        <Text text="{kpiTiles>subtitle}" class="kpiCardSubtitle"/>
+                                    </VBox>
+                                    <core:Icon src="{kpiTiles>icon}" class="kpiIcon"/>
+                                </HBox>
+                                <HBox alignItems="Baseline" class="kpiValueRow">
+                                    <Text text="{kpiTiles>value}" class="kpiCardValue"/>
+                                    <Text text="{kpiTiles>unit}" class="kpiCardUnit"/>
+                                </HBox>
+                            </VBox>
+                        </CustomListItem>
+                    </f:items>
+                </f:GridList>
+            </VBox>
+
+            <!-- =====================================================
+                 ANALYTICS AREA
+                 ===================================================== -->
+            <VBox class="dashSection">
+                <Title text="Stock Analytics" level="H2" class="dashSectionTitle"/>
+                <layout:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" width="100%">
+                    <!-- STOCK BY WAREHOUSE -->
+                    <Panel id="warehousePanel" class="dashPanel">
+                        <headerToolbar>
+                            <Toolbar class="dashPanelToolbar">
+                                <core:Icon src="sap-icon://bar-chart" class="panelHeaderIcon"/>
+                                <Title text="{chartTitles>/warehouseTitle}" level="H3" class="sapUiTinyMarginBegin"/>
+                            </Toolbar>
+                        </headerToolbar>
+                        <content>
+                            <viz:VizFrame id="warehouseStockChart" uiConfig="{applicationSet:'fiori'}" height="360px" width="100%" vizType="bar" selectData="onWarehouseChartSelect" deselectData="onWarehouseChartDeselect">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{warehouseStock>/items}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Warehouse" value="{warehouseStock>warehouse}"/>
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Stock (Units)" value="{warehouseStock>stock}"/>
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock (Units)"/>
+                                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Warehouse"/>
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </content>
+                    </Panel>
+
+                    <!-- STOCK BY CATEGORY -->
+                    <Panel id="categoryPanel" class="dashPanel">
+                        <headerToolbar>
+                            <Toolbar class="dashPanelToolbar">
+                                <core:Icon src="sap-icon://pie-chart" class="panelHeaderIcon"/>
+                                <Title text="Stock by Category" level="H3" class="sapUiTinyMarginBegin"/>
+                            </Toolbar>
+                        </headerToolbar>
+                        <content>
+                            <HBox width="100%" wrap="Wrap" alignItems="Center" justifyContent="SpaceAround">
+                                <VBox class="donutWrapper" width="320px">
+                                    <viz:VizFrame id="categoryStockChart" uiConfig="{applicationSet:'fiori'}" height="320px" width="320px" vizType="donut" selectData="onCategoryChartSelect" deselectData="onCategoryChartDeselect">
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset data="{categoryStock>/items}">
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition name="Category" value="{categoryStock>category}"/>
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition name="Records" value="{categoryStock>count}"/>
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem uid="size" type="Measure" values="Records"/>
+                                            <viz.feeds:FeedItem uid="color" type="Dimension" values="Category"/>
+                                        </viz:feeds>
+                                    </viz:VizFrame>
+                                    <VBox class="donutCenterLabel">
+                                        <Text text="{kpi>/total}" class="donutCenterValue"/>
+                                        <Text text="Total Items" class="donutCenterUnit"/>
+                                    </VBox>
+                                </VBox>
+
+                                <!-- Legend List -->
+                                <VBox class="legendList" items="{categoryLegend>/items}">
+                                    <items>
+                                        <VBox class="legendItem">
+                                            <HBox alignItems="Center" class="legendRow">
+                                                <core:Icon src="sap-icon://circle-task-2" color="{categoryLegend>colorHex}" class="legendSwatch"/>
+                                                <Text text="{categoryLegend>category}" class="legendLabel"/>
+                                                <Text text="{= ${kpi>/total} ? Math.round(${categoryLegend>count} * 1000 / ${kpi>/total}) / 10 : 0 }%" class="legendPct"/>
+                                                <Text text="{categoryLegend>count}" class="legendCount"/>
+                                            </HBox>
+                                            <ProgressIndicator class="legendBar" showValue="false" height="0.3rem" percentValue="{= ${kpi>/total} ? Math.round(${categoryLegend>count} * 100 / ${kpi>/total}) : 0 }"/>
+                                        </VBox>
+                                    </items>
+                                </VBox>
+                            </HBox>
+                        </content>
+                    </Panel>
+                </layout:Grid>
+            </VBox>
+
+            <!-- =====================================================
+                 ACTION CENTER
+                 ===================================================== -->
+            <VBox class="dashSection">
+                <Title text="Action Center" level="H2" class="dashSectionTitle"/>
+                <layout:Grid defaultSpan="L6 M12 S12" hSpacing="1" vSpacing="1" width="100%">
+                    <Panel id="attentionPanel" class="dashPanel">
+                        <headerToolbar>
+                            <Toolbar class="dashPanelToolbar">
+                                <core:Icon src="sap-icon://alert" class="panelHeaderIcon"/>
+                                <Title text="Needs Attention" level="H3" class="sapUiTinyMarginBegin"/>
+                                <ToolbarSpacer/>
+                                <Button text="View all" type="Transparent" press="onNavLowStock"/>
+                            </Toolbar>
+                        </headerToolbar>
+                        <content>
+                           <List id="attentionList" class="attnList" noDataText="All stock levels are healthy" items="{path: 'lowStockList>/items', length: 3}">
+                                <CustomListItem class="attnItem">
+                                    <customData>
+                                        <core:CustomData key="status" value="{lowStockList>status}" writeToDom="true"/>
+                                    </customData>
+                                    <VBox class="attnBox">
+                                        <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                            <VBox>
+                                                <Text text="{lowStockList>partNumber}" class="attnPart"/>
+                                                <Text text="{lowStockList>description} · {lowStockList>locationName}" class="attnMeta"/>
+                                            </VBox>
+                                            <ObjectStatus text="{lowStockList>status}" inverted="true" state="{= ${lowStockList>status} === 'Out of Stock' ? 'Error' : 'Warning'}"/>
+                                        </HBox>
+                                        <ProgressIndicator class="attnBar" showValue="false" height="0.4rem" percentValue="{= ${lowStockList>reorderLevel} ? Math.min(100, Math.round(${lowStockList>quantityOnHand} * 100 / ${lowStockList>reorderLevel})) : 0}"/>
+                                        <Text text="{lowStockList>quantityOnHand} on hand · reorder at {lowStockList>reorderLevel}" class="attnMeta"/>
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </content>
+                    </Panel>
+
+                    <Panel id="quickActionsPanel" class="dashPanel">
+                        <headerToolbar>
+                            <Toolbar class="dashPanelToolbar">
+                                <core:Icon src="sap-icon://action" class="panelHeaderIcon"/>
+                                <Title text="Quick Actions" level="H3" class="sapUiTinyMarginBegin"/>
+                            </Toolbar>
+                        </headerToolbar>
+                        <content>
+                            <f:GridList id="quickActionsGrid" class="actionGridList">
+                                <f:customLayout>
+                                    <cssgrid:GridBoxLayout boxMinWidth="11rem"/>
+                                </f:customLayout>
+                                <f:items>
+                                    <CustomListItem type="Active" press="onNavInventory" class="actionCard">
+                                        <HBox alignItems="Center" class="actionCardInner">
+                                            <core:Icon src="sap-icon://list" class="actionCardIcon"/>
+                                            <VBox>
+                                                <Text text="Inventory List" class="actionCardTitle"/>
+                                                <Text text="Browse all stock" class="actionCardSub"/>
+                                            </VBox>
+                                        </HBox>
+                                    </CustomListItem>
+                                    <CustomListItem type="Active" press="onNavIssue" class="actionCard actionCardPrimary">
+                                        <HBox alignItems="Center" class="actionCardInner">
+                                            <core:Icon src="sap-icon://outbox" class="actionCardIcon"/>
+                                            <VBox>
+                                                <Text text="Issue Stock" class="actionCardTitle"/>
+                                                <Text text="Record an issue" class="actionCardSub"/>
+                                            </VBox>
+                                        </HBox>
+                                    </CustomListItem>
+                                    <CustomListItem type="Active" press="onNavTransfer" class="actionCard">
+                                        <HBox alignItems="Center" class="actionCardInner">
+                                            <core:Icon src="sap-icon://shipping-status" class="actionCardIcon"/>
+                                            <VBox>
+                                                <Text text="Stock Transfer" class="actionCardTitle"/>
+                                                <Text text="Move between sites" class="actionCardSub"/>
+                                            </VBox>
+                                        </HBox>
+                                    </CustomListItem>
+                                    <CustomListItem type="Active" press="onNavHealthy" class="actionCard">
+                                        <HBox alignItems="Center" class="actionCardInner">
+                                            <core:Icon src="sap-icon://accept" class="actionCardIcon"/>
+                                            <VBox>
+                                                <Text text="Healthy Stock" class="actionCardTitle"/>
+                                                <Text text="Above reorder level" class="actionCardSub"/>
+                                            </VBox>
+                                        </HBox>
+                                    </CustomListItem>
+                                </f:items>
+                            </f:GridList>
+                        </content>
+                    </Panel>
+                </layout:Grid>
+            </VBox>
+
+            <!-- =====================================================
+                 RECENT STOCK ISSUES
+                 ===================================================== -->
+            <VBox class="dashSection dashSectionLast">
+                <Title text="Recent Activity" level="H2" class="dashSectionTitle"/>
+                <Panel id="recentIssuesPanel" class="dashPanel">
+                    <headerToolbar>
+                        <Toolbar class="dashPanelToolbar">
+                            <core:Icon src="sap-icon://history" class="panelHeaderIcon"/>
+                            <Title text="Latest Issued Stock" level="H3" class="sapUiTinyMarginBegin"/>
+                            <ToolbarSpacer/>
+                            <Button icon="sap-icon://refresh" tooltip="Refresh recent stock issues" type="Transparent" press="onRefreshRecentIssues"/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <content>
+                        <Table id="recentIssuesTable" class="recentTable" growing="true" growingThreshold="10" noDataText="No stock issues found" items="{recentIssues>/items}">
+                            <columns>
+                                <Column>
+                                    <Text text="Part Number"/>
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="Description"/>
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="Location"/>
+                                </Column>
+                                <Column hAlign="End">
+                                    <Text text="Quantity Issued"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Reference"/>
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="Date / Time"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{recentIssues>partNumber}"/>
+                                        <Text text="{recentIssues>description}"/>
+                                        <Text text="{recentIssues>locationName}"/>
+                                        <ObjectNumber number="{recentIssues>quantity}" unit="units" emphasized="true" state="Information"/>
+                                        <Text text="{recentIssues>reference}"/>
+                                        <Text text="{recentIssues>dateTime}"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </content>
+                </Panel>
+            </VBox>
+        </content>
+
+        <!-- =========================================================
+             CHART DRILL-DOWN POPOVER
+             ========================================================= -->
+        <dependents>
+            <Popover id="chartDetailPopover" title="{chartDetail>/title}" placement="Auto" contentWidth="400px" contentMinWidth="320px">
+                <content>
+                    <Table id="chartDetailTable" growing="true" growingThreshold="10" noDataText="No parts found for this selection" items="{chartDetail>/items}">
+                        <columns>
+                            <Column>
+                                <Text text="Part"/>
+                            </Column>
+                            <Column>
+                                <Text text="Location"/>
+                            </Column>
+                            <Column hAlign="End">
+                                <Text text="Quantity"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{chartDetail>partNumber}"/>
+                                    <Text text="{chartDetail>locationName}"/>
+                                    <ObjectNumber number="{chartDetail>quantityOnHand}" unit="units"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+                <footer>
+                    <Bar>
+                        <contentRight>
+                            <Button text="Close" press="onCloseChartDetail"/>
+                        </contentRight>
+                    </Bar>
+                </footer>
+            </Popover>
+        </dependents>
+    </Page>
+</mvc:View>

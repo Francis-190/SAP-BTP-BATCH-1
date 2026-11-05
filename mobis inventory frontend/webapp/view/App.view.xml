@@ -1,0 +1,49 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:tnt="sap.tnt" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="inventorytest.controller.App">
+<tnt:ToolPage id="appToolPage" class="appShell">
+<!--  =========================================================  -->
+<!--  TOP TOOLBAR                                                -->
+<!--  =========================================================  -->
+<tnt:header>
+<tnt:ToolHeader>
+<!--  HAMBURGER BUTTON  -->
+<Button icon="sap-icon://menu2" type="Transparent" tooltip="Open / Close navigation" press="onToggleSideNavigation" class="appSidebarToggle"/>
+<!--  APPLICATION TITLE (M avatar removed)  -->
+<VBox class="appBrandBlock sapUiSmallMarginBegin">
+<Text text="Mobis Spare Parts" class="appBrandTitle"/>
+<Text text="Inventory Management" class="appBrandSubtitle"/>
+</VBox>
+<ToolbarSpacer/>
+</tnt:ToolHeader>
+</tnt:header>
+<!--  =========================================================  -->
+<!--  SIDEBAR NAVIGATION                                         -->
+<!--  =========================================================  -->
+<tnt:sideContent>
+<tnt:SideNavigation id="appSideNav" expanded="false" selectedKey="{appNav>/selectedKey}" itemSelect="onSideNavItemSelect">
+<!--  MAIN NAVIGATION  -->
+<tnt:item>
+<tnt:NavigationList>
+<tnt:NavigationListItem key="dashboard" text="Dashboard" icon="sap-icon://home"/>
+<tnt:NavigationListItem key="all" text="Inventory List" icon="sap-icon://list"/>
+<tnt:NavigationListItem key="issue" text="Issue Stock" icon="sap-icon://outbox"/>
+<tnt:NavigationListItem key="healthy" text="Healthy Stock" icon="sap-icon://accept"/>
+</tnt:NavigationList>
+</tnt:item>
+<!--  FIXED NAVIGATION  -->
+<tnt:fixedItem>
+<tnt:NavigationList>
+<tnt:NavigationListItem key="lowStock" text="Low Stock" icon="sap-icon://alert"/>
+<tnt:NavigationListItem key="purchaseRequisitions" text="Purchase Requisitions" icon="sap-icon://documents"/>
+<tnt:NavigationListItem key="transfer" text="Stock Transfer" icon="sap-icon://shipping-status"/>
+</tnt:NavigationList>
+</tnt:fixedItem>
+</tnt:SideNavigation>
+</tnt:sideContent>
+<!--  =========================================================  -->
+<!--  ROUTED PAGE CONTENT                                        -->
+<!--  =========================================================  -->
+<tnt:mainContents>
+<NavContainer id="appContent"/>
+</tnt:mainContents>
+</tnt:ToolPage>
+</mvc:View>

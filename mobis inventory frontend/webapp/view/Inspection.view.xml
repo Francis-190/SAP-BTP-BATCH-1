@@ -1,0 +1,232 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    controllerName="inventorytest.controller.Inspection">
+
+    <Page
+        id="inspectionPage"
+        class="pgPage"
+        title="Kept for Inspection"
+        showNavButton="true"
+        navButtonPress="onNavBack">
+
+        <content>
+            <VBox class="pgBody">
+
+                <Text
+                    text="Defective parts returned from service centers. Select an item to view its details, then return it to warehouse stock or mark it as consumed."
+                    class="pgIntro"/>
+
+                <!-- INSPECTION LIST -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+
+                        <core:Icon
+                            src="sap-icon://inspection"
+                            class="panelHeaderIcon"/>
+
+                        <Title
+                            text="Items Kept for Inspection"
+                            level="H3"
+                            class="sapUiTinyMarginBegin"/>
+
+                        <ToolbarSpacer/>
+
+                        <Text
+                            text="{= ${insp>/items}.length} records"
+                            class="pgMuted"/>
+
+                        <Button
+                            icon="sap-icon://refresh"
+                            type="Transparent"
+                            tooltip="Refresh"
+                            press="onRefresh"/>
+                    </Toolbar>
+
+                    <!-- FILTER BAR -->
+                    <Toolbar class="sapUiTinyMarginTopBottom" style="Clear">
+
+                        <Select
+                            id="inspFilterServiceCenter"
+                            width="14rem"
+                            items="{insp>/scOptions}"
+                            change="onFilterChange">
+                            <core:Item
+                                key="{insp>key}"
+                                text="{insp>text}"/>
+                        </Select>
+
+                    </Toolbar>
+
+                    <Table
+                        id="inspectionTable"
+                        class="recentTable"
+                        growing="true"
+                        growingThreshold="10"
+                        noDataText="No items kept for inspection"
+                        items="{insp>/items}">
+
+                        <columns>
+                            <Column>
+                                <Text text="Part"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Service Center"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true">
+                                <Text text="Warehouse"/>
+                            </Column>
+
+                            <Column hAlign="End">
+                                <Text text="Kept for Inspection"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true">
+                                <Text text="Issued On"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem
+                                type="Active"
+                                press="onItemPress">
+                                <cells>
+
+                                    <ObjectIdentifier
+                                        title="{insp>partNumber}"
+                                        text="{insp>description}"/>
+
+                                    <ObjectIdentifier
+                                        title="{insp>serviceCenter}"
+                                        text="{insp>serviceCenterCode}"/>
+
+                                    <Text text="{insp>warehouse}"/>
+
+                                    <ObjectNumber
+                                        number="{insp>defectiveQuantity}"
+                                        unit="units"
+                                        emphasized="true"
+                                        state="Warning"/>
+
+                                    <Text text="{insp>dateTime}"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                </VBox>
+
+            </VBox>
+        </content>
+
+        <dependents>
+
+            <!-- INSPECTION DETAILS POPUP -->
+            <Dialog
+                id="inspDialog"
+                title="Inspection Details"
+                contentWidth="38rem"
+                draggable="true"
+                afterClose="onDialogClosed">
+
+                <content>
+
+                    <f:SimpleForm
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="4"
+                        labelSpanL="4"
+                        labelSpanM="4"
+                        labelSpanS="12"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1">
+
+                        <core:Title text="Part"/>
+
+                        <Label text="Part Number"/>
+                        <Text text="{insp>/selected/partNumber}"/>
+
+                        <Label text="Description"/>
+                        <Text text="{insp>/selected/description}"/>
+
+                        <Label text="Warehouse"/>
+                        <Text text="{insp>/selected/warehouse}"/>
+
+                        <core:Title text="Source &amp; Quantities"/>
+
+                        <Label text="Service Center"/>
+                        <Text text="{insp>/selected/serviceCenter} ({insp>/selected/serviceCenterCode})"/>
+
+                        <Label text="Issued On"/>
+                        <Text text="{insp>/selected/dateTime}"/>
+
+                        <Label text="Issued Quantity"/>
+                        <Text text="{insp>/selected/issuedQuantity}"/>
+
+                        <Label text="Consumed"/>
+                        <Text text="{insp>/selected/consumedQuantity}"/>
+
+                        <Label text="Returned (Unused)"/>
+                        <Text text="{insp>/selected/unusedReturnedQuantity}"/>
+
+                        <Label text="Kept for Inspection"/>
+                        <ObjectStatus
+                            text="{insp>/selected/defectiveQuantity}"
+                            state="Warning"/>
+
+                        <Label text="Reference"/>
+                        <Text text="{insp>/selected/reference}"/>
+
+                    </f:SimpleForm>
+
+                    <VBox class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom">
+
+                        <Label text="Quantity"/>
+
+                        <Input
+                            type="Number"
+                            width="12rem"
+                            value="{insp>/qty}"/>
+
+                    </VBox>
+
+                </content>
+
+                <buttons>
+
+                    <Button
+                        text="Close"
+                        press="onCloseDetails"/>
+
+                    <Button
+                        text="Consume"
+                        icon="sap-icon://accept"
+                        press="onConsume"/>
+
+                    <Button
+                        text="Return to Warehouse"
+                        icon="sap-icon://undo"
+                        type="Emphasized"
+                        press="onReturnToWarehouse"/>
+
+                </buttons>
+
+            </Dialog>
+
+        </dependents>
+    </Page>
+</mvc:View>

@@ -1,0 +1,280 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    controllerName="inventorytest.controller.ServiceCenter">
+
+    <Page
+        id="serviceCenterPage"
+        class="pgPage"
+        title="Service Center"
+        showNavButton="true"
+        navButtonPress="onNavBack">
+
+        <content>
+            <VBox class="pgBody">
+
+                <Text
+                    text="Track spare parts issued to service centers and reconcile them after repair."
+                    class="pgIntro"/>
+
+                <!-- ISSUES & RECONCILIATION -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+
+                        <core:Icon
+                            src="sap-icon://action-settings"
+                            class="panelHeaderIcon"/>
+
+                        <Title
+                            text="Issues &amp; Reconciliation"
+                            level="H3"
+                            class="sapUiTinyMarginBegin"/>
+
+                        <ToolbarSpacer/>
+
+                        <Text
+                            text="{= ${svc>/items}.length} records"
+                            class="pgMuted"/>
+
+                        <Button
+                            icon="sap-icon://refresh"
+                            type="Transparent"
+                            tooltip="Refresh"
+                            press="onRefresh"/>
+                    </Toolbar>
+
+                    <!-- FILTERS -->
+                    <HBox
+                        class="sapUiSmallMarginBeginEnd sapUiTinyMarginTopBottom"
+                        wrap="Wrap"
+                        alignItems="End">
+
+                        <VBox class="sapUiSmallMarginEnd">
+                            <Label text="Service Center"/>
+                            <Select
+                                id="centerFilterSelect"
+                                width="16rem"
+                                forceSelection="true"
+                                selectedKey="{svc>/centerFilter}"
+                                change="onFilterChange"
+                                items="{svc>/centerOptions}">
+                                <core:Item
+                                    key="{svc>key}"
+                                    text="{svc>text}"/>
+                            </Select>
+                        </VBox>
+
+                        <VBox>
+                            <Label text="Status"/>
+                            <Select
+                                id="statusFilterSelect"
+                                width="12rem"
+                                forceSelection="true"
+                                selectedKey="{svc>/statusFilter}"
+                                change="onFilterChange">
+                                <core:Item key="" text="All"/>
+                                <core:Item key="ISSUED" text="Issued (open)"/>
+                                <core:Item key="RECONCILED" text="Reconciled"/>
+                            </Select>
+                        </VBox>
+
+                    </HBox>
+
+                    <Table
+                        id="svcIssuesTable"
+                        class="recentTable"
+                        growing="true"
+                        growingThreshold="10"
+                        noDataText="No service center issues found"
+                        items="{svc>/items}">
+
+                        <columns>
+                            <Column>
+                                <Text text="Service Center"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Part"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true">
+                                <Text text="Warehouse"/>
+                            </Column>
+
+                            <Column hAlign="End">
+                                <Text text="Issued"/>
+                            </Column>
+
+                            <Column
+                                hAlign="End"
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Consumed"/>
+                            </Column>
+
+                            <Column
+                                hAlign="End"
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Returned"/>
+                            </Column>
+
+                            <Column
+                                hAlign="End"
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Defective"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Status"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true">
+                                <Text text="Issued On"/>
+                            </Column>
+
+                            <Column hAlign="Center">
+                                <Text text="Action"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+
+                                    <ObjectIdentifier
+                                        title="{svc>serviceCenter}"
+                                        text="{svc>serviceCenterCode}"/>
+
+                                    <ObjectIdentifier
+                                        title="{svc>partNumber}"
+                                        text="{svc>description}"/>
+
+                                    <Text text="{svc>warehouse}"/>
+
+                                    <Text text="{svc>issuedQuantity}"/>
+
+                                    <Text text="{svc>consumedQuantity}"/>
+
+                                    <Text text="{svc>unusedReturnedQuantity}"/>
+
+                                    <Text text="{svc>defectiveReturnedQuantity}"/>
+
+                                    <ObjectStatus
+                                        text="{svc>status}"
+                                        inverted="true"
+                                        state="{= ${svc>status} === 'RECONCILED' ? 'Success' : 'Warning'}"/>
+
+                                    <Text text="{svc>dateTime}"/>
+
+                                    <Button
+                                        text="Reconcile"
+                                        icon="sap-icon://accept"
+                                        type="Emphasized"
+                                        visible="{= ${svc>status} === 'ISSUED'}"
+                                        press="onReconcilePress"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                </VBox>
+
+                <!-- SERVICE CENTER LIST -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+
+                        <core:Icon
+                            src="sap-icon://building"
+                            class="panelHeaderIcon"/>
+
+                        <Title
+                            text="Service Centers"
+                            level="H3"
+                            class="sapUiTinyMarginBegin"/>
+
+                        <ToolbarSpacer/>
+
+                        <Text
+                            text="{= ${svc>/centers}.length} centers"
+                            class="pgMuted"/>
+                    </Toolbar>
+
+                    <Table
+                        id="svcCentersTable"
+                        class="recentTable"
+                        growing="true"
+                        growingThreshold="10"
+                        noDataText="No service centers found"
+                        items="{svc>/centers}">
+
+                        <columns>
+                            <Column>
+                                <Text text="Service Center"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="City"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Contact Person"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Desktop"
+                                demandPopin="true">
+                                <Text text="Phone"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Status"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+
+                                    <ObjectIdentifier
+                                        title="{svc>name}"
+                                        text="{svc>serviceCenterCode}"/>
+
+                                    <Text text="{svc>city}"/>
+
+                                    <Text text="{svc>contactPerson}"/>
+
+                                    <Text text="{svc>phone}"/>
+
+                                    <ObjectStatus
+                                        text="{= ${svc>isActive} ? 'Active' : 'Inactive'}"
+                                        state="{= ${svc>isActive} ? 'Success' : 'Error'}"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
