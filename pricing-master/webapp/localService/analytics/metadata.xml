@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+        <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="tafe.dealer.analyticsService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="DealerAnalytics" EntityType="tafe.dealer.analyticsService.DealerAnalytics"/>
+                <EntitySet Name="MonthlyAnalytics" EntityType="tafe.dealer.analyticsService.MonthlyAnalytics"/>
+                <EntitySet Name="PricingAnalytics" EntityType="tafe.dealer.analyticsService.PricingAnalytics"/>
+                <EntitySet Name="PricingTrendAnalytics" EntityType="tafe.dealer.analyticsService.PricingTrendAnalytics"/>
+                <EntitySet Name="ProductSalesAnalytics" EntityType="tafe.dealer.analyticsService.ProductSalesAnalytics"/>
+                <EntitySet Name="PurchaseOrderAnalytics" EntityType="tafe.dealer.analyticsService.PurchaseOrderAnalytics"/>
+                <EntitySet Name="PurchaseOrderStatusSummary" EntityType="tafe.dealer.analyticsService.PurchaseOrderStatusSummary"/>
+            </EntityContainer>
+            <EntityType Name="DealerAnalytics">
+                <Key>
+                    <PropertyRef Name="dealerId"/>
+                    <PropertyRef Name="status"/>
+                </Key>
+                <Property Name="dealerId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="dealerCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="dealerName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="city" Type="Edm.String" MaxLength="50"/>
+                <Property Name="state" Type="Edm.String" MaxLength="50"/>
+                <Property Name="status" Type="Edm.String" Nullable="false"/>
+                <Property Name="totalOrders" Type="Edm.Int32"/>
+                <Property Name="totalRevenue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="totalTax" Type="Edm.Decimal" Precision="15" Scale="2"/>
+            </EntityType>
+            <EntityType Name="MonthlyAnalytics">
+                <Key>
+                    <PropertyRef Name="orderYear"/>
+                    <PropertyRef Name="orderMonth"/>
+                </Key>
+                <Property Name="orderYear" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="orderMonth" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="orderCount" Type="Edm.Int32"/>
+                <Property Name="monthlyRevenue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="monthlyTax" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="avgOrderValue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+            </EntityType>
+            <EntityType Name="PricingAnalytics">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="productId" Type="Edm.Guid"/>
+                <Property Name="productCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="productName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="category" Type="Edm.String" MaxLength="50"/>
+                <Property Name="regionName" Type="Edm.String" MaxLength="50"/>
+                <Property Name="basePrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="discount" Type="Edm.Decimal" Precision="15" Scale="2" DefaultValue="0"/>
+                <Property Name="tax" Type="Edm.Decimal" Precision="15" Scale="2" DefaultValue="0"/>
+                <Property Name="finalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="validFrom" Type="Edm.Date"/>
+                <Property Name="validTo" Type="Edm.Date"/>
+                <Property Name="priceStatus" Type="Edm.String" MaxLength="20"/>
+            </EntityType>
+            <EntityType Name="PricingTrendAnalytics">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="priceMasterId" Type="Edm.Guid"/>
+                <Property Name="productCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="productName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="oldFinalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="newFinalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="priceDelta" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="changeReason" Type="Edm.String" MaxLength="100"/>
+                <Property Name="changedOn" Type="Edm.DateTimeOffset"/>
+                <Property Name="changedBy" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="ProductSalesAnalytics">
+                <Key>
+                    <PropertyRef Name="productId"/>
+                </Key>
+                <Property Name="productId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="productCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="productName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="category" Type="Edm.String" MaxLength="50"/>
+                <Property Name="totalQtySold" Type="Edm.Int32"/>
+                <Property Name="totalRevenue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="avgUnitPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+            </EntityType>
+            <EntityType Name="PurchaseOrderAnalytics">
+                <Key>
+                    <PropertyRef Name="orderId"/>
+                </Key>
+                <Property Name="orderId" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="poNumber" Type="Edm.String" MaxLength="30"/>
+                <Property Name="orderDate" Type="Edm.Date"/>
+                <Property Name="dealerCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="dealerName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="status" Type="Edm.String"/>
+                <Property Name="totalAmount" Type="Edm.Decimal" Precision="15" Scale="2" DefaultValue="0"/>
+                <Property Name="taxAmount" Type="Edm.Decimal" Precision="15" Scale="2" DefaultValue="0"/>
+                <Property Name="rejectionReason" Type="Edm.String" MaxLength="255"/>
+            </EntityType>
+            <EntityType Name="PurchaseOrderStatusSummary">
+                <Key>
+                    <PropertyRef Name="status"/>
+                </Key>
+                <Property Name="status" Type="Edm.String" Nullable="false"/>
+                <Property Name="orderCount" Type="Edm.Int32"/>
+                <Property Name="totalValue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="avgOrderValue" Type="Edm.Decimal" Precision="15" Scale="2"/>
+            </EntityType>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/DealerAnalytics">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.DealerAnalytics/dealerId">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.DealerAnalytics/totalOrders">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.DealerAnalytics/totalRevenue">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.DealerAnalytics/totalTax">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/MonthlyAnalytics">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.MonthlyAnalytics/orderYear">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.MonthlyAnalytics/orderMonth">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.MonthlyAnalytics/orderCount">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.MonthlyAnalytics/monthlyRevenue">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.MonthlyAnalytics/monthlyTax">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.MonthlyAnalytics/avgOrderValue">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/PricingAnalytics">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PricingAnalytics/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PricingAnalytics/basePrice">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PricingAnalytics/validFrom">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PricingAnalytics/validTo">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/PricingTrendAnalytics">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PricingTrendAnalytics/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PricingTrendAnalytics/priceDelta">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/ProductSalesAnalytics">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.ProductSalesAnalytics/productId">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.ProductSalesAnalytics/totalQtySold">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.ProductSalesAnalytics/totalRevenue">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.ProductSalesAnalytics/avgUnitPrice">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/PurchaseOrderAnalytics">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PurchaseOrderAnalytics/orderId">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PurchaseOrderAnalytics/status">
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="APPROVED"/>
+                            <PropertyValue Property="Value" String="APPROVED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="PENDING"/>
+                            <PropertyValue Property="Value" String="PENDING"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="DELIVERED"/>
+                            <PropertyValue Property="Value" String="DELIVERED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="SUBMITTED"/>
+                            <PropertyValue Property="Value" String="SUBMITTED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="REJECT"/>
+                            <PropertyValue Property="Value" String="REJECT"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.EntityContainer/PurchaseOrderStatusSummary">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PurchaseOrderStatusSummary/orderCount">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PurchaseOrderStatusSummary/totalValue">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+            <Annotations Target="tafe.dealer.analyticsService.PurchaseOrderStatusSummary/avgOrderValue">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

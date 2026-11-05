@@ -1,0 +1,275 @@
+<mvc:View
+    controllerName="pricingmaster.controller.PricingMaster"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:uxap="sap.uxap"
+    xmlns:form="sap.ui.layout.form">
+    
+    
+    <f:FlexibleColumnLayout id="idFCLLayout" layout="OneColumn">
+        
+        <!-- Master Column (Table) -->
+        <f:beginColumnPages>
+            <Page id="pagePricingMaster" title="Pricing Master &amp; Approvals">
+                <content>
+                    
+                    <VBox id="idVBoxDashboardasContainer"  class="pricingBanner sapUiMediumMargin">
+                    
+                        <!-- <Image id="idBanner" src="images/pricing-banner.png"  width="100%" height="250px"  class="ImgBanner" ></Image> -->
+                    </VBox>
+                    
+                    <Panel id="idPanelPricing" class="sapUiResponsiveMargin" width="auto">
+                        
+                        
+                        <Table
+                            id="pricingTable"
+                            items="{path: '/PriceMaster'}"
+                            mode="SingleSelectMaster"
+                            selectionChange=".onSelectionChange"
+                            growing="true"
+                            growingThreshold="10"
+                            class="sapUiSmallMarginTop">
+                            
+                            <headerToolbar>
+                                <OverflowToolbar id="otbPricing">
+                                    <Title id="titlePricing" text="Price Records" level="H2"/>
+                                    <SearchField id="searchPricing" width="30%" search=".onSearch"/>
+                                    <ToolbarSpacer id="spacerPricing"/>
+                                    <Button id="btnCreate" text="Create Price" icon="sap-icon://add" type="Default" press=".onCreatePrice"/>
+                                    
+                                    <!-- <Button id="btnEdit" text="Edit" icon="sap-icon://edit" enabled="false" press=".onEditPrice"/>
+                                    <Button id="btnDelete" text="Delete" icon="sap-icon://delete" type="Reject" enabled="false" press=".onDeletePrice"/>
+                                    <ToolbarSeparator id="sepPricing"/>
+                                    <Button id="btnApprove" text="Approve" icon="sap-icon://accept" type="Success" enabled="false" press=".onApprovePrice"/>
+                                    <Button id="btnReject" text="Reject" icon="sap-icon://decline" type="Negative" enabled="false" press=".onRejectPrice"/> -->
+                                
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            
+                             <columns>
+                                <Column id="colProductID" width="12rem" ><Text id="idTxtColId" text="Product"/></Column>
+                                <Column id="colReg" width="7rem" ><Text id="txtColReg" text="Region"/></Column>
+                                <Column id="colBase" width="7rem"><Text id="txtColBase" text="Base Price"/></Column>
+                                <Column id="colDisc" width="7rem" ><Text id="txtColDisc" text="Discount (%)"/></Column>
+                                <Column id="colTax" width="7rem" ><Text id="txtColTax" text="Tax (%)"/></Column>
+                                <Column id="colFinal" width="8rem" ><Text id="txtColFinal" text="Final Price"/></Column>
+                                <Column id="colValidFrom" width="7rem" ><Text id="txtColValidFrom" text="Valid From"/></Column>
+                                <Column id="colValidTo" width="7rem" ><Text id="txtColValidTo" text="Valid To"/></Column>
+                                <Column id="colStatus" width="5rem" ><Text id="txtColStatus" text="Status"/></Column>
+                            </columns>
+                            
+                            <items>
+                                <ColumnListItem id="idCLIPricing" type="Navigation">
+                                    <cells>
+                                        <ObjectIdentifier id="idOIPricingID" title="{product/productName}" text="{product/productCode}"/>
+                                        <Text id="idTxtRegionID" text="{region/regionName}"/>
+                                        <ObjectNumber id="idONPricingBasePrice" number="{basePrice}" unit="INR"/>
+                                        <Text id="idTxtPricingDisc" text="{discount}"/>
+                                        <Text id="idTxtPricingTax" text="{tax}"/>
+                                        <ObjectNumber id="idONPricingFinalPrice" number="{finalPrice}" unit="INR" state="Information"/>
+                                        <Text id="idTxtPricingValidFrom" text="{validFrom}"/>
+                                        <Text id="idTxtPricingValidTo" text="{validTo}"/>
+                                        <ObjectStatus
+                                            id="idObjStsPricingStatus"
+                                            text="{status}"
+                                            state="{path: 'status', formatter: '.formatter.statusState'}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </content>
+            </Page>
+        </f:beginColumnPages>
+
+        <!-- Detail Column (Object Page) -->
+        <f:midColumnPages>
+            <uxap:ObjectPageLayout id="idObjPagePricing" showTitleInHeaderContent="true" isChildPage="true">
+                
+                <uxap:headerTitle>
+                    <uxap:ObjectPageDynamicHeaderTitle id="idObjPageHeaderTitle">
+                        <uxap:expandedHeading>
+                            <Title id="idTitleExpanded" text="Price Details" level="H2"/>
+                        </uxap:expandedHeading>
+                        <uxap:snappedHeading>
+                            <Title id="idTitleSnapped" text="Price Details" level="H2"/>
+                        </uxap:snappedHeading>
+
+                        <uxap:actions>
+                            <Button id="idBtnObjEdit" text="Edit" icon="sap-icon://edit" type="Emphasized" press=".onEditPriceDetail" visible="{= !( ${viewModel>/editMode} || ${viewModel>/createMode} ) }" />
+                            <Button id="btnDelete" text="Delete" icon="sap-icon://delete" type="Reject" enabled="false" press=".onDeletePrice" visible="{= !( ${viewModel>/editMode} || ${viewModel>/createMode} ) }" />
+                            <Button id="idBtnSave" text="Save" press="onSavePrice" type="Emphasized" visible="{= ( ${viewModel>/editMode} || ${viewModel>/createMode} ) }"/>
+                            <Button id="idBtnCancel" text="Cancel" press="onCancelEdit" type="Transparent" visible="{= ( ${viewModel>/editMode} || ${viewModel>/createMode} ) }"/>
+                            
+                            <ToolbarSeparator id="sepPricing"/>
+                            
+                            <Button id="idBtnObjApprove" text="Approve" icon="sap-icon://accept" type="Success" press=".onApprovePriceDetail" visible="{= !( ${viewModel>/editMode} || ${viewModel>/createMode} ) }" />
+                            <Button id="idBtnObjReject" text="Reject" icon="sap-icon://decline" type="Negative" press=".onRejectPriceDetail" visible="{= !( ${viewModel>/editMode} || ${viewModel>/createMode} ) }" />
+                            <Button id="idBtnObjClose" icon="sap-icon://decline" tooltip="Close Detail View" type="Transparent" press=".onCloseDetailColumn"/>
+                        </uxap:actions>
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                </uxap:headerTitle>
+
+                <uxap:headerContent>
+                    <HBox id="idHBoxHeaderMetrics" wrap="Wrap" class="sapUiSmallMargin" visible="{= !${viewModel>/createMode} }">
+                        <VBox id="idVBoxHeaderFinal" class="sapUiLargeMarginEnd">
+                            <Label id="idLblHeaderFinal" text="Final Price"/>
+                            <ObjectNumber id="idONHeaderFinal" number="{finalPrice}" unit="INR" state="Information"/>
+                        </VBox>
+                        <VBox id="idVBoxHeaderStatus" class="sapUiLargeMarginEnd">
+                            <Label id="idLblHeaderStatus" text="Status"/>
+                            <ObjectStatus id="idObjStsHeaderStatus" text="{status}" state="{path: 'status', formatter: '.formatter.statusState'}"/>
+                        </VBox>
+                    </HBox>
+                </uxap:headerContent>
+
+                <uxap:sections>
+                    <!-- Section 1: General Info -->
+                    <uxap:ObjectPageSection id="idOPSGeneral" title="Product Details">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="idOPSSGeneral">
+                                <form:SimpleForm id="idFormGeneral" editable="{viewModel>/editMode}" columnsL="2" columnsM="2" columnsXL="2"
+                                                 layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="5" >
+                                    
+                                    <core:Title id="idCoreTtlPrD" text="Product"></core:Title>
+
+                                    <Label id="idLblFormId" text="Product Code" visible="{= !${viewModel>/createMode} }"/>
+                                    <Text id="idTxtFormId" text="{product/productCode}" visible="{= !${viewModel>/createMode} }" />
+                                    <Label id="idLblFormId_Edit" text="Product Code" visible="{= ${viewModel>/createMode} }" class="sapUiTinyMarginTop" />
+                                    <Select id="idSltProduct" items="{path: '/Products', parameters: {$select: 'ID,productCode,productName,category,unitPrice,active'} }" 
+                                            selectedKey="{draftModel>/productCode}" forceSelection="false" change="onChangeSltProduct" visible="{= ${viewModel>/createMode} }" width="80%" >
+                                        <items>
+                                            <core:Item id="idCoreItmMultiValue" text="{productCode} - {productName}" key="{productCode}"></core:Item>
+                                        </items>
+                                    </Select>
+
+                                    <Label id="idLblFormProd" text="Product Name"/>
+                                    <Text id="idTxtFormProd" text="{= ${viewModel>/createMode} ? ${draftModel>/productName} : ${product/productName} }"/>
+                                    
+                                    <Label id="idLblFormReg" text="Category"/>
+                                    <Text id="idTxtFormReg" text="{= ${viewModel>/createMode} ? ${draftModel>/productCategory} : ${product/category} }"/>
+
+                                    <Label id="idLblFormUnitPr" text="Unit Price"/>
+                                    <Text id="idTxtFormUnitPr" text="{= ${viewModel>/createMode} ? ${draftModel>/productUnitPrice} : ${product/unitPrice} }"/>
+                                    
+                                    <Label id="idLblFormStatus" text="Current Status"/>
+                                    <ObjectStatus id="idObjStsFormStatus" text="{= ( ${viewModel>/createMode} ? ${draftModel>/productActive} : ${product/active} ) ? 'YES' : 'NO'}" state="{= ( ${viewModel>/createMode} ? ${draftModel>/productActive} : ${product/active} ) ? 'Success' : 'Error' }"/>
+                                
+                                    <core:Title id="idCoreTtlRegD" text="Region"></core:Title>
+
+                                    <Label id="idLblFormRegId" text="Region Code" visible="{= !${viewModel>/createMode} }"/>
+                                    <Text id="idTxtFormRegId" text="{region/regionCode}" visible="{= !${viewModel>/createMode} }" />
+                                    <Label id="idLblFormRegId_Edit" text="Region Code" visible="{= ${viewModel>/createMode} }" class="sapUiTinyMarginTop" />
+                                    <Select id="idSltRegion" items="{path: '/Regions', parameters: {$select: 'ID,regionCode,regionName'} }" 
+                                            selectedKey="{draftModel>/productCode}" forceSelection="false" change="onChangeSltRegion" visible="{= ${viewModel>/createMode} }" width="50%" >
+                                        <items>
+                                            <core:Item id="idCoreItmRegMultiValue" text="{regionCode} - {regionName}" key="{regionCode}"></core:Item>
+                                        </items>
+                                    </Select>
+
+                                    <Label id="idLblFormRegName" text="Region Name"/>
+                                    <Text id="idTxtFormRegName" text="{= ${viewModel>/createMode} ? ${draftModel>/regionName} : ${region/regionName} }"/>
+                                    
+                                </form:SimpleForm>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <!-- Section 2: Pricing Breakdown -->
+                    <uxap:ObjectPageSection id="idOPSBreakdown" title="Pricing Breakdown">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="idOPSSBreakdown">
+                                <form:SimpleForm id="idFormBreakdown" editable="true"  columnsL="2" columnsM="2" columnsXL="2"
+                                                 layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="5">
+
+                                    <Label id="idLblFormBase" text="Base Price" required="{viewModel>/editablePricing}" />
+                                    <ObjectNumber id="idONFormBase" number="{basePrice}" unit="INR" visible="{= !${viewModel>/editablePricing} }"/>
+                                    <Input id="idInpFormBase" value="{draftModel>/basePrice}" type="Number" visible="{viewModel>/editablePricing}"/>
+
+                                    <Label id="idLblFormDisc" text="Discount (%)"/>
+                                    <Text id="idTxtFormDisc" text="{discount}" visible="{= !${viewModel>/editablePricing} }"/>
+                                    <Input id="idInpFormDisc" value="{draftModel>/discount}" type="Number" visible="{viewModel>/editablePricing}"/>
+
+                                    <Label id="idLblFormTax" text="Tax (%)"/>
+                                    <Text id="idTxtFormTax" text="{tax}" visible="{= !${viewModel>/editablePricing} }"/>
+                                    <Input id="idInpFormTax" value="{draftModel>/tax}" type="Number" visible="{viewModel>/editablePricing}"/>
+
+                                    <Label id="idLblFormFinal" text="Calculated Final Price"/>
+                                    <ObjectNumber id="idONFormFinal" number="{finalPrice}" unit="INR" state="Information" visible="{= !${viewModel>/editablePricing} }" />
+                                    <ObjectNumber id="idObNumFormFinal" number="{draftModel>/finalPrice}" unit="INR" state="Information" visible="{viewModel>/editablePricing}"/>
+
+                                    <Label id="idLblFormValidFrom" text="Valid From Date" required="{viewModel>/editablePricing}" />
+                                    <Text id="idTxtFormValidFrom" text="{validFrom}" visible="{= !${viewModel>/editablePricing} }" />
+                                    <DatePicker id="idDatePckFormValidFrom" value="{draftModel>/validFrom}" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" visible="{viewModel>/editablePricing}"/>
+
+                                    <Label id="idLblFormValidTo" text="Valid To Date" required="{viewModel>/editablePricing}"/>
+                                    <Text id="idTxtFormValidTo" text="{validTo}" visible="{= !${viewModel>/editablePricing} }"/>
+                                    <DatePicker id="idDatePckFormValidTo" value="{draftModel>/validTo}" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" visible="{viewModel>/editablePricing}"/>
+
+                                </form:SimpleForm>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection id="idOPSValidity" title="Pricing History">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="idOPSSValidity">
+
+                                <Panel id="idOPSPnlPricingHistory" >
+
+                    <!-- items="{path: 'history'}" - ( relative navigation property ) used to bind the table according to the associated records -->
+                    <!-- items="{path: '/PricingHistory'}" - ( absolute path binding ) bind the entire entity to the table -->
+                                    <Table
+                                        id="idOPSTablePricingHistory"
+                                        items="{path: 'history'}"
+                                        growing="true"
+                                        growingThreshold="15">
+                                        
+                                        <headerToolbar>
+                                            <OverflowToolbar id="idOPSotbHistory">
+                                                <Title id="OPStitleHistory" text="Historical Price Entries" level="H2"/>
+                                                <ToolbarSpacer id="OPSspacerHistory"/>
+                                                <SearchField id="OPSsearchHistory" width="30%" search=".onSearchHistory" placeholder="Search by Product ID..."/>
+                                            </OverflowToolbar>
+                                        </headerToolbar>
+                                        
+                                        <columns>
+                                            <Column id="OPScolHistId" width="10rem" ><Text id="OPStxtHistId" text="Log ID"/></Column>
+                                            <Column id="OPScolHistProd" width="10rem" ><Text id="OPStxtHistProd" text="Product"/></Column>
+                                            <Column id="OPScolHistReg" width="7rem" ><Text id="OPStxtHistReg" text="Region"/></Column>
+                                            <Column id="OPScolHistBase" width="10rem" ><Text id="OPStxtHistBase" text="Old Final Price"/></Column>
+                                            <Column id="OPScolHistFinal" width="10rem" ><Text id="OPStxtHistFinal" text="New Final Price"/></Column>
+                                            <Column id="OPScolHistChangeReason" width="15rem" ><Text id="OPStxtHistChangeReason" text="Change Reason"/></Column>
+                                            <Column id="OPScolHistChangedOn" width="7rem" ><Text id="OPStxtHistChangedOn" text="Changed On"/></Column>
+                                            <Column id="OPScolHistChangedBy" width="15rem" ><Text id="OPStxtHistChangedBy" text="Changed By"/></Column>
+                                        </columns>
+                                        
+                                        <items>
+                                            <ColumnListItem id="idOPSCLIHistory">
+                                                <cells>
+                                                    <ObjectIdentifier id="idOPSOIHistID" title="{ID}"/>
+                                                    <ObjectIdentifier id="idOIPricingProduct" title="{priceMaster/product/productName}" text="{priceMaster/product/productCode}"/>
+                                                    <Text id="idOPSTxtHistReg" text="{priceMaster/region/regionName}"/>
+                                                    <ObjectNumber id="idOPSONHistBase" number="{oldFinalPrice}" unit="INR"/>
+                                                    <ObjectNumber id="idOPSONHistFinal" number="{newFinalPrice}" unit="INR" state="Information"/>
+                                                    <Text id="idOPSTxtHistChangeReason" text="{changeReason}"/>
+                                                    <Text id="idOPSTxtHistChangedOn" text="{changedOn}"/>
+                                                    <Text id="idOPSTxtHistChangedBy" text="{changedBy}"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </Panel>
+
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                </uxap:sections>
+
+            </uxap:ObjectPageLayout>
+        </f:midColumnPages>
+
+    </f:FlexibleColumnLayout>
+</mvc:View>

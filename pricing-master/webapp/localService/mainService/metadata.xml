@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+        <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="PricingService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Products" EntityType="PricingService.Products">
+                    <NavigationPropertyBinding Path="prices" Target="PriceMaster"/>
+                </EntitySet>
+                <EntitySet Name="PriceMaster" EntityType="PricingService.PriceMaster">
+                    <NavigationPropertyBinding Path="region" Target="Regions"/>
+                    <NavigationPropertyBinding Path="product" Target="Products"/>
+                    <NavigationPropertyBinding Path="history" Target="PriceHistory"/>
+                </EntitySet>
+                <EntitySet Name="Regions" EntityType="PricingService.Regions"/>
+                <EntitySet Name="PriceHistory" EntityType="PricingService.PriceHistory">
+                    <NavigationPropertyBinding Path="priceMaster" Target="PriceMaster"/>
+                </EntitySet>
+                <EntitySet Name="PriceExpiryLog" EntityType="PricingService.PriceExpiryLog"/>
+                <ActionImport Name="recalculateFinalPrice" Action="PricingService.recalculateFinalPrice"/>
+                <ActionImport Name="expirePrices" Action="PricingService.expirePrices"/>
+                <FunctionImport Name="getActivePriceCount" Function="PricingService.getActivePriceCount"/>
+            </EntityContainer>
+            <EntityType Name="Products">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="productCode" Type="Edm.String" MaxLength="20"/>
+                <Property Name="productName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="category" Type="Edm.String" MaxLength="50"/>
+                <Property Name="active" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="unitPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <NavigationProperty Name="prices" Type="Collection(PricingService.PriceMaster)" Partner="product"/>
+            </EntityType>
+            <EntityType Name="PriceMaster">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="basePrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="discount" Type="Edm.Decimal" Precision="15" Scale="2" DefaultValue="0"/>
+                <Property Name="tax" Type="Edm.Decimal" Precision="15" Scale="2" DefaultValue="0"/>
+                <Property Name="finalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <NavigationProperty Name="region" Type="PricingService.Regions">
+                    <ReferentialConstraint Property="region_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="region_ID" Type="Edm.Guid"/>
+                <Property Name="validFrom" Type="Edm.Date"/>
+                <Property Name="validTo" Type="Edm.Date"/>
+                <Property Name="status" Type="Edm.String" DefaultValue="DRAFT"/>
+                <NavigationProperty Name="product" Type="PricingService.Products" Partner="prices">
+                    <ReferentialConstraint Property="product_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="product_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="history" Type="Collection(PricingService.PriceHistory)" Partner="priceMaster"/>
+            </EntityType>
+            <EntityType Name="Regions">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="regionCode" Type="Edm.String" MaxLength="10"/>
+                <Property Name="regionName" Type="Edm.String" MaxLength="50"/>
+                <Property Name="totalPurchaseValue" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="PriceHistory">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="priceMaster" Type="PricingService.PriceMaster" Partner="history">
+                    <ReferentialConstraint Property="priceMaster_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="priceMaster_ID" Type="Edm.Guid"/>
+                <Property Name="oldFinalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="newFinalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="changeReason" Type="Edm.String" MaxLength="100"/>
+                <Property Name="changedOn" Type="Edm.DateTimeOffset"/>
+                <Property Name="changedBy" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="PriceExpiryLog">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="runOn" Type="Edm.DateTimeOffset"/>
+                <Property Name="expiredCount" Type="Edm.Int32"/>
+                <Property Name="details" Type="Edm.String"/>
+                <Property Name="triggeredBy" Type="Edm.String" MaxLength="50"/>
+            </EntityType>
+            <ComplexType Name="return_PricingService_recalculateFinalPrice">
+                <Property Name="ID" Type="Edm.Guid"/>
+                <Property Name="basePrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="discount" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="tax" Type="Edm.Decimal" Precision="15" Scale="2"/>
+                <Property Name="finalPrice" Type="Edm.Decimal" Precision="15" Scale="2"/>
+            </ComplexType>
+            <ComplexType Name="return_PricingService_expirePrices">
+                <Property Name="expiredCount" Type="Edm.Int32"/>
+                <Property Name="message" Type="Edm.String"/>
+            </ComplexType>
+            <Action Name="recalculateFinalPrice" IsBound="false">
+                <Parameter Name="ID" Type="Edm.Guid"/>
+                <ReturnType Type="PricingService.return_PricingService_recalculateFinalPrice"/>
+            </Action>
+            <Action Name="expirePrices" IsBound="false">
+                <Parameter Name="ID" Type="Edm.Guid"/>
+                <ReturnType Type="PricingService.return_PricingService_expirePrices"/>
+            </Action>
+            <Function Name="getActivePriceCount" IsBound="false" IsComposable="false">
+                <ReturnType Type="Edm.Int32"/>
+            </Function>
+            <Annotations Target="PricingService.Products/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PricingService.Products/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Created On"/>
+            </Annotations>
+            <Annotations Target="PricingService.Products/createdBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Created By"/>
+            </Annotations>
+            <Annotations Target="PricingService.Products/modifiedAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Changed On"/>
+            </Annotations>
+            <Annotations Target="PricingService.Products/modifiedBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Changed By"/>
+            </Annotations>
+            <Annotations Target="PricingService.Products/productName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Created On"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/createdBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Created By"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/modifiedAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Changed On"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/modifiedBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Changed By"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/basePrice">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/validFrom">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/validTo">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/status">
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="DRAFT"/>
+                            <PropertyValue Property="Value" String="DRAFT"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="PENDING"/>
+                            <PropertyValue Property="Value" String="PENDING"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="SUBMITTED"/>
+                            <PropertyValue Property="Value" String="SUBMITTED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="ACTIVE"/>
+                            <PropertyValue Property="Value" String="ACTIVE"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="REJECTED"/>
+                            <PropertyValue Property="Value" String="REJECTED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="EXPIRED"/>
+                            <PropertyValue Property="Value" String="EXPIRED"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="INACTIVE"/>
+                            <PropertyValue Property="Value" String="INACTIVE"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="PricingService.PriceMaster/product_ID">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.Regions/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PricingService.Regions/regionCode">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.Regions/regionName">
+                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceHistory/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="PricingService.PriceExpiryLog/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

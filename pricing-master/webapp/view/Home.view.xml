@@ -1,0 +1,868 @@
+<mvc:View controllerName="pricingmaster.controller.Home"
+
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:l="sap.ui.layout"  
+
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns:vbm="sap.ui.vbm"
+
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+
+    displayBlock="true">
+    
+    <Page id="idPageHome" title="Pricing &amp; Revenue Dashboard" >
+        <content>
+            <VBox id="idVBoxDashboardContainer" class="sapUiResponsiveMargin" width="auto" >
+
+                <!-- Welcome Banner -->
+                <HBox
+                    id="idWelcomeBanner"
+                    class="welcomeBanner"
+                    width="100%"
+                    alignItems="Center">
+
+                    <VBox
+                        id="idWelcomeBannerContent"
+                        class="welcomeBannerContent">
+
+                        <Title
+                            id="idWelcomeTitle"
+                            text="Welcome back, Manager!"
+                            level="H2"
+                            class="welcomeBannerTitle"/>
+
+                        <Text
+                            id="idWelcomeDescription"
+                            text="Here's your pricing performance overview."
+                            class="welcomeBannerDescription"/>
+
+                    </VBox>
+
+                </HBox>
+                
+                <!-- Summary KPI Tiles -->
+                <HBox id="idHBoxTileContainer" justifyContent="Center" wrap="Wrap" class="sapUiMediumMarginTopBottom">
+                    <GenericTile
+                        id="idTileTotalRecords"
+                        header="Total Price Records"
+                        subheader="Active &amp; Pending"
+                        class="sapUiMediumMarginEnd sapUiMediumMarginBottom kpiCard homeKpiCardColor1"
+                        press=".onTileTotalPress">
+                        <TileContent id="idTCTotalRecords">
+                            <NumericContent
+                                id="idNCTotalRecords"
+                                value="{
+                                    path: 'dashboard>/summary/totalCount',
+                                    targetType: 'any'
+                                }"
+                                valueColor="Neutral"
+                                icon="sap-icon://sales-order-item" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="idTilePendingApprovals"
+                        header="Pending Approvals"
+                        subheader="Requires Action"
+                        class="sapUiMediumMarginEnd sapUiMediumMarginBottom kpiCard homeKpiCardColor2"
+                        press=".onTilePendingPress">
+                        <TileContent id="idTCPendingApprovals">
+                            <NumericContent
+                                id="idNCPendingApprovals"
+                                value="{
+                                    path: 'dashboard>/summary/pendingCount',
+                                    targetType: 'any'
+                                }"
+                                valueColor="Critical"
+                                icon="sap-icon://approvals" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="idTileActivePricings"
+                        header="Active Pricing"
+                        subheader="Currently Live"
+                        class="sapUiMediumMarginEnd sapUiMediumMarginBottom kpiCard homeKpiCardColor3"
+                        press=".onTileActivePress">
+                        <TileContent id="idTCActivePricings">
+                            <NumericContent
+                                id="idNCActivePricings"
+                                value="{
+                                    path: 'dashboard>/summary/activeCount',
+                                    targetType: 'any'
+                                }"
+                                valueColor="Good"
+                                icon="sap-icon://accept" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        id="idTileRejectedPricings"
+                        header="Rejected / Expired"
+                        subheader="Needs Revision"
+                        class="kpiCard homeKpiCardColor4"
+                        press=".onTileRejectedPress">
+                        <TileContent id="idTCRejectedPricings">
+                            <NumericContent
+                                id="idNCRejectedPricings"
+                                value="{
+                                    path: 'dashboard>/summary/rejectedCount',
+                                    targetType: 'any'
+                                }"
+                                valueColor="Error"
+                                icon="sap-icon://decline" />
+                        </TileContent>
+                    </GenericTile>
+                </HBox>
+
+            <!--  India Regional Map -->
+
+            <HBox
+                id="idHBoxRegionAnalytics"
+                justifyContent="SpaceBetween"
+                class="regionAnalyticsContainer sapUiSmallMarginBottom">
+
+                <!-- ================================================= -->
+                <!-- LEFT SIDE : INDIA MAP                            -->
+                <!-- ================================================= -->
+
+                <VBox
+                    id="idVBoxIndiaMap"
+                    class="indiaMapSection">
+
+                    <!-- MAP HEADER -->
+
+                    <VBox
+                        id="idVBoxIndiaMapHeader"
+                        width="100%"
+                        class="indiaMapHeader">
+
+                        <Title
+                            id="idTitleIndiaMap"
+                            text="India Regional Pricing"
+                            level="H3"
+                            class="indiaMapTitle"/>
+
+                        <Text
+                            id="idTextIndiaMapSubtitle"
+                            text="Click a region to view its pricing insights"
+                            class="indiaMapSubtitle"/>
+
+                    </VBox>
+
+
+                    <!-- MAP -->
+
+                    <VBox
+                        id="idVBoxAnalyticMapContainer"
+                        width="auto"
+                        class="analyticMapContainer sapUiTinyMarginBeginEnd">
+
+                      <vbm:AnalyticMap
+                            id="idAnalyticMapIndia"
+                            width="100%" height="380px"
+                            centerPosition= "79.0882;22.3511"
+                            zoomlevel="4"
+                            disableZoom= "true"
+                            regionClick="onRegionClick"
+                           
+                            >
+
+                             <!-- regions="{regionModel>/regionProperties}" -->
+
+                            <!-- <vbm:regions>
+
+                                    <vbm:Region
+                                        id="idRegionIndia"
+                                        code="{regionModel>code}"
+                                        
+                                        tooltip="{regionModel>regionName}"/>
+
+                                </vbm:regions> -->
+
+                        </vbm:AnalyticMap>
+                   
+                    </VBox>
+
+                    <!-- MAP FOOTER -->
+
+                    <HBox
+                        id="idHBoxMapInstruction"
+                        width="100%"
+                        justifyContent="Center"
+                        class="mapInstruction sapUiTinyMarginTop">
+
+                        <core:Icon
+                            id="idIconMapInstruction"
+                            src="sap-icon://cursor-arrow"
+                            class="mapInstructionIcon sapUiTinyMarginEnd"/>
+
+                        <Text
+                            id="idTextMapInstruction"
+                            text="Select Northern, Eastern, Western, Central or Southern region"
+                            class="mapInstructionText"/>
+
+                    </HBox>
+
+                </VBox>
+
+
+                <!-- ================================================= -->
+                <!-- RIGHT SIDE : REGION INSIGHTS                     -->
+                <!-- ================================================= -->
+
+                <VBox
+                    id="idVBoxRegionInsights"
+                    class="regionInsightsSection">
+
+                    <!-- RIGHT HEADER -->
+
+                    <VBox
+                        id="idVBoxInsightsHeader"
+                        class="insightsHeader">
+
+                        <Text
+                            id="idTextInsightsHeaderLabel"
+                            text="PRICING INSIGHTS"
+                            class="insightsHeaderLabel"/>
+
+                        <Title
+                            id="idTitleSelectedRegion"
+                            text="{regionModel>/selectedRegion/regionName}"
+                            level="H2"
+                            class="selectedRegionTitle"/>
+
+                        <Text
+                            id="idTextSelectedRegionDescription"
+                            text="{regionModel>/selectedRegion/description}"
+                            class="selectedRegionDescription"/>
+
+                    </VBox>
+
+                    <!-- ================================================= -->
+                    <!-- DETAILED SUMMARY                                 -->
+                    <!-- ================================================= -->
+
+                    <VBox
+                        id="idVBoxPricingSummary"
+                        class="pricingSummary"
+                        height="100%"
+                        justifyContent="SpaceBetween" >
+
+                        <HBox
+                            id="idHBoxSummaryHeader"
+                            alignItems="Center"
+                            class="pricingSummaryHeader">
+
+                            <core:Icon
+                                id="idIconSummary"
+                                src="sap-icon://bar-chart"
+                                class="summaryIcon"/>
+
+                            <Text
+                                id="idTextSummaryTitle"
+                                text="Pricing Summary"
+                                class="summaryTitle"/>
+
+                        </HBox>
+
+                        <HBox
+                            id="idHBoxSummaryBasePrice"
+                            width="100%"
+                            justifyContent="SpaceBetween"
+                            class="summaryRow">
+
+                            <Text
+                                id="idTextSummaryBasePriceLabel"
+                                text="Base Price"/>
+
+                            <Text
+                                id="idTextSummaryBasePriceValue"
+                                text="{regionModel>/selectedRegion/totalBasePriceFormatted}"
+                                class="summaryValue"/>
+
+                        </HBox>
+
+                        <HBox
+                            id="idHBoxSummaryDiscount"
+                            width="100%"
+                            justifyContent="SpaceBetween"
+                            class="summaryRow">
+
+                            <Text
+                                id="idTextSummaryDiscountLabel"
+                                text="Discount"/>
+
+                            <Text
+                                id="idTextSummaryDiscountValue"
+                                text="{regionModel>/selectedRegion/totalDiscountFormatted}"
+                                class="summaryValue"/>
+
+                        </HBox>
+
+                        <HBox
+                            id="idHBoxSummaryTax"
+                            width="100%"
+                            justifyContent="SpaceBetween"
+                            class="summaryRow">
+
+                            <Text
+                                id="idTextSummaryTaxLabel"
+                                text="Tax"/>
+
+                            <Text
+                                id="idTextSummaryTaxValue"
+                                text="{regionModel>/selectedRegion/totalTaxFormatted}"
+                                class="summaryValue"/>
+
+                        </HBox>
+
+                        <HBox
+                            id="idHBoxSummaryFinalPrice"
+                            width="100%"
+                            justifyContent="SpaceBetween"
+                            class="summaryRow finalSummaryRow">
+
+                            <Text
+                                id="idTextSummaryFinalPriceLabel"
+                                text="Final Price"
+                                class="finalSummaryLabel"/>
+
+                            <Text
+                                id="idTextSummaryFinalPriceValue"
+                                text="{regionModel>/selectedRegion/totalFinalPriceFormatted}"
+                                class="finalSummaryValue"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                    <!--  REGION APPROVAL PROGRESS  -->
+
+                    <VBox
+                        id="idVBoxRegionApprovalProgress"
+                        class="pricingApprovalProgress regionApprovalProgress">
+
+                        <!-- PROGRESS HEADER -->
+
+                        <HBox
+                            id="idHBoxRegionApprovalHeader"
+                            width="100%"
+                            justifyContent="SpaceBetween"
+                            alignItems="Center">
+
+                            <Title
+                                id="idTitleRegionApprovalProgress"
+                                text="Pricing Approval Progress"
+                                level="H4"
+                                class="progressTitle"/>
+
+                            <Text
+                                id="idTextRegionApprovalTotal"
+                                text="{regionModel>/selectedRegion/approvalTotalText}"
+                                class="progressTotalText"/>
+
+                        </HBox>
+
+
+                        <!-- CONTINUOUS BAR -->
+
+                        <HBox
+                            id="idHBoxRegionApprovalBar"
+                            width="100%"
+                            height="7px"
+                            class="approvalProgressBar"
+                            renderType="Bare"
+                            fitContainer="true">
+
+                            <!-- APPROVED -->
+
+                            <VBox
+                                id="idRegionApprovalSegment"
+                                width="{regionModel>/selectedRegion/approvedWidth}"
+                                height="100%"
+                                class="approvalSegment"
+                                tooltip="{regionModel>/selectedRegion/approvedText}"/>
+
+
+                            <!-- PENDING -->
+
+                            <VBox
+                                id="idRegionPendingSegment"
+                                width="{regionModel>/selectedRegion/pendingWidth}"
+                                height="100%"
+                                class="pendingSegment"
+                                tooltip="{regionModel>/selectedRegion/pendingText}"/>
+
+
+                            <!-- REJECTED -->
+
+                            <VBox
+                                id="idRegionRejectedSegment"
+                                width="{regionModel>/selectedRegion/rejectedWidth}"
+                                height="100%"
+                                class="rejectedSegment"
+                                tooltip="{regionModel>/selectedRegion/rejectedText}"/>
+
+                        </HBox>
+
+
+                        <!-- LEGEND -->
+
+                        <HBox
+                            id="idHBoxRegionApprovalLegend"
+                            width="100%"
+                            justifyContent="SpaceBetween"
+                            class="approvalLegend">
+
+                            <!-- APPROVED -->
+
+                            <HBox
+                                id="idHBoxRegionApprovedLegend"
+                                alignItems="Center">
+
+                                <core:Icon
+                                    id="idIconRegionApprovedLegend"
+                                    src="sap-icon://circle-task-2"
+                                    class="approvedLegendIcon"/>
+
+                                <Text
+                                    id="idTextRegionApprovedLegend"
+                                    text="{regionModel>/selectedRegion/approvedText}"
+                                    class="approvalLegendText"/>
+
+                            </HBox>
+
+
+                            <!-- PENDING -->
+
+                            <HBox
+                                id="idHBoxRegionPendingLegend"
+                                alignItems="Center">
+
+                                <core:Icon
+                                    id="idIconRegionPendingLegend"
+                                    src="sap-icon://circle-task-2"
+                                    class="pendingLegendIcon"/>
+
+                                <Text
+                                    id="idTextRegionPendingLegend"
+                                    text="{regionModel>/selectedRegion/pendingText}"
+                                    class="approvalLegendText"/>
+
+                            </HBox>
+
+                            <!-- REJECTED -->
+
+                            <HBox
+                                id="idHBoxRegionRejectedLegend"
+                                alignItems="Center">
+
+                                <core:Icon
+                                    id="idIconRegionRejectedLegend"
+                                    src="sap-icon://circle-task-2"
+                                    class="rejectedLegendIcon"/>
+
+                                <Text
+                                    id="idTextRegionRejectedLegend"
+                                    text="{regionModel>/selectedRegion/rejectedText}"
+                                    class="approvalLegendText"/>
+
+                            </HBox>
+
+                        </HBox>
+
+                    </VBox>
+
+                    <!-- SELECTION MESSAGE -->
+
+                    <HBox
+                        id="idHBoxSelectionMessage"
+                        alignItems="Center"
+                        class="selectionMessage">
+
+                        <core:Icon
+                            id="idIconSelectionMessage"
+                            src="sap-icon://map-2"
+                            class="selectionMessageIcon"/>
+
+                        <Text
+                            id="idTextSelectionMessage"
+                            text="The values update automatically when a region is selected on the map."
+                            class="selectionMessageText"/>
+
+                    </HBox>
+
+                </VBox>
+
+            </HBox>
+
+              <!-- Charts  -->
+
+                <VBox
+                    id="idVBoxChartsSection"
+                    width="auto"
+                    class="analyticsChartsSection sapUiSmallMarginBottom">
+
+                    <HBox
+                        id="idHBoxChartsHeader"
+                        width="100%"
+                        class="chartsSectionHeader">
+
+                        <VBox
+                            id="idVBoxChartsHeaderText">
+
+                            <Title
+                                id="idTitleCharts"
+                                text="Pricing &amp; Revenue Analytics"
+                                level="H2"
+                                class="chartsMainTitle"/>
+
+                            <Text
+                                id="idTextChartsSubtitle"
+                                text="Live insights calculated from Pricing Master data"
+                                class="chartsMainSubtitle"/>
+
+                        </VBox>
+
+                    </HBox>
+
+
+                    <!-- ========================================================= -->
+                    <!-- THREE CHARTS                                               -->
+                    <!-- ========================================================= -->
+
+                    <FlexBox
+                        id="idFlexAnalyticsCharts"
+                        width="100%"
+                        wrap="Wrap"
+                        justifyContent="SpaceBetween"
+                        class="analyticsChartsFlex">
+
+
+                        <!-- ===================================================== -->
+                        <!-- 1. TOP REGIONS BY REVENUE                             -->
+                        <!-- ===================================================== -->
+
+                        <VBox
+                            id="idVBoxTopRegionsChart"
+                            class="analyticsChartCard">
+
+                            <VBox
+                                id="idVBoxTopRegionsHeader"
+                                class="analyticsChartHeader">
+
+                                <Title
+                                    id="idTitleTopRegions"
+                                    text="Top Regions by Revenue"
+                                    level="H4"
+                                    class="analyticsChartTitle"/>
+
+                                <Text
+                                    id="idTextTopRegionsSubtitle"
+                                    text="Revenue contribution by region"
+                                    class="analyticsChartSubtitle"/>
+
+                            </VBox>
+
+
+                            <viz:VizFrame
+                                id="idTopRegionsChart"
+                                width="100%"
+                                height="270px"
+                                vizType="bar"
+                                uiConfig="{applicationSet:'fiori'}">
+
+                                <viz:dataset>
+
+                                    <viz.data:FlattenedDataset id="idFlatDataSetTopReg"
+                                        data="{chart>/topRegions}">
+
+                                        <viz.data:dimensions>
+
+                                            <viz.data:DimensionDefinition id="idDimDefTopReg"
+                                                name="Region"
+                                                value="{chart>region}"/>
+
+                                        </viz.data:dimensions>
+
+                                        <viz.data:measures>
+
+                                            <viz.data:MeasureDefinition id="idMeasDefTopReg"
+                                                name="Revenue Share"
+                                                value="{chart>revenueShare}"/>
+
+                                        </viz.data:measures>
+
+                                    </viz.data:FlattenedDataset>
+
+                                </viz:dataset>
+
+
+                                <viz:feeds>
+
+                                    <viz.feeds:FeedItem id="idFeedItmCAxisTR"
+                                        uid="categoryAxis"
+                                        type="Dimension"
+                                        values="Region"/>
+
+                                    <viz.feeds:FeedItem id="idFeedItmPValTR"
+                                        uid="primaryValues"
+                                        type="Measure"
+                                        values="Revenue Share"/>
+
+
+                                </viz:feeds>
+
+                            </viz:VizFrame>
+
+                        </VBox>
+
+
+                        <!-- ===================================================== -->
+                        <!-- 2. PRICE TREND                                        -->
+                        <!-- ===================================================== -->
+
+                        <VBox
+                            id="idVBoxPriceTrendChart"
+                            class="analyticsChartCard">
+
+                            <VBox
+                                id="idVBoxPriceTrendHeader"
+                                class="analyticsChartHeader">
+
+                                <Title
+                                    id="idTitlePriceTrend"
+                                    text="Price Trend"
+                                    level="H4"
+                                    class="analyticsChartTitle"/>
+
+                                <Text
+                                    id="idTextPriceTrendSubtitle"
+                                    text="Average base price vs. discounted price"
+                                    class="analyticsChartSubtitle"/>
+
+                            </VBox>
+
+
+                            <viz:VizFrame
+                                id="idPriceTrendChart"
+                                width="100%"
+                                height="270px"
+                                vizType="line"
+                                uiConfig="{applicationSet:'fiori'}">
+
+                                <viz:dataset>
+
+                                    <viz.data:FlattenedDataset id="idFlatDataSetPrice"
+                                        data="{chart>/priceTrend}">
+
+                                        <viz.data:dimensions>
+
+                                            <viz.data:DimensionDefinition id="idFlatDimDefPriceTr"
+                                                name="Month"
+                                                value="{chart>month}"/>
+
+                                        </viz.data:dimensions>
+
+                                        <viz.data:measures>
+
+                                            <viz.data:MeasureDefinition id="idMeasDefAvgPriceTr"
+                                                name="Average Price"
+                                                value="{chart>averagePrice}"/>
+
+                                            <viz.data:MeasureDefinition id="idMeasDefDiscPriceTr"
+                                                name="Discounted Price"
+                                                value="{chart>discountedPrice}"/>
+
+                                        </viz.data:measures>
+
+                                    </viz.data:FlattenedDataset>
+
+                                </viz:dataset>
+
+
+                                <viz:feeds>
+
+                                    <viz.feeds:FeedItem id="idFeedItmCAxisPriceTr"
+                                        uid="categoryAxis"
+                                        type="Dimension"
+                                        values="Month"/>
+
+                                    <viz.feeds:FeedItem id="idFeedItmPValPriceTr"
+                                        uid="primaryValues"
+                                        type="Measure"
+                                        values="Average Price,Discounted Price"/>
+
+                                </viz:feeds>
+
+                            </viz:VizFrame>
+
+                        </VBox>
+
+
+                        <!-- ===================================================== -->
+                        <!-- 3. DISCOUNT DISTRIBUTION                              -->
+                        <!-- ===================================================== -->
+
+                        <VBox
+                            id="idVBoxDiscountDistributionChart"
+                            class="analyticsChartCard">
+
+                            <VBox
+                                id="idVBoxDiscountDistributionHeader"
+                                class="analyticsChartHeader">
+
+                                <Title
+                                    id="idTitleDiscountDistribution"
+                                    text="Discount Distribution"
+                                    level="H4"
+                                    class="analyticsChartTitle"/>
+
+                                <Text
+                                    id="idTextDiscountDistributionSubtitle"
+                                    text="Distribution of pricing discounts"
+                                    class="analyticsChartSubtitle"/>
+
+                            </VBox>
+
+
+                            <VBox
+                                id="idVBoxDonutChartWrapper"
+                                class="donutChartWrapper">
+
+                                <viz:VizFrame
+                                    id="idDiscountDistributionChart"
+                                    width="100%"
+                                    height="270px"
+                                    vizType="donut"
+                                    uiConfig="{applicationSet:'fiori'}">
+
+                                    <viz:dataset>
+
+                                        <viz.data:FlattenedDataset id="idFlatDataSetChart"
+                                            data="{chart>/discountDistribution}">
+
+                                            <viz.data:dimensions>
+
+                                                <viz.data:DimensionDefinition id="idDimDefChartDiscRng"
+                                                    name="Discount Range"
+                                                    value="{chart>bucket}"/>
+
+                                            </viz.data:dimensions>
+
+                                            <viz.data:measures>
+
+                                                <viz.data:MeasureDefinition id="idMeasDefChartShare"
+                                                    name="Share"
+                                                    value="{chart>share}"/>
+
+                                            </viz.data:measures>
+
+                                        </viz.data:FlattenedDataset>
+
+                                    </viz:dataset>
+
+
+                                    <viz:feeds>
+
+                                        <viz.feeds:FeedItem id="idFeedItmChartDim"
+                                            uid="color"
+                                            type="Dimension"
+                                            values="Discount Range"/>
+
+                                        <viz.feeds:FeedItem id="idFeedItmChartMeas"
+                                            uid="size"
+                                            type="Measure"
+                                            values="Share"/>
+
+                                    </viz:feeds>
+
+                                </viz:VizFrame>
+
+
+                                <!-- ================================================= -->
+                                <!-- DONUT CENTER                                      -->
+                                <!-- ================================================= -->
+
+                                <VBox
+                                    id="idVBoxAverageDiscountCenter"
+                                    class="donutCenter"
+                                    alignItems="Center"
+                                    justifyContent="Center">
+
+                                    <Text
+                                        id="idTextAverageDiscount"
+                                        text="{chart>/averageDiscountFormatted}"
+                                        class="donutCenterValue"/>
+
+                                    <Text
+                                        id="idTextAverageDiscountLabel"
+                                        text="Avg. Disc"
+                                        class="donutCenterLabel"/>
+
+                                </VBox>
+
+                            </VBox>
+
+                        </VBox>
+
+                    </FlexBox>
+
+                </VBox>
+
+                <!-- Recent Activities & High Priority Overview Table -->
+
+                <Panel id="idPanelRecentPricings" headerText="Recent Pricing Updates" expandable="true" expanded="true">
+                    <headerToolbar>
+                        <OverflowToolbar id="idOtbHomeTable">
+                            <Title id="idTitleHomeTable" text="Recent Submissions" level="H2"/>
+                            <ToolbarSpacer id="idSpacerHomeTable"/>
+                            <Button id="idBtnRefreshHome" icon="sap-icon://refresh" tooltip="Refresh Data" press=".onRefreshDashboard"/>
+                            <Button id="idBtnGoToMaster" text="View All Records" type="Emphasized" press=".onNavigateToMaster"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <Table
+                        id="idTableHomePricings"
+                        items="{path: '/PriceMaster', length: 5, sorter: {path: 'validFrom', descending: true}}"
+                        growing="false">
+                        
+                        <columns>
+                            <Column id="idColHomeId" width="12rem" ><Text id="idTxtHomeColId" text="Product"/></Column>
+                            <Column id="idColHomeReg" width="7rem" ><Text id="idTxtHomeColReg" text="Region"/></Column>
+                            <Column id="idColHomeBase" width="7rem" hAlign="End" ><Text id="idTxtHomeColBase" text="Base Price"/></Column>
+                            <Column id="idColHomeFinal" width="7rem" hAlign="End" ><Text id="idTxtHomeColFinal" text="Final Price"/></Column>
+                            <Column id="idColHomeValidFrom" width="7rem" ><Text id="idTxtHomeColValidFrom" text="Valid From"/></Column>
+                            <Column id="idColHomeStatus" width="5rem" ><Text id="idTxtHomeColStatus" text="Status"/></Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem id="idCLIHomePricing">
+                                <cells>
+                                    <!-- <ObjectIdentifier id="idOIHomePricingID" title="{ID}"/> -->
+                                    <ObjectIdentifier id="idOIHomePricingID" title="{product/productName}" text="{product/productCode}"/>
+                                    <!-- <Text id="idTextHomeProductID" text="{product/productCode}"/> -->
+                                    <Text id="idTxtHomeRegionID" text="{region/regionName}"/>
+                                    <ObjectNumber id="idONHomeBasePrice" number="{basePrice}" unit="INR"/>
+                                    <ObjectNumber id="idONHomeFinalPrice" number="{finalPrice}" unit="INR" state="Information"/>
+                                    <Text id="idTxtHomeValidFrom" text="{validFrom}"/>
+                                    <ObjectStatus
+                                        id="idObjStsHomeStatus"
+                                        text="{status}"
+                                        state="{path: 'status', formatter: '.formatter.statusState'}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

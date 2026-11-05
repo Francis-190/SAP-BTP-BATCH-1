@@ -1,0 +1,163 @@
+<mvc:View
+    controllerName="pricingmaster.controller.Analytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:l="sap.ui.layout"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:vizData="sap.viz.ui5.data"
+    xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:core="sap.ui.core"
+    height="100%">
+ 
+    <Page id="idAnalyticsPage" title="Analytics" showHeader="false" class="sapUiNoContentPadding">
+        <content>
+
+            <VBox id="idAnalyticsVBox" backgroundDesign="Solid" class="sapUiSmallMargin titlevBox">
+            
+                <Title id="idAnalyticsText" text="Pricing Analytics" textAlign="Center" width="100%" level="H2" class="sapUiSmallMargin sapMH2FontSize" />
+                <Text id="idPricingAnalyticsDescription" text="Base price, discount and final price movement across the price master." class="sapUiMediumMargin sapMH4FontSize" />
+
+                <l:Grid id="idPricingKpiRow" class="sapUiResponsiveMargin pricingKpiRow" width="auto"  >
+                
+                    <VBox id="idAvgBasePriceCard" class="pricingKpiCard kpiCard kpiCardColor1">
+                        <HBox id="idAvgBasePriceHeader" justifyContent="SpaceBetween">
+                            <Text id="idAvgBasePriceLabel" text="Avg Base Price" class="pricingKpiLabel"/>
+                            <core:Icon id="idAvgBasePriceIcon" src="sap-icon://money-bills" class="pricingKpiIcon"/>
+                        </HBox>
+                        <Text id="idAvgBasePriceCurrency" text="INR" class="pricingKpiSubLabel"/>
+                        <Text id="idAvgBasePriceValue" text="{path: 'chart>/kpi/avgBasePrice', formatter: '.formatter.currency'}" class="pricingKpiValue"/>
+                        <!-- <Text id="idAvgBasePriceCompare" text="{chart>/kpi/avgBasePriceCompareLabel}" class="{chart>/kpi/avgBasePriceCompareClass}"/> -->
+                    </VBox>
+
+                    <VBox id="idAvgDiscountCard" class="pricingKpiCard kpiCard kpiCardColor3">
+                        <HBox id="idAvgDiscountHeader" justifyContent="SpaceBetween">
+                            <Text id="idAvgDiscountLabel" text="Avg Discount" class="pricingKpiLabel"/>
+                            <core:Icon id="idAvgDiscountIcon" src="sap-icon://sales-quote" class="pricingKpiIcon"/>
+                        </HBox>
+                        <Text id="idAvgDiscountCurrency" text="INR" class="pricingKpiSubLabel"/>
+                        <Text id="idAvgDiscountValue" text="{path: 'chart>/kpi/avgDiscount', formatter: '.formatter.currency'}" class="pricingKpiValue"/>
+                        <!-- <Text id="idAvgDiscountCompare" text="{chart>/kpi/avgDiscountCompareLabel}" class="{chart>/kpi/avgDiscountCompareClass}"/> -->
+                    </VBox>
+
+                    <VBox id="idAvgFinalPriceCard" class="pricingKpiCard kpiCard kpiCardColor4">
+                        <HBox id="idAvgFinalPriceHeader" justifyContent="SpaceBetween">
+                            <Text id="idAvgFinalPriceLabel" text="Avg Final Price" class="pricingKpiLabel"/>
+                            <core:Icon id="idAvgFinalPriceIcon" src="sap-icon://kpi-managing-my-area" class="pricingKpiIcon"/>
+                        </HBox>
+                        <Text id="idAvgFinalPriceCurrency" text="INR" class="pricingKpiSubLabel"/>
+                        <Text id="idAvgFinalPriceValue" text="{path: 'chart>/kpi/avgFinalPrice', formatter: '.formatter.currency'}" class="pricingKpiValue"/>
+                        <!-- <Text id="idAvgFinalPriceCompare" text="{chart>/kpi/avgFinalPriceCompareLabel}" class="{chart>/kpi/avgFinalPriceCompareClass}"/> -->
+                    </VBox>
+
+                    <VBox id="idTotalDiscountGivenCard" class="pricingKpiCard kpiCard kpiCardColor5">
+                        <HBox id="idTotalDiscountGivenHeader" justifyContent="SpaceBetween">
+                            <Text id="idTotalDiscountGivenLabel" text="Total Discount Given" class="pricingKpiLabel"/>
+                            <core:Icon id="idTotalDiscountGivenIcon" src="sap-icon://waiver" class="pricingKpiIcon"/>
+                        </HBox>
+                        <Text id="idTotalDiscountGivenSubLabel" text="Across all regions" class="pricingKpiSubLabel"/>
+                        <Text id="idTotalDiscountGivenValue" text="{path: 'chart>/kpi/totalDiscountGiven', formatter: '.formatter.currency'}" class="pricingKpiValue"/>
+                        <!-- <Text id="idTotalDiscountGivenCompare" text="{chart>/kpi/totalDiscountGivenCompareLabel}" class="{chart>/kpi/totalDiscountGivenCompareClass}"/> -->
+                    </VBox>
+
+                    <!-- <VBox id="idPriceChangesCard" class="pricingKpiCard kpiCard kpiCardColor1">
+                        <HBox id="idPriceChangesHeader" justifyContent="SpaceBetween">
+                            <Text id="idPriceChangesLabel" text="Price Changes" class="pricingKpiLabel"/>
+                            <core:Icon id="idPriceChangesIcon" src="sap-icon://history" class="pricingKpiIcon"/>
+                        </HBox>
+                        <Text id="idPriceChangesSubLabel" text="This month" class="pricingKpiSubLabel"/>
+                        <Text id="idPriceChangesValue" text="{chart>/kpi/priceChangeCount}" class="pricingKpiValue"/>
+                        <Text id="idPriceChangesCompare" text="{chart>/kpi/priceChangeCountCompareLabel}" class="{chart>/kpi/priceChangeCountCompareClass}"/>
+                    </VBox> -->
+                </l:Grid>
+            </VBox>
+               
+ 
+                <l:Grid id="idAnalyticsGrid" class="sapUiMediumMarginTop" defaultSpan="L12 M12 S12" hSpacing="1" vSpacing="1">
+                    <Panel id="idBaseVsFinalPricePanel" headerText="Base vs Final Price by Product" width="100%">
+                        <layoutData><l:GridData id="idBaseVsFinalPriceGridData" span="L12 M12 S12" /></layoutData>
+                        <viz:VizFrame id="basePriceChart"
+                            uiConfig="{applicationSet:'fiori'}"
+                            height="280px"
+                            width="100%"
+                            vizType="column">
+                            <viz:dataset>
+                                <vizData:FlattenedDataset id="idBasePriceDataset" data="{chart>/byProduct}">
+                                    <vizData:dimensions>
+                                        <vizData:DimensionDefinition id="idBasePriceProductDimension" name="Product" value="{chart>productCode}" />
+                                    </vizData:dimensions>
+                                    <vizData:measures>
+                                        <vizData:MeasureDefinition id="idBasePriceMeasure" name="Base Price" value="{chart>basePrice}" />
+                                        <vizData:MeasureDefinition id="idFinalPriceMeasure" name="Final Price" value="{chart>finalPrice}" />
+                                    </vizData:measures>
+                                </vizData:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <vizFeeds:FeedItem id="idBaseFinalValueFeed" uid="valueAxis" type="Measure" values="Base Price,Final Price" />
+                                <vizFeeds:FeedItem id="idBaseFinalCategoryFeed" uid="categoryAxis" type="Dimension" values="Product" />
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </Panel>
+ 
+                    <Panel id="idPriceChangesPanel" headerText="Price Changes Logged" width="100%">
+                        <layoutData><l:GridData id="idPriceChangesGridData" span="L12 M12 S12" /></layoutData>
+                        <viz:VizFrame id="priceChangesChart"
+                            uiConfig="{applicationSet:'fiori'}"
+                            height="280px"
+                            width="100%"
+                            vizType="line">
+                            <viz:dataset>
+                                <vizData:FlattenedDataset id="idPriceChangesDataset" data="{chart>/changesByMonth}">
+                                    <vizData:dimensions>
+                                        <vizData:DimensionDefinition id="idPriceChangesMonthDimension" name="Month" value="{chart>month}" />
+                                    </vizData:dimensions>
+                                    <vizData:measures>
+                                        <vizData:MeasureDefinition id="idPriceChangesMeasure" name="Changes" value="{chart>changeCount}" />
+                                    </vizData:measures>
+                                </vizData:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <vizFeeds:FeedItem id="idPriceChangesValueFeed" uid="valueAxis" type="Measure" values="Changes" />
+                                <vizFeeds:FeedItem id="idPriceChangesCategoryFeed" uid="categoryAxis" type="Dimension" values="Month" />
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </Panel>
+
+                    <Panel id="idPnlTable">
+                        <Table id="idPricingAnalyticsTable" items="{analytics>/PricingAnalytics}" growing="true" growingThreshold="5" class="sapUiSmallMarginTop">
+                            <headerToolbar>
+                                <Toolbar id="idPricingAnalyticsToolbar"><Title id="idPricingAnalyticsTableTitle" text="Price Master Detail" level="H3" /></Toolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column id="idProductColumn"><Text id="idProductColumnText" text="Product" /></Column>
+                                <Column id="idBasePriceColumn" hAlign="End"><Text id="idBasePriceColumnText" text="Base Price" /></Column>
+                                <Column id="idDiscountColumn" hAlign="End"><Text id="idDiscountColumnText" text="Discount" /></Column>
+                                <Column id="idFinalPriceColumn" hAlign="End"><Text id="idFinalPriceColumnText" text="Final Price" /></Column>
+                                <Column id="idValidFromColumn" hAlign="End"><Text id="idValidFromColumnText" text="Valid From" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="idPricingAnalyticsListItem">
+                                    <cells>
+                                        <ObjectIdentifier id="idProductCell" title="{analytics>productName}" text="{analytics>productCode}"/>
+                                        <Text id="idBasePriceCell" text="{path: 'analytics>basePrice', formatter: '.formatter.currency'}" />
+                                        <Text id="idDiscountCell" text="{path: 'analytics>discount', formatter: '.formatter.currency'}" />
+                                        <Text id="idFinalPriceCell" text="{path: 'analytics>finalPrice', formatter: '.formatter.currency'}" />
+                                        <!-- <Text id="idBasePriceCell" text="{analytics>basePrice}" />
+                                        <Text id="idDiscountCell" text="{analytics>discount}" />
+                                        <Text id="idFinalPriceCell" text="{analytics>finalPrice}" /> -->
+
+                                        <Text id="idValidFromCell" text="{analytics>validFrom}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </l:Grid>
+
+                
+ 
+                
+           
+        </content>
+    </Page>
+</mvc:View>

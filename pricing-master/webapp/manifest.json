@@ -1,0 +1,191 @@
+{
+  "_version": "1.89.0",
+  "sap.app": {
+    "id": "pricingmaster",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.2"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.32.0",
+      "toolsId": "adfba978-9abf-495e-b908-80f416351aaf"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/pricing/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      },
+      "analytics": {
+        "uri": "/odata/v4/analytics/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/analytics/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "Pricing-display": {
+          "semanticObject": "Pricing",
+          "action": "display",
+          "title": "{{Pricing-display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.152.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.tnt": {},
+        "sap.f": {},
+        "sap.suite.ui.microchart": {},
+        "sap.ui.vbm": {},
+        "sap.viz": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "pricingmaster.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "analytics": {
+        "dataSource": "analytics",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "pageContainer",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "pricingmaster.view",
+        "async": true,
+        "viewPath": "pricingmaster.view"
+      },
+      "routes": [
+        {
+          "name": "home",
+          "pattern": "",
+          "target": [
+            "TargetHome"
+          ]
+        },
+        {
+          "name": "pricingMaster",
+          "pattern": "pricing-master/:status:",
+          "target": [
+            "TargetPricingMaster"
+          ]
+        },
+        {
+          "name": "pricingHistory",
+          "pattern": "pricing-history",
+          "target": [
+            "TargetPricingHistory"
+          ]
+        },
+        {
+          "name": "analytics",
+          "pattern": "analytics",
+          "target": [
+            "TargetAnalytics"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetHome": {
+          "id": "Home",
+          "name": "Home"
+        },
+        "TargetPricingMaster": {
+          "id": "PricingMaster",
+          "name": "PricingMaster"
+        },
+        "TargetPricingHistory": {
+          "id": "PricingHistory",
+          "name": "PricingHistory"
+        },
+        "TargetAnalytics": {
+          "id": "Analytics",
+          "name": "Analytics"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "pricingmaster.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "pricingmaster"
+  }
+}

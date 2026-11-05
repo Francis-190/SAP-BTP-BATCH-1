@@ -1,0 +1,33 @@
+<mvc:View controllerName="pricingmaster.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt">
+    
+    <tnt:ToolPage id="toolPage" sideExpanded="true">
+        <tnt:header >
+            <tnt:ToolHeader id="toolHeader">
+                <Button id="idSideNavButton" icon="sap-icon://menu2" type="Transparent" press=".onSideNavButtonPress" />
+                <Title id="idAppTitle" text="TAFE Dealer Operations" />
+                <ToolbarSpacer id="idToolbarSpacer" />
+                <Button id="idNotificationButton" icon="sap-icon://bell" type="Transparent" />
+                <Avatar id="idUserAvatar" src="sap-icon://customer" displaySize="XS" class="sapUiSmallMarginEnd"/>
+            </tnt:ToolHeader>
+        </tnt:header>
+        
+        <tnt:sideContent >
+            <tnt:SideNavigation id="sideNavigation" selectedKey="" width="16rem" itemSelect=".onItemSelect">
+                <tnt:NavigationList id="navigationList" >
+                    <tnt:NavigationListItem id="idHomeNavigationItem" text="Home" icon="sap-icon://home" key="home" />
+                    <tnt:NavigationListItem id="idPricingMasterNavigationItem" text="Pricing Master" icon="sap-icon://settings" key="pricingMaster" />
+                    <tnt:NavigationListItem id="idPricingHistoryNavigationItem" text="History Logs" icon="sap-icon://history" key="pricingHistory" />
+                    <tnt:NavigationListItem id="idAnalyticsNavigationItem" text="Analytics" icon="sap-icon://pie-chart" key="analytics" />
+                </tnt:NavigationList>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+        
+        <tnt:mainContents>
+            <NavContainer id="pageContainer" />
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>
