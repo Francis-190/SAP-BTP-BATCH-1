@@ -1,0 +1,2037 @@
+<mvc:View
+    controllerName="sales.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt"
+    xmlns:core="sap.ui.core"
+    xmlns:suite="sap.suite.ui.microchart"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:vizdata="sap.viz.ui5.data"
+    xmlns:vizfeeds="sap.viz.ui5.controls.common.feeds"
+    displayBlock="true"
+>
+    <!--
+        Dialogs are NOT defined in this view. They are loaded from fragments by the controller:
+          - New Sale dialog       → fragment/NewSaleDialog.fragment.xml
+                                    (opened by "New Sale" button → .onNewSale)
+          - Stock Quantity dialog → fragment/StockQuantityDialog.fragment.xml
+                                    (opened by "Manage Stock" menu → .onAdjustStock / .onReserveStock / .onReleaseStock)
+    -->
+    <tnt:ToolPage id="toolPage">
+
+        <tnt:sideContent>
+            <tnt:SideNavigation
+                id="sideNav"
+                selectedKey="{local>/currentPage}"
+                itemSelect=".onSideNavItemSelect"
+            >
+                <tnt:item>
+                    <tnt:NavigationList id="_IDGenNavigationList">
+                        <tnt:NavigationListItem
+                            id="_IDGenNavigationListItem"
+                            text="Dashboard"
+                            icon="sap-icon://home"
+                            key="dashboard"
+                        />
+
+                        <tnt:NavigationListItem
+                            id="_IDGenNavigationListItem1"
+                            text="Products"
+                            icon="sap-icon://product"
+                            key="products"
+                        />
+
+                        <tnt:NavigationListItem
+                            id="_IDGenNavigationListItem2"
+                            text="Sales"
+                            icon="sap-icon://sales-order"
+                            key="sales"
+                        />
+
+                        <tnt:NavigationListItem
+                            id="_IDGenNavigationListItem3"
+                            text="Inventory"
+                            icon="sap-icon://inventory"
+                            key="inventory"
+                        />
+                    </tnt:NavigationList>
+                </tnt:item>
+
+                <tnt:fixedItem>
+                    <tnt:NavigationList id="_IDGenNavigationList1">
+                        <tnt:NavigationListItem
+                            id="_IDGenNavigationListItem4"
+                            text="Reports"
+                            expanded="true"
+                        >
+                            <tnt:items>
+                                <tnt:NavigationListItem
+                                    id="_IDGenNavigationListItem5"
+                                    text="Analytics"
+                                    key="analytics"
+                                />
+                            </tnt:items>
+                        </tnt:NavigationListItem>
+                    </tnt:NavigationList>
+                </tnt:fixedItem>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <tnt:mainContents>
+            <Page
+                id="view1Page"
+                showHeader="false"
+                enableScrolling="true"
+            >
+                <content>
+
+                    <!-- ===================== DASHBOARD ===================== -->
+                    <VBox
+                        id="_IDGenVBox1"
+                        class="sapUiMediumMargin dashboardRoot"
+                        visible="{= ${local>/currentPage} === 'dashboard' }"
+                    >
+
+                        <!-- header row -->
+                        <HBox
+                            id="_IDGenDashHeader"
+                            justifyContent="SpaceBetween"
+                            alignItems="Center"
+                            class="dashHeader"
+                        >
+                            <Title
+                                id="_IDGenTitle"
+                                text="Dashboard"
+                                level="H2"
+                                class="dashHeaderTitle"
+                            />
+                            <HBox
+                                id="_IDGenDashHeaderButtons"
+                                alignItems="Center"
+                            >
+                                <Button
+                                    id="_IDGenDashOpenCharts"
+                                    text="Charts"
+                                    icon="sap-icon://pie-chart"
+                                    type="Transparent"
+                                    press=".onDashOpenCharts"
+                                    class="sapUiTinyMarginEnd"
+                                />
+                                <Button
+                                    id="_IDGenDashOpenWh"
+                                    text="Warehouses"
+                                    icon="sap-icon://building"
+                                    type="Transparent"
+                                    press=".onDashOpenWarehouses"
+                                    class="sapUiTinyMarginEnd"
+                                />
+                                <Button
+                                    id="_IDGenDashRefresh"
+                                    text="Refresh"
+                                    icon="sap-icon://refresh"
+                                    press=".onRefreshAnalytics"
+                                />
+                            </HBox>
+                        </HBox>
+
+                        <!-- hero banner with image -->
+                        <VBox
+                            id="_IDGenDashHero"
+                            class="heroBanner"
+                        >
+                            <Title
+                                id="_IDGenHeroTitle"
+                                text="Sales &amp; Inventory Performance"
+                                level="H1"
+                                wrapping="true"
+                                class="heroTitle"
+                            />
+                            <Text
+                                id="_IDGenText"
+                                text="Overview of sales orders, stock levels and warehouse activity."
+                                class="heroSub"
+                            />
+                            <Text
+                                id="_IDGenHeroPeriod"
+                                text="{local>/dash/periodText}"
+                                class="heroPeriod"
+                            />
+                            <HBox
+                                id="_IDGenHeroChips"
+                                wrap="Wrap"
+                                alignItems="Center"
+                                class="heroChips"
+                            >
+                                <GenericTag
+                                    id="_IDGenTagPending"
+                                    text="Pending sales"
+                                    design="StatusIconHidden"
+                                    status="{= ${local>/dash/pendingCount} > 0 ? 'Warning' : 'None' }"
+                                    press=".onDashOpenSales"
+                                >
+                                    <ObjectNumber
+                                        id="_IDGenTagPendingNum"
+                                        number="{local>/dash/pendingCount}"
+                                        emphasized="false"
+                                        state="{= ${local>/dash/pendingCount} > 0 ? 'Warning' : 'None' }"
+                                    />
+                                </GenericTag>
+                                <GenericTag
+                                    id="_IDGenTagOut"
+                                    text="Out of stock"
+                                    design="StatusIconHidden"
+                                    status="{= ${local>/dash/outOfStockCount} > 0 ? 'Error' : 'Success' }"
+                                    press=".onDashOpenInventory"
+                                >
+                                    <ObjectNumber
+                                        id="_IDGenTagOutNum"
+                                        number="{local>/dash/outOfStockCount}"
+                                        emphasized="false"
+                                        state="{= ${local>/dash/outOfStockCount} > 0 ? 'Error' : 'Success' }"
+                                    />
+                                </GenericTag>
+                                <GenericTag
+                                    id="_IDGenTagLow"
+                                    text="Low stock"
+                                    design="StatusIconHidden"
+                                    status="{= ${local>/dash/lowStockCount} > 0 ? 'Warning' : 'Success' }"
+                                    press=".onDashOpenInventory"
+                                >
+                                    <ObjectNumber
+                                        id="_IDGenTagLowNum"
+                                        number="{local>/dash/lowStockCount}"
+                                        emphasized="false"
+                                        state="{= ${local>/dash/lowStockCount} > 0 ? 'Warning' : 'Success' }"
+                                    />
+                                </GenericTag>
+                            </HBox>
+                        </VBox>
+
+                        <!-- KPI cards (trend pills = real change, last 7 days vs the 7 days before) -->
+                        <HBox
+                            id="_IDGenKpiRow"
+                            wrap="Wrap"
+                            justifyContent="SpaceBetween"
+                            class="dashboardKpiGrid"
+                        >
+
+                            <!-- Total revenue -->
+                            <VBox
+                                id="_IDGenVBox3"
+                                class="kpiCard kpiAccentBlue"
+                            >
+                                <HBox
+                                    id="_IDGenHBox"
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Start"
+                                    class="kpiCardHead"
+                                >
+                                    <VBox id="_IDGenVBox5">
+                                        <Text
+                                            id="_IDGenText1"
+                                            text="Total revenue"
+                                            class="kpiLabel"/>
+                                        <Text
+                                            id="_IDGenText2"
+                                            text="All time"
+                                            class="kpiSubLabel"/>
+                                    </VBox>
+                                    <core:Icon
+                                        id="_IDGenIcon"
+                                        src="sap-icon://money-bills"
+                                        class="kpiIcon iconBlue"/>
+                                </HBox>
+                                <Text
+                                    id="_IDGenText3"
+                                    text="{ parts: [{ path: 'local>/analytics/totalRevenue' }], formatter: '.formatter.formatCurrency' }"
+                                    class="kpiValue"/>
+                                <HBox
+                                    id="_IDGenHBox1"
+                                    alignItems="Center"
+                                    class="kpiTrend trendPosBg"
+                                    visible="{= ${local>/dash/trend/revenue/dir} === 'up' }">
+                                    <core:Icon
+                                        id="_IDGenIcon1"
+                                        src="sap-icon://trend-up"
+                                        class="trendPos"/>
+                                    <Text
+                                        id="_IDGenText4"
+                                        text="{local>/dash/trend/revenue/text}"
+                                        class="trendPosText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox1d"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNegBg"
+                                    visible="{= ${local>/dash/trend/revenue/dir} === 'down' }">
+                                    <core:Icon
+                                        id="_IDGenIcon1d"
+                                        src="sap-icon://trend-down"
+                                        class="trendNeg"/>
+                                    <Text
+                                        id="_IDGenText4d"
+                                        text="{local>/dash/trend/revenue/text}"
+                                        class="trendNegText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox1f"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNeutralBg"
+                                    visible="{= ${local>/dash/trend/revenue/dir} === 'flat' }">
+                                    <core:Icon
+                                        id="_IDGenIcon1f"
+                                        src="sap-icon://horizontal-grip"
+                                        class="trendNeutral"/>
+                                    <Text
+                                        id="_IDGenText4f"
+                                        text="{local>/dash/trend/revenue/text}"
+                                        class="trendNeutralText"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Total sales -->
+                            <VBox
+                                id="_IDGenVBox6"
+                                class="kpiCard kpiAccentOrange"
+                            >
+                                <HBox
+                                    id="_IDGenHBox2"
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Start"
+                                    class="kpiCardHead"
+                                >
+                                    <VBox id="_IDGenVBox8">
+                                        <Text
+                                            id="_IDGenText5"
+                                            text="Total sales"
+                                            class="kpiLabel"
+                                        />
+                                        <Text
+                                            id="_IDGenText6"
+                                            text="All statuses"
+                                            class="kpiSubLabel"
+                                        />
+                                    </VBox>
+                                    <core:Icon
+                                        id="_IDGenIcon2"
+                                        src="sap-icon://sales-order"
+                                        class="kpiIcon iconOrange"
+                                    />
+                                </HBox>
+                                <Text
+                                    id="_IDGenText7"
+                                    text="{local>/analytics/totalSalesCount}"
+                                    class="kpiValue"
+                                />
+                                <HBox
+                                    id="_IDGenHBox2u"
+                                    alignItems="Center"
+                                    class="kpiTrend trendPosBg"
+                                    visible="{= ${local>/dash/trend/sales/dir} === 'up' }">
+                                    <core:Icon
+                                        id="_IDGenIcon2u"
+                                        src="sap-icon://trend-up"
+                                        class="trendPos"/>
+                                    <Text
+                                        id="_IDGenText8u"
+                                        text="{local>/dash/trend/sales/text}"
+                                        class="trendPosText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox2d"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNegBg"
+                                    visible="{= ${local>/dash/trend/sales/dir} === 'down' }">
+                                    <core:Icon
+                                        id="_IDGenIcon2d"
+                                        src="sap-icon://trend-down"
+                                        class="trendNeg"/>
+                                    <Text
+                                        id="_IDGenText8d"
+                                        text="{local>/dash/trend/sales/text}"
+                                        class="trendNegText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox2b"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNeutralBg"
+                                    visible="{= ${local>/dash/trend/sales/dir} === 'flat' }">
+                                    <core:Icon
+                                        id="_IDGenIconNeutral"
+                                        src="sap-icon://horizontal-grip"
+                                        class="trendNeutral"/>
+                                    <Text
+                                        id="_IDGenText8"
+                                        text="{local>/dash/trend/sales/text}"
+                                        class="trendNeutralText"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Avg sale value -->
+                            <VBox
+                                id="_IDGenVBox9"
+                                class="kpiCard kpiAccentGreen">
+                                <HBox
+                                    id="_IDGenHBox3"
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Start"
+                                    class="kpiCardHead">
+                                    <VBox id="_IDGenVBox11">
+                                        <Text
+                                            id="_IDGenText9"
+                                            text="Avg sale value"
+                                            class="kpiLabel"/>
+                                        <Text
+                                            id="_IDGenText10"
+                                            text="Per order"
+                                            class="kpiSubLabel"/>
+                                    </VBox>
+                                    <core:Icon
+                                        id="_IDGenIcon3"
+                                        src="sap-icon://cart"
+                                        class="kpiIcon iconGreen"/>
+                                </HBox>
+                                <Text
+                                    id="_IDGenText11"
+                                    text="{ parts: [{ path: 'local>/analytics/avgSaleValue' }], formatter: '.formatter.formatCurrency' }"
+                                    class="kpiValue"/>
+                                <HBox
+                                    id="_IDGenHBox4"
+                                    alignItems="Center"
+                                    class="kpiTrend trendPosBg"
+                                    visible="{= ${local>/dash/trend/aov/dir} === 'up' }">
+                                    <core:Icon
+                                        id="_IDGenIcon4"
+                                        src="sap-icon://trend-up"
+                                        class="trendPos"/>
+                                    <Text
+                                        id="_IDGenText12"
+                                        text="{local>/dash/trend/aov/text}"
+                                        class="trendPosText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox4d"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNegBg"
+                                    visible="{= ${local>/dash/trend/aov/dir} === 'down' }">
+                                    <core:Icon
+                                        id="_IDGenIcon4d"
+                                        src="sap-icon://trend-down"
+                                        class="trendNeg"/>
+                                    <Text
+                                        id="_IDGenText12d"
+                                        text="{local>/dash/trend/aov/text}"
+                                        class="trendNegText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox4f"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNeutralBg"
+                                    visible="{= ${local>/dash/trend/aov/dir} === 'flat' }">
+                                    <core:Icon
+                                        id="_IDGenIcon4f"
+                                        src="sap-icon://horizontal-grip"
+                                        class="trendNeutral"/>
+                                    <Text
+                                        id="_IDGenText12f"
+                                        text="{local>/dash/trend/aov/text}"
+                                        class="trendNeutralText"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Completion rate -->
+                            <VBox
+                                id="_IDGenVBox12"
+                                class="kpiCard kpiAccentPink">
+                                <HBox
+                                    id="_IDGenHBox5"
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Start"
+                                    class="kpiCardHead">
+                                    <VBox id="_IDGenVBox14">
+                                        <Text
+                                            id="_IDGenText13"
+                                            text="Completion rate"
+                                            class="kpiLabel"/>
+                                        <Text
+                                            id="_IDGenText14"
+                                            text="Completed vs all sales"
+                                            class="kpiSubLabel"/>
+                                    </VBox>
+                                    <core:Icon
+                                        id="_IDGenIcon5"
+                                        src="sap-icon://complete"
+                                        class="kpiIcon iconPink"/>
+                                </HBox>
+                                <Text
+                                    id="_IDGenText15"
+                                    text="{local>/analytics/completionRate}%"
+                                    class="kpiValue"/>
+                                <HBox
+                                    id="_IDGenHBox6u"
+                                    alignItems="Center"
+                                    class="kpiTrend trendPosBg"
+                                    visible="{= ${local>/dash/trend/rate/dir} === 'up' }">
+                                    <core:Icon
+                                        id="_IDGenIcon6u"
+                                        src="sap-icon://trend-up"
+                                        class="trendPos"/>
+                                    <Text
+                                        id="_IDGenText16u"
+                                        text="{local>/dash/trend/rate/text}"
+                                        class="trendPosText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox6"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNegBg"
+                                    visible="{= ${local>/dash/trend/rate/dir} === 'down' }">
+                                    <core:Icon
+                                        id="_IDGenIcon6"
+                                        src="sap-icon://trend-down"
+                                        class="trendNeg"/>
+                                    <Text
+                                        id="_IDGenText16"
+                                        text="{local>/dash/trend/rate/text}"
+                                        class="trendNegText"/>
+                                </HBox>
+                                <HBox
+                                    id="_IDGenHBox6f"
+                                    alignItems="Center"
+                                    class="kpiTrend trendNeutralBg"
+                                    visible="{= ${local>/dash/trend/rate/dir} === 'flat' }">
+                                    <core:Icon
+                                        id="_IDGenIcon6f"
+                                        src="sap-icon://horizontal-grip"
+                                        class="trendNeutral"/>
+                                    <Text
+                                        id="_IDGenText16f"
+                                        text="{local>/dash/trend/rate/text}"
+                                        class="trendNeutralText"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+
+                    <IconTabBar
+                        id="mainTabBar"
+                        expandable="false"
+                        selectedKey="{local>/currentPage}"
+                        select=".onTabSelect"
+                        visible="{= ${local>/currentPage} !== 'dashboard' }"
+                        class="sapUiResponsiveContentPadding"
+                    >
+                        <items>
+
+                            <!-- ===================== PRODUCTS ===================== -->
+                            <IconTabFilter
+                                id="productsTab"
+                                key="products"
+                                text="Products"
+                                icon="sap-icon://product">
+                                <VBox
+                                    id="_IDGenVBox19"
+                                    class="sapUiSmallMargin">
+                                    <Toolbar id="_IDGenToolbar2">
+
+    <Title
+        id="_IDGenTitle6"
+        text="Products"
+        level="H2"/>
+
+    <ToolbarSpacer
+        id="_IDGenToolbarSpacer2"/>
+
+    <Button
+        id="addProductButton"
+        text="Add Product"
+        icon="sap-icon://add"
+        type="Emphasized"
+        press=".onAddProduct"/>
+
+    <Button
+        id="refreshProductsButton"
+        text="Refresh"
+        icon="sap-icon://refresh"
+        press=".onRefresh"
+        class="sapUiTinyMarginBegin"/>
+
+</Toolbar>
+
+                                    <Table
+                                        id="productsTable"
+                                        growing="true"
+                                        growingThreshold="20"
+                                        noDataText="No products available"
+                                        items="{local>/products}"
+                                        selectionChange=".onProductSelectionChange">
+                                        <columns>
+                                            <Column id="_IDGenColumn5">
+                                                <Text
+                                                    id="_IDGenText26"
+                                                    text="Product Code"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn6">
+                                                <Text
+                                                    id="_IDGenText27"
+                                                    text="Product Name"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn7">
+                                                <Text
+                                                    id="_IDGenText28"
+                                                    text="Category"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn8"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText29"
+                                                    text="Unit Price"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn9"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText30"
+                                                    text="Stock Qty"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn10">
+                                                <Text
+                                                    id="_IDGenText31"
+                                                    text="Status"/>
+                                            </Column>
+                                        </columns>
+
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem1">
+                                                <cells>
+                                                    <Text
+                                                        id="_IDGenText32"
+                                                        text="{local>productCode}"/>
+
+                                                    <Text
+                                                        id="_IDGenText33"
+                                                        text="{local>productName}"/>
+
+                                                    <Text
+                                                        id="_IDGenText34"
+                                                        text="{local>category/categoryName}"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber1"
+                                                        number="{local>unitPrice}"
+                                                        unit="INR"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber2"
+                                                        number="{local>stockQty}"/>
+
+                                                    <ObjectStatus
+                                                        id="_IDGenObjectStatus1"
+                                                        text="{local>status}"
+                                                        state="None"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </VBox>
+                            </IconTabFilter>
+
+                            <!-- ===================== SALES ===================== -->
+                            <IconTabFilter
+                                id="salesTab"
+                                key="sales"
+                                text="Sales"
+                                icon="sap-icon://sales-order">
+                                <VBox
+                                    id="_IDGenVBox20"
+                                    class="sapUiSmallMargin">
+                                    <Toolbar id="_IDGenToolbar3">
+
+                                        <Title
+                                            id="_IDGenTitle7"
+                                            text="Sales"
+                                            level="H2"/>
+
+                                        <ToolbarSpacer
+                                            id="_IDGenToolbarSpacer3"/>
+
+                                        <Button
+                                            id="newSaleButton"
+                                            text="New Sale"
+                                            icon="sap-icon://add"
+                                            type="Emphasized"
+                                            press=".onNewSale"/>
+
+                                        <Button
+                                            id="approveSaleButton"
+                                            text="Approve"
+                                            icon="sap-icon://accept"
+                                            type="Accept"
+                                            enabled="false"
+                                            press=".onApproveSale"
+                                            class="sapUiTinyMarginBegin"/>
+
+                                        <Button
+                                            id="refreshSalesButton"
+                                            text="Refresh"
+                                            icon="sap-icon://refresh"
+                                            press=".onRefresh"
+                                            class="sapUiTinyMarginBegin"/>
+
+                                    </Toolbar>
+
+                                    <HBox
+                                        id="salesFilterToolbar"
+                                        wrap="Wrap"
+                                        class="sapUiSmallMarginTop sapUiSmallMarginBottom sapUiTinyMarginBottom"
+                                        alignItems="Center">
+                                        <SearchField
+                                            id="salesSearchField"
+                                            width="18rem"
+                                            placeholder="Search sale number, customer or product"
+                                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"/>
+
+                                        <Select
+                                            id="salesStatusFilter"
+                                            width="9rem"
+                                            selectedKey=""
+                                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                                            <core:Item
+                                                key=""
+                                                text="All Statuses"/>
+                                            <core:Item
+                                                key="Pending"
+                                                text="Pending"/>
+                                            <core:Item
+                                                key="Completed"
+                                                text="Completed"/>
+                                            <core:Item
+                                                key="Cancelled"
+                                                text="Cancelled"/>
+                                        </Select>
+
+                                        <DatePicker
+                                            id="salesDateFrom"
+                                            width="9rem"
+                                            placeholder="Start date"
+                                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"/>
+
+                                        <DatePicker
+                                            id="salesDateTo"
+                                            width="9rem"
+                                            placeholder="End date"
+                                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"/>
+
+                                        <Button
+                                            id="applySalesFiltersButton"
+                                            text="Filter"
+                                            icon="sap-icon://filter"
+                                            type="Emphasized"
+                                            press=".onApplySalesFilters"
+                                            class="sapUiTinyMarginEnd sapUiTinyMarginBottom"/>
+
+                                        <Button
+                                            id="clearSalesFiltersButton"
+                                            text="Clear"
+                                            icon="sap-icon://clear-filter"
+                                            press=".onClearSalesFilters"
+                                            class="sapUiTinyMarginBottom"/>
+                                    </HBox>
+
+                                    <Table
+                                        id="salesTable"
+                                        width="100%"
+                                        mode="SingleSelectLeft"
+                                        growing="true"
+                                        growingThreshold="20"
+                                        noDataText="No sales available"
+                                        items="{local>/sales}"
+                                        selectionChange=".onSaleSelectionChange">
+                                        <columns>
+                                            <Column id="_IDGenColumn11">
+                                                <Text
+                                                    id="_IDGenText35"
+                                                    text="Sale Number"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn12">
+                                                <Text
+                                                    id="_IDGenText36"
+                                                    text="Customer"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn13">
+                                                <Text
+                                                    id="_IDGenText37"
+                                                    text="Product"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn14"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText38"
+                                                    text="Quantity"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn15"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText39"
+                                                    text="Unit Price"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn16"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText40"
+                                                    text="Total Amount"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn17">
+                                                <Text
+                                                    id="_IDGenText41"
+                                                    text="Sale Date"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn18">
+                                                <Text
+                                                    id="_IDGenText42"
+                                                    text="Status"/>
+                                            </Column>
+                                        </columns>
+
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem2">
+                                                <cells>
+                                                    <Text
+                                                        id="_IDGenText43"
+                                                        text="{local>saleNumber}"/>
+
+                                                    <Text
+                                                        id="_IDGenText44"
+                                                        text="{local>customer/customerName}"/>
+
+                                                    <Text
+                                                        id="_IDGenText45"
+                                                        text="{local>product/productName}"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber3"
+                                                        number="{local>quantity}"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber4"
+                                                        number="{local>unitPrice}"
+                                                        unit="INR"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber5"
+                                                        number="{local>totalAmount}"
+                                                        unit="INR"/>
+
+                                                    <Text
+                                                        id="_IDGenText46"
+                                                        text="{
+                                                            path: 'local>saleDate',
+                                                            formatter: '.formatter.formatDateTime'
+                                                        }"/>
+
+                                                    <ObjectStatus
+                                                        id="_IDGenObjectStatus2"
+                                                        text="{local>status}"
+                                                        state="None"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </VBox>
+                            </IconTabFilter>
+
+                            <!-- ===================== INVENTORY ===================== -->
+                            <IconTabFilter
+                                id="inventoryTab"
+                                key="inventory"
+                                text="Inventory"
+                                icon="sap-icon://inventory">
+                                <VBox
+                                    id="_IDGenVBox21"
+                                    class="sapUiSmallMargin">
+                                    <Toolbar id="_IDGenToolbar4">
+                                        <Title
+                                            id="_IDGenTitle8"
+                                            text="Stock Overview"
+                                            level="H2"/>
+
+                                        <ToolbarSpacer
+                                            id="_IDGenToolbarSpacer4"/>
+
+                                        <Button
+                                            id="_IDGenButton1"
+                                            text="Refresh"
+                                            icon="sap-icon://refresh"
+                                            type="Transparent"
+                                            press=".onRefreshInventory"/>
+                                    </Toolbar>
+
+                                    <Toolbar
+                                        id="inventoryFilterToolbar"
+                                        class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+                                        <SearchField
+                                            id="inventoryProductSearch"
+                                            width="18rem"
+                                            placeholder="Search Product Name"
+                                            liveChange=".onInventoryFilterChange"
+                                            search=".onInventoryFilterChange"/>
+
+                                        <ToolbarSeparator />
+
+                                        <Select
+                                            id="inventoryWarehouseFilter"
+                                            width="13rem"
+                                            selectedKey=""
+                                            change=".onInventoryFilterChange">
+                                            <core:Item
+                                                key="All Warehouses"
+                                                text="All Warehouses"/>
+                                            <core:Item
+                                                key="Bangalore Distribution Center"
+                                                text="Bangalore Warehouses"/>
+                                            <core:Item
+                                                key="Chennai Central Warehouse"
+                                                text="Chennai Central Warehouse"/>
+
+                                            <core:Item
+                                                key="Hyderabad Warehouse"
+                                                text="Hyderabad Warehouse"/>
+                                            <core:Item
+                                                key="Vijayawada Storage Center"
+                                                text="Vijayawada Warehouse"/>
+                                            <core:Item
+                                                key="Mumbai Distribution Hub"
+                                                text="Mumbai Warehouse"/>
+                                            <core:Item
+                                                key="Pune Warehouse"
+                                                text="Pune Warehouse"/>
+                                            <core:Item
+                                                key="Kochi Warehouse"
+                                                text="Kochi Warehouse"/>
+                                            <core:Item
+                                                key="Coimbatore Warehouse"
+                                                text="Coimbatore Warehouse"/>
+
+                                            <core:Item
+                                                key="Delhi Distribution Center"
+                                                text="Delhi Warehouse"/>
+
+                                            <core:Item
+                                                key="Ahmedabad Warehouse"
+                                                text="Ahmedabad Warehouse"/>
+                                        </Select>
+
+                                        <ToolbarSeparator />
+
+                                        <Select
+                                            id="inventoryStockStatusFilter"
+                                            width="11rem"
+                                            selectedKey=""
+                                            change=".onInventoryFilterChange">
+                                            <core:Item
+                                                key=""
+                                                text="All Stock"/>
+
+                                            <core:Item
+                                                key="available"
+                                                text="Available"/>
+
+                                            <core:Item
+                                                key="Out Of Stock"
+                                                text="Out Of Stock"/>
+                                        </Select>
+
+                                        <ToolbarSpacer />
+
+                                        <Button
+                                            id="applyInventoryFiltersButton"
+                                            text="Filter"
+                                            icon="sap-icon://filter"
+                                            type="Emphasized"
+                                            press=".onApplyInventoryFilters"/>
+
+                                        <Button
+                                            id="clearInventoryFiltersButton"
+                                            text="Clear"
+                                            icon="sap-icon://clear-filter"
+                                            press=".onClearInventoryFilters"/>
+                                    </Toolbar>
+
+                                    <Table
+                                        id="inventoryTable"
+                                        class="inventoryTable"
+                                        width="100%"
+                                        growing="true"
+                                        growingThreshold="15"
+                                        noDataText="No inventory records available"
+                                        items="{
+                                            path: 'inventory>/Inventory',
+                                            parameters: {
+                                                $expand: 'warehouse'
+                                            }
+                                        }">
+                                        <columns>
+                                            <Column id="_IDGenColumn19">
+                                                <Text
+                                                    id="_IDGenText47"
+                                                    text="Product Name"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn20">
+                                                <Text
+                                                    id="_IDGenText48"
+                                                    text="Warehouse"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn21"
+                                                hAlign="Center">
+                                                <Text
+                                                    id="_IDGenText49"
+                                                    text="Stock Level"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn22"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText50"
+                                                    text="Stock Qty"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn23"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText51"
+                                                    text="Reserved"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn24"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenText52"
+                                                    text="Available"/>
+                                            </Column>
+
+                                            <Column id="_IDGenColumn25">
+                                                <Text
+                                                    id="_IDGenText53"
+                                                    text="Last Updated"/>
+                                            </Column>
+
+                                            <Column
+                                                id="_IDGenColumn26"
+                                                hAlign="Center">
+                                                <Text
+                                                    id="_IDGenText54"
+                                                    text="Actions"/>
+                                            </Column>
+                                        </columns>
+
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem3">
+                                                <cells>
+                                                    <Text
+                                                        id="_IDGenText55"
+                                                        text="{
+                                                            parts: [
+                                                                { path: 'inventory>product_ID' },
+                                                                { path: 'local>/products' }
+                                                            ],
+                                                            formatter: '.getProductName'
+                                                        }"/>
+
+                                                    <ObjectIdentifier
+                                                        id="_IDGenObjectIdentifier"
+                                                        title="{inventory>warehouse/warehouseName}"
+                                                        text="{inventory>warehouse/warehouseCode}"/>
+
+                                                    <ProgressIndicator
+                                                        id="_IDGenProgressIndicator1"
+                                                        percentValue="{= ${inventory>stockQty} > 0 ? ((${inventory>stockQty} - ${inventory>reservedQty}) / ${inventory>stockQty}) * 100 : 0 }"
+                                                        displayValue="{= ${inventory>stockQty} > 0 ? Math.round((${inventory>stockQty} - ${inventory>reservedQty}) / ${inventory>stockQty} * 100) + '%' : '0%' }"
+                                                        width="8rem"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber6"
+                                                        number="{inventory>stockQty}"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber7"
+                                                        number="{inventory>reservedQty}"
+                                                        state="Warning"/>
+
+                                                    <ObjectNumber
+                                                        id="_IDGenObjectNumber8"
+                                                        number="{= ${inventory>stockQty} - ${inventory>reservedQty} }"
+                                                        state="{= (${inventory>stockQty} - ${inventory>reservedQty}) > 0 ? 'Success' : 'Error' }"/>
+
+                                                    <Text
+                                                        id="_IDGenText56"
+                                                        text="{
+                                                            path: 'inventory>lastUpdated',
+                                                            formatter: '.formatter.formatDateTime'
+                                                        }"/>
+
+                                                    <!-- Each menu item opens StockQuantityDialog.fragment.xml -->
+                                                    <MenuButton
+                                                        id="_IDGenMenuButton"
+                                                        text="Manage Stock"
+                                                        type="Emphasized"
+                                                        useDefaultActionOnly="false">
+                                                        <menu>
+                                                            <Menu
+                                                                id="_IDGenMenu">
+                                                                <MenuItem
+                                                                    id="_IDGenMenuItem"
+                                                                    text="Adjust Stock"
+                                                                    icon="sap-icon://add"
+                                                                    press=".onAdjustStock"/>
+
+                                                                <MenuItem
+                                                                    id="_IDGenMenuItem1"
+                                                                    text="Reserve Stock"
+                                                                    icon="sap-icon://locked"
+                                                                    press=".onReserveStock"/>
+
+                                                                <MenuItem
+                                                                    id="_IDGenMenuItem2"
+                                                                    text="Release Stock"
+                                                                    icon="sap-icon://unlocked"
+                                                                    press=".onReleaseStock"/>
+                                                            </Menu>
+                                                        </menu>
+                                                    </MenuButton>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </VBox>
+                            </IconTabFilter>
+
+                            <!-- ===================== CHARTS ===================== -->
+                            <IconTabFilter
+                                id="chartsTab"
+                                key="charts"
+                                text="Charts"
+                                icon="sap-icon://pie-chart">
+                                <VBox
+                                    id="_IDGenChartsRoot"
+                                    class="sectionRoot">
+
+                                    <HBox
+                                        id="_IDGenChartsHeader"
+                                        justifyContent="SpaceBetween"
+                                        alignItems="Center"
+                                        class="sectionHeader">
+                                        <VBox id="_IDGenChartsHeaderText">
+                                            <Title
+                                                id="_IDGenTitle2"
+                                                text="Performance charts"
+                                                level="H2"
+                                                class="sectionTitle"/>
+                                            <Text
+                                                id="_IDGenChartsPeriod"
+                                                text="{local>/dash/periodText}"
+                                                class="sectionSubtitle"/>
+                                        </VBox>
+                                        <HBox id="_IDGenChartsHeaderButtons">
+                                            <Button
+                                                id="_IDGenLink1"
+                                                text="View full analytics"
+                                                type="Transparent"
+                                                icon="sap-icon://bar-chart"
+                                                press=".onViewAllAnalytics"
+                                                class="sapUiTinyMarginEnd"/>
+                                            <Button
+                                                id="_IDGenChartsRefresh"
+                                                text="Refresh"
+                                                icon="sap-icon://refresh"
+                                                press=".onRefreshAnalytics"/>
+                                        </HBox>
+                                    </HBox>
+
+                                    <!-- row 1: revenue trend + category pie -->
+                                    <HBox
+                                        id="_IDGenDashRow1"
+                                        wrap="Wrap"
+                                        class="dashChartGrid dashChartGridWide">
+                                        <VBox
+                                            id="_IDGenVBox15"
+                                            class="dashChartCard chartBlue">
+                                            <Text
+                                                id="_IDGenTitle3"
+                                                text="Revenue trend"
+                                                class="dashChartTitle"/>
+                                            <Text
+                                                id="_IDGenTrendSub"
+                                                text="Cumulative revenue, all sales"
+                                                class="dashChartSub"/>
+                                            <core:HTML
+                                                id="_IDGenTrendHtml"
+                                                content="{local>/dash/trendSvg}"
+                                                preferDOM="false"/>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenVBox16"
+                                            class="dashChartCard chartOrange">
+                                            <Text
+                                                id="_IDGenTitle4"
+                                                text="Sales by category"
+                                                class="dashChartTitle"/>
+                                            <Text
+                                                id="_IDGenCatSub"
+                                                text="Share of revenue"
+                                                class="dashChartSub"/>
+                                            <HBox
+                                                id="_IDGenCatRow"
+                                                alignItems="Center"
+                                                class="pieRow">
+                                                <core:HTML
+                                                    id="_IDGenCatHtml"
+                                                    content="{local>/dash/categorySvg}"
+                                                    preferDOM="false"/>
+                                                <VBox
+                                                    id="_IDGenCatLegend"
+                                                    items="{local>/dash/categoryLegend}"
+                                                    class="legend">
+                                                    <items>
+                                                        <HBox
+                                                            id="_IDGenCatLegendRow"
+                                                            alignItems="Center"
+                                                            class="legendRow">
+                                                            <core:Icon
+                                                                id="_IDGenCatLegendDot"
+                                                                src="sap-icon://circle-task-2"
+                                                                color="{local>color}"
+                                                                class="legendDot"/>
+                                                            <Text
+                                                                id="_IDGenCatLegendText"
+                                                                text="{local>label}"
+                                                                wrapping="false"
+                                                                class="legendText"/>
+                                                            <Text
+                                                                id="_IDGenCatLegendPct"
+                                                                text="{local>pct}%"
+                                                                class="legendValue"/>
+                                                        </HBox>
+                                                    </items>
+                                                </VBox>
+                                            </HBox>
+                                        </VBox>
+                                    </HBox>
+
+                                    <!-- row 2: top products + top customers -->
+                                    <HBox
+                                        id="_IDGenDashRow2"
+                                        wrap="Wrap"
+                                        class="dashChartGrid">
+                                        <VBox
+                                            id="_IDGenVBox18"
+                                            class="dashChartCard chartGreen">
+                                            <Text
+                                                id="_IDGenTitle5"
+                                                text="Top products by revenue"
+                                                class="dashChartTitle"/>
+                                            <Text
+                                                id="_IDGenTopSub"
+                                                text="Top 5, all sales"
+                                                class="dashChartSub"/>
+                                            <core:HTML
+                                                id="_IDGenTopHtml"
+                                                content="{local>/dash/topProductsSvg}"
+                                                preferDOM="false"/>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenVBoxCust"
+                                            class="dashChartCard chartPink">
+                                            <Text
+                                                id="_IDGenCustTitle"
+                                                text="Top customers by revenue"
+                                                class="dashChartTitle"/>
+                                            <Text
+                                                id="_IDGenCustSub"
+                                                text="Top 5, all sales"
+                                                class="dashChartSub"/>
+                                            <core:HTML
+                                                id="_IDGenCustHtml"
+                                                content="{local>/dash/topCustomersSvg}"
+                                                preferDOM="false"/>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                            </IconTabFilter>
+
+                            <!-- ===================== WAREHOUSES ===================== -->
+                            <IconTabFilter
+                                id="warehousesTab"
+                                key="warehouses"
+                                text="Warehouses"
+                                icon="sap-icon://building">
+                                <VBox
+                                    id="_IDGenWhRoot"
+                                    class="sectionRoot">
+
+                                    <HBox
+                                        id="_IDGenWhHeader"
+                                        justifyContent="SpaceBetween"
+                                        alignItems="Center"
+                                        class="sectionHeader">
+                                        <VBox id="_IDGenWhHeaderText">
+                                            <Title
+                                                id="_IDGenWhPageTitle"
+                                                text="Warehouses"
+                                                level="H2"
+                                                class="sectionTitle"/>
+                                            <Text
+                                                id="_IDGenWhPageSub"
+                                                text="Stock levels and health per warehouse"
+                                                class="sectionSubtitle"/>
+                                        </VBox>
+                                        <Button
+                                            id="_IDGenWhRefresh"
+                                            text="Refresh"
+                                            icon="sap-icon://refresh"
+                                            press=".onRefreshWarehouses"/>
+                                    </HBox>
+
+                                    <!-- summary cards -->
+                                    <HBox
+                                        id="_IDGenWhSummary"
+                                        wrap="Wrap"
+                                        class="whSummaryGrid">
+                                        <VBox
+                                            id="_IDGenWhStat1"
+                                            class="whStat whStatBlue">
+                                            <Text
+                                                id="_IDGenWhStat1L"
+                                                text="Warehouses"
+                                                class="whStatLabel"/>
+                                            <Text
+                                                id="_IDGenWhStat1V"
+                                                text="{local>/dash/warehouseCount}"
+                                                class="whStatValue"/>
+                                        </VBox>
+                                        <VBox
+                                            id="_IDGenWhStat2"
+                                            class="whStat whStatGreen">
+                                            <Text
+                                                id="_IDGenWhStat2L"
+                                                text="Units on hand"
+                                                class="whStatLabel"/>
+                                            <Text
+                                                id="_IDGenWhStat2V"
+                                                text="{local>/dash/totalUnits}"
+                                                class="whStatValue"/>
+                                        </VBox>
+                                        <VBox
+                                            id="_IDGenWhStat3"
+                                            class="whStat whStatOrange">
+                                            <Text
+                                                id="_IDGenWhStat3L"
+                                                text="Low stock items"
+                                                class="whStatLabel"/>
+                                            <Text
+                                                id="_IDGenWhStat3V"
+                                                text="{local>/dash/lowStockCount}"
+                                                class="whStatValue"/>
+                                        </VBox>
+                                        <VBox
+                                            id="_IDGenWhStat4"
+                                            class="whStat whStatRed">
+                                            <Text
+                                                id="_IDGenWhStat4L"
+                                                text="Out of stock items"
+                                                class="whStatLabel"/>
+                                            <Text
+                                                id="_IDGenWhStat4V"
+                                                text="{local>/dash/outOfStockCount}"
+                                                class="whStatValue"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <!-- stock by warehouse chart -->
+                                    <VBox
+                                        id="_IDGenVBoxWh"
+                                        class="dashChartCard chartPink whChartCard">
+                                        <Text
+                                            id="_IDGenWhTitle"
+                                            text="Stock by warehouse"
+                                            class="dashChartTitle"/>
+                                        <Text
+                                            id="_IDGenWhSub"
+                                            text="Units on hand"
+                                            class="dashChartSub"/>
+                                        <core:HTML
+                                            id="_IDGenWhHtml"
+                                            content="{local>/dash/warehouseSvg}"
+                                            preferDOM="false"/>
+                                    </VBox>
+
+                                    <!-- warehouse table (click a row to see its inventory) -->
+                                    <Table
+                                        id="warehouseTable"
+                                        class="whTable"
+                                        width="100%"
+                                        growing="true"
+                                        growingThreshold="20"
+                                        noDataText="No inventory records available"
+                                        items="{local>/dash/warehouses}">
+                                        <headerToolbar>
+                                            <Toolbar id="_IDGenWhTableBar">
+                                                <Title
+                                                    id="_IDGenWhTableTitle"
+                                                    text="Warehouse details"
+                                                    level="H4"/>
+                                                <ToolbarSpacer id="_IDGenWhTableSpacer"/>
+                                                <Text
+                                                    id="_IDGenWhTableHint"
+                                                    text="Click a warehouse to open its inventory"
+                                                    class="whTableHint"/>
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column id="_IDGenWhCol1">
+                                                <Text
+                                                    id="_IDGenWhColT1"
+                                                    text="Warehouse"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol2"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true">
+                                                <Text
+                                                    id="_IDGenWhColT2"
+                                                    text="Location"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol3"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenWhColT3"
+                                                    text="Products"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol4"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenWhColT4"
+                                                    text="On hand"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol5"
+                                                hAlign="End"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true">
+                                                <Text
+                                                    id="_IDGenWhColT5"
+                                                    text="Reserved"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol6"
+                                                hAlign="End">
+                                                <Text
+                                                    id="_IDGenWhColT6"
+                                                    text="Available"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol7"
+                                                hAlign="Center"
+                                                minScreenWidth="Desktop"
+                                                demandPopin="true">
+                                                <Text
+                                                    id="_IDGenWhColT7"
+                                                    text="Alerts"/>
+                                            </Column>
+                                            <Column
+                                                id="_IDGenWhCol8"
+                                                width="12rem">
+                                                <Text
+                                                    id="_IDGenWhColT8"
+                                                    text="Stock health"/>
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenWhRow"
+                                                type="Navigation"
+                                                press=".onWarehouseRowPress">
+                                                <cells>
+                                                    <ObjectIdentifier
+                                                        id="_IDGenWhCell1"
+                                                        title="{local>name}"
+                                                        text="{local>code}"/>
+                                                    <Text
+                                                        id="_IDGenWhCell2"
+                                                        text="{local>location}"/>
+                                                    <ObjectNumber
+                                                        id="_IDGenWhCell3"
+                                                        number="{local>records}"/>
+                                                    <ObjectNumber
+                                                        id="_IDGenWhCell4"
+                                                        number="{local>units}"/>
+                                                    <ObjectNumber
+                                                        id="_IDGenWhCell5"
+                                                        number="{local>reserved}"
+                                                        state="Warning"/>
+                                                    <ObjectNumber
+                                                        id="_IDGenWhCell6"
+                                                        number="{local>available}"
+                                                        state="{= ${local>available} > 0 ? 'Success' : 'Error' }"
+                                                        emphasized="true"/>
+                                                    <HBox
+                                                        id="_IDGenWhCell7"
+                                                        justifyContent="Center">
+                                                        <ObjectStatus
+                                                            id="_IDGenWhCell7a"
+                                                            text="{local>out} out"
+                                                            state="Error"
+                                                            visible="{= ${local>out} > 0 }"
+                                                            class="sapUiTinyMarginEnd"/>
+                                                        <ObjectStatus
+                                                            id="_IDGenWhCell7b"
+                                                            text="{local>low} low"
+                                                            state="Warning"
+                                                            visible="{= ${local>low} > 0 }"/>
+                                                        <ObjectStatus
+                                                            id="_IDGenWhCell7c"
+                                                            text="OK"
+                                                            state="Success"
+                                                            visible="{= ${local>out} === 0 &amp;&amp; ${local>low} === 0 }"/>
+                                                    </HBox>
+                                                    <ProgressIndicator
+                                                        id="_IDGenWhCell8"
+                                                        percentValue="{local>healthPct}"
+                                                        displayValue="{local>healthText}"
+                                                        state="{local>healthState}"
+                                                        width="100%"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </VBox>
+                            </IconTabFilter>
+
+                            <!-- ===================== ANALYTICS ===================== -->
+                            <IconTabFilter
+                                id="analyticsTab"
+                                key="analytics"
+                                text="Analytics"
+                                icon="sap-icon://bar-chart">
+                                <VBox
+                                    id="_IDGenVBox22"
+                                    class="analyticsRoot">
+
+                                    <HBox
+                                        id="_IDGenAnaHeader"
+                                        justifyContent="SpaceBetween"
+                                        alignItems="Center"
+                                        class="analyticsHeader">
+                                        <VBox id="_IDGenAnaHeaderText">
+                                            <Title
+                                                id="_IDGenTitle9"
+                                                text="Analytics"
+                                                level="H2"
+                                                class="analyticsTitle"/>
+                                            <Text
+                                                id="_IDGenAnaSub"
+                                                text="Revenue, product and customer performance"
+                                                class="analyticsSubtitle"/>
+                                        </VBox>
+                                        <Button
+                                            id="_IDGenButton2"
+                                            text="Refresh"
+                                            icon="sap-icon://refresh"
+                                            type="Transparent"
+                                            press=".onRefreshAnalytics"
+                                            class="analyticsHeaderButton"/>
+                                    </HBox>
+
+                                    <HBox
+                                        id="_IDGenAnaFilters"
+                                        wrap="Wrap"
+                                        alignItems="Center"
+                                        class="analyticsFilterBar">
+                                        <DatePicker
+                                            id="analyticsDateFrom"
+                                            width="10rem"
+                                            placeholder="From date"
+                                            class="sapUiTinyMarginEnd"/>
+                                        <DatePicker
+                                            id="analyticsDateTo"
+                                            width="10rem"
+                                            placeholder="To date"
+                                            class="sapUiTinyMarginEnd"/>
+                                        <Select
+                                            id="analyticsStatusFilter"
+                                            width="10rem"
+                                            selectedKey=""
+                                            class="sapUiTinyMarginEnd">
+                                            <core:Item
+                                                key=""
+                                                text="All statuses"/>
+                                            <core:Item
+                                                key="Pending"
+                                                text="Pending"/>
+                                            <core:Item
+                                                key="Completed"
+                                                text="Completed"/>
+                                            <core:Item
+                                                key="Cancelled"
+                                                text="Cancelled"/>
+                                        </Select>
+                                        <Button
+                                            id="applyAnalyticsFilters"
+                                            text="Apply"
+                                            icon="sap-icon://filter"
+                                            type="Emphasized"
+                                            press=".onApplyAnalyticsFilters"
+                                            class="sapUiTinyMarginEnd"/>
+                                        <Button
+                                            id="clearAnalyticsFilters"
+                                            text="Clear"
+                                            icon="sap-icon://clear-filter"
+                                            press=".onClearAnalyticsFilters"/>
+                                    </HBox>
+
+                                    <HBox
+                                        id="_IDGenAnaKpis"
+                                        wrap="Wrap"
+                                        class="analyticsKpiGrid">
+                                        <VBox
+                                            id="_IDGenAnaKpi1"
+                                            class="anaKpi anaKpiBlue">
+                                            <Text
+                                                id="_IDGenAnaKpiL1"
+                                                text="Total revenue"
+                                                class="anaKpiLabel"/>
+                                            <Text
+                                                id="_IDGenAnaKpiV1"
+                                                text="{ parts: [{ path: 'local>/analytics/totalRevenue' }], formatter: '.formatter.formatCurrency' }"
+                                                class="anaKpiValue"/>
+                                            <Text
+                                                id="_IDGenAnaKpiS1"
+                                                text="Across all sales"
+                                                class="anaKpiSub"/>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaKpi2"
+                                            class="anaKpi anaKpiOrange">
+                                            <Text
+                                                id="_IDGenAnaKpiL2"
+                                                text="Total sales"
+                                                class="anaKpiLabel"/>
+                                            <Text
+                                                id="_IDGenAnaKpiV2"
+                                                text="{local>/analytics/totalSalesCount}"
+                                                class="anaKpiValue"/>
+                                            <Text
+                                                id="_IDGenAnaKpiS2"
+                                                text="Orders recorded"
+                                                class="anaKpiSub"/>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaKpi3"
+                                            class="anaKpi anaKpiGreen">
+                                            <Text
+                                                id="_IDGenAnaKpiL3"
+                                                text="Average order"
+                                                class="anaKpiLabel"/>
+                                            <Text
+                                                id="_IDGenAnaKpiV3"
+                                                text="{ parts: [{ path: 'local>/analytics/avgSaleValue' }], formatter: '.formatter.formatCurrency' }"
+                                                class="anaKpiValue"/>
+                                            <Text
+                                                id="_IDGenAnaKpiS3"
+                                                text="Revenue per order"
+                                                class="anaKpiSub"/>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaKpi4"
+                                            class="anaKpi anaKpiPurple">
+                                            <Text
+                                                id="_IDGenAnaKpiL4"
+                                                text="Completion rate"
+                                                class="anaKpiLabel"/>
+                                            <Text
+                                                id="_IDGenAnaKpiV4"
+                                                text="{local>/analytics/completionRate}%"
+                                                class="anaKpiValue"/>
+                                            <ProgressIndicator
+                                                id="_IDGenAnaKpiP4"
+                                                percentValue="{local>/analytics/completionRate}"
+                                                showValue="false"
+                                                state="Information"
+                                                width="100%"
+                                                class="anaKpiBar"/>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaKpi5"
+                                            class="anaKpi anaKpiTeal">
+                                            <Text
+                                                id="_IDGenAnaKpiL5"
+                                                text="Pending value"
+                                                class="anaKpiLabel"/>
+                                            <Text
+                                                id="_IDGenAnaKpiV5"
+                                                text="{ parts: [{ path: 'local>/analytics/pendingValue' }], formatter: '.formatter.formatCurrency' }"
+                                                class="anaKpiValue"/>
+                                            <Text
+                                                id="_IDGenAnaKpiS5"
+                                                text="Awaiting completion"
+                                                class="anaKpiSub"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox
+                                        id="_IDGenAnaCharts1"
+                                        wrap="Wrap"
+                                        class="analyticsChartGrid">
+                                        <VBox
+                                            id="_IDGenAnaC1"
+                                            class="anaChartBox anaChartWide">
+                                            <Title
+                                                id="_IDGenAnaT1"
+                                                text="Revenue over time"
+                                                level="H5"
+                                                class="anaChartTitle"/>
+                                            <viz:VizFrame
+                                                id="_IDGenAnaTrendChart"
+                                                height="300px"
+                                                width="100%"
+                                                vizType="column">
+                                                <viz:dataset>
+                                                    <vizdata:FlattenedDataset
+                                                        data="{local>/analytics/salesTrend}">
+                                                        <vizdata:dimensions>
+                                                            <vizdata:DimensionDefinition
+                                                                name="Period"
+                                                                value="{local>label}"/>
+                                                        </vizdata:dimensions>
+                                                        <vizdata:measures>
+                                                            <vizdata:MeasureDefinition
+                                                                name="Revenue"
+                                                                value="{local>value}"/>
+                                                        </vizdata:measures>
+                                                    </vizdata:FlattenedDataset>
+                                                </viz:dataset>
+                                                <viz:feeds>
+                                                    <vizfeeds:FeedItem
+                                                        uid="valueAxis"
+                                                        type="Measure"
+                                                        values="Revenue"/>
+                                                    <vizfeeds:FeedItem
+                                                        uid="categoryAxis"
+                                                        type="Dimension"
+                                                        values="Period"/>
+                                                </viz:feeds>
+                                            </viz:VizFrame>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaC2"
+                                            class="anaChartBox anaChartNarrow">
+                                            <Title
+                                                id="_IDGenAnaT2"
+                                                text="Sales by status"
+                                                level="H5"
+                                                class="anaChartTitle"/>
+                                            <viz:VizFrame
+                                                id="_IDGenAnaStatusChart"
+                                                height="300px"
+                                                width="100%"
+                                                vizType="donut">
+                                                <viz:dataset>
+                                                    <vizdata:FlattenedDataset
+                                                        data="{local>/analytics/statusBreakdown}">
+                                                        <vizdata:dimensions>
+                                                            <vizdata:DimensionDefinition
+                                                                name="Status"
+                                                                value="{local>status}"/>
+                                                        </vizdata:dimensions>
+                                                        <vizdata:measures>
+                                                            <vizdata:MeasureDefinition
+                                                                name="Count"
+                                                                value="{local>count}"/>
+                                                        </vizdata:measures>
+                                                    </vizdata:FlattenedDataset>
+                                                </viz:dataset>
+                                                <viz:feeds>
+                                                    <vizfeeds:FeedItem
+                                                        uid="size"
+                                                        type="Measure"
+                                                        values="Count"/>
+                                                    <vizfeeds:FeedItem
+                                                        uid="color"
+                                                        type="Dimension"
+                                                        values="Status"/>
+                                                </viz:feeds>
+                                            </viz:VizFrame>
+                                        </VBox>
+                                    </HBox>
+                                    <HBox
+                                        id="_IDGenAnaCharts2"
+                                        wrap="Wrap"
+                                        class="analyticsChartGrid">
+                                        <VBox
+                                            id="_IDGenAnaC3"
+                                            class="anaChartBox anaChartThird">
+                                            <Title
+                                                id="_IDGenAnaT3"
+                                                text="Top products"
+                                                level="H5"
+                                                class="anaChartTitle"/>
+                                            <viz:VizFrame
+                                                id="_IDGenAnaProductChart"
+                                                height="280px"
+                                                width="100%"
+                                                vizType="bar">
+                                                <viz:dataset>
+                                                    <vizdata:FlattenedDataset
+                                                        data="{local>/analytics/topProducts}">
+                                                        <vizdata:dimensions>
+                                                            <vizdata:DimensionDefinition
+                                                                name="Product"
+                                                                value="{local>title}"/>
+                                                        </vizdata:dimensions>
+                                                        <vizdata:measures>
+                                                            <vizdata:MeasureDefinition
+                                                                name="Revenue"
+                                                                value="{local>value}"/>
+                                                        </vizdata:measures>
+                                                    </vizdata:FlattenedDataset>
+                                                </viz:dataset>
+                                                <viz:feeds>
+                                                    <vizfeeds:FeedItem
+                                                        uid="valueAxis"
+                                                        type="Measure"
+                                                        values="Revenue"/>
+                                                    <vizfeeds:FeedItem
+                                                        uid="categoryAxis"
+                                                        type="Dimension"
+                                                        values="Product"/>
+                                                </viz:feeds>
+                                            </viz:VizFrame>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaC4"
+                                            class="anaChartBox anaChartThird">
+                                            <Title
+                                                id="_IDGenAnaT4"
+                                                text="Top customers"
+                                                level="H5"
+                                                class="anaChartTitle"/>
+                                            <viz:VizFrame
+                                                id="_IDGenAnaCustomerChart"
+                                                height="280px"
+                                                width="100%"
+                                                vizType="bar">
+                                                <viz:dataset>
+                                                    <vizdata:FlattenedDataset
+                                                        data="{local>/analytics/topCustomers}">
+                                                        <vizdata:dimensions>
+                                                            <vizdata:DimensionDefinition
+                                                                name="Customer"
+                                                                value="{local>title}"/>
+                                                        </vizdata:dimensions>
+                                                        <vizdata:measures>
+                                                            <vizdata:MeasureDefinition
+                                                                name="Revenue"
+                                                                value="{local>value}"/>
+                                                        </vizdata:measures>
+                                                    </vizdata:FlattenedDataset>
+                                                </viz:dataset>
+                                                <viz:feeds>
+                                                    <vizfeeds:FeedItem
+                                                        uid="valueAxis"
+                                                        type="Measure"
+                                                        values="Revenue"/>
+                                                    <vizfeeds:FeedItem
+                                                        uid="categoryAxis"
+                                                        type="Dimension"
+                                                        values="Customer"/>
+                                                </viz:feeds>
+                                            </viz:VizFrame>
+                                        </VBox>
+
+                                        <VBox
+                                            id="_IDGenAnaC5"
+                                            class="anaChartBox anaChartThird">
+                                            <Title
+                                                id="_IDGenAnaT5"
+                                                text="Revenue by category"
+                                                level="H5"
+                                                class="anaChartTitle"/>
+                                            <List
+                                                id="_IDGenAnaCatList"
+                                                items="{local>/analytics/categoryBreakdown}"
+                                                noDataText="No category data"
+                                                class="anaCatList">
+                                                <CustomListItem
+                                                    id="_IDGenAnaCatItem">
+                                                    <VBox
+                                                        id="_IDGenAnaCatBox"
+                                                        class="anaCatRow"
+                                                        width="100%">
+                                                        <HBox
+                                                            id="_IDGenAnaCatHead"
+                                                            justifyContent="SpaceBetween"
+                                                            width="100%">
+                                                            <Text
+                                                                id="_IDGenAnaCatName"
+                                                                text="{local>category}"
+                                                                class="anaCatName"/>
+                                                            <Text
+                                                                id="_IDGenAnaCatPct"
+                                                                text="{local>percent}%"
+                                                                class="anaCatPct"/>
+                                                        </HBox>
+                                                        <ProgressIndicator
+                                                            id="_IDGenAnaCatBar"
+                                                            percentValue="{local>percent}"
+                                                            showValue="false"
+                                                            state="Success"
+                                                            width="100%"
+                                                            class="anaCatProgress"/>
+                                                    </VBox>
+                                                </CustomListItem>
+                                            </List>
+                                        </VBox>
+                                    </HBox>
+                                    <Panel
+                                        id="_IDGenAnaDetailPanel"
+                                        class="anaDetailPanel">
+                                        <headerToolbar>
+                                            <Toolbar id="_IDGenAnaDetailBar">
+                                                <Title
+                                                    id="_IDGenAnaDetailTitle"
+                                                    text="Sales detail"
+                                                    level="H4"/>
+                                                <ToolbarSpacer
+                                                    id="_IDGenAnaDetailSpacer"/>
+                                                <Text
+                                                    id="_IDGenAnaDetailCount"
+                                                    text="{local>/analytics/totalSalesCount} records"
+                                                    class="anaDetailCount"/>
+                                            </Toolbar>
+                                        </headerToolbar>
+
+                                        <Table
+                                            id="analyticsDetailTable"
+                                            width="100%"
+                                            growing="true"
+                                            growingThreshold="10"
+                                            noDataText="No sales available"
+                                            items="{local>/sales}">
+                                            <columns>
+                                                <Column id="_IDGenAnaCol1">
+                                                    <Text
+                                                        id="_IDGenAnaColT1"
+                                                        text="Sale"/>
+                                                </Column>
+                                                <Column id="_IDGenAnaCol2">
+                                                    <Text
+                                                        id="_IDGenAnaColT2"
+                                                        text="Customer"/>
+                                                </Column>
+                                                <Column id="_IDGenAnaCol3">
+                                                    <Text
+                                                        id="_IDGenAnaColT3"
+                                                        text="Product"/>
+                                                </Column>
+                                                <Column
+                                                    id="_IDGenAnaCol4"
+                                                    hAlign="End">
+                                                    <Text
+                                                        id="_IDGenAnaColT4"
+                                                        text="Qty"/>
+                                                </Column>
+                                                <Column
+                                                    id="_IDGenAnaCol5"
+                                                    hAlign="End">
+                                                    <Text
+                                                        id="_IDGenAnaColT5"
+                                                        text="Amount"/>
+                                                </Column>
+                                                <Column id="_IDGenAnaCol6">
+                                                    <Text
+                                                        id="_IDGenAnaColT6"
+                                                        text="Date"/>
+                                                </Column>
+                                                <Column id="_IDGenAnaCol7">
+                                                    <Text
+                                                        id="_IDGenAnaColT7"
+                                                        text="Status"/>
+                                                </Column>
+                                            </columns>
+
+                                            <items>
+                                                <ColumnListItem
+                                                    id="_IDGenAnaRow">
+                                                    <cells>
+                                                        <Text
+                                                            id="_IDGenAnaCell1"
+                                                            text="{local>saleNumber}"/>
+                                                        <Text
+                                                            id="_IDGenAnaCell2"
+                                                            text="{local>customer/customerName}"/>
+                                                        <Text
+                                                            id="_IDGenAnaCell3"
+                                                            text="{local>product/productName}"/>
+                                                        <ObjectNumber
+                                                            id="_IDGenAnaCell4"
+                                                            number="{local>quantity}"/>
+                                                        <ObjectNumber
+                                                            id="_IDGenAnaCell5"
+                                                            number="{local>totalAmount}"
+                                                            unit="INR"/>
+                                                        <Text
+                                                            id="_IDGenAnaCell6"
+                                                            text="{ path: 'local>saleDate', formatter: '.formatter.formatDateTime' }"/>
+                                                        <ObjectStatus
+                                                            id="_IDGenAnaCell7"
+                                                            text="{local>status}"
+                                                            state="{ path: 'local>status', formatter: '.formatter.statusState' }"/>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </Panel>
+                                </VBox>
+                            </IconTabFilter>
+                        </items>
+                    </IconTabBar>
+                </content>
+            </Page>
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>

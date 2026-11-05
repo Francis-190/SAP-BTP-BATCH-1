@@ -1,0 +1,11 @@
+ID,customerCode,customerName,email,phone,address
+11111111-1111-1111-1111-111111111111,CUST001,Arun Kumar,arun.kumar@example.com,9876543210,Chennai Tamil Nadu
+22222222-2222-2222-2222-222222222222,CUST002,Priya Sharma,priya.sharma@example.com,9876543211,Bengaluru Karnataka
+33333333-3333-3333-3333-333333333333,CUST003,Rahul Reddy,rahul.reddy@example.com,9876543212,Hyderabad Telangana
+44444444-4444-4444-4444-444444444444,CUST004,Sneha Rao,sneha.rao@example.com,9876543213,Vijayawada Andhra Pradesh
+55555555-5555-5555-5555-555555555555,CUST005,Vikram Singh,vikram.singh@example.com,9876543214,Mumbai Maharashtra
+66666666-6666-6666-6666-666666666666,CUST006,Ananya Patel,ananya.patel@example.com,9876543215,Ahmedabad Gujarat
+77777777-7777-7777-7777-777777777777,CUST007,Karthik Nair,karthik.nair@example.com,9876543216,Kochi Kerala
+88888888-8888-8888-8888-888888888888,CUST008,Meera Iyer,meera.iyer@example.com,9876543217,Coimbatore Tamil Nadu
+99999999-9999-9999-9999-999999999999,CUST009,Rohit Verma,rohit.verma@example.com,9876543218,New Delhi Delhi
+aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,CUST010,Divya Krishnan,divya.krishnan@example.com,9876543219,Pune Maharashtra

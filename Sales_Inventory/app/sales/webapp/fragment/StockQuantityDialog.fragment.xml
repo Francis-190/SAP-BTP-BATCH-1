@@ -1,0 +1,48 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="stockQtyDialog"
+        title="{local>/qtyDialog/title}"
+        contentWidth="20rem"
+    >
+        <content>
+            <VBox
+                id="stockQtyContent"
+                class="sapUiSmallMargin"
+            >
+                <Label
+                    id="stockQtyLabel"
+                    text="Quantity"
+                    labelFor="stockQtyInput"
+                />
+ 
+                <Input
+                    id="stockQtyInput"
+                    type="Number"
+                    placeholder="Enter quantity"
+                    width="100%"
+                    value="{local>/qtyDialog/quantity}"
+                />
+            </VBox>
+        </content>
+ 
+        <beginButton>
+            <Button
+                id="stockQtySubmitButton"
+                text="Submit"
+                type="Emphasized"
+                press=".onSubmitQtyDialog"
+            />
+        </beginButton>
+ 
+        <endButton>
+            <Button
+                id="stockQtyCancelButton"
+                text="Cancel"
+                press=".onCloseQtyDialog"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

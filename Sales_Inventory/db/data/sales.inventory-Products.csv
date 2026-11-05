@@ -1,0 +1,11 @@
+ID,productCode,productName,description,category_ID,unitPrice,stockQty,status
+11111111-1111-1111-1111-111111111111,PROD001,Dell Laptop,Professional laptop for business use,11111111-1111-1111-1111-111111111111,65000.00,150,Available
+22222222-2222-2222-2222-222222222222,PROD002,HP Laptop,High performance laptop for office and personal use,22222222-2222-2222-2222-222222222222,58000.00,85,Available
+33333333-3333-3333-3333-333333333333,PROD003,Samsung Galaxy S24,Latest Samsung smartphone with advanced features,33333333-3333-3333-3333-333333333333,75000.00,220,Available
+44444444-4444-4444-4444-444444444444,PROD004,Apple iPhone 15,Apple smartphone with high performance and camera,33333333-3333-3333-3333-333333333333,70000.00,120,Available
+55555555-5555-5555-5555-555555555555,PROD005,Canon Printer,Color printer suitable for office requirements,44444444-4444-4444-4444-444444444444,18500.00,75,Available
+66666666-6666-6666-6666-666666666666,PROD006,TP-Link Router,High speed wireless networking router,55555555-5555-5555-5555-555555555555,4500.00,190,Available
+77777777-7777-7777-7777-777777777777,PROD007,JBL Speaker,Portable Bluetooth speaker with quality sound,66666666-6666-6666-6666-666666666666,6500.00,60,Available
+88888888-8888-8888-8888-888888888888,PROD008,Samsung SSD 1TB,High speed solid state drive for data storage,88888888-8888-8888-8888-888888888888,8500.00,135,Available
+99999999-9999-9999-9999-999999999999,PROD009,USB-C Charger,Fast charging USB-C power adapter,99999999-9999-9999-9999-999999999999,2200.00,95,Available
+aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,PROD010,CP Plus CCTV Camera,HD security camera for indoor and outdoor monitoring,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,5500.00,250,Available    

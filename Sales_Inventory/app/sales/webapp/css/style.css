@@ -1,0 +1,456 @@
+/* ===================== DASHBOARD: header + hero banner ===================== */
+ 
+.dashHeader {
+    margin-bottom: 1rem;
+}
+.dashHeaderTitle {
+    font-weight: 700 !important;
+    color: #101828;
+}
+ 
+/*
+* Hero banner with image.
+* To use a REAL PHOTO instead of the illustration: put it in webapp/img/
+* (e.g. hero-photo.jpg, about 2000 x 680 px) and change --heroImage below.
+* The fade layer on the left keeps the text readable.
+*/
+.heroBanner {
+    --heroImage: url("../img/hero-warehouse.svg");
+    min-height: 17rem;
+    padding: 2.25rem 2.5rem !important;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    background:
+        linear-gradient(90deg, #fff3ea 0%, #fde9f1 22%, rgba(253, 233, 241, 0.85) 32%, rgba(253, 233, 241, 0) 56%),
+        var(--heroImage) right center / auto 100% no-repeat,
+        linear-gradient(110deg, #fff3ea 0%, #fde9f1 30%, #e6f1ff 65%, #e3faf1 100%);
+    border: 1px solid #e7eaf0;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.07);
+    box-sizing: border-box;
+}
+.heroBanner > * {
+    max-width: 30rem;
+}
+.heroTitle {
+    font-size: 2.1rem !important;
+    font-weight: 800 !important;
+    line-height: 1.15;
+    color: #1e3a8a !important;
+}
+.heroSub {
+    margin-top: 0.75rem;
+    font-size: 1.125rem !important;
+    color: #0f766e !important;
+}
+.heroPeriod {
+    margin-top: 0.4rem;
+    font-size: 0.9375rem !important;
+    color: #5b6b82 !important;
+}
+.heroChips {
+    margin-top: 1.25rem;
+    gap: 0.5rem;
+}
+@media (max-width: 1100px) {
+    .heroBanner {
+        background:
+            linear-gradient(90deg, #fff3ea 0%, rgba(253, 233, 241, 0.92) 40%, rgba(253, 233, 241, 0.2) 75%),
+            var(--heroImage) right -12rem center / auto 100% no-repeat,
+            linear-gradient(110deg, #fff3ea 0%, #fde9f1 30%, #e6f1ff 65%, #e3faf1 100%);
+    }
+}
+@media (max-width: 700px) {
+    .heroBanner {
+        padding: 1.5rem !important;
+        background: linear-gradient(110deg, #fff3ea 0%, #fde9f1 30%, #e6f1ff 65%, #e3faf1 100%);
+    }
+    .heroTitle { font-size: 1.6rem !important; }
+}
+ 
+ 
+.dashboardKpiGrid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    width: 100%;
+}
+@media (max-width: 1024px) {
+    .dashboardKpiGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .dashboardKpiGrid { grid-template-columns: 1fr; }
+}
+ 
+.kpiCard {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 12px;
+    padding: 1.25rem 1.35rem 1.1rem 1.35rem;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.kpiCard:hover {
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.08);
+    border-color: #d7dce6;
+}
+ 
+.kpiCard::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+}
+.kpiAccentBlue::before   { background: #2563eb; }
+.kpiAccentOrange::before { background: #ea580c; }
+.kpiAccentGreen::before  { background: #16a34a; }
+.kpiAccentRed::before    { background: #dc2626; }
+.kpiAccentPink::before   { background: #db2777; }
+ 
+.kpiCardHead { margin-bottom: 0.9rem; }
+ 
+.kpiLabel {
+    font-weight: 600 !important;
+    font-size: 0.82rem;
+    letter-spacing: 0.01em;
+    color: #475467;
+}
+.kpiSubLabel {
+    font-size: 0.72rem;
+    color: #98a2b3;
+    margin-top: 0.1rem;
+}
+ 
+.kpiIcon {
+    font-size: 1.2rem !important;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.iconBlue   { background: #eef4ff; color: #2563eb !important; }
+.iconOrange { background: #fff3ec; color: #ea580c !important; }
+.iconGreen  { background: #ecfdf3; color: #16a34a !important; }
+.iconRed    { background: #fef3f2; color: #dc2626 !important; }
+.iconPink   { background: #fdf2f8; color: #db2777 !important; }
+ 
+.kpiValue {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #101828;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+ 
+.kpiTrend {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.9rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    width: fit-content;
+}
+.trendPosBg     { background: #ecfdf3; }
+.trendNegBg     { background: #fef3f2; }
+.trendNeutralBg { background: #f2f4f7; }
+ 
+.trendPos, .trendPosText         { color: #067647 !important; }
+.trendNeg, .trendNegText         { color: #b42318 !important; }
+.trendNeutral, .trendNeutralText { color: #667085 !important; }
+ 
+.trendPos, .trendNeg, .trendNeutral { font-size: 0.8rem !important; }
+.trendPosText, .trendNegText, .trendNeutralText {
+    font-size: 0.74rem;
+    font-weight: 600;
+}
+ 
+ 
+/* ===================== CHARTS + WAREHOUSES sections (shared) ===================== */
+ 
+.sectionRoot {
+    padding: 1.5rem;
+}
+.sectionHeader {
+    margin-bottom: 0.5rem;
+}
+.sectionTitle {
+    font-weight: 700 !important;
+    color: #101828;
+}
+.sectionSubtitle {
+    color: #667085;
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+ 
+/* ---------- Warehouses section ---------- */
+.whSummaryGrid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+@media (max-width: 1024px) {
+    .whSummaryGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .whSummaryGrid { grid-template-columns: 1fr; }
+}
+.whStat {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-left: 4px solid var(--whAccent, #2563eb);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+.whStatBlue   { --whAccent: #2563eb; }
+.whStatGreen  { --whAccent: #16a34a; }
+.whStatOrange { --whAccent: #ea580c; }
+.whStatRed    { --whAccent: #dc2626; }
+.whStatLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475467;
+}
+.whStatValue {
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    color: #101828;
+    letter-spacing: -0.02em;
+    margin-top: 0.3rem;
+}
+.whChartCard {
+    margin-top: 1.25rem;
+}
+.whTable {
+    margin-top: 1.25rem;
+    border: 1px solid #e7eaf0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.whTableHint {
+    font-size: 0.8rem;
+    color: #667085;
+}
+ 
+/* ---------- chart cards (Charts + Warehouses sections) ---------- */
+.dashChartGrid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+.dashChartGridWide {
+    grid-template-columns: 2fr 1fr;
+}
+@media (max-width: 1024px) {
+    .dashChartGrid,
+    .dashChartGridWide { grid-template-columns: 1fr; }
+}
+.dashChartCard {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-top: 4px solid var(--chartAccent, #3b82f6);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    box-sizing: border-box;
+    width: 100% !important;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+.chartBlue   { --chartAccent: #3b82f6; }
+.chartOrange { --chartAccent: #f97316; }
+.chartGreen  { --chartAccent: #22c55e; }
+.chartPink   { --chartAccent: #ec4899; }
+ 
+.dashChartTitle {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #1d2d3e;
+}
+.dashChartSub {
+    font-size: 0.85rem !important;
+    color: #667085;
+    margin-top: 0.15rem;
+}
+ 
+/* SVG charts generated by model/charts.js */
+.chartSvg {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 0.6rem;
+}
+.chartPie {
+    display: block;
+    width: 9.5rem;
+    height: 9.5rem;
+    flex: none;
+}
+ 
+/* pie legend */
+.pieRow {
+    margin-top: 0.75rem;
+    gap: 1.25rem;
+}
+.legend {
+    min-width: 0;
+    gap: 0.35rem;
+}
+.legendRow {
+    gap: 0.45rem;
+}
+.legendDot {
+    font-size: 0.65rem !important;
+    flex: none;
+}
+.legendText {
+    color: #1d2d3e;
+    font-size: 0.875rem !important;
+    max-width: 9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.legendValue {
+    color: #5b6b82;
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+}
+ 
+.sapMPanel {
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+    border: 1px solid #eef0f4 !important;
+}
+ 
+ 
+.analyticsRoot { padding: 1.5rem; }
+ 
+.analyticsHeader { margin-bottom: 1.25rem; }
+ 
+.analyticsTitle {
+    font-weight: 700 !important;
+    color: #101828;
+}
+.analyticsSubtitle {
+    color: #667085;
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+ 
+.analyticsFilterBar {
+    background: #f8fafc;
+    border: 1px solid #e7eaf0;
+    border-radius: 12px;
+    padding: 0.85rem 1rem !important;
+    margin-bottom: 1.25rem;
+}
+ 
+.analyticsKpiGrid {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1.25rem;
+}
+@media (max-width: 1200px) {
+    .analyticsKpiGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+    .analyticsKpiGrid { grid-template-columns: 1fr; }
+}
+ 
+.anaKpi {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-left-width: 4px;
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+}
+.anaKpiBlue   { border-left-color: #2563eb; }
+.anaKpiOrange { border-left-color: #ea580c; }
+.anaKpiGreen  { border-left-color: #16a34a; }
+.anaKpiPurple { border-left-color: #7c3aed; }
+.anaKpiTeal   { border-left-color: #0d9488; }
+ 
+.anaKpiLabel {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475467;
+}
+.anaKpiValue {
+    font-size: 1.55rem !important;
+    font-weight: 700 !important;
+    color: #101828;
+    letter-spacing: -0.02em;
+    margin: 0.35rem 0 0.2rem 0;
+}
+.anaKpiSub {
+    font-size: 0.72rem;
+    color: #98a2b3;
+}
+.anaKpiBar { margin-top: 0.5rem; }
+ 
+.analyticsChartGrid {
+    display: grid !important;
+    gap: 1.25rem;
+    width: 100%;
+    margin-bottom: 1.25rem;
+    grid-template-columns: 2fr 1fr;
+}
+#_IDGenAnaCharts2.analyticsChartGrid {
+    grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 1100px) {
+    .analyticsChartGrid,
+    #_IDGenAnaCharts2.analyticsChartGrid { grid-template-columns: 1fr; }
+}
+ 
+.anaChartBox {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 12px;
+    padding: 1.1rem;
+    box-sizing: border-box;
+    width: 100% !important;
+}
+.anaChartTitle {
+    font-weight: 600 !important;
+    color: #344054;
+    margin-bottom: 0.75rem;
+}
+ 
+.anaCatRow { padding: 0.5rem 0; }
+.anaCatName {
+    font-size: 0.85rem;
+    color: #344054;
+    font-weight: 500;
+}
+.anaCatPct {
+    font-size: 0.85rem;
+    color: #667085;
+    font-weight: 600;
+}
+.anaCatProgress { margin-top: 0.35rem; }
+ 
+.anaDetailPanel {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 12px;
+}
+.anaDetailCount {
+    font-size: 0.8rem;
+    color: #667085;
+}
+ 
+ 
+#areasTable .sapMListTblRow:hover {
+    background-color: #eff3f7;
+    cursor: pointer;
+}

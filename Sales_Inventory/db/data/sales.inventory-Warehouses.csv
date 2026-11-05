@@ -1,0 +1,11 @@
+ID,warehouseCode,warehouseName,location,status
+aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,WH-CHN,Chennai Central Warehouse,Chennai Tamil Nadu,Active
+bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb,WH-BLR,Bangalore Distribution Center,Bangalore Karnataka,Active
+cccccccc-cccc-cccc-cccc-cccccccccccc,WH-HYD,Hyderabad Warehouse,Hyderabad Telangana,Active
+dddddddd-dddd-dddd-dddd-dddddddddddd,WH-VJA,Vijayawada Storage Center,Vijayawada Andhra Pradesh,Active
+eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee,WH-MUM,Mumbai Distribution Hub,Mumbai Maharashtra,Active
+ffffffff-ffff-ffff-ffff-ffffffffffff,WH-PUN,Pune Warehouse,Pune Maharashtra,Active
+12121212-1212-1212-1212-121212121212,WH-KOC,Kochi Warehouse,Kochi Kerala,Active
+23232323-2323-2323-2323-232323232323,WH-CBE,Coimbatore Warehouse,Coimbatore Tamil Nadu,Active
+34343434-3434-3434-3434-343434343434,WH-DEL,Delhi Distribution Center,New Delhi Delhi,Active
+45454545-4545-4545-4545-454545454545,WH-AHM,Ahmedabad Warehouse,Ahmedabad Gujarat,Active

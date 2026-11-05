@@ -1,0 +1,211 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="newSaleDialog"
+        title="New Sale"
+        icon="sap-icon://sales-order"
+        contentWidth="46rem"
+        draggable="true"
+        resizable="true"
+        class="sapUiContentPadding"
+    >
+        <content>
+            <VBox
+                id="newSaleContent"
+                width="100%"
+            >
+                <!-- Customer -->
+                <Label
+                    id="newSaleCustomerLabel"
+                    text="Customer"
+                    required="true"
+                    labelFor="newSaleCustomerSelect"
+                />
+ 
+                <Select
+                    id="newSaleCustomerSelect"
+                    width="100%"
+                    forceSelection="true"
+                    selectedKey="{local>/newSale/customerID}"
+                    items="{
+                        path: 'local>/customers',
+                        sorter: { path: 'customerName' },
+                        templateShareable: false
+                    }"
+                >
+                    <core:Item
+                        id="newSaleCustomerItem"
+                        key="{local>ID}"
+                        text="{local>customerName}"
+                    />
+                </Select>
+ 
+                <!-- Products -->
+                <Table
+                    id="newSaleItemsTable"
+                    class="sapUiMediumMarginTop"
+                    noDataText="Add at least one product"
+                    items="{
+                        path: 'local>/newSale/items',
+                        templateShareable: false
+                    }"
+                >
+                    <headerToolbar>
+                        <OverflowToolbar id="newSaleItemsToolbar">
+                            <Title
+                                id="newSaleItemsTitle"
+                                text="Products"
+                                level="H5"
+                            />
+                            <ToolbarSpacer id="newSaleItemsSpacer" />
+                            <Button
+                                id="newSaleAddProductButton"
+                                text="Add Product"
+                                icon="sap-icon://add"
+                                type="Transparent"
+                                press=".onAddSaleProductRow"
+                            />
+                        </OverflowToolbar>
+                    </headerToolbar>
+ 
+                    <columns>
+                        <Column id="newSaleColProduct">
+                            <Text
+                                id="newSaleColProductText"
+                                text="Product"
+                            />
+                        </Column>
+ 
+                        <Column
+                            id="newSaleColQty"
+                            width="9rem"
+                            hAlign="Center"
+                        >
+                            <Text
+                                id="newSaleColQtyText"
+                                text="Quantity"
+                            />
+                        </Column>
+ 
+                        <Column
+                            id="newSaleColAmount"
+                            width="8rem"
+                            hAlign="End"
+                            minScreenWidth="Tablet"
+                            demandPopin="true"
+                        >
+                            <Text
+                                id="newSaleColAmountText"
+                                text="Amount"
+                            />
+                        </Column>
+ 
+                        <Column
+                            id="newSaleColAction"
+                            width="3rem"
+                            hAlign="End"
+                        />
+                    </columns>
+ 
+                    <items>
+                        <ColumnListItem id="newSaleItemRow">
+                            <cells>
+                                <Select
+                                    id="newSaleProductSelect"
+                                    width="100%"
+                                    forceSelection="true"
+                                    selectedKey="{local>productID}"
+                                    change=".onSaleProductChange"
+                                    items="{
+                                        path: 'local>/products',
+                                        sorter: { path: 'productName' },
+                                        templateShareable: false
+                                    }"
+                                >
+                                    <core:Item
+                                        id="newSaleProductItem"
+                                        key="{local>ID}"
+                                        text="{
+                                            parts: [
+                                                { path: 'local>productName' },
+                                                { path: 'local>unitPrice' },
+                                                { path: 'local>stockQty' }
+                                            ],
+                                            formatter: '.formatProductOption'
+                                        }"
+                                    />
+                                </Select>
+ 
+                                <StepInput
+                                    id="newSaleQtyInput"
+                                    value="{local>quantity}"
+                                    min="1"
+                                    step="1"
+                                    width="100%"
+                                    change=".onSaleQtyChange"
+                                />
+ 
+                                <ObjectNumber
+                                    id="newSaleLineAmount"
+                                    number="{= Math.round(Number(${local>unitPrice} || 0) * Number(${local>quantity} || 0) * 100) / 100 }"
+                                    unit="INR"
+                                    emphasized="true"
+                                />
+ 
+                                <Button
+                                    id="newSaleRemoveButton"
+                                    icon="sap-icon://delete"
+                                    type="Transparent"
+                                    tooltip="Remove product"
+                                    press=".onRemoveSaleProductRow"
+                                />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+ 
+                <!-- Order total -->
+                <HBox
+                    id="newSaleTotalBox"
+                    justifyContent="End"
+                    alignItems="Center"
+                    class="sapUiSmallMarginTop sapUiSmallMarginEnd"
+                >
+                    <Label
+                        id="newSaleTotalLabel"
+                        text="Total Amount:"
+                        design="Bold"
+                        class="sapUiSmallMarginEnd"
+                    />
+                    <ObjectNumber
+                        id="newSaleTotalValue"
+                        number="{local>/newSale/total}"
+                        unit="INR"
+                        emphasized="true"
+                        state="Success"
+                    />
+                </HBox>
+            </VBox>
+        </content>
+ 
+        <beginButton>
+            <Button
+                id="newSaleCreateButton"
+                text="Create Sale"
+                type="Emphasized"
+                icon="sap-icon://accept"
+                press=".onCreateSale"
+            />
+        </beginButton>
+ 
+        <endButton>
+            <Button
+             id="newSaleCancelButton"
+                text="Cancel"
+                press=".onCloseNewSaleDialog"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
