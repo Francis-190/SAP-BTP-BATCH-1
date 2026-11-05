@@ -1,0 +1,32 @@
+ID,claim_ID,recipient_ID,alertType,message,status
+646b788f-4194-57b4-937c-fcb543a13cc1,91ca35a1-c0da-57e0-83ac-0eac69369b7c,a17e8291-5f18-5a98-95a1-382f1116dedb,PayoutSuccess,Payout for CLM001 processed successfully,Read
+b79e5a7c-7fe9-566b-a716-6c0d887cbdfc,a9cf1f1f-941f-560c-9dff-bf84dcf480eb,0cf71876-1d4e-5557-baf0-a690bc3adc8d,PayoutSuccess,Payout for CLM002 processed successfully,Read
+d19ec495-f014-5c80-be57-4c445877868f,031af8ca-13aa-5bcc-a5da-32100d25d749,328b36d2-6970-5819-ab49-384c8078b879,PayoutSuccess,Payout for CLM003 processed successfully,Read
+d338a279-3924-5dc8-a7db-caef2e859f98,e77c6366-fbb4-543f-82bd-cc00d93734c1,6daa0352-8192-5637-a5b3-e97f88d0d863,PayoutSuccess,Payout for CLM004 processed successfully,Read
+99d66e07-fcde-568e-a3a6-eff4b4d97115,b62783c2-f4c4-50f8-b99f-a2e26b856ee3,103f56a2-77ea-52ae-951f-487bee01f722,HighFraudRisk,"High fraud risk detected (score 88, Critical) for CLM005; investigation required",Read
+522b5568-35e9-573f-afc8-cdeee8071bbf,b62783c2-f4c4-50f8-b99f-a2e26b856ee3,5209666c-bc2b-5f01-b23e-e59d0352b37a,InvestigationRequired,Investigation is required for CLM005,Read
+0635961c-b216-5886-8a5d-1700c0d879ed,298837aa-cf1f-5d78-a85f-32f35ded41f9,9f78c88b-b63a-5a74-9d8d-9623cea3502f,PayoutSuccess,Payout for CLM006 processed successfully,Read
+a964ea02-9cc6-59e0-bbfd-da3afed2bbff,4bf8cd9a-f68f-5a50-b622-a1cc0198a715,71f5cb5f-ef85-57bd-aef7-9a9d6f5c55d8,HighFraudRisk,"High fraud risk detected (score 84, Critical) for CLM007; investigation required",Read
+b38b5228-6a35-5c20-bcef-7b6015462319,4bf8cd9a-f68f-5a50-b622-a1cc0198a715,6d7dae44-58e9-52b8-8471-d87084adc18f,InvestigationRequired,Investigation is required for CLM007,Read
+d8534af1-a032-5fa1-abec-6fa35bd422bc,4341946e-9b36-52e1-ae9c-56069aeab2c9,103f56a2-77ea-52ae-951f-487bee01f722,SLABreached,SLA of 120 hours breached for CLM010; claim is still UnderReview,Sent
+4dbd0d48-c7b4-5ff7-92c4-a0227fcf3f98,dca730e0-2820-5021-bb31-4f12ee0e9ab8,bbc0f403-7f1b-51fa-80e1-20d7d18a9d38,ApprovalPending,CLM012 is awaiting FinanceOfficer approval (claimed amount 850000),Sent
+92599184-3e64-5ddf-b6e9-a9687822a9b3,f5430905-b8eb-51f3-b557-e017390197b2,7c84d477-091c-5ecf-88b8-5544cac373aa,PayoutFailed,Payout for CLM013 failed; beneficiary account details need to be verified,Sent
+577f2f9e-bfb8-533e-89f2-97abe6cc0dc2,055fc379-df0b-59f8-b279-c31fca51a167,9ac53f47-7f64-58df-9f4a-722d14581580,ApprovalPending,CLM016 is awaiting ClaimsManager approval (claimed amount 135000),Sent
+7b76e694-90a1-5e0b-8a13-cb7b332b6223,cd8a8d81-1262-58e4-bebf-e367a2f876bc,103f56a2-77ea-52ae-951f-487bee01f722,HighFraudRisk,"High fraud risk detected (score 81, Critical) for CLM017; investigation required",Sent
+e9494f9a-66d0-5eac-88f1-3024f6daf46c,cd8a8d81-1262-58e4-bebf-e367a2f876bc,ae992033-2d03-5d31-9e3d-fcf8bc793ad7,InvestigationRequired,Investigation is required for CLM017,Read
+3a26762b-c4de-5614-90c4-7f0580e6b071,cd8a8d81-1262-58e4-bebf-e367a2f876bc,7fa763f1-351a-55a9-b9f5-ac691e28117e,SLABreached,SLA of 72 hours breached for CLM017; claim is still InvestigationRequired,Sent
+280da73b-29fc-5a6a-af89-51d2aca4e2ce,7cca5857-226a-50d6-ad8b-b07983f9b908,9f78c88b-b63a-5a74-9d8d-9623cea3502f,ApprovalPending,CLM018 is awaiting ClaimsAgent approval (claimed amount 42000),Sent
+55fe99af-d0d2-57c0-b498-cebd757e5bf4,e3ec2896-fb92-517f-83c1-399b86346f67,71f5cb5f-ef85-57bd-aef7-9a9d6f5c55d8,HighFraudRisk,"High fraud risk detected (score 69, High) for CLM019; investigation required",Sent
+c6eeb5ca-10c2-5ba9-b04f-2360ca59f6ca,e3ec2896-fb92-517f-83c1-399b86346f67,c1d9cc1d-c508-5892-bb67-8ad74c8b16b6,InvestigationRequired,Investigation is required for CLM019,Read
+ceb3575d-d3e8-534c-83f5-a2a434c2fb6b,e3ec2896-fb92-517f-83c1-399b86346f67,9ac53f47-7f64-58df-9f4a-722d14581580,SLABreached,SLA of 120 hours breached for CLM019; claim is still InvestigationRequired,Sent
+99330e37-b204-566d-b2d6-6a780f4ca3eb,d1bcae2a-e5c1-5941-9ae0-7e8ed1cb0423,2740df21-3df2-51db-b81f-9bfddef30ca9,ApprovalPending,CLM020 is awaiting ClaimsManager approval (claimed amount 260000),Sent
+f109471e-14ac-53d9-9d62-64b47fb51445,6afb759e-d253-5962-85bf-978120cf72cf,2740df21-3df2-51db-b81f-9bfddef30ca9,HighFraudRisk,"High fraud risk detected (score 78, High) for CLM021; investigation required",Sent
+8444eae6-4753-54af-bc9b-6a656b24620e,6afb759e-d253-5962-85bf-978120cf72cf,5209666c-bc2b-5f01-b23e-e59d0352b37a,InvestigationRequired,Investigation is required for CLM021,Read
+1525d231-ad97-5e3e-8533-95a9a800da61,6afb759e-d253-5962-85bf-978120cf72cf,155aa298-43a8-52ab-8d87-f03df8cc10a0,SLABreached,SLA of 120 hours breached for CLM021; claim is still InvestigationRequired,Sent
+d1e8628f-d2f0-5280-b806-0844c7a5b860,69df0809-48db-51ae-ae00-269c834c6012,103f56a2-77ea-52ae-951f-487bee01f722,SLABreached,SLA of 120 hours breached for CLM022; claim is still UnderReview,Sent
+d66a47fe-b8c1-546d-97e9-76be41a210ee,27fa73f0-dd50-5ef6-abda-c0f09763f01f,103f56a2-77ea-52ae-951f-487bee01f722,HighFraudRisk,"High fraud risk detected (score 72, High) for CLM023; investigation required",Sent
+a2bc4878-99db-5769-b8cf-1c60a7fc7b91,27fa73f0-dd50-5ef6-abda-c0f09763f01f,6d7dae44-58e9-52b8-8471-d87084adc18f,InvestigationRequired,Investigation is required for CLM023,Created
+041be28a-3386-5804-a87b-b34c68368311,27fa73f0-dd50-5ef6-abda-c0f09763f01f,7fa763f1-351a-55a9-b9f5-ac691e28117e,SLABreached,SLA of 96 hours breached for CLM023; claim is still InvestigationRequired,Sent
+f6906f05-a25b-5f42-bef9-af196f09db36,3ed77f5c-ac7b-52ae-a0d0-d40d85d9fc44,7fa763f1-351a-55a9-b9f5-ac691e28117e,HighFraudRisk,"High fraud risk detected (score 76, High) for CLM024; investigation required",Sent
+7abc0be8-3024-5890-bc95-6182c89e8bc5,3ed77f5c-ac7b-52ae-a0d0-d40d85d9fc44,13e30097-2ae2-5864-a823-18974d1f5905,InvestigationRequired,Investigation is required for CLM024,Sent
+67f921a1-53e2-5f41-baa0-df8f36e91753,3ed77f5c-ac7b-52ae-a0d0-d40d85d9fc44,71f5cb5f-ef85-57bd-aef7-9a9d6f5c55d8,SLABreached,SLA of 120 hours breached for CLM024; claim is still InvestigationRequired,Sent

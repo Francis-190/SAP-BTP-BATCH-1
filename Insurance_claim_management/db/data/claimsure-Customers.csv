@@ -1,0 +1,31 @@
+ID,customerNumber,firstName,lastName,email,phone,address,status
+3c1238cd-2c10-531a-acd5-2b05f0a283f6,CUST01,Karthik,Subramanian,karthik.subramanian@outlook.com,+91 8826018159,"Flat 4B, Lakeview Apartments, Adyar, Chennai 600020",Active
+60938840-b7e2-50cb-bf83-961f196262b9,CUST02,Lakshmi,Narayanan,lakshmi.narayanan@yahoo.in,+91 9883016613,"27, Race Course Road, Coimbatore 641018",Active
+6fd56ddc-f5f8-517b-be9a-ac4da6f72afb,CUST03,Sandeep,Deshpande,sandeep.deshpande@hotmail.com,+91 9786091390,"B-14, Kothrud Housing Society, Pune 411038",Inactive
+f6a2c2e0-212e-5d61-a984-3a19f3c06d4f,CUST04,Harpreet,Gill,harpreet.gill@gmail.com,+91 9496030824,"House 112, Model Town, Ludhiana 141002",Active
+f3aa5141-e09d-5ee0-93b8-61c066947eea,CUST05,Gaurav,Tiwari,gaurav.tiwari@outlook.com,+91 8128194821,"Plot 18, Dharampeth, Nagpur 440010",Active
+82496a5c-0b46-5608-9baa-9315705ce3ac,CUST06,Fatima,Sheikh,fatima.sheikh@yahoo.in,+91 9493518190,"8-2-120, Road No. 3, Banjara Hills, Hyderabad 500034",Active
+4738d483-7625-5cf7-94d8-650c3a566c9e,CUST07,Rakesh,Bansal,rakesh.bansal@hotmail.com,+91 9437865797,"102, Vijay Nagar, Indore 452010",Active
+3a5ad043-5baa-52c2-82fa-dd83377ebe45,CUST08,Ayesha,Khan,ayesha.khan@gmail.com,+91 8843231948,"45, Gomti Nagar Extension, Lucknow 226010",Active
+97672aab-15e3-50c3-bacc-eb46c1c88305,CUST09,Imran,Qureshi,imran.qureshi@outlook.com,+91 7057491186,"12, Satellite Road, Ahmedabad 380015",Active
+fe0ff457-8c6d-5530-9702-0c2d31424399,CUST10,Pranav,Kulkarni,pranav.kulkarni@yahoo.in,+91 9652760189,"Flat 702, Sai Heights, Andheri West, Mumbai 400053",Active
+1d4ef6a5-54a2-5705-a378-289d265238d3,CUST11,Vishal,Chauhan,vishal.chauhan@hotmail.com,+91 8855979711,"Tower C-1204, Sector 56, Gurugram 122011",Active
+de4ec28c-35f9-5f8a-a94a-0812afae89cc,CUST12,Sunita,Agrawal,sunita.agrawal@gmail.com,+91 9071049746,"27, Salt Lake Sector III, Kolkata 700106",Active
+466d91af-3369-5280-b9fe-fa91755a5dba,CUST13,Deepa,Ramakrishnan,deepa.ramakrishnan@outlook.com,+91 8807529170,"No. 23, 5th Cross, Indiranagar, Bengaluru 560038",Active
+9132bbdd-a2ed-56a2-9426-9af7da5fc155,CUST14,Swati,Pandey,swati.pandey@yahoo.in,+91 9942366712,"E-7, Arera Colony, Bhopal 462016",Inactive
+01cc6182-60d8-57db-9085-0ebc321d87f8,CUST15,Mohan,Yadav,mohan.yadav@hotmail.com,+91 7068426846,"C-52, Malviya Nagar, Jaipur 302017",Active
+b069bd19-214f-5681-ad2c-b8b8582f9b00,CUST16,Bhavna,Trivedi,bhavna.trivedi@gmail.com,+91 8863212233,"A-403, Adajan Gam, Surat 395009",Active
+15fa654b-0c82-57a5-b5f2-64bfab8b7225,CUST17,Rekha,Menon,rekha.menon@outlook.com,+91 9879244026,"TC 25/1432, Pattom, Thiruvananthapuram 695004",Active
+4997a404-cd5e-5fd0-bd71-f86a890ddf1c,CUST18,Joseph,Mathew,joseph.mathew@yahoo.in,+91 6359952890,"Kuttikkattu House, Edappally, Kochi 682024",Active
+a0a9e75d-8e88-5a9e-9811-a9e049b14e9a,CUST19,Tarun,Mehra,tarun.mehra@hotmail.com,+91 7086666176,"H-221, Sector 41, Noida 201303",Active
+c5892947-20fa-552e-b42c-03c94211a3ca,CUST20,Debashis,Ghosh,debashis.ghosh@gmail.com,+91 9831372159,"HIG-45, Chandrasekharpur, Bhubaneswar 751016",Active
+e6c6a6b9-6511-52a3-bfcc-b2322b5f543d,CUST21,Naresh,Reddy,naresh.reddy@outlook.com,+91 9810928159,"Door No. 9-18-4, Dwaraka Nagar, Visakhapatnam 530016",Active
+1470bc6a-924d-5c87-9054-641a51a00604,CUST22,Muthu,Pandian,muthu.pandian@yahoo.in,+91 9813962459,"31, Velachery Main Road, Chennai 600042",Active
+da05fe57-1fc7-5715-89fd-987153b4f537,CUST23,Zoya,Ansari,zoya.ansari@hotmail.com,+91 8871177774,"D-88, Lajpat Nagar II, New Delhi 110024",Active
+0884ddae-ae62-5bf9-89e8-5bc7d60bb848,CUST24,Siddharth,Banerjee,siddharth.banerjee@gmail.com,+91 9721547280,"Kankarbagh Colony, Road 12, Patna 800020",Active
+378059ab-75b3-562d-bc22-81572ad636ce,CUST25,Anil,Thakur,anil.thakur@outlook.com,+91 9985280841,"SCO 45, Sector 35-C, Chandigarh 160022",Active
+6b1e79b1-1657-584e-aedc-94e4fb6cf853,CUST26,Nandini,Rathore,nandini.rathore@yahoo.in,+91 9085253888,"14, Hiran Magri Sector 4, Udaipur 313002",Active
+cbbf6d1b-dd1a-57ca-8bb3-6c6688263291,CUST27,Alok,Srivastava,alok.srivastava@hotmail.com,+91 8839336338,"Lane 5, Sigra, Varanasi 221010",Active
+cdd7c373-d7f9-5d7e-940e-dd415620710b,CUST28,Selvam,Murugan,selvam.murugan@gmail.com,+91 7050047439,"11, Beach Road, Cuddalore 607001",Active
+2bb5d542-6712-5101-aa4d-79493f40d88b,CUST29,Shruti,Hegde,shruti.hegde@outlook.com,+91 8875513137,"3-14, Kadri Temple Road, Mangaluru 575002",Active
+76567c69-5880-5784-b082-11a64d3681a6,CUST30,Anjali,Kohli,anjali.kohli@yahoo.in,+91 9953799075,"Ward 7, Hall Bazaar, Amritsar 143001",Active

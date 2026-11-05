@@ -1,0 +1,2047 @@
+.csPage .sapMPageHeader {
+    font-weight: 600;
+}
+
+.sapMObjectStatusLarge .sapMObjStatusText {
+    font-size: 1.1rem;
+}
+
+#sideNav .sapTntNavLI {
+    font-weight: 500;
+}
+
+html,
+body {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+
+/* ==========================================================================
+   ClaimSure Dashboard — SAPUI5 / Fiori visual styling
+   ========================================================================== */
+
+.dashboardPage .sapMPageBgStandard {
+    background: #F7F9FB;
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.dashboardContent {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 1.35rem 1.5rem 1rem;
+}
+
+
+/* ==========================================================================
+   Welcome Banner
+   ========================================================================== */
+   
+.welcomeBanner {
+    min-height: 190px;
+    padding: 1.45rem 1.65rem;
+
+    background: url("../img/welcome-banner1.png") center center / cover no-repeat !important;
+
+    border: 2px solid red;
+}
+.welcomeCopy {
+    min-width: 280px;
+}
+
+.welcomeTitle {
+    margin: 0;
+    color:#FFFFFF;
+    font-size: 1.42rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 35, 45, 0.65);
+}
+
+.welcomeSubtitle {
+    margin-top: 0;
+    color:#FFFFFF;
+    font-weight: 500;
+    font-size: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 35, 45, 0.75);
+}
+
+
+/* ==========================================================================
+   CSS Illustration in Welcome Banner
+   ========================================================================== */
+
+.welcomeIllustration {
+    position: relative;
+    width: 245px;
+    height: 92px;
+    margin-right: 0.35rem;
+    opacity: 0.95;
+}
+
+.illustrationWindow {
+    position: absolute;
+    right: 1.3rem;
+    top: 0.2rem;
+    width: 166px;
+    height: 88px;
+    border: 1px solid #CFE0F3;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 7px 22px rgba(60, 103, 145, 0.12);
+}
+
+.illustrationDots {
+    display: flex;
+    gap: 4px;
+    height: 18px;
+    align-items: center;
+    padding-left: 9px;
+    border-bottom: 1px solid #E8EFF6;
+}
+
+.illustrationDots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #A9C6E4;
+}
+
+.illustrationBody {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+
+.miniDonut {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            #3E7CB1 0 40%,
+            #79AEE0 40% 68%,
+            #DCEAF8 68% 100%
+        );
+    position: relative;
+}
+
+.miniDonut::after {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: #FFFFFF;
+}
+
+.miniBars {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    height: 40px;
+}
+
+.miniBars i {
+    display: block;
+    width: 9px;
+    border-radius: 3px 3px 0 0;
+    background: #5B96D0;
+}
+
+.miniBars i:nth-child(1) {
+    height: 17px;
+}
+
+.miniBars i:nth-child(2) {
+    height: 27px;
+}
+
+.miniBars i:nth-child(3) {
+    height: 21px;
+}
+
+.miniBars i:nth-child(4) {
+    height: 34px;
+}
+
+.illustrationShield {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: #DDEEFF;
+    color: #3E7CB1;
+    font-size: 1.25rem;
+    font-weight: 700;
+    box-shadow: 0 7px 18px rgba(62, 124, 177, 0.16);
+}
+
+
+/* ==========================================================================
+   Navigation Cards
+   ========================================================================== */
+
+.navCardRow,
+.kpiRow {
+    width: 100%;
+    gap: 0.85rem;
+    
+}
+
+.navCard {
+    box-sizing: border-box;
+    flex: 1 1 235px;
+    min-width: 215px;
+    max-width: none;
+    min-height: 158px;
+    padding: 1.25rem 1.3rem;
+    border: 1px solid #E7E9EC;
+    border-radius: 12px;
+    background: #FFFFFF;
+    cursor: pointer;
+    justify-content: space-between;
+    box-shadow: 0 2px 9px rgba(31, 56, 78, 0.04);
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.navCard:hover {
+    transform: translateY(-1px);
+    border-color: #C7D2DE;
+    box-shadow: 0 6px 18px rgba(31, 56, 78, 0.09);
+}
+
+.navCard:focus,
+.navCard:focus-visible,
+.navCard.sapMFocusable {
+    outline: 2px solid #6DA5D7 !important;
+    outline-offset: 2px;
+}
+
+.navCardTop {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+.navCardIconWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+}
+
+.navCardIcon {
+    font-size: 1.35rem;
+}
+
+.navCardIconWrapClaims {
+    background: #E9F1FB;
+}
+
+.navCardIconWrapClaims .navCardIcon {
+    color: #3E7CB1;
+}
+
+.navCardIconWrapPolicies {
+    background: #E6F5EF;
+}
+
+.navCardIconWrapPolicies .navCardIcon {
+    color: #1D9E75;
+}
+
+.navCardIconWrapCustomers {
+    background: #F1EEFB;
+}
+
+.navCardIconWrapCustomers .navCardIcon {
+    color: #7F77DD;
+}
+
+.navCardIconWrapClaimTypes {
+    background: #FDF2E3;
+}
+
+.navCardIconWrapClaimTypes .navCardIcon {
+    color: #EF9F27;
+}
+
+.navCardChevron {
+    color: #7C8C9B;
+    font-size: 0.95rem;
+}
+
+.navCardTitle {
+    display: block;
+    margin-bottom: 0.18rem;
+    color: #526273;
+    font-size: 0.9rem;
+}
+
+.navCardCount {
+    display: block;
+    margin-bottom: 0.32rem;
+    color: #172534;
+    font-size: 2rem;
+    line-height: 1.05;
+    font-weight: 700;
+}
+
+.navCardFooter {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+.navCardFooterInfo {
+    color: #3E7CB1;
+}
+
+.navCardFooterSuccess {
+    color: #168364;
+}
+
+.navCardFooterWarningText {
+    color: #C0781A;
+}
+
+
+/* ==========================================================================
+   KPI Cards
+   ========================================================================== */
+
+.kpiRowSpaced {
+    margin-top: 1rem;
+}
+
+.kpiCard {
+    box-sizing: border-box;
+    flex: 1 1 175px;
+    min-width: 155px;
+    padding: 1rem 1.15rem;
+    border: 1px solid #E7E9EC;
+    border-left: 4px solid transparent;
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 9px rgba(31, 56, 78, 0.04);
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.kpiCard:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(31, 56, 78, 0.09);
+}
+
+.kpiCard:focus,
+.kpiCard:focus-visible {
+    outline: 2px solid #6DA5D7 !important;
+    outline-offset: 2px;
+}
+
+.kpiHeaderRow {
+    gap: 0.45rem;
+    margin-bottom: 0.7rem;
+}
+
+.kpiIcon {
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.kpiIconWarning {
+    color: #7F77DD;
+}
+
+.kpiIconDanger {
+    color: #D85A30;
+}
+
+.kpiIconNeutral {
+    color: #3E7CB1;
+}
+
+.kpiIconApproved {
+    color: #1D9E75;
+}
+
+.kpiIconSuccess {
+    color: #1D9E75;
+}
+
+.kpiWarning {
+    border-left-color: #7F77DD;
+}
+
+.kpiDanger {
+    border-left-color: #D85A30;
+}
+
+.kpiNeutral {
+    border-left-color: #3E7CB1;
+}
+
+.kpiApprovedColor {
+    border-left-color: #1D9E75;
+}
+
+.kpiSuccess {
+    border-left-color: #1D9E75;
+}
+
+.kpiLabel {
+    color: #566575;
+    font-size: 0.86rem;
+    font-weight: 500;
+}
+
+.kpiLabelWarning {
+    color: #514A9D;
+}
+
+.kpiLabelDanger {
+    color: #B33F1E;
+}
+
+.kpiLabelNeutral {
+    color: #2C567F;
+}
+
+.kpiLabelSuccess,
+.kpiLabelApproved {
+    color: #0F6E56;
+}
+
+.kpiValue {
+    display: block;
+    color: #172534;
+    font-size: 1.85rem;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.kpiValueWarning {
+    color: #514A9D;
+}
+
+.kpiValueDanger {
+    color: #B33F1E;
+}
+
+.kpiValueNeutral {
+    color: #2C567F;
+}
+
+.kpiValueSuccess,
+.kpiValueApproved {
+    color: #0F6E56;
+}
+
+
+/* ==========================================================================
+   Analytics
+   ========================================================================== */
+
+.analyticsPanel,
+.recentClaimsPanel {
+    overflow: hidden;
+    border: 1px solid #E5E8EC;
+    border-radius: 13px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 10px rgba(31, 56, 78, 0.035);
+}
+
+.analyticsPanel .sapMPanelHdr,
+.recentClaimsPanel .sapMPanelHdr {
+    height: auto;
+    padding: 1rem 1.1rem 0.85rem;
+    border-bottom: 1px solid #E4E8EC;
+    color: #243544;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.analyticsPanel .sapMPanelContent,
+.recentClaimsPanel .sapMPanelContent {
+    padding: 0;
+}
+
+.analyticsLayout {
+    width: 100%;
+}
+
+.claimsStatusColumn,
+.policyTypeCol {
+    box-sizing: border-box;
+    flex: 1 1 50%;
+    min-width: 390px;
+    padding: 1rem 1.15rem 1.05rem;
+}
+
+.policyTypeCol {
+    border-left: 1px solid #E8EBEF;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.chartSectionTitle {
+    display: block;
+    margin-bottom: 0.9rem;
+    color: #243544;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+
+/* ==========================================================================
+   Status Donut + Legend
+   (rendered via core:HTML from the same statusChart>/items model
+   that used to feed the VizFrame — data/binding unchanged)
+   ========================================================================== */
+
+.pieRow {
+    gap: 1.6rem;
+    align-items: center;
+}
+
+.pieChartWrap {
+    flex-shrink: 0;
+    padding: 0.35rem 0.2rem;
+    margin-left: 1rem;
+}
+
+.pieChart {
+    position: relative;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+}
+
+.emptyPie {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background: #EDEDE8 !important;
+}
+
+.pieChartSvg {
+    display: block;
+}
+
+.pieSlice {
+    cursor: pointer;
+    transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+.pieSlice:hover,
+.pieSlice:focus {
+    opacity: 0.86;
+    filter: brightness(1.04);
+    outline: none;
+}
+
+.pieCenterLabel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.pieCenterValue {
+    display: block;
+    color: #172534;
+    font-size: 1.9rem;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+.pieCenterCaption {
+    display: block;
+    margin-top: 0.15rem;
+    color: #7B8791;
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.pieLegend {
+    min-width: 210px;
+    flex: 1 1 210px;
+}
+
+.legendRow {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 32px;
+    padding: 0.3rem 0.2rem;
+    border-radius: 6px;
+    transition: background 0.12s ease;
+}
+
+.legendRowClickable {
+    cursor: pointer;
+}
+
+.legendRowClickable:hover,
+.legendRowClickable:focus {
+    background: #F3F6F9;
+    outline: none;
+}
+
+
+/* ==========================================================================
+   Status Popover (opened from a donut slice or a legend row)
+   ========================================================================== */
+
+.statusPopoverContent {
+    padding: 0.9rem 1rem;
+    min-width: 190px;
+}
+
+.statusPopoverHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.statusPopoverDot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.statusPopoverTitle {
+    color: #172534;
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.statusPopoverCount {
+    color: #243544;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.statusPopoverPercent {
+    margin-top: 0.15rem;
+    color: #7B8791;
+    font-size: 0.8rem;
+}
+
+.legendDot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.legendLabel {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: #37454F;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.legendPercent {
+    flex-shrink: 0;
+    min-width: 24px;
+    color: #172534;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: right;
+}
+
+.legendEmpty {
+    padding: 1.5rem 0;
+    color: #8A969F;
+    font-size: 0.85rem;
+}
+
+.chartFooterCaption {
+    display: block;
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #E9ECEF;
+    color: #4D5D6B;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.policyChartSvg {
+    display: block;
+    width: 100%;
+    height: 230px;
+    overflow: visible;
+}
+
+.chartGridLine {
+    stroke: #EDF0F3;
+    stroke-width: 1;
+}
+
+.chartGridLabel {
+    fill: #8A969F;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.chartBarValue {
+    fill: #334554;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.chartBarLabel {
+    fill: #6B7884;
+    font-size: 11px;
+}
+
+
+/* ==========================================================================
+   Recent Claims
+   ========================================================================== */
+
+.recentClaimsPanel .sapMToolbar {
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid #E7EAED;
+    background: #FFFFFF;
+}
+
+.recentClaimsPanel .sapMTitle {
+    color: #243544;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.recentClaimsTable {
+    width: 100%;
+}
+
+.recentClaimsTable .sapMListTblHeaderCell {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E8EBEF;
+}
+
+.recentClaimsTable .sapMListTblHeaderCell .sapMText {
+    color: #667582;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.recentClaimsTable .sapMListTblCell {
+    padding-top: 0.72rem;
+    padding-bottom: 0.72rem;
+    border-bottom: 1px solid #F0F2F4;
+}
+
+.recentClaimsTable .sapMListTblRow:hover {
+    background: #F8FAFC;
+}
+
+.recentClaimsTable .sapMText {
+    color: #344552;
+    font-size: 0.8rem;
+}
+
+.recentClaimsTable .sapMListTblCell:last-child,
+.recentClaimsTable .sapMListTblHeaderCell:last-child {
+    padding-right: 1.25rem;
+}
+
+.statusPill {
+    display: inline-block;
+    padding: 0.24rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   Dashboard Footer
+   ========================================================================== */
+
+.dashboardFooter {
+    display: block;
+    padding: 1rem 0 0.2rem;
+    color: #7B8791;
+    font-size: 0.72rem;
+    text-align: center;
+}
+
+
+/* ==========================================================================
+   Policies — Toolbar
+   ========================================================================== */
+
+.policyToolbar {
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+    background: #FFFFFF;
+}
+
+.policyToolbarTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #243544;
+    white-space: nowrap;
+}
+
+.policySearch {
+    margin-right: 0.35rem;
+}
+
+.policyActionButton {
+    margin-left: 0.2rem;
+}
+
+.createPolicyButton {
+    margin-left: 0.4rem;
+}
+
+.policySearch .sapMSFF {
+    border-radius: 6px;
+}
+
+.policyTable {
+    width: 100%;
+}
+
+
+/* ==========================================================================
+   Investigation Page
+   ========================================================================== */
+
+.investigationPage {
+    background: #f5f6f7;
+}
+
+.investigationContent {
+    padding: 1.25rem 1.5rem 2rem 1.5rem;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   Investigation Header
+   ========================================================================== */
+
+.investigationHeader {
+    padding: 0.5rem 0 1rem 0;
+}
+
+.investigationTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1d2939;
+}
+
+.investigationSubtitle {
+    color: #667085;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.investigationSearch {
+    margin-left: 1rem;
+}
+
+.investigationSearch .sapMSFF {
+    border-radius: 0.45rem;
+}
+
+
+/* ==========================================================================
+   Investigation KPI Cards
+   ========================================================================== */
+
+.investigationKpiRow {
+    width: 100%;
+    gap: 1rem;
+}
+
+.investigationKpiCard {
+    flex: 1 1 220px;
+    min-width: 200px;
+    min-height: 125px;
+    background: #ffffff;
+    border-radius: 0.8rem;
+    padding: 1.1rem 1.25rem;
+    box-sizing: border-box;
+    border: 1px solid #eaecf0;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+}
+
+.investigationKpiHeader {
+    gap: 0.75rem;
+}
+
+.investigationKpiIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.65rem;
+}
+
+.investigationKpiIconBlue {
+    background: #eaf3ff;
+}
+
+.investigationKpiIconBlue .sapUiIcon {
+    color: #0a6ed1;
+}
+
+.investigationKpiIconOrange {
+    background: #fff4e5;
+}
+
+.investigationKpiIconOrange .sapUiIcon {
+    color: #e9730c;
+}
+
+.investigationKpiIconPurple {
+    background: #f3eefe;
+}
+
+.investigationKpiIconPurple .sapUiIcon {
+    color: #7c3aed;
+}
+
+.investigationKpiIconGreen {
+    background: #ecfdf3;
+}
+
+.investigationKpiIconGreen .sapUiIcon {
+    color: #16a34a;
+}
+
+.investigationKpiLabel {
+    font-size: 0.82rem;
+    color: #667085;
+}
+
+.investigationKpiValue {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-top: 0.75rem;
+}
+
+
+/* ==========================================================================
+   Investigation Panels
+   ========================================================================== */
+
+.investigationPanel {
+    background: #ffffff;
+    border-radius: 0.8rem;
+    border: 1px solid #eaecf0;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+    overflow: hidden;
+}
+
+.investigationPanel .sapMPanelHdr {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1d2939;
+}
+
+
+/* ==========================================================================
+   Investigation Tables
+   ========================================================================== */
+
+.investigationTable {
+    background: #ffffff;
+}
+
+.investigationTable .sapMListTblHeaderCell {
+    background: #f9fafb;
+}
+
+.investigationTable .sapMListTblHeaderCell .sapMText {
+    font-weight: 600;
+    color: #344054;
+}
+
+.investigationTable .sapMListTblCell {
+    vertical-align: middle;
+}
+
+.investigationTable .sapMObjectIdentifierTitle {
+    font-weight: 600;
+    color: #1d2939;
+}
+
+.fraudRiskTable {
+    background: #ffffff;
+}
+
+.fraudRiskTable .sapMListTblHeaderCell {
+    background: #f9fafb;
+}
+
+.fraudRiskTable .sapMListTblHeaderCell .sapMText {
+    font-weight: 600;
+    color: #344054;
+}
+
+.approvalTable .sapMListTblHeaderCell {
+    background: #f9fafb;
+}
+
+.approvalTable .sapMListTblHeaderCell .sapMText {
+    font-weight: 600;
+    color: #344054;
+}
+
+
+/* ==========================================================================
+   Administration Page
+   ========================================================================== */
+
+.adminPage {
+    width: 100%;
+}
+
+.adminPage .sapMPageEnableScrolling {
+    overflow-x: hidden;
+}
+
+.adminTabBar {
+    width: 100%;
+}
+
+.adminSection {
+    width: 100%;
+    padding: 1rem 1.5rem 2rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.sectionToolbar {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+.adminTable {
+    width: 100%;
+}
+
+.adminTable .sapMListTbl {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.adminTable .sapMListTblCell {
+    vertical-align: middle;
+}
+
+.adminTable .sapMListTblHeaderCell {
+    vertical-align: middle;
+}
+
+.adminTable .sapMText {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.4rem;
+}
+
+.adminTable .sapMListTblCell .sapMBtn {
+    min-width: 2.5rem;
+}
+
+.adminTable .sapMListTblCell .sapMHBox {
+    width: 100%;
+}
+
+.adminTable .sapMSwt {
+    margin: auto;
+}
+
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+    .policySearch {
+        width: 9rem !important;
+    }
+}
+
+@media (max-width: 1050px) {
+    .navCard {
+        flex-basis: 46%;
+    }
+
+    .kpiCard {
+        flex-basis: 29%;
+    }
+
+    .claimsStatusColumn,
+    .policyTypeCol {
+        min-width: 100%;
+    }
+
+    .policyTypeCol {
+        border-top: 1px solid #E8EBEF;
+        border-left: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .policySearch {
+        width: 8rem !important;
+    }
+
+    .investigationContent {
+        padding: 1rem;
+    }
+
+    .investigationSearch {
+        margin-left: 0;
+        margin-top: 1rem;
+        width: 100% !important;
+    }
+
+    .investigationKpiCard {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 700px) {
+    .dashboardContent {
+        padding: 0.8rem;
+    }
+
+    .welcomeBanner {
+        padding: 1rem;
+    }
+
+    .welcomeIllustration {
+        display: none;
+    }
+
+    .navCard,
+    .kpiCard {
+        flex-basis: 100%;
+        min-width: 100%;
+    }
+
+    .claimsStatusColumn,
+    .policyTypeCol {
+        min-width: 0;
+        padding: 0.85rem;
+    }
+
+    .pieRow {
+        gap: 1.4rem;
+        align-items: center;
+        margin-top: 1rem;
+        justify-content: center;
+    }
+
+    .pieChartWrap {
+        margin-left: 0;
+    }
+
+    .pieLegend {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .recentClaimsTable {
+        min-width: 680px;
+    }
+
+    .recentClaimsPanel .sapMPanelContent {
+        overflow-x: auto;
+    }
+
+    .policyToolbar {
+        padding: 0 0.4rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .investigationKpiCard {
+        flex: 1 1 100%;
+    }
+
+    .investigationTitle {
+        font-size: 1.25rem;
+    }
+}
+
+
+
+/* =========================================================
+   PAYOUT REGISTER — TWO-COLUMN OPERATIONS THEME (ROBUST)
+   ========================================================= */
+
+/* =========================================================
+   PAYOUT REGISTER — RESTRUCTURED LAYOUT (100% WIDTH SAFE)
+   ========================================================= */
+
+.regPage {
+    background: #F5F6FA !important;
+}
+
+.regPage .sapMPageScroll,
+.regPage .sapMPageEnableScrolling {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.regPage .sapMFlexBox {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.regPage .sapMFlexItem {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* ---------- PAGE ROOT ---------- */
+
+.regPageRoot {
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+}
+
+/* ---------- BREADCRUMB / TITLE ---------- */
+
+.regBreadcrumb {
+    color: #8A8FA3;
+    font-size: 12px;
+}
+
+.regTitleRow {
+    width: 100% !important;
+    margin-top: 6px !important;
+    margin-bottom: 4px !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+}
+
+.regTitle {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1A1D29;
+    line-height: 1.25;
+}
+
+.regSubtitle {
+    color: #8A8FA3;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.regProcessBtn {
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+/* ---------- STATUS + HEALTH ROW (below the button) ---------- */
+
+.statusHealthRow {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    gap: 16px !important;
+    box-sizing: border-box !important;
+}
+
+.statusHealthCard {
+    flex: 1 1 0 !important;
+    min-width: 300px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* ---------- MAIN + SIDEBAR ROOT ---------- */
+
+.regRoot {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 20px !important;
+    box-sizing: border-box !important;
+    flex-wrap: wrap !important;
+}
+
+.regMain {
+    flex: 1 1 640px !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* ---------- KPI CARDS — SINGLE ROW ---------- */
+
+/* ---------- KPI CARDS — GRID ---------- */
+
+.regKpiRow {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)) !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+    box-sizing: border-box !important;
+}
+
+.regKpiCard {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 18px 18px 16px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #EEF0F6 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.05) !important;
+    box-sizing: border-box !important;
+    justify-content: space-between !important;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.regKpiCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.09) !important;
+}
+
+.regKpiHead {
+    width: 100% !important;
+    margin-bottom: 16px !important;
+    gap: 8px !important;
+}
+
+/* icon chip */
+.regKpiIcon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 10px !important;
+    font-size: 17px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+.regKpiIconBlue  { background: #EAF0FF !important; color: #2563EB !important; }
+.regKpiIconAmber { background: #FFF3E0 !important; color: #D97706 !important; }
+.regKpiIconBlue2 { background: #E8F3FF !important; color: #0EA5E9 !important; }
+.regKpiIconRed   { background: #FDEAEA !important; color: #DC2626 !important; }
+.regKpiIconGreen { background: #E7F8EE !important; color: #16A34A !important; }
+
+/* text */
+.regKpiLabel {
+    color: #5B6075 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.regKpiValue {
+    font-family: "72", "72full", Arial, Helvetica, sans-serif !important;
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+    color: #1A1D29 !important;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: visible !important;      /* no more "..." */
+    text-overflow: clip !important;
+}
+
+.regKpiFoot {
+    margin-top: 6px !important;
+    color: #6B7085 !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.regKpiTextBox {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    flex: 1 1 auto !important;
+}
+
+.regKpiLabel {
+    color: #8A8FA3;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.regKpiValue {
+    font-family: 'SF Mono', ui-monospace, monospace;
+    font-size: 14px;
+    font-weight: 800;
+    color: #1A1D29;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.regKpiFoot {
+    color: #8A8FA3;
+    font-size: 10px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+
+    .regKpiRow {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .regKpiCard {
+        flex: 0 0 160px !important;
+        min-width: 160px !important;
+    }
+}
+
+/* ---------- TABLE PANEL ---------- */
+
+.regTablePanel {
+    background: #FFFFFF !important;
+    border-radius: 14px !important;
+    padding: 20px !important;
+    border: 1px solid #EEF0F6 !important;
+    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.05) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+}
+
+.regPanelTitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1A1D29;
+}
+
+.regFilterBar {
+    width: 100% !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    box-sizing: border-box !important;
+}
+
+.regSearch {
+    max-width: 100% !important;
+}
+
+.settlementTable {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+}
+
+.settlementTable .sapMListTbl {
+    width: 100% !important;
+    min-width: 900px;          /* below this width the table scrolls instead of squashing */
+}
+
+.settlementTable .sapMListTblHeader {
+    background: #FAFBFD !important;
+}
+
+.regHead {
+    color: #48568c !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+}
+
+.regPayoutNo {
+    font-weight: 800 !important;
+    color: #1A1D29 !important;
+   
+}
+
+.regCustomer {
+    font-weight: 600 !important;
+    color: #1A1D29 !important;
+}
+
+.regMuted {
+    color: #8A8FA3 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.regAmount {
+    font-family: 'SF Mono', ui-monospace, monospace !important;
+    font-weight: 700 !important;
+    color: #1A1D29 !important;
+    white-space: nowrap !important;
+}
+
+.regStatusPill .sapMObjStatusText {
+    border-radius: 999px !important;
+    padding: 3px 10px !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    display: inline-block !important;
+}
+
+/* ---------- RIGHT SIDEBAR (FILTERS ONLY NOW) ---------- */
+
+.regSidebar {
+    width: 230px !important;
+    min-width: 280px !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.regSideCard {
+    background: #FFFFFF !important;
+    border-radius: 14px !important;
+    padding: 18px !important;
+    border: 1px solid #EEF0F6 !important;
+    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.05) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+}
+
+.regSideTitle {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1A1D29;
+}
+
+.regResetBtn {
+    font-size: 12px !important;
+    padding: 0 8px !important;
+    color: #6366F1 !important;
+}
+
+.regFieldLabel {
+    color: #8A8FA3 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+}
+
+.regFieldInput {
+    margin-top: 4px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.regAmountRow {
+    align-items: center !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.regToText {
+    color: #8A8FA3;
+    font-size: 12px;
+    flex-shrink: 0 !important;
+}
+
+.regApplyBtn {
+    border-radius: 8px !important;
+    width: 100% !important;
+}
+
+/* ---------- DONUT ---------- */
+
+
+
+.donutOuter {
+    width: 110px !important;
+    height: 110px !important;
+    min-width: 110px !important;
+    border-radius: 50% !important;
+    background: conic-gradient(
+        #16A34A 0% 23%,
+        #D97706 23% 50%,
+        #2563EB 50% 77%,
+        #DC2626 77% 100%
+    ) !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+     cursor: default !important;
+    transition: transform 0.2s ease !important;
+}
+.donutOuter:hover {
+    transform: scale(1.04) !important;
+}
+.donutInner {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    background: #FFFFFF !important;
+}
+
+.donutNumber {
+    font-family: "72", "72full", Arial, Helvetica, sans-serif !important;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1A1D29;
+}
+
+.donutLabel {
+    color: #8A8FA3;
+    font-size: 10px;
+}
+
+
+
+.donutLegend {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.legendLine {
+    cursor: default !important;
+    transition: background 0.15s ease, transform 0.15s ease !important;
+    border-radius: 6px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
+
+.legendLine:hover {
+    background: #F5F6FA !important;
+    transform: translateX(2px) !important;
+}
+
+.legendDot {
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+}
+
+.legendDotGreen { background: #16A34A !important; }
+.legendDotAmber { background: #D97706 !important; }
+.legendDotBlue  { background: #2563EB !important; }
+.legendDotRed   { background: #DC2626 !important; }
+
+.legendText {
+    font-size: 12px;
+    color: #4B5060;
+    white-space: nowrap;
+}
+
+.legendValue {
+    font-size: 11px;
+    color: #8A8FA3;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------- SETTLEMENT HEALTH ---------- */
+
+.healthBigPct {
+    font-family: 'SF Mono', ui-monospace, monospace;
+    font-size: 28px;
+    font-weight: 800;
+    color: #1A1D29;
+}
+
+.healthStateTag {
+    font-weight: 700;
+    font-size: 12px;
+    color: #6366F1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.regHealthBar {
+    width: 100% !important;
+}
+
+.regHealthBar .sapMPI {
+    height: 8px !important;
+    border-radius: 999px !important;
+    width: 100% !important;
+}
+
+.healthWarnBanner {
+    background: #FDEAEA !important;
+    border-radius: 10px !important;
+    padding: 10px 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.healthWarnIcon {
+    color: #DC2626 !important;
+    font-size: 14px !important;
+    flex-shrink: 0 !important;
+}
+
+.healthWarnText {
+    color: #B91C1C !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+/* ---------- DIALOG ---------- */
+
+.regDialog .sapMDialogTitle {
+    font-weight: 800;
+    color: #1A1D29;
+}
+
+.dialogPad {
+    padding: 22px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .regRoot {
+        flex-direction: column !important;
+    }
+
+    .regMain {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+    }
+
+    .regSidebar {
+        width: 50% !important;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .statusHealthRow {
+        flex-direction: column !important;
+    }
+
+    .statusHealthCard {
+        min-width: 100% !important;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .regPageRoot {
+        padding: 12px !important;
+    }
+
+    .regKpiCard {
+        flex: 1 1 100% !important;
+    }
+
+    .regTitleRow {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .regProcessBtn {
+        width: 100% !important;
+    }
+
+    .donutOuter {
+        width: 90px !important;
+        height: 90px !important;
+        min-width: 90px !important;
+    }
+}
+
+
+
+/* =========================================================
+   IMPORTANT - PREVENT PAGE HORIZONTAL SCROLL
+   ========================================================= */
+
+.ledgerPage,
+.ledgerPage .sapMPageScroll,
+.ledgerPage .sapMPageContent,
+.ledgerRoot,
+.ledgerHeader,
+.kpiStrip,
+.ledgerAnalyticsRow,
+.metricStrip,
+.statementPanel {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.ledgerPage .sapMPageScroll {
+    overflow-x: hidden !important;
+}
+
+.chartHeaderRow {
+    margin-bottom: 0.9rem;
+}
+
+.yearSelectDropdown {
+    min-width: 90px;
+}
+
+.chartLinePath {
+    fill: none;
+    stroke: #3E7CB1;
+    stroke-width: 2.5;
+}
+
+.chartLinePoint {
+    fill: #3E7CB1;
+    stroke: #FFFFFF;
+    stroke-width: 2;
+    cursor: pointer;
+}
+
+.chartLinePoint:hover {
+    fill: #2C567F;
+}
+
+
+
+.chartLinePoint {
+    fill: #3E7CB1;
+    stroke: #FFFFFF;
+    stroke-width: 2;
+    cursor: pointer;
+}
+.welcomeBanner {
+    box-sizing: border-box;
+    min-height: 190px;
+    padding: 1.45rem 1.65rem;
+    border: 1px solid #E5EDF7;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+
+    background-image:
+        linear-gradient(
+            100deg,
+            rgba(15, 30, 50, 0.72) 0%,
+            rgba(15, 30, 50, 0.45) 35%,
+            rgba(15, 30, 50, 0.15) 65%,
+            rgba(15, 30, 50, 0.05) 100%
+        ),
+        url("../img/welcome-banner.jpg");
+    background-size: cover;
+    background-position: center;
+}
+.navCardClaims {
+    background: #F3F8FE;
+}
+
+.navCardPolicies {
+    background: #F1FBF7;
+}
+
+.navCardCustomers {
+    background: #F8F6FD;
+}
+
+.navCardClaimTypes {
+    background: #FEF9F0;
+}
+
+.kpiWarning {
+    border-left-color: #7F77DD;
+    background: #F8F7FE;
+}
+
+.kpiDanger {
+    border-left-color: #D85A30;
+    background: #FDF5F3;
+}
+
+.kpiNeutral {
+    border-left-color: #3E7CB1;
+    background: #F3F8FD;
+}
+
+.kpiApprovedColor {
+    border-left-color: #1D9E75;
+    background: #F2FAF7;
+}
+
+.kpiSuccess {
+    border-left-color: #1D9E75;
+    background: #F2FAF7;
+}
+
+
+.claimsureSideNav {
+    background-color: #F4F8FB !important;
+}
+
+.claimsureSideNav .sapTntNavLIActive {
+    background-color: #DCEAF6 !important;
+} 
+ 
+/* ---------- PAYOUT TOP ROW ---------- */
+
+.topRow {
+    display: flex !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+    box-sizing: border-box !important;
+}
+
+.statusHealthRow {
+    flex: 0 0 360px !important;
+    width: 360px !important;
+    max-width: 360px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.statusHealthCard {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.topRow > .regKpiRow {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    flex-wrap: nowrap !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 1100px) {
+    .topRow { flex-wrap: wrap !important; }
+    .statusHealthRow,
+    .topRow > .regKpiRow {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* ---------- FILTER BAR ACTION BUTTONS ---------- */
+
+.regFilterBar {
+    gap: 10px !important;
+    align-items: center !important;
+}
+
+.regActionBtn.sapMBtn {
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 8px !important;
+    transition: background .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+/* Export: soft blue fill */
+.regExportBtn.sapMBtn {
+    background: #EAF0FF !important;
+    border: 1px solid #D5E0FB !important;
+    padding: 0 14px !important;
+}
+.regExportBtn.sapMBtn .sapMBtnInner,
+.regExportBtn.sapMBtn .sapMBtnText,
+.regExportBtn.sapMBtn .sapUiIcon {
+    color: #2563EB !important;
+    font-weight: 700 !important;
+}
+.regExportBtn.sapMBtn:hover {
+    background: #DCE6FF !important;
+}
+
+/* Refresh: neutral grey fill, icon only */
+.regRefreshBtn.sapMBtn {
+    background: #F3F4F8 !important;
+    border: 1px solid #E5E7EF !important;
+}
+.regRefreshBtn.sapMBtn .sapUiIcon {
+    color: #4B5060 !important;
+}
+.regRefreshBtn.sapMBtn:hover {
+    background: #E8EAF2 !important;
+}
+
+/* Subtle press feedback */
+.regActionBtn.sapMBtn:active {
+    transform: scale(0.96);
+}
+
+/* Replace the heavy black/blue focus box with a soft ring */
+.regActionBtn.sapMBtn:focus,
+.regActionBtn.sapMBtn.sapMBtnFocus,
+.regActionBtn.sapMBtn:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+}
+.regActionBtn.sapMBtn .sapMBtnFocusDiv {
+    display: none !important;
+}

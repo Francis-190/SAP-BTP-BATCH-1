@@ -1,0 +1,366 @@
+
+ GET http://localhost:4004/odata/v4/insurance/Policies
+
+### Renew Policy
+ POST http://localhost:4004/odata/v4/insurance/renewPolicy
+ Content-Type: application/json
+
+{
+   "policyID": "61111111-1111-1111-1111-111111111111"
+}
+
+
+### Cancel Policy
+ POST http://localhost:4004/odata/v4/insurance/cancelPolicy
+Content-Type: application/json
+{
+ 
+     "policyID": "61111111-1111-1111-1111-111111111111"
+ }
+
+### Get Policy Status
+ GET http://localhost:4004/odata/v4/insurance/getPolicyStatus(policyID=61111111-1111-1111-1111-111111111111)
+
+### Get Policy Claims Count
+ GET http://localhost:4004/odata/v4/insurance/getPolicyClaimsCount(policyID=61111111-1111-1111-1111-111111111111)
+
+
+### Submit Claim
+ POST http://localhost:4004/odata/v4/insurance/submitClaim
+ Content-Type: application/json
+
+ {
+     "claimID": "71111111-1111-1111-1111-111111111111"
+ }
+
+### Approve Claim
+ POST http://localhost:4004/odata/v4/insurance/approveClaim
+ Content-Type: application/json
+
+ {
+     "claimID": "d0000004-0004-0004-0004-000000000004"
+ }
+
+
+
+### Reject Claim
+ POST http://localhost:4004/odata/v4/insurance/rejectClaim
+ Content-Type: application/json
+
+{
+     "claimID": "71111111-1111-1111-1111-111111111111"
+ }
+
+### Get Claim Status
+GET http://localhost:4004/odata/v4/insurance/getClaimStatus(claimID=71111111-1111-1111-1111-111111111111)
+
+=======
+### =====================================================
+### CUSTOMERS
+### =====================================================
+
+### Get all customers
+GET http://localhost:4004/odata/v4/main/Customers
+
+
+### Get customer by ID
+GET http://localhost:4004/odata/v4/main/Customers(22222222-2222-2222-2222-222222222222)
+
+
+### Create Customer
+POST http://localhost:4004/odata/v4/main/Customers
+Content-Type: application/json
+
+{
+    "customerNumber": "CUS1001",
+    "firstName": "Rahul",
+    "lastName": "Sharma",
+    "email": "rahulsharma@gmail.com",
+    "phone": "+919876543210",
+    "address": "Bangalore, Karnataka",
+    "status": "Active"
+}
+
+
+### Update Customer
+PATCH http://localhost:4004/odata/v4/main/Customers(22222222-2222-2222-2222-222222222222)
+Content-Type: application/json
+
+{
+    "phone": "+919876543211",
+    "address": "Bangalore, India"
+}
+
+
+### Delete Customer
+DELETE http://localhost:4004/odata/v4/main/Customers(22222222-2222-2222-2222-222222222222)
+
+
+### =====================================================
+### CLAIM TYPES
+### =====================================================
+
+### Get all claim types
+GET http://localhost:4004/odata/v4/main/ClaimTypes
+
+
+### Get claim type by ID
+GET http://localhost:4004/odata/v4/main/ClaimTypes(a1000003-0003-0003-0003-000000000003)
+
+
+### Create Claim Type
+POST http://localhost:4004/odata/v4/main/ClaimTypes
+Content-Type: application/json
+
+{
+    "code": "VEHICLE",
+    "name": "Vehicle Insurance",
+    "description": "Claims related to vehicle accidents and damages",
+    "category": "Vehicle",
+    "active": true
+}
+
+
+### Update Claim Type
+PATCH http://localhost:4004/odata/v4/main/ClaimTypes(a1000003-0003-0003-0003-000000000003)
+Content-Type: application/json
+
+{
+    "description": "Vehicle accident and damage insurance claims"
+}
+
+
+### Delete Claim Type
+DELETE http://localhost:4004/odata/v4/main/ClaimTypes(a1000003-0003-0003-0003-000000000003)
+
+
+### =====================================================
+### EMPLOYEES
+### =====================================================
+
+### Get all employees
+GET http://localhost:4004/odata/v4/main/Employees
+
+
+### Get employee by ID
+GET http://localhost:4004/odata/v4/main/Employees(b1000002-0002-0002-0002-000000000002)
+
+
+### Create Employee
+POST http://localhost:4004/odata/v4/main/Employees
+Content-Type: application/json
+
+{
+    "employeeNumber": "EMP1001",
+    "firstName": "Arun",
+    "lastName": "Kumar",
+    "email": "arun.kumar@claimsure.com",
+    "department": "Claims",
+    "role": "ClaimsAgent",
+    "active": true
+}
+
+
+### Update Employee
+PATCH http://localhost:4004/odata/v4/main/Employees(b1000002-0002-0002-0002-000000000002)
+Content-Type: application/json
+
+{
+    "department": "Claims Operations"
+}
+
+
+### Delete Employee
+DELETE http://localhost:4004/odata/v4/main/Employees(b1000002-0002-0002-0002-000000000002)
+
+
+### =====================================================
+### ACTION 1 - CHANGE EMPLOYEE STATUS
+### =====================================================
+
+### Deactivate Employee
+POST http://localhost:4004/odata/v4/main/changeEmployeeStatus
+Content-Type: application/json
+
+{
+    "employeeId": "b1000002-0002-0002-0002-000000000002",
+    "active": false
+}
+
+
+### Activate Employee
+POST http://localhost:4004/odata/v4/main/changeEmployeeStatus
+Content-Type: application/json
+
+{
+    "employeeId": "b1000002-0002-0002-0002-000000000002",
+    "active": true
+}
+
+
+### =====================================================
+### ACTION 2 - CHANGE CLAIM TYPE STATUS
+### =====================================================
+
+### Deactivate Claim Type
+POST http://localhost:4004/odata/v4/main/changeClaimTypeStatus
+Content-Type: application/json
+
+{
+    "claimTypeId": "a1000003-0003-0003-0003-000000000003",
+    "active": false
+}
+
+
+### Activate Claim Type
+POST http://localhost:4004/odata/v4/main/changeClaimTypeStatus
+Content-Type: application/json
+
+{
+    "claimTypeId": "a1000003-0003-0003-0003-000000000003",
+    "active": true
+}
+
+
+### =====================================================
+### FUNCTION - GET ACTIVE EMPLOYEES BY ROLE
+### =====================================================
+
+### Get active Claims Agents
+GET http://localhost:4004/odata/v4/main/getActiveEmployeesByRole(role='ClaimsAgent')
+
+
+### Get active Investigators
+GET http://localhost:4004/odata/v4/main/getActiveEmployeesByRole(role='Investigator')
+
+
+### Get active Claims Managers
+GET http://localhost:4004/odata/v4/main/getActiveEmployeesByRole(role='ClaimsManager')
+
+
+### Get active Finance Officers
+GET http://localhost:4004/odata/v4/main/getActiveEmployeesByRole(role='FinanceOfficer')
+>>>>>>> 7cadc10d7cdc722ad1f27921bad11b559dfcde18
+=======
+@baseUrl = http://localhost:4004
+@service = {{baseUrl}}/odata/v4/payout
+
+
+### =========================================================
+### 1. READ PAYOUTS
+### =========================================================
+
+GET {{service}}/Payouts
+
+
+### =========================================================
+### 2. READ SLA RULES
+### =========================================================
+
+GET {{service}}/SLARules
+
+
+### =========================================================
+### 3. READ ALERT LOG
+### =========================================================
+
+GET {{service}}/AlertLog
+
+
+### =========================================================
+### 4. CREATE PAYOUT
+### =========================================================
+### IMPORTANT:
+### Replace claimID with an actual Claim ID
+### whose status is "Approved".
+
+POST {{service}}/createPayout
+Content-Type: application/json
+
+{
+    "claimID": "PUT-APPROVED-CLAIM-ID-HERE",
+    "amount": 50000
+}
+
+
+### =========================================================
+### 5. PROCESS PAYOUT
+### =========================================================
+### First create a payout.
+### Then copy its ID and put it below.
+
+POST {{service}}/processPayout
+Content-Type: application/json
+
+{
+    "payoutID": "PUT-PAYOUT-ID-HERE"
+}
+
+
+### =========================================================
+### 6. CALCULATE SLA STATUS
+### =========================================================
+### Replace with an actual Claim ID.
+
+GET {{service}}/calculateSLAStatus(claimID='PUT-CLAIM-ID-HERE')
+
+
+### =========================================================
+### 7. CREATE ALERT
+### =========================================================
+### Replace claimID and recipientID with real IDs.
+
+POST {{service}}/createAlert
+Content-Type: application/json
+
+{
+    "claimID": "PUT-CLAIM-ID-HERE",
+    "recipientID": "PUT-EMPLOYEE-ID-HERE",
+    "alertType": "ApprovalPending",
+    "message": "Claim approval is pending."
+}
+
+
+### =========================================================
+### 8. MARK ALERT AS READ
+### =========================================================
+### Replace with the AlertLog ID returned from createAlert.
+
+POST {{service}}/markAsRead
+Content-Type: application/json
+
+{
+    "alertID": "PUT-ALERT-ID-HERE"
+}
+>>>>>>> 9292e41596a339642cf3b1e05f56788701642479
+###
+
+GET http://localhost:4004/odata/v4/insurance/Claims(d1000008-0008-0008-0008-000000000008)?$expand=assignedAgent,policy,documents
+
+###
+GET http://localhost:4004/odata/v4/insurance/Claims(d1000008-0008-0008-0008-000000000008)
+
+###
+GET http://localhost:4004/odata/v4/main/Employees(e1111111-1111-1111-1111-111111111111)
+
+
+###
+POST http://localhost:4004/odata/v4/insurance/processPendingClaims
+
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+###
+POST http://localhost:4004/odata/v4/insurance/generatePendingClaimsExcel
+
+Content-Type: application/json
+
+###
+POST http://localhost:4004/odata/v4/insurance/analyzeClaim
+Content-Type: application/json
+
+{
+    "claimID": "d0000003-0003-0003-0003-000000000003"
+}

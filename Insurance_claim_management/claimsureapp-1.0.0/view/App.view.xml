@@ -1,0 +1,118 @@
+<mvc:View
+    controllerName="claimsure.app.controller.App"
+    xmlns="sap.tnt"
+    xmlns:m="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    height="100%">
+
+    <ToolPage id="toolPage">
+
+        <!-- ================= HEADER ================= -->
+        <header>
+            <ToolHeader>
+
+                <m:Button
+                    icon="sap-icon://menu2"
+                    type="Transparent"
+                    press="onToggleSideNav"/>
+
+                <m:Title
+                    text="ClaimSure"
+                    level="H3"
+                    titleStyle="H4"
+                    class="sapUiTinyMarginBegin"/>
+
+                <m:ToolbarSpacer/>
+
+                <m:SearchField
+                    width="20rem"
+                    placeholder="Search claims, policies, customer..."
+                    search="onGlobalSearch"
+                    class="sapUiTinyMarginEnd"/>
+<!-- 
+                <m:Button
+                    icon="sap-icon://bell"
+                    type="Transparent"/>
+
+                <m:Avatar
+                    displaySize="XS"
+                    initials="MM"
+                    class="sapUiTinyMarginBegin"/> -->
+
+            </ToolHeader>
+        </header>
+
+
+        <!-- ================= SIDE NAVIGATION ================= -->
+        <sideContent>
+
+            <SideNavigation
+                id="sideNav"
+                class="claimsureSideNav"
+                selectedKey="{app>/selectedKey}"
+                itemSelect="onNavItemSelect">
+
+                <NavigationList>
+
+                    <NavigationListItem
+                        text="{i18n>navDashboard}"
+                        key="dashboard"
+                        icon="sap-icon://home"/>
+
+                    <NavigationListItem
+                        text="{i18n>navClaims}"
+                        key="claims"
+                        icon="sap-icon://form"/>
+
+                    <NavigationListItem
+                        text="{i18n>navPolicies}"
+                        key="policies"
+                        icon="sap-icon://shield"/>
+
+                    <NavigationListItem
+                        text="{i18n>navInvestigation}"
+                        key="investigation"
+                        icon="sap-icon://detail-view"/>
+
+                    <!-- PAYOUT -->
+                    <NavigationListItem
+                        text="{i18n>navPayout}"
+                        key="payout"
+                        icon="sap-icon://money-bills"/>
+
+                    <NavigationListItem
+                        text="{i18n>navAdmin}"
+                        key="admin"
+                        icon="sap-icon://user-settings"/>
+
+                </NavigationList>
+
+
+                <!-- ================= FIXED USER ITEM ================= -->
+                <!-- <fixedItem>
+                    <NavigationList>
+                        <NavigationListItem
+                            text="{app>/currentUser/role}"
+                            icon="sap-icon://account"
+                            enabled="false"/>
+                    </NavigationList>
+                </fixedItem> -->
+
+            </SideNavigation>
+
+        </sideContent>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <mainContents>
+
+            <m:NavContainer
+                id="appNavContainer"
+                height="100%"/>
+
+        </mainContents>
+
+    </ToolPage>
+
+</mvc:View>

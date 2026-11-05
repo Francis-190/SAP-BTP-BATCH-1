@@ -1,0 +1,302 @@
+<mvc:View
+    controllerName="claimsure.app.controller.Dashboard"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        title="{i18n>navDashboard}"
+        showNavButton="false"
+        class="csPage dashboardPage">
+
+        <content>
+            <VBox class="dashboardContent">
+
+                <!-- Welcome banner -->
+              
+                <VBox class="welcomeBanner sapUiMediumMarginBottom">
+                    <HBox justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap">
+                        <VBox class="welcomeCopy">
+                            <Title
+                                text="{= 'Welcome back,!! ' }"
+                                level="H2"
+                                class="welcomeTitle"/>
+                            <Text
+                                text="{i18n>dashboardSub}"
+                                class="welcomeSubtitle"/>
+                        </VBox>
+
+                    </HBox>
+                </VBox>
+
+                <!-- Main navigation cards -->
+                <HBox class="navCardRow" wrap="Wrap">
+
+                    <VBox
+                        id="navCardClaims"
+                        class="navCard navCardClaims"
+                        tooltip="Open Claims"
+                        tabindex="0">
+                        <HBox class="navCardTop" alignItems="Center" justifyContent="SpaceBetween">
+                            <VBox class="navCardIconWrap navCardIconWrapClaims" alignItems="Center" justifyContent="Center">
+                                <core:Icon src="sap-icon://form" class="navCardIcon"/>
+                            </VBox>
+                            <core:Icon src="sap-icon://slim-arrow-right" class="navCardChevron"/>
+                        </HBox>
+                        <Text text="Total Claims" class="navCardTitle"/>
+                        <Text text="{dash>/totalClaims}" class="navCardCount"/>
+                        <Text text="{= ${dash>/pendingApproval} + ' Pending approval' }" class="navCardFooter navCardFooterInfo"/>
+                    </VBox>
+
+                    <VBox
+                        id="navCardPolicies"
+                        class="navCard navCardPolicies"
+                        tooltip="Open Policies"
+                        tabindex="0">
+                        <HBox class="navCardTop" alignItems="Center" justifyContent="SpaceBetween">
+                            <VBox class="navCardIconWrap navCardIconWrapPolicies" alignItems="Center" justifyContent="Center">
+                                <core:Icon src="sap-icon://shield" class="navCardIcon"/>
+                            </VBox>
+                            <core:Icon src="sap-icon://slim-arrow-right" class="navCardChevron"/>
+                        </HBox>
+                        <Text text="Total Policies" class="navCardTitle"/>
+                        <Text text="{dash>/totalPolicies}" class="navCardCount"/>
+                        <Text text="{= ${dash>/activePolicies} + ' Active' }" class="navCardFooter navCardFooterSuccess"/>
+                    </VBox>
+
+                    <VBox
+                        id="navCardCustomers"
+                        class="navCard navCardCustomers"
+                        tooltip="Open Customers"
+                        tabindex="0">
+                        <HBox class="navCardTop" alignItems="Center" justifyContent="SpaceBetween">
+                            <VBox class="navCardIconWrap navCardIconWrapCustomers" alignItems="Center" justifyContent="Center">
+                                <core:Icon src="sap-icon://group" class="navCardIcon"/>
+                            </VBox>
+                            <core:Icon src="sap-icon://slim-arrow-right" class="navCardChevron"/>
+                        </HBox>
+                        <Text text="Customers" class="navCardTitle"/>
+                        <Text text="{dash>/totalCustomers}" class="navCardCount"/>
+                        <Text text="Customer records" class="navCardFooter navCardFooterInfo"/>
+                    </VBox>
+
+                    <VBox
+                        id="navCardClaimTypes"
+                        class="navCard navCardClaimTypes"
+                        tooltip="Open Claim Types"
+                        tabindex="0">
+                        <HBox class="navCardTop" alignItems="Center" justifyContent="SpaceBetween">
+                            <VBox class="navCardIconWrap navCardIconWrapClaimTypes" alignItems="Center" justifyContent="Center">
+                                <core:Icon src="sap-icon://document-text" class="navCardIcon"/>
+                            </VBox>
+                            <core:Icon src="sap-icon://slim-arrow-right" class="navCardChevron"/>
+                        </HBox>
+                        <Text text="Claim Types" class="navCardTitle"/>
+                        <Text text="{dash>/totalClaimTypes}" class="navCardCount"/>
+                        <Text text="All configured" class="navCardFooter navCardFooterWarningText"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- Status KPI cards -->
+                <HBox class="kpiRow kpiRowSpaced" wrap="Wrap">
+
+                    <VBox id="kpiPendingApproval" class="kpiCard kpiWarning" tabindex="0">
+                        <HBox alignItems="Center" class="kpiHeaderRow">
+                            <core:Icon src="sap-icon://pending" class="kpiIcon kpiIconWarning"/>
+                            <Text text="Pending Approval" class="kpiLabel kpiLabelWarning"/>
+                        </HBox>
+                        <Text text="{dash>/pendingApproval}" class="kpiValue kpiValueWarning"/>
+                    </VBox>
+
+                    <VBox id="kpiRejected" class="kpiCard kpiDanger" tabindex="0">
+                        <HBox alignItems="Center" class="kpiHeaderRow">
+                            <core:Icon src="sap-icon://decline" class="kpiIcon kpiIconDanger"/>
+                            <Text text="Rejected" class="kpiLabel kpiLabelDanger"/>
+                        </HBox>
+                        <Text text="{dash>/rejectedClaims}" class="kpiValue kpiValueDanger"/>
+                    </VBox>
+
+                    <VBox id="kpiSubmitted" class="kpiCard kpiNeutral" tabindex="0">
+                        <HBox alignItems="Center" class="kpiHeaderRow">
+                            <core:Icon src="sap-icon://paper-plane" class="kpiIcon kpiIconNeutral"/>
+                            <Text text="Submitted" class="kpiLabel kpiLabelNeutral"/>
+                        </HBox>
+                        <Text text="{dash>/submittedClaims}" class="kpiValue kpiValueNeutral"/>
+                    </VBox>
+
+                    <VBox id="kpiApproved" class="kpiCard kpiApprovedColor" tabindex="0">
+                        <HBox alignItems="Center" class="kpiHeaderRow">
+                            <core:Icon src="sap-icon://accept" class="kpiIcon kpiIconApproved"/>
+                            <Text text="Approved" class="kpiLabel kpiLabelApproved"/>
+                        </HBox>
+                        <Text text="{dash>/approvedClaims}" class="kpiValue kpiValueApproved"/>
+                    </VBox>
+
+                    <VBox id="kpiActivePolicies" class="kpiCard kpiSuccess" tabindex="0">
+                        <HBox alignItems="Center" class="kpiHeaderRow">
+                            <core:Icon src="sap-icon://shield" class="kpiIcon kpiIconSuccess"/>
+                            <Text text="Active Policies" class="kpiLabel kpiLabelSuccess"/>
+                        </HBox>
+                        <Text text="{dash>/activePolicies}" class="kpiValue kpiValueSuccess"/>
+                    </VBox>
+
+                </HBox>
+                
+
+
+                <!-- Analytics -->
+                <Panel
+                    headerText="Claims analytics"
+                    class="analyticsPanel sapUiMediumMarginTop"
+                    expandable="false">
+
+                    <HBox class="analyticsLayout" wrap="Wrap">
+
+                        <!-- Claims by status -->
+                        <VBox class="claimsStatusColumn">
+                            <Text text="Claims by status" class="chartSectionTitle"/>
+
+                            <HBox class="pieRow" wrap="Wrap" alignItems="Center">
+
+                                <VBox class="pieChartWrap" alignItems="Center" justifyContent="Center">
+                                    <core:HTML
+                                        content="{
+                                            path: 'statusChart>/items',
+                                            formatter: '.formatStatusDonutHtml'
+                                        }"/>
+                                </VBox>
+
+                                <VBox class="pieLegend">
+                                    <core:HTML
+                                        content="{
+                                            path: 'statusChart>/items',
+                                            formatter: '.formatStatusLegendHtml'
+                                        }"/>
+                                </VBox>
+
+                            </HBox>
+
+                            <Text
+                                text="{= 'Total Claims: ' + ${dash>/totalClaims} }"
+                                class="chartFooterCaption"/>
+                        </VBox>
+
+                        <!-- Policies by type -->
+              <!-- Policies trend -->
+                    <VBox class="policyTypeCol">
+                        <HBox justifyContent="SpaceBetween" alignItems="Center" class="chartHeaderRow">
+                            <Text text="Policies trend" class="chartSectionTitle"/>
+                            <Select
+                                id="policyYearSelect"
+                                items="{yearsModel>/years}"
+                                selectedKey="{yearsModel>/selectedYear}"
+                                change="onPolicyYearChange"
+                                class="yearSelectDropdown">
+                                <core:Item key="{yearsModel>key}" text="{yearsModel>text}"/>
+                            </Select>
+                        </HBox>
+
+                        <core:HTML
+                            content="{
+                                path: 'policyTrendChart>/items',
+                                formatter: '.formatPolicyTrendChartSvg'
+                            }"/>
+
+                        <Text
+                            text="{= 'Total Policies: ' + ${dash>/totalPolicies} }"
+                            class="chartFooterCaption"/>
+                    </VBox>
+
+                    </HBox>
+                </Panel>
+
+                <!-- Recent claims -->
+                <Panel
+                    headerText="Recent claims"
+                    class="recentClaimsPanel sapUiMediumMarginTop"
+                    expandable="false">
+
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Recent claims" level="H4"/>
+                            <ToolbarSpacer/>
+                            <Button
+                                text="View All"
+                                type="Transparent"
+                                press="onViewAllClaims"/>
+                        </Toolbar>
+                    </headerToolbar>
+
+                    <Table
+                        items="{recent>/}"
+                        noDataText="No recent claims"
+                        mode="None"
+                        growing="false"
+                        class="recentClaimsTable">
+
+                        <columns>
+
+                            <Column>
+                                <Text text="Claim Number"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Claim"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Customer"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Status"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Amount"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem
+                                type="Active"
+                                press="onClaimPress">
+
+                                <cells>
+                                    <Text text="{recent>claimNumber}" class="stmtPayoutNumber"/>
+
+                                    <!-- Claim Type / Claim Name -->
+                                    <Text text="{recent>claimTypeName}"/>
+
+                                    <!-- Customer -->
+                                    <Text text="{recent>customerName}"/>
+
+                                    <!-- Status -->
+                                    <core:HTML
+                                        content="{
+                                            path: 'recent>status',
+                                            formatter: '.formatStatusPillHtml'
+                                        }"/>
+
+                                    <!-- Amount -->
+                                    <Text
+                                        text="{
+                                            path: 'recent>claimedAmount',
+                                            formatter: '.formatCurrency'
+                                        }"
+                                        textAlign="End"/>
+
+                                </cells>
+
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+                <!-- <Text text="© 2024 ClaimSure. All rights reserved." class="dashboardFooter"/> -->
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,486 @@
+<mvc:View
+    controllerName="claimsure.app.controller.Investigation"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="investigationPage"
+        title="Investigations"
+        showNavButton="false"
+        class="csPage investigationPage">
+
+        <content>
+
+            <VBox
+                class="investigationContent"
+                width="100%">
+
+                <!-- =====================================================
+                     PAGE HEADER
+                     ===================================================== -->
+
+                <HBox
+                    class="investigationHeader"
+                    alignItems="Center"
+                    justifyContent="SpaceBetween"
+                    wrap="Wrap"
+                    width="100%">
+
+                    <VBox>
+
+                        <Title
+                            text="Investigation Dashboard"
+                            level="H2"
+                            class="investigationTitle"/>
+
+                        <Text
+                            text="Monitor claims requiring investigation and review fraud risk."
+                            class="investigationSubtitle"/>
+
+                    </VBox>
+
+                    <SearchField
+                        id="investigationSearch"
+                        width="16rem"
+                        placeholder="Search investigations..."
+                        search="onSearch"
+                        liveChange="onSearch"
+                        class="investigationSearch"/>
+
+                </HBox>
+
+
+                <!-- =====================================================
+                     KPI CARDS
+                     ===================================================== -->
+
+                <HBox
+                    id="investigationKpiRow"
+                    class="investigationKpiRow"
+                    wrap="Wrap"
+                    width="100%">
+
+                    <!-- TOTAL -->
+
+                    <VBox
+                        class="investigationKpiCard">
+
+                        <HBox
+                            alignItems="Center"
+                            class="investigationKpiHeader">
+
+                            <VBox
+                                class="investigationKpiIcon investigationKpiIconBlue"
+                                alignItems="Center"
+                                justifyContent="Center">
+
+                                <core:Icon
+                                    src="sap-icon://inspection"
+                                    size="1.4rem"/>
+
+                            </VBox>
+
+                            <Text
+                                text="Total Investigations"
+                                class="investigationKpiLabel"/>
+
+                        </HBox>
+
+                        <Text
+                            text="{investigationKpi>/total}"
+                            class="investigationKpiValue"/>
+
+                    </VBox>
+
+
+                    <!-- ASSIGNED -->
+
+                    <VBox
+                        class="investigationKpiCard">
+
+                        <HBox
+                            alignItems="Center"
+                            class="investigationKpiHeader">
+
+                            <VBox
+                                class="investigationKpiIcon investigationKpiIconOrange"
+                                alignItems="Center"
+                                justifyContent="Center">
+
+                                <core:Icon
+                                    src="sap-icon://employee-pane"
+                                    size="1.4rem"/>
+
+                            </VBox>
+
+                            <Text
+                                text="Assigned"
+                                class="investigationKpiLabel"/>
+
+                        </HBox>
+
+                        <Text
+                            text="{investigationKpi>/assigned}"
+                            class="investigationKpiValue"/>
+
+                    </VBox>
+
+
+                    <!-- IN PROGRESS -->
+
+                    <VBox
+                        class="investigationKpiCard">
+
+                        <HBox
+                            alignItems="Center"
+                            class="investigationKpiHeader">
+
+                            <VBox
+                                class="investigationKpiIcon investigationKpiIconPurple"
+                                alignItems="Center"
+                                justifyContent="Center">
+
+                                <core:Icon
+                                    src="sap-icon://process"
+                                    size="1.4rem"/>
+
+                            </VBox>
+
+                            <Text
+                                text="In Progress"
+                                class="investigationKpiLabel"/>
+
+                        </HBox>
+
+                        <Text
+                            text="{investigationKpi>/inProgress}"
+                            class="investigationKpiValue"/>
+
+                    </VBox>
+
+
+                    <!-- COMPLETED -->
+
+                    <VBox
+                        class="investigationKpiCard">
+
+                        <HBox
+                            alignItems="Center"
+                            class="investigationKpiHeader">
+
+                            <VBox
+                                class="investigationKpiIcon investigationKpiIconGreen"
+                                alignItems="Center"
+                                justifyContent="Center">
+
+                                <core:Icon
+                                    src="sap-icon://complete"
+                                    size="1.4rem"/>
+
+                            </VBox>
+
+                            <Text
+                                text="Completed"
+                                class="investigationKpiLabel"/>
+
+                        </HBox>
+
+                        <Text
+                            text="{investigationKpi>/completed}"
+                            class="investigationKpiValue"/>
+
+                    </VBox>
+
+                </HBox>
+
+
+                <!-- =====================================================
+                     INVESTIGATION WORKLIST
+                     ===================================================== -->
+
+                <Panel
+                    headerText="Investigation Worklist"
+                    class="investigationPanel sapUiMediumMarginTop"
+                    expandable="false"
+                    width="100%">
+
+                    <Table
+                        id="investigationsTable"
+                        width="100%"
+                        growing="true"
+                        growingThreshold="15"
+                        mode="SingleSelectMaster"
+                        selectionChange="onInvestigationSelect"
+
+                        items="{
+                            path: 'investigation>/Investigations',
+                            parameters: {
+                                $$operationMode: 'Server',
+                                $select: 'ID,investigationNumber,claim_ID,investigator_ID,status,findings',
+                                $orderby: 'investigationNumber desc'
+                            }
+                        }"
+
+                        noDataText="No investigations found"
+                        class="investigationTable">
+
+                        <columns>
+
+                            <!-- CLAIM -->
+
+                            <Column
+                                width="13rem">
+
+                                <Text
+                                    text="Claim"/>
+
+                            </Column>
+
+
+                            <!-- INVESTIGATOR -->
+
+                            <Column
+                                width="15rem">
+
+                                <Text
+                                    text="Investigator"/>
+
+                            </Column>
+
+
+                            <!-- STATUS -->
+
+                            <Column
+                                width="11rem">
+
+                                <Text
+                                    text="Status"/>
+
+                            </Column>
+
+
+                            <!-- FINDINGS -->
+
+                            <Column>
+
+                                <Text
+                                    text="Findings"/>
+
+                            </Column>
+
+
+                            <!-- ACTION -->
+
+                            <Column
+                                width="8rem"
+                                >
+
+                                <Text
+                                    text="Action"/>
+
+                            </Column>
+
+                        </columns>
+
+
+                        <items>
+
+                            <ColumnListItem
+                                type="Active"
+                                press="onInvestigationPress">
+
+                                <cells>
+
+                                    <!-- =================================
+                                         CLAIM NUMBER + CLAIM TYPE
+                                         ================================= -->
+
+                                    <VBox>
+                                         <Text
+                                            text="{path: 'investigation>claim_ID', formatter: '.getClaimTypeName'}"
+                                        />
+                                    </VBox>
+
+                                    <!-- =================================
+                                         INVESTIGATOR NAME
+                                         ================================= -->
+
+                                    <Text
+                                        text="{
+                                            path: 'investigation>investigator_ID',
+                                            formatter: '.getInvestigatorName'
+                                        }"/>
+
+
+                                    <!-- =================================
+                                         STATUS
+                                         ================================= -->
+
+                                    <ObjectStatus
+                                        text="{investigation>status}"
+                                        state="{
+                                            path: 'investigation>status',
+                                            formatter: '.formatInvestigationState'
+                                        }"/>
+
+
+                                    <!-- =================================
+                                         FINDINGS
+                                         ================================= -->
+
+                                    <Text
+                                        text="{investigation>findings}"
+                                        maxLines="2"
+                                        wrapping="true"/>
+
+
+                                    <!-- =================================
+                                         ACTION
+                                         ================================= -->
+
+                                    <Button
+                                        icon="sap-icon://display"
+                                        tooltip="View Investigation"
+                                        type="Transparent"
+                                        press="onInvestigationPress"/>
+
+                                </cells>
+
+                            </ColumnListItem>
+
+                        </items>
+
+                    </Table>
+
+                </Panel>
+
+
+                <!-- =====================================================
+                     FRAUD RISK ASSESSMENT
+                     ===================================================== -->
+
+                <Panel
+                    headerText="Fraud Risk Assessment"
+                    class="investigationPanel sapUiMediumMarginTop"
+                    expandable="false"
+                    width="100%">
+
+                    <Table
+                        id="fraudRiskTable"
+                        width="100%"
+                        growing="true"
+                        growingThreshold="10"
+
+                        items="{
+                            path: 'investigation>/FraudRiskScores',
+                            parameters: {
+                                $select: 'ID,claim_ID,riskScore,riskLevel'
+                            }
+                        }"
+
+                        noDataText="No fraud risk assessments found"
+                        class="fraudRiskTable">
+
+                        <columns>
+
+                            <Column
+                                width="12rem">
+
+                                <Text
+                                    text="Claim"/>
+
+                            </Column>
+
+                            <Column
+                                width="10rem"
+                                hAlign="Center">
+
+                                <Text
+                                    text="Risk Score"/>
+
+                            </Column>
+
+                            <Column
+                                width="10rem">
+
+                                <Text
+                                    text="Risk Level"/>
+
+                            </Column>
+
+                            <Column>
+
+                                <Text
+                                    text="Assessment"/>
+
+                            </Column>
+
+                        </columns>
+
+
+                        <items>
+
+                            <ColumnListItem>
+
+                                <cells>
+
+                                    <!-- CLAIM -->
+
+                                    <ObjectIdentifier
+                                        title="{
+                                            path: 'investigation>claim_ID',
+                                            formatter: '.getClaimTypeName'
+                                        }"/>
+
+
+                                    <!-- RISK SCORE -->
+
+                                    <ObjectNumber
+                                        number="{investigation>riskScore}"
+                                        unit="/ 100"
+                                        state="{
+                                            path: 'investigation>riskLevel',
+                                            formatter: '.formatRiskNumberState'
+                                        }"/>
+
+
+                                    <!-- RISK LEVEL -->
+
+                                    <ObjectStatus
+                                        text="{investigation>riskLevel}"
+                                        state="{
+                                            path: 'investigation>riskLevel',
+                                            formatter: '.formatRiskState'
+                                        }"/>
+
+
+                                    <!-- ASSESSMENT -->
+
+                                    <Text
+                                        text="{
+                                            path: 'investigation>riskLevel',
+                                            formatter: '.getRiskDescription'
+                                        }"/>
+
+                                </cells>
+
+                            </ColumnListItem>
+
+                        </items>
+
+                    </Table>
+
+                </Panel>
+
+
+   
+            
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

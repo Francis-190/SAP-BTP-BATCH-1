@@ -1,0 +1,332 @@
+<mvc:View
+    controllerName="claimsure.app.controller.Claims"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        title="{i18n>navClaims}"
+        showNavButton="false"
+        class="csPage"
+    >
+        <content>
+            <Table
+                id="claimsTable"
+                mode="SingleSelectLeft"
+                includeItemInSelection="true"
+                growing="true"
+                growingThreshold="20"
+                autoPopinMode="true"
+                popinLayout="GridSmall"
+                sticky="ColumnHeaders,HeaderToolbar"
+                fixedLayout="true"
+                inset="false"
+                width="100%"
+                selectionChange="onClaimSelectionChange"
+                class="claimsTable"
+                items="{
+                    path: '/Claims',
+                    parameters: {
+                        $select: 'ID,claimNumber,claimedAmount,status,incidentDate,description,customer_ID,claimType_ID,policy_ID',
+                        $orderby: 'claimNumber desc',
+                        $$operationMode: 'Server'
+                    }
+                }"
+                noDataText="{i18n>noClaims}"
+            >
+                <!-- ================================================= -->
+                <!-- HEADER TOOLBAR                                    -->
+                <!-- ================================================= -->
+
+                <headerToolbar>
+                    <OverflowToolbar class="claimsToolbar">
+                        <Title
+                            text="{i18n>navClaims}"
+                            level="H2"
+                        />
+
+                        <ToolbarSpacer />
+
+                        <SearchField
+                            id="claimsSearch"
+                            width="12rem"
+                            liveChange="onSearch"
+                            search="onSearch"
+                            placeholder="{i18n>searchClaims}"
+                        />
+
+                        <ComboBox
+                            id="statusFilter"
+                            width="10rem"
+                            placeholder="{i18n>filterStatus}"
+                            selectionChange="onStatusFilterChange"
+                        >
+                            <core:Item
+                                text="Submitted"
+                                key="Submitted"
+                            />
+
+                            <core:Item
+                                text="Under Review"
+                                key="UnderReview"
+                            />
+
+                            <core:Item
+                                text="Investigation Required"
+                                key="InvestigationRequired"
+                            />
+
+                            <core:Item
+                                text="Pending Approval"
+                                key="PendingApproval"
+                            />
+
+                            <core:Item
+                                text="Approved"
+                                key="Approved"
+                            />
+
+                            <core:Item
+                                text="Rejected"
+                                key="Rejected"
+                            />
+
+                            <core:Item
+                                text="Paid"
+                                key="Paid"
+                            />
+                        </ComboBox>
+                            
+                            
+
+                        <ToolbarSeparator />
+
+                        <!-- ========================================= -->
+                        <!-- AI ANALYSIS                                -->
+                        <!-- ========================================= -->
+
+                        <Button
+                            id="analyzeAIButton"
+                            text="Analyze with AI"
+                            icon="sap-icon://ai"
+                            type="Emphasized"
+                            visible="false"
+                            enabled="false"
+                            press="onAnalyzeSelectedClaim"
+                            tooltip="Analyze selected claim with AI"
+                        />
+
+                        <!-- ========================================= -->
+                        <!-- NEW CLAIM                                  -->
+                        <!-- ========================================= -->
+
+                        <Button
+                            id="newClaimButton"
+                            icon="sap-icon://add"
+                            text="{i18n>newClaim}"
+                            type="Emphasized"
+                            press="onCreateClaim"
+                        />
+                        <Button
+                                id="refreshClaimsButton"
+                                icon="sap-icon://refresh"
+                                tooltip="Refresh claims"
+                                type="Transparent"
+                                press="onRefreshClaims"
+                                class="regActionBtn regRefreshBtn"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <!-- ================================================= -->
+                <!-- TABLE COLUMNS                                     -->
+                <!-- ================================================= -->
+
+                <columns>
+                    <!-- CLAIM NUMBER -->
+
+                    <Column
+                        width="9rem"
+                        importance="High"
+                    >
+                        <Text text="{i18n>colClaimNumber}" />
+                    </Column>
+
+                    <!-- CUSTOMER -->
+
+                    <Column
+                        width="11rem"
+                        importance="High"
+                    >
+                        <Text text="{i18n>colCustomer}" />
+                    </Column>
+
+                    <!-- CLAIM TYPE -->
+
+                    <Column
+                        width="12rem"
+                        importance="Medium"
+                    >
+                        <Text text="{i18n>colClaimType}" />
+                    </Column>
+
+                    <!-- CLAIM AMOUNT -->
+
+                    <Column
+                        width="10rem"
+                        hAlign="End"
+                        importance="High"
+                    >
+                        <Text text="{i18n>colAmount}" />
+                    </Column>
+
+                    <!-- INCIDENT DATE -->
+
+                    <Column
+                        width="9rem"
+                        importance="Medium"
+                    >
+                        <Text text="{i18n>colIncidentDate}" />
+                    </Column>
+
+                    <!-- STATUS -->
+
+                    <Column
+                        width="12rem"
+                        importance="High"
+                    >
+                        <Text text="{i18n>colStatus}" />
+                    </Column>
+
+                    <!-- ACTION -->
+
+                    <Column
+                        width="9rem"
+                        hAlign="Center"
+                        importance="High"
+                    >
+                        <Text text="Action" />
+                    </Column>
+                    <Column width="9rem" hAlign="Center" importance="High">
+                            <Text text="Manage" />
+                        </Column>
+                </columns>
+
+                <!-- ================================================= -->
+                <!-- TABLE ROWS                                        -->
+                <!-- ================================================= -->
+
+                <items>
+                    <ColumnListItem
+                        type="Navigation"
+                        press="onClaimPress"
+                    >
+                        <cells>
+                            <!-- CLAIM NUMBER -->
+
+                            <ObjectIdentifier title="{claimNumber}" />
+
+                            <!-- CUSTOMER -->
+
+                            <Text
+                                text="{
+                                    parts: [
+                                        {path: 'customer_ID'},
+                                        {path: 'lookups>/customers'}
+                                    ],
+                                    formatter: '.formatter.idToName'
+                                }"
+                                wrapping="false"
+                            />
+
+                            <!-- CLAIM TYPE -->
+
+                            <Text
+                                text="{
+                                    parts: [
+                                        {path: 'claimType_ID'},
+                                        {path: 'lookups>/claimTypes'}
+                                    ],
+                                    formatter: '.formatter.idToName'
+                                }"
+                                wrapping="false"
+                            />
+
+                            <!-- CLAIM AMOUNT -->
+
+                            <ObjectNumber
+                                number="{
+                                    path: 'claimedAmount',
+                                    formatter: '.formatter.indianCurrency'
+                                }"
+                            />
+
+                            <!-- INCIDENT DATE -->
+
+                            <Text
+                                text="{
+                                    path: 'incidentDate',
+                                    formatter: '.formatter.shortDate'
+                                }"
+                                wrapping="false"
+                            />
+
+                            <!-- STATUS -->
+
+                            <ObjectStatus
+                                text="{status}"
+                                state="{
+                                    path: 'status',
+                                    formatter: '.formatter.statusState'
+                                }"
+                                icon="{
+                                    path: 'status',
+                                    formatter: '.formatter.statusIcon'
+                                }"
+                            />
+
+                            <!-- APPROVAL ACTION -->
+
+                            <Button
+                                text="Approval"
+                                icon="sap-icon://approvals"
+                                type="Emphasized"
+                                visible="{
+                                    path: 'status',
+                                    targetType: 'any',
+                                    formatter: '.formatter.approvalButtonVisible'
+                                }"
+                                press="onGoForApproval"
+                                tooltip="Go for Approval"
+                            />
+
+                            <HBox justifyContent="Center">
+                                <Button
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    tooltip="Edit claim"
+                                    visible="{
+                                        path: 'status',
+                                        targetType: 'any',
+                                        formatter: '.formatter.isEditable'
+                                    }"
+                                    press="onEditClaim"/>
+                                <Button
+                                    icon="sap-icon://delete"
+                                    type="Reject"
+                                    tooltip="Delete claim"
+                                    visible="{
+                                        path: 'status',
+                                        targetType: 'any',
+                                        formatter: '.formatter.isEditable'
+                                    }"
+                                    press="onDeleteClaim"/>
+                            </HBox>
+                        </cells>
+
+                        
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

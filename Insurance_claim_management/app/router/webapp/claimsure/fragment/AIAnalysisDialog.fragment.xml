@@ -1,0 +1,96 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="aiAnalysisDialog"
+        title="AI Claim Analysis"
+        contentWidth="60rem"
+        contentHeight="70%"
+        resizable="true"
+        draggable="true"
+        stretchOnPhone="true"
+    >
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <HBox
+                    justifyContent="SpaceBetween"
+                    alignItems="Start"
+                >
+                    <VBox>
+                        <Title
+                            text="{ai>/claimNumber}"
+                            level="H2"
+                        />
+
+                        <HBox
+                            class="sapUiSmallMarginTop"
+                            alignItems="Center"
+                            wrap="Wrap"
+                        >
+                            <Label
+                                text="Status:"
+                                class="sapUiTinyMarginEnd"
+                            />
+
+                            <ObjectStatus
+                                text="{ai>/status}"
+                                state="{ai>/statusState}"
+                                class="sapUiSmallMarginEnd"
+                            />
+
+                            <Label
+                                text="Risk Level:"
+                                class="sapUiTinyMarginEnd"
+                            />
+
+                            <ObjectStatus
+                                text="{ai>/riskLevel}"
+                                state="{ai>/riskState}"
+                                class="sapUiSmallMarginEnd"
+                            />
+
+                            <Label
+                                text="Fraud Score:"
+                                class="sapUiTinyMarginEnd"
+                            />
+
+                            <ObjectStatus
+                                text="{ai>/fraudScore}"
+                                state="{ai>/fraudState}"
+                            />
+                        </HBox>
+                    </VBox>
+
+                    <ObjectNumber
+                        number="{ai>/claimAmount}"
+                        unit="INR"
+                        emphasized="true"
+                    />
+                </HBox>
+
+                <Title
+                    text="AI Analysis"
+                    level="H3"
+                    class="sapUiLargeMarginTop sapUiSmallMarginBottom"
+                />
+
+                <ScrollContainer
+                    height="25rem"
+                    vertical="true"
+                    horizontal="false"
+                >
+                    <FormattedText htmlText="{ai>/analysisHtml}" />
+                </ScrollContainer>
+            </VBox>
+        </content>
+
+        <buttons>
+            <Button
+                text="Close"
+                icon="sap-icon://decline"
+                press="onCloseAIAnalysis"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

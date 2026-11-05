@@ -1,0 +1,31 @@
+ID,employeeNumber,firstName,lastName,email,department,role,active
+a17e8291-5f18-5a98-95a1-382f1116dedb,EMP-1,Arvind,Krishnan,arvind.krishnan@claimsure.com,Claims Operations,ClaimsAgent,True
+c1d9cc1d-c508-5892-bb67-8ad74c8b16b6,EMP-2,Meenakshi,Sundaram,meenakshi.sundaram@claimsure.com,Fraud Investigation,Investigator,True
+7fa763f1-351a-55a9-b9f5-ac691e28117e,EMP-3,Rajiv,Malhotra,rajiv.malhotra@claimsure.com,Claims Management,ClaimsManager,True
+3c444e77-f06a-5524-a02b-bdddfcbffb41,EMP-4,Priyanka,Joshi,priyanka.joshi@claimsure.com,Finance,FinanceOfficer,True
+94ec0e86-e39e-590d-980c-c9f3ae6d6dc1,EMP-5,Suresh,Babu,suresh.babu@claimsure.com,Administration,Admin,True
+0cf71876-1d4e-5557-baf0-a690bc3adc8d,EMP-6,Kavitha,Raman,kavitha.raman@claimsure.com,Claims Operations,ClaimsAgent,True
+5209666c-bc2b-5f01-b23e-e59d0352b37a,EMP-7,Faisal,Mirza,faisal.mirza@claimsure.com,Fraud Investigation,Investigator,True
+71f5cb5f-ef85-57bd-aef7-9a9d6f5c55d8,EMP-8,Neelam,Saxena,neelam.saxena@claimsure.com,Claims Management,ClaimsManager,True
+7c84d477-091c-5ecf-88b8-5544cac373aa,EMP-9,Harish,Kapoor,harish.kapoor@claimsure.com,Finance,FinanceOfficer,True
+98cb1386-1b7f-5e16-92c3-8e6e35a503b7,EMP-10,Divya,Bhatt,divya.bhatt@claimsure.com,Administration,Admin,False
+328b36d2-6970-5819-ab49-384c8078b879,EMP-11,Vijay,Anand,vijay.anand@claimsure.com,Claims Operations,ClaimsAgent,True
+6d7dae44-58e9-52b8-8471-d87084adc18f,EMP-12,Shalini,Verma,shalini.verma@claimsure.com,Fraud Investigation,Investigator,True
+9ac53f47-7f64-58df-9f4a-722d14581580,EMP-13,Amitabh,Sinha,amitabh.sinha@claimsure.com,Claims Management,ClaimsManager,True
+bbc0f403-7f1b-51fa-80e1-20d7d18a9d38,EMP-14,Pallavi,Desai,pallavi.desai@claimsure.com,Finance,FinanceOfficer,True
+9a014fe0-2429-59b6-ace3-0badb3dbd588,EMP-15,Rohit,Jain,rohit.jain@claimsure.com,Administration,Admin,True
+6daa0352-8192-5637-a5b3-e97f88d0d863,EMP-16,Gayathri,Iyer,gayathri.iyer@claimsure.com,Claims Operations,ClaimsAgent,True
+13e30097-2ae2-5864-a823-18974d1f5905,EMP-17,Manish,Gupta,manish.gupta@claimsure.com,Fraud Investigation,Investigator,True
+2740df21-3df2-51db-b81f-9bfddef30ca9,EMP-18,Ishita,Chopra,ishita.chopra@claimsure.com,Claims Management,ClaimsManager,True
+0200ddd6-5662-5337-b23b-313ff1f97d77,EMP-19,Varun,Bhatia,varun.bhatia@claimsure.com,Finance,FinanceOfficer,True
+b1f46ea1-2208-5c6a-a9a5-1eb74eae3aa5,EMP-20,Smita,Naik,smita.naik@claimsure.com,Administration,Admin,False
+d3d01089-7cfb-5a37-bb45-09e586d18bdd,EMP-21,Akhil,Nambiar,akhil.nambiar@claimsure.com,Claims Operations,ClaimsAgent,True
+53948e18-bc53-51f4-944c-11d25a0564ed,EMP-22,Tanvi,Shah,tanvi.shah@claimsure.com,Fraud Investigation,Investigator,True
+155aa298-43a8-52ab-8d87-f03df8cc10a0,EMP-23,Naveen,Kumar,naveen.kumar@claimsure.com,Claims Management,ClaimsManager,True
+95c608cc-d1d3-5d1b-b027-c617d00fcfdd,EMP-24,Asha,Pillai,asha.pillai@claimsure.com,Finance,FinanceOfficer,True
+1af12681-caa5-5bc6-9278-62d0b5045dd8,EMP-25,Vivek,Arora,vivek.arora@claimsure.com,Administration,Admin,True
+9f78c88b-b63a-5a74-9d8d-9623cea3502f,EMP-26,Mythili,Venkatesh,mythili.venkatesh@claimsure.com,Claims Operations,ClaimsAgent,True
+ae992033-2d03-5d31-9e3d-fcf8bc793ad7,EMP-27,Aditya,Bhardwaj,aditya.bhardwaj@claimsure.com,Fraud Investigation,Investigator,True
+103f56a2-77ea-52ae-951f-487bee01f722,EMP-28,Sonal,Kaur,sonal.kaur@claimsure.com,Claims Management,ClaimsManager,True
+9c65a6cd-39cb-5acf-bf88-fe12674409dd,EMP-29,Prakash,Shetty,prakash.shetty@claimsure.com,Finance,FinanceOfficer,True
+4f6d4150-7b06-5afd-b1fb-712474d03128,EMP-30,Tara,Naidu,tara.naidu@claimsure.com,Administration,Admin,False

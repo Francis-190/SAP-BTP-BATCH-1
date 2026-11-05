@@ -1,0 +1,21 @@
+{
+  "schema-version": "0.1",
+  "instance_min_count": 1,
+  "instance_max_count": 3,
+  "scaling_rules": [
+    {
+      "metric_type": "cpu",
+      "threshold": 70,
+      "operator": ">",
+      "adjustment": "+1",
+      "cool_down_secs": 300
+    },
+    {
+      "metric_type": "cpu",
+      "threshold": 30,
+      "operator": "<",
+      "adjustment": "-1",
+      "cool_down_secs": 300
+    }
+  ]
+}

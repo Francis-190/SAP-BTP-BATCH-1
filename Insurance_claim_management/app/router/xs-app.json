@@ -1,0 +1,19 @@
+{
+  "welcomeFile": "/claimsure/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/claimsure/(.*)$",
+      "target": "$1",
+      "localDir": "webapp/claimsure",
+      "authenticationType": "none"
+    },
+    {
+      "source": "^/odata/(.*)$",
+      "target": "/odata/$1",
+      "destination": "srv-api",
+      "csrfProtection": true,
+      "authenticationType": "none"
+    }
+  ]
+}

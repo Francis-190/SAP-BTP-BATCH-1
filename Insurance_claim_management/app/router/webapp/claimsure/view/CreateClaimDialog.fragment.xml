@@ -1,0 +1,148 @@
+
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified">
+
+    <Dialog
+        id="createClaimDialog"
+        title="New Claim"
+        contentWidth="28rem"
+        draggable="true"
+        resizable="true">
+
+        <content>
+            <VBox class="sapUiSmallMargin">
+
+                <!-- Customer -->
+                <Label
+                    text="Customer"
+                    labelFor="ccCustomer"
+                    required="true"/>
+
+            <ComboBox
+                id="ccCustomer"
+                width="100%"
+                class="sapUiTinyMarginBottom"
+                items="{admin>/Customers}"
+                selectedKey=""
+                change=".onCustomerChange">
+
+                <core:Item
+                    key="{admin>ID}"
+                    text="{admin>firstName} {admin>lastName})"/>
+            </ComboBox>
+
+                <!-- Policy -->
+                <Label
+                    text="Policy"
+                    labelFor="ccPolicy"
+                    required="true"/>
+
+           <ComboBox
+                id="ccPolicy"
+                width="100%"
+                class="sapUiTinyMarginBottom"
+                enabled="false"
+                items="{dlg>/categories}"
+                change=".onPolicyChange">
+                <core:Item key="{dlg>key}" text="{dlg>text}"/>
+            </ComboBox>
+
+                <!-- Claim Type -->
+               <Label
+                    text="Policy Type"
+                    labelFor="ccClaimType"
+                    required="true"/>
+
+                <ComboBox
+                    id="ccClaimType"
+                    width="100%"
+                    class="sapUiTinyMarginBottom"
+                    enabled="false"
+                    items="{
+                        path: '/Policies',
+                        parameters: { $$operationMode: 'Server' }
+                    }">
+                    <core:Item
+                        key="{ID}"
+                        text="{
+                            parts: [
+                                {path: 'claimType_ID'},
+                                {path: 'lookups>/claimTypes'}
+                            ],
+                            formatter: '.formatter.idToName'
+                        }">
+                        <core:customData>
+                            <core:CustomData key="claimTypeId" value="{claimType_ID}"/>
+                        </core:customData>
+                    </core:Item>
+                </ComboBox>
+
+                <!-- Claimed Amount -->
+                <Label
+                    text="Claimed Amount"
+                    labelFor="ccAmount"
+                    required="true"/>
+
+                <Input
+                    id="ccAmount"
+                    type="Number"
+                    width="100%"
+                    class="sapUiTinyMarginBottom"/>
+
+                <!-- Incident Date -->
+                <Label
+                    text="Incident Date"
+                    labelFor="ccDate"
+                    required="true"/>
+
+                <DatePicker
+                    id="ccDate"
+                    width="100%"
+                    class="sapUiTinyMarginBottom"
+                    valueFormat="yyyy-MM-dd"
+                    displayFormat="medium"/>
+
+                <!-- Supporting Document -->
+                <Label
+                    text="Supporting Document"
+                    labelFor="ccFile"
+                    required="true"/>
+
+                <u:FileUploader
+                    id="ccFile"
+                    width="100%"
+                    class="sapUiTinyMarginBottom"
+                    fileType="pdf,jpg,jpeg,png,doc,docx"
+                    placeholder="Choose a file to attach"
+                    change=".onDocumentFileChange"/>
+
+                <!-- Description -->
+                <Label
+                    text="Description"
+                    labelFor="ccDesc"/>
+
+                <TextArea
+                    id="ccDesc"
+                    width="100%"
+                    rows="3"/>
+
+            </VBox>
+        </content>
+
+        <beginButton>
+            <Button
+                text="{i18n>btnSave}"
+                type="Emphasized"
+                press=".onConfirmCreateClaim"/>
+        </beginButton>
+
+        <endButton>
+            <Button
+                text="Cancel"
+                press=".onCancelCreateClaim"/>
+        </endButton>
+
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,20 @@
+{
+  "sap.app": {
+    "crossNavigation": {
+      "inbounds": {
+        "claimsure-display": {
+          "semanticObject": "claimsure",
+          "action": "display",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "Insurance_claim_management.service"
+  }
+}

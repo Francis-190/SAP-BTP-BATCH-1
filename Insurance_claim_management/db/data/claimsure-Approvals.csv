@@ -1,0 +1,18 @@
+ID,approvalNumber,claim_ID,approver_ID,approvalLevel,decision,comments
+b783d4db-9dd6-5a46-bf8d-c7e65c80ad44,APR001,91ca35a1-c0da-57e0-83ac-0eac69369b7c,7fa763f1-351a-55a9-b9f5-ac691e28117e,ClaimsManager,Approved,Documents verified and coverage confirmed; approved for payout
+67e7637c-ff55-5af6-8e5f-2472e00dd09a,APR002,a9cf1f1f-941f-560c-9dff-bf84dcf480eb,71f5cb5f-ef85-57bd-aef7-9a9d6f5c55d8,ClaimsManager,Approved,Documents verified and coverage confirmed; approved for payout
+40c26797-fc21-5d72-9fd9-a46afae3f930,APR003,031af8ca-13aa-5bcc-a5da-32100d25d749,9ac53f47-7f64-58df-9f4a-722d14581580,ClaimsManager,Approved,Documents verified and coverage confirmed; approved for payout
+65507dd0-e282-5dd1-80cc-b1a8ec604119,APR004,e77c6366-fbb4-543f-82bd-cc00d93734c1,3c444e77-f06a-5524-a02b-bdddfcbffb41,FinanceOfficer,Approved,Documents verified and coverage confirmed; approved for payout
+a0f679ac-72b9-500b-891d-23009be8d9eb,APR005,b62783c2-f4c4-50f8-b99f-a2e26b856ee3,2740df21-3df2-51db-b81f-9bfddef30ca9,ClaimsManager,Rejected,Rejected after investigation: damage predates incident and estimate is inflated (fraud confirmed)
+2b742bf3-1edc-504c-9c6b-92c03bb2643c,APR006,298837aa-cf1f-5d78-a85f-32f35ded41f9,9f78c88b-b63a-5a74-9d8d-9623cea3502f,ClaimsAgent,Approved,Documents verified and coverage confirmed; approved for payout
+08355856-1a94-517c-a1be-6014ff6b71e8,APR007,4bf8cd9a-f68f-5a50-b622-a1cc0198a715,155aa298-43a8-52ab-8d87-f03df8cc10a0,ClaimsManager,Rejected,Rejected after investigation: no forced entry and invoices are fabricated (fraud confirmed)
+8732139e-8f62-5129-9a02-b0b453979e8f,APR008,4cc3702c-3267-5864-bfcc-673f6dddb468,103f56a2-77ea-52ae-951f-487bee01f722,ClaimsManager,Approved,Documents verified and coverage confirmed; approved for payout
+dc4979dd-507e-5892-b41d-71989c8acb2a,APR009,648d604e-517c-5222-bfd8-5b95d4d04321,328b36d2-6970-5819-ab49-384c8078b879,ClaimsAgent,Rejected,"Rejected: damage caused by wear and tear, which is excluded under policy terms"
+9f2e3996-30fe-5b1a-b6b7-57ea01786080,APR010,9369b1fb-e4fa-5bc2-9b4c-78d6579773ec,7c84d477-091c-5ecf-88b8-5544cac373aa,FinanceOfficer,Approved,Documents verified and coverage confirmed; approved for payout
+5e02ecc1-a486-5ea4-b5da-7c6eb7ef25ca,APR011,dca730e0-2820-5021-bb31-4f12ee0e9ab8,bbc0f403-7f1b-51fa-80e1-20d7d18a9d38,FinanceOfficer,Pending,Awaiting FinanceOfficer review; documents received and under verification
+861e859e-5886-5e4d-acc5-579f6607ba9b,APR012,f5430905-b8eb-51f3-b557-e017390197b2,7fa763f1-351a-55a9-b9f5-ac691e28117e,ClaimsManager,Approved,Documents verified and coverage confirmed; approved for payout
+337975b5-9a35-55d3-afa3-f267debfa420,APR013,598fed08-dc91-50ed-aee1-0022ae2bf3bb,71f5cb5f-ef85-57bd-aef7-9a9d6f5c55d8,ClaimsManager,Rejected,Rejected: incident date is after policy expiry; policy was not renewed
+4e0d6a22-2d52-5a0e-b8a2-71a370d79446,APR014,001f2d53-81bd-5a06-8c1a-b12d91dc6cc9,328b36d2-6970-5819-ab49-384c8078b879,ClaimsAgent,Approved,Documents verified and coverage confirmed; approved for payout
+a41d4b0a-cb83-52c4-99fd-b63f2402b405,APR015,055fc379-df0b-59f8-b279-c31fca51a167,9ac53f47-7f64-58df-9f4a-722d14581580,ClaimsManager,Pending,Awaiting ClaimsManager review; documents received and under verification
+ca1d0d6f-196a-5f83-ab82-c7b251c304a6,APR016,7cca5857-226a-50d6-ad8b-b07983f9b908,9f78c88b-b63a-5a74-9d8d-9623cea3502f,ClaimsAgent,Pending,Awaiting ClaimsAgent review; documents received and under verification
+be08fbc7-aa7b-5063-a9a6-a86db4a64f3a,APR017,d1bcae2a-e5c1-5941-9ae0-7e8ed1cb0423,2740df21-3df2-51db-b81f-9bfddef30ca9,ClaimsManager,Pending,Awaiting ClaimsManager review; documents received and under verification

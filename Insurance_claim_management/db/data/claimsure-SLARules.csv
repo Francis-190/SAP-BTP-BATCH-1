@@ -1,0 +1,31 @@
+ID,ruleName,claimType_ID,resolutionHours
+92f979f2-dbf2-5f86-8109-d233a5afbe5d,Own Damage - Accident SLA Rule,ea35784b-7c01-51c5-a97a-c8f05d2f0fa0,120
+a2b6dc65-4db2-5621-91c8-eae4ec25149e,Theft & Total Loss SLA Rule,2a93526d-ae07-57ee-99c0-6b1b95c4860d,240
+88fbd83d-ce34-5c1e-9696-4b175452009f,Fire & Explosion SLA Rule,b542effe-33ac-5caa-b6b3-7d287e358483,120
+cc9d391d-41dd-5664-ab7b-68a43748bff0,Windshield & Glass Damage SLA Rule,b230814b-b285-5800-949d-f439970f1b0d,48
+4646de27-6ac1-587b-a30d-dba667e65c41,Third Party Liability SLA Rule,f397037b-be4a-569f-a8c3-54cb48f51e65,120
+550363ab-378f-56c2-ae65-0f783ce2bca5,Roadside Assistance SLA Rule,616de542-b268-591f-845d-e25a4ca78bb1,48
+32b66e6b-ccc9-55ff-9b07-f79af642c576,Vandalism & Riot Damage SLA Rule,ff223fa1-f312-53f5-9ff3-4400a1d1d429,96
+e5b19011-13b4-5fa5-b865-37acf66ccd56,Engine Protection (Hydrolock) SLA Rule,5eaea9c2-c63e-5679-8b51-ac6906de8324,120
+e7fdc806-a16c-5a33-b14f-448db9bc209d,Owner-Driver Personal Accident SLA Rule,994ad717-c911-576d-bbbf-468066fd7514,120
+66cba49c-e878-58a6-82cf-d86a58c90f3d,Pay-As-You-Drive Cover SLA Rule,59afa34a-32b6-5ea3-b6f7-7ba5d0245339,120
+60e55ae5-044a-53be-9fa9-a8abce05a569,Hospitalization SLA Rule,ad5fdac1-a97d-54c1-b9c9-777410487040,72
+88421d14-7b71-5649-ab92-d7acadfdd0f7,Pre & Post Hospitalization SLA Rule,f66c0147-6791-5fbd-88a5-32c414801c87,72
+33dfe381-9bdf-5405-8f22-0fb1850e5658,Surgery SLA Rule,2b7eff31-0cbb-5bd4-af81-377999ec12ad,96
+b6a51854-653e-5296-b5bc-db8b2cde6c5e,Accidental Injury SLA Rule,eaa975c6-b7f5-571c-a557-40e92f8c05f7,72
+caebe4b9-24c3-55e2-a30d-f9257de531bc,Critical Illness SLA Rule,4ea6c4e8-128a-5768-945c-7f6fa6bfa649,240
+ffb713bc-6745-557c-b1cb-2e92529d26d7,Maternity SLA Rule,485850dd-0cf7-5490-ab04-7cb899ebff59,120
+400ec297-eef4-58fe-a424-1b9a3a194c03,Domiciliary Treatment SLA Rule,f8195358-f345-5830-815f-dbf22a283db7,72
+8119ace4-d36b-57b1-8f9b-806a942159b7,Emergency & Ambulance SLA Rule,1f5e8801-753f-5a4b-8045-f1c8d3ddaadf,24
+50f0be36-c968-56cb-9821-cb1393f107c4,OPD Consultation SLA Rule,06648643-49d6-5a10-ac5d-6b76f5418be0,48
+494cb310-257c-5204-a2a8-aa75bdaeb208,Medicine Reimbursement SLA Rule,5ba833d8-73b4-5e90-8ecd-c11a7f891c24,48
+94970977-3a74-5d82-a0ed-d0e274e3729c,Fire & Allied Perils SLA Rule,c0d2e68e-6c07-568b-82c2-f0d204792eb3,240
+e9b7c7f4-79dc-53e9-a3fa-91949ca0aa7e,Water Damage & Pipe Burst SLA Rule,a2393c41-7e61-52ae-b8d8-cab042362996,120
+e3c5d4a2-5b45-575c-af9d-ec8881a2bb72,Burglary & House-Breaking SLA Rule,fb73eaf8-e802-5f0f-b449-74976e97747e,120
+37fdab95-8621-5263-b9fc-005ed5bf7985,"Storm, Cyclone & Flood (STFI) SLA Rule",0f941a8c-3af0-596a-9f23-162a653c13a3,120
+efdf8866-6c82-5a55-8833-0faf39444cb6,Jewellery & Valuables SLA Rule,391226fd-8794-516c-a2dc-ded1163b6fca,120
+f7919900-d24d-5dd6-93e5-d5be69dd39f9,Malicious Damage & Riot SLA Rule,cd6fd2af-8149-5adb-8813-6847fff1676b,120
+fbfbcd6e-90e0-5767-bc16-40fabf82ba8b,Electrical Appliance Breakdown SLA Rule,756b2714-3c9f-5083-b3d8-52a5df80cd3d,96
+d40c83df-6b16-5555-8d95-8af000d27406,Structural Damage SLA Rule,9a49adec-d5e6-51e5-9462-2ad94d8599fe,240
+c8fd990e-fe0e-5c59-a39c-adb72ebacdca,Home Contents Cover SLA Rule,fcd3e155-10cc-51d6-a73d-a28611f9a2db,96
+4b7a2748-ae5d-550f-8ef5-99011a6b23ce,Public Liability (Legacy) SLA Rule,1e82087f-6edd-5644-bcda-fcc7d4cef2d3,120

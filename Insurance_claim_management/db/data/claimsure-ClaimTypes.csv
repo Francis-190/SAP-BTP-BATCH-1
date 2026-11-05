@@ -1,0 +1,51 @@
+ID,code,name,description,category,active
+ea35784b-7c01-51c5-a97a-c8f05d2f0fa0,VEH1,Car Accident,Repair cost of the insured vehicle damaged in a road accident or collision,Vehicle,True
+2a93526d-ae07-57ee-99c0-6b1b95c4860d,VEH2,Vehicle Theft,Settlement on Insured Declared Value when the vehicle is stolen or declared a total loss,Vehicle,True
+b542effe-33ac-5caa-b6b3-7d287e358483,VEH3,Vehicle Fire,Damage to the insured vehicle caused by fire explosion or self-ignition,Vehicle,True
+b230814b-b285-5800-949d-f439970f1b0d,VEH4,Glass Damage,Repair or replacement of broken windshield windows and mirrors,Vehicle,True
+f397037b-be4a-569f-a8c3-54cb48f51e65,VEH5,Third Party Insurance,Legal liability for damage to third party property vehicle or person caused by the insured vehicle,Vehicle,True
+616de542-b268-591f-845d-e25a4ca78bb1,VEH6,Breakdown & Towing,"Towing flat tyre fuel delivery and on-road breakdown assistance",Vehicle,True
+ff223fa1-f312-53f5-9ff3-4400a1d1d429,VEH7,Vehicle Vandalism,Damage to the insured vehicle caused by malicious acts riots or strikes,Vehicle,True
+5eaea9c2-c63e-5679-8b51-ac6906de8324,VEH8,Engine Damage (Flood),Add-on cover for engine and gearbox damage from water ingression after flooding,Vehicle,True
+994ad717-c911-576d-bbbf-468066fd7514,VEH9,Driver Personal Accident,Compensation for death or disability of the owner-driver in a vehicle accident,Vehicle,True
+59afa34a-32b6-5ea3-b6f7-7ba5d0245339,VEH10,Pay As You Drive,Discontinued usage-based motor plan; no longer sold to new customers,Vehicle,False
+ad5fdac1-a97d-54c1-b9c9-777410487040,HEA1,Hospital Admission,"In-patient hospital admission of 24 hours or more including room rent doctor and nursing charges",Health,True
+f66c0147-6791-5fbd-88a5-32c414801c87,HEA2,Pre & Post Hospital Expenses,Medical expenses incurred before admission and after discharge for the same illness,Health,True
+2b7eff31-0cbb-5bd4-af81-377999ec12ad,HEA3,Surgery,"Planned or emergency surgical procedures including surgeon anaesthesia and operation theatre charges",Health,True
+eaa975c6-b7f5-571c-a557-40e92f8c05f7,HEA4,Accidental Injury,Treatment of injuries and fractures resulting from an accident,Health,True
+4ea6c4e8-128a-5768-945c-7f6fa6bfa649,HEA5,Critical Illness,Lump-sum benefit on first diagnosis of a listed critical illness such as cancer or heart disease,Health,True
+485850dd-0cf7-5490-ab04-7cb899ebff59,HEA6,Maternity,Delivery newborn and maternity related hospital expenses,Health,True
+f8195358-f345-5830-815f-dbf22a283db7,HEA7,Home Treatment,Discontinued cover for home treatment; now handled under Hospitalization,Health,False
+1f5e8801-753f-5a4b-8045-f1c8d3ddaadf,HEA8,Emergency & Ambulance,Emergency room treatment and ambulance transport charges,Health,True
+06648643-49d6-5a10-ac5d-6b76f5418be0,HEA9,Doctor Consultation,"Out-patient doctor consultation diagnostics and day-to-day treatment",Health,True
+5ba833d8-73b4-5e90-8ecd-c11a7f891c24,HEA10,Medicine Expenses,Reimbursement of prescribed medicines purchased during treatment,Health,True
+c0d2e68e-6c07-568b-82c2-f0d204792eb3,PRO1,Home Fire Damage,Damage to the building or contents caused by fire lightning or explosion,Property,True
+a2393c41-7e61-52ae-b8d8-cab042362996,PRO2,Water Leakage Damage,Damage caused by burst pipes leakage or overflow of water tanks,Property,True
+fb73eaf8-e802-5f0f-b449-74976e97747e,PRO3,Home Burglary,Loss of contents following theft involving forcible entry or house-breaking,Property,True
+0f941a8c-3af0-596a-9f23-162a653c13a3,PRO4,Flood & Storm Damage,Damage to the property caused by storm cyclone flood or inundation,Property,True
+391226fd-8794-516c-a2dc-ded1163b6fca,PRO5,Jewellery Theft & Loss,Loss or damage of declared jewellery and valuables kept at the insured premises,Property,True
+cd6fd2af-8149-5adb-8813-6847fff1676b,PRO6,Property Vandalism,Damage to the property caused by vandalism riot or strike,Property,True
+756b2714-3c9f-5083-b3d8-52a5df80cd3d,PRO7,Electrical Appliance Damage,Damage to household appliances and wiring due to short circuit or power surge,Property,True
+9a49adec-d5e6-51e5-9462-2ad94d8599fe,PRO8,Building Structure Damage,Damage to walls roof or foundation caused by an insured peril,Property,True
+fcd3e155-10cc-51d6-a73d-a28611f9a2db,PRO9,Household Goods Damage,Loss or damage to furniture electronics and household goods,Property,True
+1e82087f-6edd-5644-bcda-fcc7d4cef2d3,PRO10,Visitor Injury Liability,Discontinued liability cover for injury to visitors on the insured premises,Property,False
+a1b2c3d4-1001-4001-8001-000000000031,LIF1,Term Life Insurance,Financial benefit to the nominee in the event of the insured person's death during the policy term,Life,True
+a1b2c3d4-1002-4002-8002-000000000032,LIF2,Whole Life Insurance,"Life coverage for the insured person's lifetime subject to the policy terms and conditions",Life,True
+a1b2c3d4-1003-4003-8003-000000000033,LIF3,Endowment Policy,Life insurance coverage with a maturity benefit payable if the insured survives until the policy maturity date,Life,True
+a1b2c3d4-1004-4004-8004-000000000034,LIF4,Group Life Insurance,Life coverage provided to eligible employees or members of an organization under a group policy,Life,True
+a1b2c3d4-1005-4005-8005-000000000035,LIF5,Accidental Death Benefit,Additional benefit payable to the nominee when death results from a covered accident,Life,True
+a1b2c3d4-1006-4006-8006-000000000036,LIF6,Critical Illness Life Cover,Lump-sum benefit upon diagnosis of a covered critical illness when the policy conditions are met,Life,True
+a1b2c3d4-1007-4007-8007-000000000037,LIF7,Child Education Plan,Life insurance and savings benefits intended to support a child's future education expenses,Life,True
+a1b2c3d4-1008-4008-8008-000000000038,LIF8,Joint Life Insurance,Life coverage for two insured individuals with benefits determined by the selected joint-life policy terms,Life,True
+a1b2c3d4-1009-4009-8009-000000000039,LIF9,Money Back Policy,Periodic survival benefits payable at specified intervals during the policy term subject to policy conditions,Life,True
+a1b2c3d4-1010-4010-8010-000000000040,LIF10,Legacy Savings Plan,Discontinued life savings product; no longer offered to new customers,Life,False
+a1b2c3d4-2001-4001-8001-000000000041,BUS1,General Liability,Coverage for eligible third-party bodily injury or property damage claims arising from business operations,Business,True
+a1b2c3d4-2002-4002-8002-000000000042,BUS2,Professional Indemnity,Coverage for eligible claims arising from professional negligence errors or omissions,Business,True
+a1b2c3d4-2003-4003-8003-000000000043,BUS3,Workers Compensation,Coverage for eligible employee work-related injuries or occupational illnesses as provided by the policy,Business,True
+a1b2c3d4-2004-4004-8004-000000000044,BUS4,Business Interruption,Coverage for eligible loss of business income resulting from an insured interruption,Business,True
+a1b2c3d4-2005-4005-8005-000000000045,BUS5,Cyber Insurance,Coverage for eligible financial losses and incident response costs resulting from covered cyber incidents,Business,True
+a1b2c3d4-2006-4006-8006-000000000046,BUS6,Commercial Property Damage,Coverage for insured business premises equipment or inventory damaged by a covered event,Business,True
+a1b2c3d4-2007-4007-8007-000000000047,BUS7,Commercial Vehicle Fleet,Coverage for eligible accidents damage and liability involving insured business vehicles,Business,True
+a1b2c3d4-2008-4008-8008-000000000048,BUS8,Product Liability,Coverage for eligible third-party claims involving injury or damage caused by covered products,Business,True
+a1b2c3d4-2009-4009-8009-000000000049,BUS9,Marine Cargo,Coverage for insured business goods during covered transportation by sea air or land,Business,True
+a1b2c3d4-2010-4010-8010-000000000050,BUS10,Legacy Business Protection,Discontinued business insurance product; no longer offered to new customers,Business,False

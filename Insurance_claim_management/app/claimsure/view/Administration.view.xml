@@ -1,0 +1,431 @@
+<mvc:View
+    controllerName="claimsure.app.controller.Administration"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="administrationPage"
+        title="{i18n>navAdmin}"
+        showNavButton="false"
+        class="csPage"
+    >
+        <content>
+            <IconTabBar
+                id="adminTabBar"
+                expandable="false"
+                class="adminTabBar"
+                select="onTabSelect"
+            >
+                <items>
+                    <!-- ================= EMPLOYEES ================= -->
+                    <IconTabFilter
+                        text="{i18n>tabEmployees}"
+                        key="employees"
+                        icon="sap-icon://employee"
+                    >
+                        <Table
+                            id="employeesTable"
+                            items="{list>/employees}"
+                            busy="{list>/busy}"
+                            noDataText="No employees found"
+                            width="100%"
+                            fixedLayout="true"
+                            growing="true"
+                            growingThreshold="20"
+                            class="adminTable"
+                        >
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <Title text="{i18n>tabEmployees}" level="H3" />
+                                    <ToolbarSpacer />
+                                    <Button
+                                        id="refreshEmployeesButton"
+                                        icon="sap-icon://refresh"
+                                        text="Refresh"
+                                        type="Transparent"
+                                        press="onRefreshEmployees"
+                                    />
+                                    <Button
+                                        id="newEmployeeButton"
+                                        icon="sap-icon://add"
+                                        text="New Employee"
+                                        type="Emphasized"
+                                        press="onCreateEmployee"
+                                    />
+                                </OverflowToolbar>
+                            </headerToolbar>
+
+                            <columns>
+                                <Column width="9%"><Text text="{i18n>colEmployeeNo}" /></Column>
+                                <Column width="16%"><Text text="{i18n>colName}" /></Column>
+                                <Column width="24%"><Text text="{i18n>colEmail}" /></Column>
+                                <Column width="16%"><Text text="{i18n>colDepartment}" /></Column>
+                                <Column width="14%"><Text text="{i18n>colRole}" /></Column>
+                                <Column width="9%" hAlign="Center"><Text text="{i18n>colActive}" /></Column>
+                                <Column width="12%" hAlign="Center"><Text text="Actions" /></Column>
+                            </columns>
+
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{list>employeeNumber}" wrapping="false" />
+                                        <Text text="{list>firstName} {list>lastName}" wrapping="true" />
+                                        <Text text="{list>email}" wrapping="true" />
+                                        <Text text="{list>department}" wrapping="true" />
+                                        <Text text="{list>role}" wrapping="true" />
+                                        <Switch state="{list>active}" change="onEmployeeActiveChange" />
+                                        <HBox width="100%" justifyContent="Center" alignItems="Center">
+                                            <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit" press="onEditEmployee" />
+                                            <Button icon="sap-icon://delete" type="Transparent" tooltip="Delete" press="onDeleteEmployee" />
+                                        </HBox>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+
+                    <!-- ================= CUSTOMERS ================= -->
+                    <IconTabFilter
+                        text="{i18n>tabCustomers}"
+                        key="customers"
+                        icon="sap-icon://customer"
+                    >
+                        <Table
+                            id="customersTable"
+                            items="{list>/customers}"
+                            busy="{list>/busy}"
+                            noDataText="No customers found"
+                            width="100%"
+                            fixedLayout="true"
+                            growing="true"
+                            growingThreshold="20"
+                            class="adminTable"
+                        >
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <Title text="{i18n>tabCustomers}" level="H3" />
+                                    <ToolbarSpacer />
+                                    <Button
+                                        id="refreshCustomersButton"
+                                        icon="sap-icon://refresh"
+                                        text="Refresh"
+                                        type="Transparent"
+                                        press="onRefreshCustomers"
+                                    />
+                                    <Button
+                                        id="newCustomerButton"
+                                        icon="sap-icon://add"
+                                        text="New Customer"
+                                        type="Emphasized"
+                                        press="onCreateCustomer"
+                                    />
+                                </OverflowToolbar>
+                            </headerToolbar>
+
+                            <columns>
+                                <Column width="10%"><Text text="{i18n>colCustomerNo}" /></Column>
+                                <Column width="18%"><Text text="{i18n>colName}" /></Column>
+                                <Column width="30%"><Text text="{i18n>colEmail}" /></Column>
+                                <Column width="14%"><Text text="{i18n>colPhone}" /></Column>
+                                <Column width="14%"><Text text="{i18n>colStatus}" /></Column>
+                                <Column width="14%" hAlign="Center"><Text text="Actions" /></Column>
+                            </columns>
+
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{list>customerNumber}" wrapping="false" />
+                                        <Text text="{list>firstName} {list>lastName}" wrapping="true" />
+                                        <Text text="{list>email}" wrapping="true" />
+                                        <Text text="{list>phone}" wrapping="false" />
+                                        <ObjectStatus
+                                            text="{list>status}"
+                                            state="{
+                                                path: 'list>status',
+                                                formatter: '.formatter.statusState'
+                                            }"
+                                        />
+                                        <HBox width="100%" justifyContent="Center" alignItems="Center">
+                                            <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit" press="onEditCustomer" />
+                                            <Button icon="sap-icon://delete" type="Transparent" tooltip="Delete" press="onDeleteCustomer" />
+                                        </HBox>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+
+                    <!-- ================= POLICIES ================= -->
+                    <IconTabFilter
+                        text="Policies"
+                        key="claimTypes"
+                        icon="sap-icon://form"
+                    >
+                        <!-- STEP 1: CATEGORY TILES -->
+                        <VBox visible="{policyView>/showCategories}" class="sapUiSmallMargin">
+                            <Title
+                                text="Select a Policy Category"
+                                level="H3"
+                                class="sapUiSmallMarginBottom"
+                            />
+
+                            <HBox wrap="Wrap">
+                                <GenericTile
+                                    header="Health"
+                                    subheader="Health policies"
+                                    class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                    press="onCategoryPress"
+                                >
+                                    <customData>
+                                        <core:CustomData key="category" value="Health" />
+                                    </customData>
+                                    <TileContent>
+                                        <ImageContent src="sap-icon://electrocardiogram" />
+                                    </TileContent>
+                                </GenericTile>
+
+                                <GenericTile
+                                    header="Vehicle"
+                                    subheader="Vehicle policies"
+                                    class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                    press="onCategoryPress"
+                                >
+                                    <customData>
+                                        <core:CustomData key="category" value="Vehicle" />
+                                    </customData>
+                                    <TileContent>
+                                        <ImageContent src="sap-icon://car-rental" />
+                                    </TileContent>
+                                </GenericTile>
+
+                                <GenericTile
+                                    header="Property"
+                                    subheader="Property policies"
+                                    class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                    press="onCategoryPress"
+                                >
+                                    <customData>
+                                        <core:CustomData key="category" value="Property" />
+                                    </customData>
+                                    <TileContent>
+                                        <ImageContent src="sap-icon://home" />
+                                    </TileContent>
+                                </GenericTile>
+
+                                <GenericTile
+                                    header="Life"
+                                    subheader="Life policies"
+                                    class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                    press="onCategoryPress"
+                                >
+                                    <customData>
+                                        <core:CustomData key="category" value="Life" />
+                                    </customData>
+                                    <TileContent>
+                                        <ImageContent src="sap-icon://family-care" />
+                                    </TileContent>
+                                </GenericTile>
+
+                                <GenericTile
+                                    header="Business"
+                                    subheader="Business policies"
+                                    class="sapUiSmallMarginEnd sapUiSmallMarginBottom"
+                                    press="onCategoryPress"
+                                >
+                                    <customData>
+                                        <core:CustomData key="category" value="Business" />
+                                    </customData>
+                                    <TileContent>
+                                        <ImageContent src="sap-icon://building" />
+                                    </TileContent>
+                                </GenericTile>
+                            </HBox>
+                        </VBox>
+
+                        <!-- STEP 2: POLICY TYPES OF SELECTED CATEGORY -->
+                        <VBox visible="{policyView>/showTypes}">
+                            <Table
+                                id="claimTypesTable"
+                                items="{list>/claimTypesView}"
+                                busy="{list>/busy}"
+                                noDataText="No policy types found in this category"
+                                width="100%"
+                                fixedLayout="true"
+                                growing="true"
+                                growingThreshold="500"
+                                class="adminTable"
+                            >
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Button
+                                            icon="sap-icon://nav-back"
+                                            type="Transparent"
+                                            tooltip="Back to categories"
+                                            press="onBackToCategories"
+                                        />
+                                        <Title
+                                            text="{policyView>/selectedCategory} Policy Types"
+                                            level="H3"
+                                        />
+                                        <ToolbarSpacer />
+                                        <Button
+                                            id="refreshClaimTypesButton"
+                                            icon="sap-icon://refresh"
+                                            text="Refresh"
+                                            type="Transparent"
+                                            press="onRefreshClaimTypes"
+                                        />
+                                        <Button
+                                            id="newClaimTypeButton"
+                                            icon="sap-icon://add"
+                                            text="New Policy Type"
+                                            type="Emphasized"
+                                            press="onCreateClaimType"
+                                        />
+                                    </OverflowToolbar>
+                                </headerToolbar>
+
+                                <columns>
+                                    <Column width="12%"><Text text="Code" /></Column>
+                                    <Column width="38%"><Text text="Policy Type" /></Column>
+                                    <Column width="18%"><Text text="Category" /></Column>
+                                    <Column width="14%" hAlign="Center"><Text text="Active" /></Column>
+                                    <Column width="18%" hAlign="Center"><Text text="Actions" /></Column>
+                                </columns>
+
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{list>code}" wrapping="false" />
+                                            <Text text="{list>name}" wrapping="true" />
+                                            <Text text="{list>category}" wrapping="false" />
+                                            <Switch state="{list>active}" change="onClaimTypeActiveChange" />
+                                            <HBox width="100%" justifyContent="Center" alignItems="Center">
+                                                <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit" press="onEditClaimType" />
+                                                <Button icon="sap-icon://delete" type="Transparent" tooltip="Delete" press="onDeleteClaimType" />
+                                            </HBox>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+
+        <!-- ================= DIALOGS ================= -->
+        <dependents>
+
+            <!-- EMPLOYEE DIALOG (number is generated automatically) -->
+            <Dialog id="employeeDialog" title="New Employee" contentWidth="30rem">
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <Label text="First Name" required="true" />
+                        <Input id="empFirstNameInput" value="{draft>/firstName}" />
+
+                        <Label text="Last Name" required="true" class="sapUiTinyMarginTop" />
+                        <Input id="empLastNameInput" value="{draft>/lastName}" />
+
+                        <Label text="Email" required="true" class="sapUiTinyMarginTop" />
+                        <Input id="empEmailInput" type="Email" value="{draft>/email}" />
+
+                        <Label text="Department" class="sapUiTinyMarginTop" />
+                        <Select
+                            id="empDepartmentSelect"
+                            width="100%"
+                            selectedKey="{draft>/department}"
+                            items="{adminOptions>/employeeDepartments}"
+                        >
+                            <core:Item key="{adminOptions>}" text="{adminOptions>}" />
+                        </Select>
+
+                        <Label text="Role" class="sapUiTinyMarginTop" />
+                        <Select
+                            id="empRoleSelect"
+                            width="100%"
+                            selectedKey="{draft>/role}"
+                            items="{adminOptions>/employeeRoles}"
+                        >
+                            <core:Item key="{adminOptions>}" text="{adminOptions>}" />
+                        </Select>
+
+                        <Label text="Active" class="sapUiTinyMarginTop" />
+                        <Switch id="empActiveSwitch" state="{draft>/active}" />
+                    </VBox>
+                </content>
+
+                <beginButton>
+                    <Button text="Save" type="Emphasized" press="onSaveEmployee" />
+                </beginButton>
+                <endButton>
+                    <Button text="Cancel" press="onCancelEmployee" />
+                </endButton>
+            </Dialog>
+
+            <!-- CUSTOMER DIALOG (number is generated automatically) -->
+            <Dialog id="customerDialog" title="New Customer" contentWidth="28rem">
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <Label text="First Name" required="true" />
+                        <Input id="custFirstNameInput" value="{draft>/firstName}" />
+
+                        <Label text="Last Name" required="true" class="sapUiTinyMarginTop" />
+                        <Input id="custLastNameInput" value="{draft>/lastName}" />
+
+                        <Label text="Email" required="true" class="sapUiTinyMarginTop" />
+                        <Input id="custEmailInput" type="Email" value="{draft>/email}" />
+
+                        <Label text="Phone" class="sapUiTinyMarginTop" />
+                        <Input id="custPhoneInput" value="{draft>/phone}" />
+
+                        <Label text="Status" class="sapUiTinyMarginTop" />
+                        <Select id="custStatusSelect" width="100%" selectedKey="{draft>/status}">
+                            <core:Item key="Active" text="Active" />
+                            <core:Item key="Inactive" text="Inactive" />
+                            <core:Item key="Suspended" text="Suspended" />
+                        </Select>
+                    </VBox>
+                </content>
+
+                <beginButton>
+                    <Button text="Save" type="Emphasized" press="onSaveCustomer" />
+                </beginButton>
+                <endButton>
+                    <Button text="Cancel" press="onCancelCustomer" />
+                </endButton>
+            </Dialog>
+
+            <!-- POLICY TYPE DIALOG (code is generated automatically) -->
+            <Dialog id="claimTypeDialog" title="New Policy Type" contentWidth="28rem">
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <Label text="Policy Type Name" required="true" />
+                        <Input id="ctNameInput" value="{draft>/name}" />
+
+                        <Label text="Category" class="sapUiTinyMarginTop" />
+                        <Select
+                            id="ctCategorySelect"
+                            width="100%"
+                            selectedKey="{draft>/category}"
+                            items="{adminOptions>/claimTypeCategories}"
+                        >
+                            <core:Item key="{adminOptions>}" text="{adminOptions>}" />
+                        </Select>
+
+                        <Label text="Active" class="sapUiTinyMarginTop" />
+                        <Switch id="ctActiveSwitch" state="{draft>/active}" />
+                    </VBox>
+                </content>
+
+                <beginButton>
+                    <Button text="Save" type="Emphasized" press="onSaveClaimType" />
+                </beginButton>
+                <endButton>
+                    <Button text="Cancel" press="onCancelClaimType" />
+                </endButton>
+            </Dialog>
+        </dependents>
+    </Page>
+</mvc:View>

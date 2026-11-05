@@ -1,0 +1,180 @@
+{
+  "_version": "1.60.0",
+  "sap.app": {
+    "id": "claimsure.app",
+    "type": "application",
+    "title": "ClaimSure",
+    "description": "Insurance Claims Management",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "insuranceService": {
+        "uri": "/odata/v4/insurance/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      },
+      "mainService": {
+        "uri": "/odata/v4/main/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      },
+      "payoutService": {
+        "uri": "/odata/v4/payout/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      },
+      "investigationService": {
+        "uri": "/odata/v4/investigation/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": { "icon": "sap-icon://shield" },
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "claimsure.app.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.viz": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.f": {},
+        "sap.tnt": {},
+        "sap.suite.ui.microchart": {}
+      }
+    },
+    "handleValidation": true,
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "claimsure.app.i18n.i18n" }
+      },
+      "": {
+        "dataSource": "insuranceService",
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "admin": {
+        "dataSource": "mainService",
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "payout": {
+        "dataSource": "payoutService",
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "synchronizationMode": "None",
+          "autoExpandSelect": true
+        }
+      },
+      "investigation": {
+        "dataSource": "investigationService",
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "synchronizationMode": "None",
+          "autoExpandSelect": true
+        }
+      }
+    },
+    "resources": {
+      "css": [{ "uri": "css/style.css" }]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "claimsure.app.view",
+        "controlId": "appNavContainer",
+        "controlAggregation": "pages",
+        "transition": "slide",
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "dashboard",
+          "target": "dashboard"
+        },
+        {
+          "pattern": "claims:?query:",
+          "name": "claims",
+          "target": "claims"
+        },
+        {
+          "pattern": "claims/{claimId}",
+          "name": "claimDetail",
+          "target": "claimDetail"
+        },
+        {
+          "pattern": "policies:?query:",
+          "name": "policies",
+          "target": "policies"
+        },
+         {
+        "pattern": "investigation",
+        "name": "investigation",
+        "target": "investigation"
+        },
+        {
+        "name": "payout",
+        "pattern": "payout",
+        "target": "payout"
+    },
+        {
+          "pattern": "admin",
+          "name": "admin",
+          "target": "admin"
+        }
+      ],
+      "targets": {
+        "dashboard": {
+          "viewName": "Dashboard",
+          "viewId": "dashboard"
+        },
+        "claims": {
+          "viewName": "Claims",
+          "viewId": "claims"
+        },
+        "claimDetail": {
+          "viewName": "ClaimDetail",
+          "viewId": "claimDetail"
+        },
+        "policies": {
+          "viewName": "Policies",
+          "viewId": "policies"
+        },
+        "investigation": {
+          "viewName": "Investigation",
+          "viewId": "investigation"
+        },
+        "payout": {
+        "viewName": "Payout",
+        "viewId": "payout"
+    },
+        "admin": {
+          "viewName": "Administration",
+          "viewId": "admin"
+        }
+      }
+    }
+  }
+}

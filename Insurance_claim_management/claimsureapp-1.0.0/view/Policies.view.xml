@@ -1,0 +1,226 @@
+<mvc:View controllerName="claimsure.app.controller.Policies" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core">
+    <Page title="{i18n>navPolicies}" showNavButton="false" class="csPage">
+        <content>
+            <Table
+                id="policiesTable"
+                width="100%"
+                growing="true"
+                growingThreshold="20"
+                mode="MultiSelect"
+                selectionChange="onSelectionChange"
+                autoPopinMode="true"
+                class="policyTable"
+                items="{
+                    path: '/Policies',
+                    parameters: {
+                        $select: 'ID,policyNumber,coverageLimit,startDate,endDate,status,customer_ID,claimType_ID',
+                        $orderby: 'policyNumber desc',
+                        $$operationMode: 'Server'
+                    }
+                }"
+                noDataText="{i18n>noClaims}">
+
+                <headerToolbar>
+                    <OverflowToolbar
+                        id="policyToolbar"
+                        class="policyToolbar">
+
+                        <Title
+                            text="{i18n>navPolicies}"
+                            level="H2"
+                            class="policyToolbarTitle"/>
+
+                        <ToolbarSpacer/>
+
+                        <SearchField
+                            id="policiesSearch"
+                            width="16rem"
+                            search="onSearch"
+                            placeholder="Search policies..."
+                            class="policySearch">
+
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    priority="High"
+                                    shrinkable="true"/>
+                            </layoutData>
+
+                        </SearchField>
+
+                        <Button
+                            text="Edit"
+                            icon="sap-icon://edit"
+                            enabled="{toolbar>/editEnabled}"
+                            press="onEditPolicy"
+                            class="policyActionButton"
+                            type="Emphasized">
+
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    priority="Low"/>
+                            </layoutData>
+
+                        </Button>
+
+                        <Button
+                            text="{i18n>btnCancel}"
+                            icon="sap-icon://sys-cancel"
+                            enabled="{toolbar>/cancelEnabled}"
+                            press="onCancelPolicy"
+                            class="policyActionButton"
+                            type="Emphasized">
+
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    priority="Low"/>
+                            </layoutData>
+
+                        </Button>
+
+                        <Button
+                            text="Delete"
+                            icon="sap-icon://delete"
+                            type="Reject"
+                            enabled="{toolbar>/deleteEnabled}"
+                            press="onDeletePolicy"
+                            class="policyActionButton">
+
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    priority="Low"/>
+                            </layoutData>
+
+                        </Button>
+
+                        <Button
+                            text="Create Policy"
+                            icon="sap-icon://add"
+                            type="Emphasized"
+                            press="onCreatePolicy"
+                            class="createPolicyButton">
+
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    priority="High"/>
+                            </layoutData>
+
+                        </Button>
+
+                    </OverflowToolbar>
+                </headerToolbar>
+
+                <columns>
+                    <Column><Text text="{i18n>colPolicyNumber}"/></Column>
+                    <Column demandPopin="true" minScreenWidth="Tablet"><Text text="{i18n>colCustomer}"/></Column>
+                    <Column demandPopin="true" minScreenWidth="Desktop"><Text text="Policy"/></Column>
+                    <Column demandPopin="true" minScreenWidth="Desktop"><Text text="Policy Type"/></Column>
+                    <Column hAlign="End"><Text text="{i18n>colCoverage}"/></Column>
+                    <Column demandPopin="true" minScreenWidth="Desktop"><Text text="{i18n>colStartDate}"/></Column>
+                    <Column demandPopin="true" minScreenWidth="Desktop"><Text text="{i18n>colEndDate}"/></Column>
+                    <Column><Text text="{i18n>colStatus}"/></Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{policyNumber}"/>
+                            <Text text="{
+                                parts: [{path: 'customer_ID'}, {path: 'lookups>/customers'}],
+                                formatter: '.idToName'
+                            }"/>
+                            <Text text="{
+                                parts: [{path: 'claimType_ID'}, {path: 'lookups>/claimTypes'}],
+                                formatter: '.idToCategory'
+                            }"/>
+                            <Text text="{
+                                parts: [{path: 'claimType_ID'}, {path: 'lookups>/claimTypes'}],
+                                formatter: '.idToName'
+                            }"/>
+                            <ObjectNumber number="{ path: 'coverageLimit' }"/>
+                            <Text text="{ path: 'startDate', formatter: '.formatShortDate' }"/>
+                            <Text text="{ path: 'endDate', formatter: '.formatShortDate' }"/>
+                            <ObjectStatus text="{status}" state="{ path: 'status', formatter: '.formatStatusState' }"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            <!-- Inline Create / Edit dialog (policy number is generated automatically) -->
+            <Dialog
+                id="policyDialog"
+                title="{policyDialog>/dialogTitle}"
+                contentWidth="28rem"
+                busy="{policyDialog>/busy}"
+                busyIndicatorDelay="0">
+                <content>
+                    <VBox class="sapUiSmallMargin">
+
+                        <Label text="Customer" required="true"/>
+                        <ComboBox
+                            width="100%"
+                            selectedKey="{policyDialog>/customer_ID}"
+                            placeholder="Select customer"
+                            items="{lookups>/customers}">
+                            <core:Item key="{lookups>ID}" text="{lookups>name}"/>
+                        </ComboBox>
+
+                        <Label text="Policy" required="true" class="sapUiTinyMarginTop"/>
+                        <ComboBox
+                            width="100%"
+                            selectedKey="{policyDialog>/policy}"
+                            placeholder="Select policy"
+                            selectionChange="onPolicyChange"
+                            change="onPolicyChange">
+                            <core:Item key="Health" text="Health"/>
+                            <core:Item key="Vehicle" text="Vehicle"/>
+                            <core:Item key="Property" text="Property"/>
+                            <core:Item key="Life" text="Life"/>
+                            <core:Item key="Business" text="Business"/>
+                        </ComboBox>
+
+                        <Label text="Policy Type" required="true" class="sapUiTinyMarginTop"/>
+                        <ComboBox
+                            width="100%"
+                            selectedKey="{policyDialog>/claimType_ID}"
+                            enabled="{= !!${policyDialog>/policy} }"
+                            placeholder="{= ${policyDialog>/policy} ? 'Select policy type' : 'Select a policy first' }"
+                            items="{policyDialog>/policyTypes}">
+                            <core:Item key="{policyDialog>ID}" text="{policyDialog>name}"/>
+                        </ComboBox>
+
+                        <Label text="Coverage Limit (USD)" required="true" class="sapUiTinyMarginTop"/>
+                        <Input value="{policyDialog>/coverageLimit}" type="Number"/>
+
+                        <Label text="Start Date" required="true" class="sapUiTinyMarginTop"/>
+                        <DatePicker
+                            value="{policyDialog>/startDate}"
+                            valueFormat="yyyy-MM-dd"
+                            displayFormat="dd/MM/yyyy"/>
+
+                        <Label text="End Date" required="true" class="sapUiTinyMarginTop"/>
+                        <DatePicker
+                            value="{policyDialog>/endDate}"
+                            valueFormat="yyyy-MM-dd"
+                            displayFormat="dd/MM/yyyy"/>
+
+                        <Label text="Status" required="true" class="sapUiTinyMarginTop"/>
+                        <Select width="100%" selectedKey="{policyDialog>/status}">
+                            <core:Item key="Active" text="Active"/>
+                            <core:Item key="Pending" text="Pending"/>
+                            <core:Item key="Cancelled" text="Cancelled"/>
+                            <core:Item key="Expired" text="Expired"/>
+                        </Select>
+
+                    </VBox>
+                </content>
+                <beginButton>
+                    <Button text="Save" type="Emphasized" press="onSavePolicy"/>
+                </beginButton>
+                <endButton>
+                    <Button text="Cancel" press="onCancelPolicyDialog"/>
+                </endButton>
+            </Dialog>
+
+        </content>
+    </Page>
+</mvc:View>

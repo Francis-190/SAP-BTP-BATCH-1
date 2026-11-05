@@ -1,0 +1,11 @@
+ID,investigationNumber,claim_ID,investigator_ID,status,findings
+640dfd57-ab09-5a91-a44d-416d9cb2fb1d,INV001,e77c6366-fbb4-543f-82bd-cc00d93734c1,c1d9cc1d-c508-5892-bb67-8ad74c8b16b6,Completed,Fire brigade report and electrician certificate confirm accidental short circuit; no wilful act found; claim genuine
+de18837d-ed4f-5cf8-a1f4-c13d88f7b4ff,INV002,b62783c2-f4c4-50f8-b99f-a2e26b856ee3,5209666c-bc2b-5f01-b23e-e59d0352b37a,Completed,Photo metadata shows damage predates the reported incident date; garage estimate inflated; fraud confirmed
+6f9de513-10da-5ddf-8fc7-01e9c4ea0ae2,INV003,4bf8cd9a-f68f-5a50-b622-a1cc0198a715,6d7dae44-58e9-52b8-8471-d87084adc18f,Completed,No forced entry found at site; purchase invoices for jewellery found to be fabricated; fraud confirmed
+18f33aa2-2c4b-5961-9b6e-e3f02966a8fe,INV004,9369b1fb-e4fa-5bc2-9b4c-78d6579773ec,13e30097-2ae2-5864-a823-18974d1f5905,Completed,FIR verified with police; last known location and key records checked; theft is genuine; no suspicious activity found
+9bfc4590-b030-58a1-b20d-5ef4fbc48dfd,INV005,dca730e0-2820-5021-bb31-4f12ee0e9ab8,53948e18-bc53-51f4-944c-11d25a0564ed,Completed,Diagnosis validated with treating cardiologist and angiography reports; waiting period satisfied; claim genuine
+918c0b2c-20fb-5a6c-a62e-b70da5c02138,INV006,cd8a8d81-1262-58e4-bebf-e367a2f876bc,ae992033-2d03-5d31-9e3d-fcf8bc793ad7,InProgress,Hospital records and duplicate bills submitted to another insurer under cross-verification
+0a4569bc-6bfd-507a-be9b-96f3190c6061,INV007,e3ec2896-fb92-517f-83c1-399b86346f67,c1d9cc1d-c508-5892-bb67-8ad74c8b16b6,InProgress,Police complaint delay under review; CCTV footage requested from adjacent shops
+de807876-4463-556c-8f23-d23b41c8f267,INV008,6afb759e-d253-5962-85bf-978120cf72cf,5209666c-bc2b-5f01-b23e-e59d0352b37a,InProgress,Site inspection done; neighbours statements and purchase invoices of stolen items under verification
+18af24fc-bcd6-567d-95e2-2630d703066d,INV009,27fa73f0-dd50-5ef6-abda-c0f09763f01f,6d7dae44-58e9-52b8-8471-d87084adc18f,Assigned,Investigator assigned; site visit and police complaint verification scheduled
+f0e29d54-2aa0-5aa7-84d9-6485c4dd87aa,INV010,3ed77f5c-ac7b-52ae-a0d0-d40d85d9fc44,13e30097-2ae2-5864-a823-18974d1f5905,Assigned,Investigator assigned; policy endorsement history and fire service report requested
