@@ -1,0 +1,121 @@
+/* Styles for the Add Inventory app (copied from the main inventory app) */
+.pgPage {
+    --dashBg: #f3f5f9;
+    --dashCard: #ffffff;
+    --dashLine: #e4e8f0;
+    --dashInk: #1b2437;
+    --dashMuted: #6b7488;
+    --dashPrimary: #1d4ed8;
+    --dashTint: #e8efff;
+    --dashHover: #f6f8fd;
+    --dashShadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 4px 14px rgba(16, 24, 40, 0.05);
+}
+
+.pgPage,
+.pgPage > section,
+.pgPage .sapMPageEnableScrolling {
+    background: var(--dashBg);
+}
+
+.dashPanelToolbar.sapMTB {
+    background: transparent;
+    border-bottom: 1px solid var(--dashLine);
+    height: 3.25rem;
+}
+
+.dashPanelToolbar .sapMTitle { font-weight: 700; font-size: 0.95rem; color: var(--dashInk); }
+
+.panelHeaderIcon {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 0.55rem;
+    background: var(--dashTint);
+    color: var(--dashPrimary);
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.recentTable .sapMListTblHeaderCell,
+.recentTable th {
+    background: var(--dashHover);
+    color: var(--dashMuted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--dashLine);
+}
+
+.recentTable .sapMListTblRow:hover { background: var(--dashHover); }
+.recentTable .sapMListTblCell { padding-top: 0.8rem; padding-bottom: 0.8rem; }
+
+
+.pgPage > header .sapMTitle { font-weight: 700; }
+
+.pgBody {
+    padding: 1.25rem 1.5rem 2rem;
+    width: 100%;
+    max-width: 90rem;
+    margin: 0 auto;
+}
+
+.pgIntro { display: block; margin-bottom: 1rem; color: var(--dashMuted); font-size: 0.9rem; }
+
+.pgCard {
+    background: var(--dashCard);
+    border: 1px solid var(--dashLine);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--dashShadow);
+    margin-bottom: 1.25rem;
+}
+
+.pgCard .sapMList, .pgCard .sapMListUl, .pgCard .sapMListTbl { background: transparent; }
+.pgCard .sapMTB.dashPanelToolbar { background: transparent; }
+.pgFilter .sapUiCompFilterBar, .pgFilter .sapUiCompFilterBarPaddingClass { background: transparent; }
+.pgCard .recentTable { padding: 0 0.75rem 0.5rem; }
+
+.pgNum { font-weight: 700; color: var(--dashInk); }
+.pgMuted { color: var(--dashMuted); font-size: 0.78rem; }
+
+/* ---- forms ---- */
+.pgForm.sapUiForm, .pgForm { padding: 0.75rem 1.25rem 0.25rem; background: transparent; }
+
+.pgForm .sapUiFormTitle {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--dashPrimary);
+}
+
+.pgPage .sapMInputBaseContentWrapper { border-radius: 0.5rem; }
+
+.pgFormBody { padding: 1rem 1.25rem 0.5rem; gap: 1rem; }
+
+.formStep { display: block; font-weight: 700; font-size: 0.9rem; color: var(--dashPrimary); }
+.routeRow { gap: 1rem; width: 100%; }
+.formRow { gap: 1rem; width: 100%; }
+.formField { flex: 1 1 14rem; min-width: 12rem; gap: 0.3rem; }
+
+.routeArrow {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--dashTint);
+    color: var(--dashPrimary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.15rem;
+}
+
+.pgActions {
+    padding: 0.75rem 1.25rem;
+    gap: 0.6rem;
+    border-top: 1px solid var(--dashLine);
+    background: var(--dashHover);
+}
+
+.pgPrimaryBtn.sapMBtn { border-radius: 0.6rem; min-width: 9rem; font-weight: 600; }

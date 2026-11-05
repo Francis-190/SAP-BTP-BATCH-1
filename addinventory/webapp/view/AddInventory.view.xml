@@ -1,0 +1,264 @@
+<mvc:View
+    controllerName="addinventory.controller.AddInventory"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+
+    <Page
+        class="pgPage"
+        title="Add Inventory Item"
+        showNavButton="false">
+
+        <content>
+
+            <VBox class="pgBody">
+
+                <Text
+                    text="Create a new spare part and its opening stock at a location. Stock for existing parts is received through Procurement."
+                    class="pgIntro"/>
+
+                <!-- ADD ITEM FORM -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+                        <core:Icon src="sap-icon://add-product" class="panelHeaderIcon"/>
+                        <Title text="New Part Details" level="H3" class="sapUiTinyMarginBegin"/>
+                    </Toolbar>
+
+                    <f:SimpleForm
+                        class="pgForm"
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="12"
+                        labelSpanL="12"
+                        labelSpanM="12"
+                        labelSpanS="12"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1">
+
+                        <core:Title text="1 · Part Details"/>
+
+                        
+                        <Label
+                            text="Part Number"
+                            required="true"/>
+
+                        <Input
+                            id="addPartNumberInput"
+                            maxLength="30"
+                            placeholder="e.g. BP-1001"/>
+
+                        <Label
+                            text="Description"
+                            required="true"/>
+
+                        <Input
+                            id="addDescriptionInput"
+                            maxLength="100"
+                            placeholder="e.g. Front brake pad set"/>
+
+                        <Label
+                            text="Category"
+                            required="true"/>
+
+                        <Select
+                            id="addCategorySelect"
+                            width="100%"
+                            forceSelection="false"
+                            items="{addForm>/categories}">
+
+                            <core:Item
+                                key="{addForm>key}"
+                                text="{addForm>text}"/>
+
+                        </Select>
+
+
+                        <core:Title text="2 · Location, Quantity &amp; Reorder Level"/>
+
+                        <Label
+                            text="Location"
+                            required="true"/>
+
+                        <Select
+                            id="addLocationSelect"
+                            width="100%"
+                            forceSelection="false"
+                            items="{addForm>/locations}">
+
+                            <core:Item
+                                key="{addForm>ID}"
+                                text="{addForm>name} ({addForm>locationCode})"/>
+
+                        </Select>
+
+                        <Label
+                            text="Quantity"
+                            required="true"/>
+
+                        <Input
+                            id="addQtyInput"
+                            type="Number"
+                            placeholder="e.g. 100"/>
+
+                        <Label
+                            text="Reorder Level"
+                            required="true"/>
+
+                        <Input
+                            id="addReorderInput"
+                            type="Number"
+                            placeholder="Low-stock alert below this qty, e.g. 20"/>
+
+                    </f:SimpleForm>
+
+                    <HBox justifyContent="End" class="pgActions">
+
+                        <Button
+                            text="Cancel"
+                            press="onCancel"/>
+
+                        <Button
+                            text="Add to Inventory"
+                            icon="sap-icon://add"
+                            type="Emphasized"
+                            class="pgPrimaryBtn"
+                            press="onAddInventoryItem"/>
+
+                    </HBox>
+
+                </VBox>
+
+
+                <!-- ALL STOCK ADDITIONS -->
+                <VBox class="pgCard">
+
+                    <Toolbar class="dashPanelToolbar">
+
+                        <core:Icon
+                            src="sap-icon://history"
+                            class="panelHeaderIcon"/>
+
+                        <Title
+                            text="All Stock Additions"
+                            level="H3"
+                            class="sapUiTinyMarginBegin"/>
+
+                        <ToolbarSpacer/>
+
+                        <Button
+                            icon="sap-icon://refresh"
+                            type="Transparent"
+                            tooltip="Refresh stock additions"
+                            press="onRefreshRecent"/>
+                    </Toolbar>
+
+                    <!-- FILTER BAR -->
+                    <Toolbar class="sapUiTinyMarginTopBottom" style="Clear">
+
+                        <Select
+                            id="filterLocation"
+                            width="14rem"
+                            items="{addRecent>/locationOptions}"
+                            change="onFilterChange">
+                            <core:Item
+                                key="{addRecent>key}"
+                                text="{addRecent>text}"/>
+                        </Select>
+
+                    </Toolbar>
+
+                    <Table
+                        id="addRecentTable"
+                        class="recentTable"
+                        noDataText="No stock additions found"
+                        items="{addRecent>/items}">
+
+                        <columns>
+                            <Column>
+                                <Text text="Location"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Part Number"/>
+                            </Column>
+
+                            <Column hAlign="End">
+                                <Text text="Quantity Added"/>
+                            </Column>
+
+                            <Column>
+                                <Text text="Status"/>
+                            </Column>
+
+                            <Column
+                                minScreenWidth="Tablet"
+                                demandPopin="true">
+                                <Text text="Date / Time"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+
+                                    <ObjectIdentifier
+                                        title="{addRecent>location}"
+                                        text="{addRecent>locationCode}"/>
+
+                                    <ObjectIdentifier
+                                        title="{addRecent>partNumber}"
+                                        text="{addRecent>description}"/>
+
+                                    <ObjectNumber
+                                        number="{addRecent>quantity}"
+                                        unit="units"
+                                        emphasized="true"
+                                        state="Success"/>
+
+                                    <ObjectStatus
+                                        text="{addRecent>status}"
+                                        inverted="true"
+                                        state="{= ${addRecent>status} === 'POSTED' ? 'Success' : 'Warning'}"/>
+
+                                    <Text text="{addRecent>dateTime}"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                    <!-- PAGINATION -->
+                    <Toolbar class="sapUiTinyMarginTop" style="Clear">
+
+                        <ToolbarSpacer/>
+
+                        <HBox items="{addRecent>/pages}">
+                            <Button
+                                text="{addRecent>label}"
+                                type="{addRecent>type}"
+                                enabled="{addRecent>enabled}"
+                                tooltip="{addRecent>tooltip}"
+                                class="sapUiTinyMarginBeginEnd"
+                                press="onPageButtonPress"/>
+                        </HBox>
+
+                        <ToolbarSpacer/>
+
+                    </Toolbar>
+
+                </VBox>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>
