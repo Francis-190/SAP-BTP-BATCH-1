@@ -1,0 +1,924 @@
+/* ============================= */
+/* Page background               */
+/* ============================= */
+.homePageBg {
+    background: #F3F4FB;
+    min-height: 100%;
+    border-radius: 0.5rem;
+}
+
+/* ============================= */
+/* Welcome banner                */
+/* ============================= */
+.welcomeBanner {
+    /* your banner image, with a blue gradient as fallback */
+    background-color: #0A6ED1;
+    background-image: url('../img/image.png'),
+                      linear-gradient(90deg, #0A6ED1 0%, #29B6F6 60%, #4FC3F7 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-radius: 0.9rem;
+    padding: 1.5rem 1.5rem;
+    min-height: 6.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.welcomeBanner .sapMTitle {
+    color: #FFFFFF !important;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.welcomeBanner .sapMText {
+    color: #FFFFFF !important;
+    font-size: 0.8rem;
+}
+
+/* ============================= */
+/* KPI grid (centered row)       */
+/* ============================= */
+.kpiGrid {
+    justify-content: center;
+    gap: 1.9rem;
+    margin-top: 1rem;
+}
+
+/* ---------- Base card ---------- */
+.kpiCard {
+    --kpi-accent: #3B27A8;
+    --kpi-bg-from: #F3F0FC;
+    --kpi-bg-to: #E9E5F8;
+    --kpi-value: #32363A;
+    --kpi-icon: #4B5563;
+
+    position: relative;
+    overflow: hidden;
+
+    /* fixed-size card, not stretched */
+    flex: 0 0 10rem;
+    width: 10rem;
+    min-width: 10rem;
+    min-height: 9.75rem;
+    padding: 1.4rem 1.6rem 1.25rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    border-radius: 1rem;
+    border: 1px solid transparent;
+    border-top: 6px solid var(--kpi-accent);
+    background: linear-gradient(135deg, var(--kpi-bg-from) 0%, var(--kpi-bg-to) 100%);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.kpiCard:hover,
+.kpiCard:focus-visible {
+    transform: translateY(-3px);
+    border-color: var(--kpi-accent);
+    border-top-width: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+    outline: none;
+}
+
+/* ---------- Color variants ---------- */
+.kpiTotal {
+    --kpi-accent: #3B27A8;
+    --kpi-bg-from: #F3F0FC;
+    --kpi-bg-to: #E9E5F8;
+    --kpi-value: #32363A;
+    --kpi-icon: #4B5563;
+}
+
+.kpiActive {
+    --kpi-accent: #0B6B3A;
+    --kpi-bg-from: #F0FBF5;
+    --kpi-bg-to: #DDF3E6;
+    --kpi-value: #2E7D4F;
+    --kpi-icon: #4B5563;
+}
+
+.kpiPending {
+    --kpi-accent: #D89B00;
+    --kpi-bg-from: #FFF6EC;
+    --kpi-bg-to: #FBE7D5;
+    --kpi-value: #C8600A;
+    --kpi-icon: #4B5563;
+}
+
+.kpiRejected {
+    --kpi-accent: #E60000;
+    --kpi-bg-from: #FFF1F1;
+    --kpi-bg-to: #FBDADA;
+    --kpi-value: #C4161C;
+    --kpi-icon: #4B5563;
+}
+
+/* ---------- Text ---------- */
+.kpiCard .kpiCardLabel {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1D2D3E;
+    line-height: 1.25;
+}
+
+.kpiCard .kpiCardSubLabel {
+    display: block;
+    font-size: 0.78rem;
+    color: #6B7C93;
+    line-height: 1.25;
+    margin-top: 0.1rem;
+}
+
+/* ---------- Icon + value row ---------- */
+.kpiCard .kpiCardValueRow {
+    margin-top: auto;
+    padding-top: 1rem;
+    gap: 0.4rem;
+}
+
+.kpiCard .kpiCardIcon {
+    width: auto;
+    height: auto;
+    background: transparent;
+    border-radius: 0;
+    margin: 0;
+    color: var(--kpi-icon) !important;
+}
+
+.kpiCard .kpiCardValue {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--kpi-value) !important;
+    margin: 0;
+}
+
+/* ============================= */
+/* Product object page           */
+/* ============================= */
+
+/* soft page background behind the sections */
+.productObjectPage .sapUxAPObjectPageWrapper {
+    background: #F3F4FB;
+}
+
+.productPageTitle {
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+.productPageSubtitle {
+    color: #6B7C93;
+    font-size: 0.85rem;
+}
+
+/* ---------- Header tiles ---------- */
+.productTiles {
+    gap: 1.25rem;
+    padding: 0.25rem 0;
+}
+
+.productTile {
+    --tile-accent: #3B27A8;
+    --tile-bg-from: #F3F0FC;
+    --tile-bg-to: #E9E5F8;
+
+    box-sizing: border-box;
+    min-width: 11rem;
+    padding: 0.9rem 1.25rem 1rem;
+    border-radius: 0.9rem;
+    border-top: 5px solid var(--tile-accent);
+    background: linear-gradient(135deg, var(--tile-bg-from) 0%, var(--tile-bg-to) 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.productTile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+.productTilePrice {
+    --tile-accent: #3B27A8;
+    --tile-bg-from: #F3F0FC;
+    --tile-bg-to: #E9E5F8;
+}
+
+.productTileStatus {
+    --tile-accent: #0B6B3A;
+    --tile-bg-from: #F0FBF5;
+    --tile-bg-to: #DDF3E6;
+}
+
+.productTileCategory {
+    --tile-accent: #D89B00;
+    --tile-bg-from: #FFF6EC;
+    --tile-bg-to: #FBE7D5;
+}
+
+.productTileCode {
+    --tile-accent: #0A6ED1;
+    --tile-bg-from: #EFF6FF;
+    --tile-bg-to: #DCEBFC;
+}
+
+.productTileIcon {
+    color: #4B5563 !important;
+    margin-right: 0.4rem;
+}
+
+.productTileLabel {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1D2D3E;
+}
+
+.productTileText {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1D2D3E;
+}
+
+.productTile .productTileValue {
+    margin-top: 0.4rem;
+}
+
+.productTile .productTileValue .sapMObjectNumberText {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #3B27A8;
+}
+
+.productTile .productTileStatusValue {
+    margin-top: 0.55rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+/* ---------- Content cards ---------- */
+.productCards {
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.productCard {
+    --card-accent: #0A6ED1;
+
+    box-sizing: border-box;
+    flex: 1 1 22rem;
+    min-width: 18rem;
+    padding: 1.25rem 1.6rem 1rem;
+    background: #FFFFFF;
+    border-radius: 1rem;
+    border-top: 6px solid var(--card-accent);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+}
+
+.productCardBlue  { --card-accent: #0A6ED1; }
+.productCardGreen { --card-accent: #0B6B3A; }
+
+.productCardHead {
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.productCardIcon {
+    color: var(--card-accent) !important;
+    margin-right: 0.6rem;
+}
+
+.productCardTitle {
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+.productField {
+    margin-bottom: 1rem;
+}
+
+.productField .sapMLabel {
+    color: #6B7C93;
+    font-size: 0.8rem;
+}
+
+.productField .sapMText {
+    color: #1D2D3E;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.productField .productPriceBig .sapMObjectNumberText {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0B6B3A;
+}
+
+/* ============================= */
+/* Product details page          */
+/* ============================= */
+.pdPageBg {
+    background: #F3F4FB;
+    min-height: 100%;
+    border-radius: 0.5rem;
+}
+
+/* ---------- Banner ---------- */
+.pdBanner {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 6.4rem;
+    padding: 0 1.75rem;
+    border-radius: 0.9rem;
+    background: linear-gradient(90deg, #0A6ED1 0%, #29B6F6 60%, #4FC3F7 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pdBannerIcon {
+    color: #FFFFFF !important;
+    margin-right: 1.1rem;
+}
+
+.pdBanner .pdBannerTitle {
+    color: #FFFFFF !important;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.pdBanner .pdBannerSubtitle {
+    color: #FFFFFF !important;
+    font-size: 0.8rem;
+}
+
+/* ---------- Summary tiles ---------- */
+.pdTiles {
+    gap: 1.5rem;
+}
+
+.pdTile {
+    --pd-accent: #3B27A8;
+    --pd-bg-from: #F3F0FC;
+    --pd-bg-to: #E9E5F8;
+    --pd-value: #32363A;
+
+    box-sizing: border-box;
+    flex: 1 1 11rem;
+    min-width: 11rem;
+    max-width: 16rem;
+    min-height: 8.5rem;
+    padding: 1.3rem 1.5rem 1.1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    border-radius: 1rem;
+    border-top: 6px solid var(--pd-accent);
+    background: linear-gradient(135deg, var(--pd-bg-from) 0%, var(--pd-bg-to) 100%);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pdTile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+.pdTileTotal {
+    --pd-accent: #3B27A8;
+    --pd-bg-from: #F3F0FC;
+    --pd-bg-to: #E9E5F8;
+    --pd-value: #32363A;
+}
+
+.pdTileActive {
+    --pd-accent: #0B6B3A;
+    --pd-bg-from: #F0FBF5;
+    --pd-bg-to: #DDF3E6;
+    --pd-value: #2E7D4F;
+}
+
+.pdTileInactive {
+    --pd-accent: #E60000;
+    --pd-bg-from: #FFF1F1;
+    --pd-bg-to: #FBDADA;
+    --pd-value: #C4161C;
+}
+
+.pdTileCategories {
+    --pd-accent: #D89B00;
+    --pd-bg-from: #FFF6EC;
+    --pd-bg-to: #FBE7D5;
+    --pd-value: #C8600A;
+}
+
+.pdTile .pdTileLabel {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1D2D3E;
+    margin: 0;
+}
+
+.pdTile .pdTileSub {
+    display: block;
+    font-size: 0.78rem;
+    color: #6B7C93;
+    margin: 0.1rem 0 0 0;
+}
+
+.pdTile .pdTileValueRow {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    gap: 0.5rem;
+}
+
+.pdTile .pdTileIcon {
+    color: #4B5563 !important;
+}
+
+.pdTile .pdTileValue {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--pd-value) !important;
+    margin: 0;
+}
+
+/* ---------- Product list card ---------- */
+.pdPanel {
+    box-sizing: border-box;
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 1rem;
+    border-top: 6px solid #0A6ED1;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+    padding: 0.75rem 1rem 1rem;
+    overflow: hidden;
+}
+
+.pdPanel .pdToolbar {
+    background: transparent;
+    border-bottom: none;
+}
+
+.pdPanelTitle {
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+.pdTable .sapMListTblHeaderCell {
+    background: #F3F4FB;
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+.pdTable .sapMListTblRow:hover {
+    background: #F3F8FE;
+}
+
+.pdProductName {
+    color: #1D2D3E;
+    font-weight: 500;
+}
+
+/* ============================= */
+/* Chart + table panels          */
+/* ============================= */
+.homePanelsRow {
+    box-sizing: border-box;
+    width: 100%;
+    align-items: stretch;
+    gap: 1.5rem;
+}
+
+.homePanel {
+    --panel-accent: #0A6ED1;
+
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border-radius: 1rem;
+    border-top: 6px solid var(--panel-accent);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+    padding: 1.25rem 1.5rem 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.homePanel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+.homePanelBlue   { --panel-accent: #0A6ED1; }
+.homePanelGreen  { --panel-accent: #0B6B3A; }
+.homePanelOrange { --panel-accent: #E9730C; }
+.homePanelPurple { --panel-accent: #5B3FD0; }
+
+/* full-width table panel */
+.homePanelFull {
+    width: 100%;
+}
+
+.homePanelTitle {
+    display: block;
+    color: #1D2D3E;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.homePanelHeader {
+    margin-bottom: 0.5rem;
+}
+
+.recentDealersTable .sapMListTblHeaderCell {
+    background: #F3F4FB;
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+/* ============================= */
+/* Product object page: extras   */
+/* ============================= */
+.productCardPurple { --card-accent: #5B3FD0; }
+.productCardOrange { --card-accent: #E9730C; }
+
+/* related products card spans the full width */
+.productCardFull {
+    width: 100%;
+    flex: none;
+}
+
+.productBigNumber {
+    color: #1D2D3E;
+    font-weight: 700;
+    margin: 0;
+}
+
+.productProgress {
+    margin-top: 0.35rem;
+}
+
+.productHint {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    color: #6B7C93;
+}
+
+.productRelatedTable .sapMListTblHeaderCell {
+    background: #F3F4FB;
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+.productRelatedTable .sapMListTblRow:hover {
+    background: #F3F8FE;
+}
+
+/* ========================================================= */
+/* Approval History Page                                     */
+/* ========================================================= */
+
+/* ---------- Page background ---------- */
+
+.approvalHistoryPageBg {
+    background: #F3F4FB;
+    min-height: 100%;
+}
+
+
+/* ---------- Main page container ---------- */
+
+.approvalMainContainer {
+    box-sizing: border-box;
+    padding: 1.25rem 1.5rem 2rem;
+}
+
+
+/* ---------- Approval History Banner ---------- */
+
+.approvalBanner {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 6.5rem;
+
+    padding: 1rem 1.5rem;
+
+    border-radius: 0.9rem;
+
+    background: linear-gradient(
+        90deg,
+        #0A6ED1 0%,
+        #29B6F6 60%,
+        #4FC3F7 100%
+    );
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    margin-bottom: 1.25rem;
+}
+
+.approvalBanner .sapUiIcon {
+    color: #FFFFFF !important;
+}
+
+.approvalBanner .sapMTitle {
+    color: #FFFFFF !important;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.approvalBanner .sapMText {
+    color: #FFFFFF !important;
+    font-size: 0.82rem;
+}
+
+
+/* ---------- KPI Row ---------- */
+
+.approvalKpiRow {
+    width: 100%;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+
+/* ---------- KPI Boxes ---------- */
+
+.approvalKpiBox {
+    flex: 1 1 13rem;
+    min-width: 12rem;
+}
+
+
+/* ---------- Generic Tile styling ----------
+   Compound selector (.sapMGT.approvalKpiTile) so these rules win over the
+   default GenericTile theme styles (fixed width, margin, white background). */
+
+.sapMGT.approvalKpiTile {
+    width: 100%;
+    max-width: 100%;
+    min-height: 7.5rem;
+    margin: 0;
+
+    border-radius: 1rem;
+
+    background: #FFFFFF;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.sapMGT.approvalKpiTile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+
+/* ---------- Total Actions ---------- */
+
+.sapMGT.approvalKpiTotal {
+    border-top: 6px solid #3B27A8;
+    background: linear-gradient(
+        135deg,
+        #F3F0FC 0%,
+        #E9E5F8 100%
+    );
+}
+
+
+/* ---------- Approvals ---------- */
+
+.sapMGT.approvalKpiApproved {
+    border-top: 6px solid #0B6B3A;
+    background: linear-gradient(
+        135deg,
+        #F0FBF5 0%,
+        #DDF3E6 100%
+    );
+}
+
+
+/* ---------- Rejections ---------- */
+
+.sapMGT.approvalKpiRejected {
+    border-top: 6px solid #E60000;
+    background: linear-gradient(
+        135deg,
+        #FFF1F1 0%,
+        #FBDADA 100%
+    );
+}
+
+
+/* ---------- Blocks ---------- */
+
+.sapMGT.approvalKpiBlocked {
+    border-top: 6px solid #D89B00;
+    background: linear-gradient(
+        135deg,
+        #FFF6EC 0%,
+        #FBE7D5 100%
+    );
+}
+
+
+/* ---------- KPI Header ---------- */
+
+.approvalKpiTile .sapMGTHeader {
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+.approvalKpiTile .sapMGTSubHdrTxt {
+    color: #6B7C93;
+}
+
+
+/* ---------- KPI Number ---------- */
+
+.approvalKpiTile .sapMNCLargeFontSize {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+
+/* ---------- Approval History Table Panel ---------- */
+
+.approvalTablePanel {
+    box-sizing: border-box;
+    width: 100%;
+
+    background: #FFFFFF;
+
+    border-radius: 1rem;
+    border-top: 6px solid #0A6ED1;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+
+    padding: 0.5rem 0.75rem 0.75rem;
+
+    /* "clip" keeps the rounded corners but, unlike "hidden",
+       does not break sticky column headers / toolbar */
+    overflow: clip;
+}
+
+
+/* ---------- Toolbar ---------- */
+
+.approvalToolbar {
+    background: transparent !important;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 0.25rem 0.5rem 0.75rem;
+}
+
+.approvalToolbar .sapMTitle {
+    color: #1D2D3E;
+    font-weight: 700;
+}
+
+
+/* ---------- Search ---------- */
+
+.approvalSearch {
+    border-radius: 0.5rem;
+}
+
+
+/* ---------- Table Header ---------- */
+
+.approvalTable .sapMListTblHeaderCell {
+    background: #F3F4FB;
+
+    color: #1D2D3E;
+
+    font-weight: 700;
+
+    border-bottom: 1px solid #D9DEE3;
+}
+
+
+/* ---------- Table Rows ---------- */
+
+.approvalTable .sapMListTblRow {
+    transition: background 0.15s ease;
+}
+
+.approvalTable .sapMListTblRow:hover {
+    background: #F3F8FE;
+}
+
+
+/* ---------- Dealer ---------- */
+
+.approvalDealer .sapMObjectIdentifierTitle {
+    color: #1D2D3E;
+    font-weight: 600;
+}
+
+.approvalDealer .sapMObjectIdentifierText {
+    color: #6B7C93;
+    font-size: 0.8rem;
+}
+
+
+/* ---------- Date & Time ---------- */
+
+.approvalDateTime {
+    color: #1D2D3E;
+    font-size: 0.85rem;
+}
+
+
+/* ---------- Action ---------- */
+
+.approvalAction {
+    font-weight: 700;
+}
+
+
+/* ---------- Action By ---------- */
+
+.approvalActionBy {
+    color: #1D2D3E;
+    font-size: 0.85rem;
+}
+
+
+/* ---------- Remarks ---------- */
+
+.approvalRemarks {
+    color: #5F6B76;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+
+/* ---------- Level ---------- */
+
+.approvalLevel {
+    color: #1D2D3E;
+    font-weight: 600;
+}
+
+
+/* ---------- Clear Button ---------- */
+
+.approvalClearButton {
+    color: #0A6ED1 !important;
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+
+    .approvalMainContainer {
+        padding: 1rem;
+    }
+
+    .approvalKpiBox {
+        flex: 1 1 45%;
+        min-width: 10rem;
+    }
+
+    .approvalBanner {
+        padding: 1rem;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .approvalMainContainer {
+        padding: 0.75rem;
+    }
+
+    .approvalKpiBox {
+        flex: 1 1 100%;
+    }
+
+    .approvalBanner {
+        min-height: auto;
+        padding: 1rem;
+    }
+
+    .approvalBanner .sapMTitle {
+        font-size: 1.15rem;
+    }
+
+    .approvalBanner .sapMText {
+        font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,473 @@
+<mvc:View
+    id="homeView"
+    controllerName="dealermangement.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+
+    <Page
+        id="homePage"
+        title="Home"
+        showHeader="true">
+
+        <headerContent>
+            <Button
+                id="homeRefreshButton"
+                icon="sap-icon://refresh"
+                type="Transparent"
+                tooltip="Refresh"
+                press=".onRefreshKPIs"/>
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="homeContainer"
+                class="sapUiResponsiveContentPadding homePageBg">
+
+                <!---->
+                <!-- WELCOME BANNER -->
+                <!--  -->
+
+                <HBox
+                    id="welcomeBanner"
+                    class="welcomeBanner sapUiMediumMarginBottom"
+                    justifyContent="SpaceBetween"
+                    alignItems="Center">
+
+                    <VBox id="welcomeBannerText">
+
+                        <Title
+                            id="homeWelcomeTitle"
+                            text="Welcome to Dealer Management"
+                            level="H2"
+                            class="sapUiTinyMarginBottom"/>
+
+                        <Text
+                            id="homeWelcomeText"
+                            text="Here's a quick overview of your dealer network."/>
+
+                    </VBox>
+
+                </HBox>
+
+                <!-- -->
+                <!-- -->
+                <!-- -->
+
+                <FlexBox
+                    id="kpiCardContainer"
+                    wrap="Wrap"
+                    class="kpiGrid sapUiMediumMarginBottom">
+
+                    <!-- TOTAL -->
+                    <VBox id="kpiCardTotal" class="kpiCard kpiTotal">
+                        <Text id="kpiLabelTotal" text="Total Dealers" class="kpiCardLabel"/>
+                        <Text id="kpiSubLabelTotal" text="All Dealers" class="kpiCardSubLabel"/>
+                        <HBox id="kpiRowTotal" alignItems="Center" class="kpiCardValueRow">
+                            <core:Icon id="kpiIconTotal" src="sap-icon://customer" size="1.5rem" class="kpiCardIcon"/>
+                            <Title id="kpiValueTotal" text="{kpi>/totalDealers}" level="H2" class="kpiCardValue"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ACTIVE -->
+                    <VBox id="kpiCardActive" class="kpiCard kpiActive">
+                        <Text id="kpiLabelActive" text="Active Dealers" class="kpiCardLabel"/>
+                        <Text id="kpiSubLabelActive" text="Fully onboarded" class="kpiCardSubLabel"/>
+                        <HBox id="kpiRowActive" alignItems="Center" class="kpiCardValueRow">
+                            <core:Icon id="kpiIconActive" src="sap-icon://accept" size="1.5rem" class="kpiCardIcon"/>
+                            <Title id="kpiValueActive" text="{kpi>/activeDealers}" level="H2" class="kpiCardValue"/>
+                        </HBox>
+                    </VBox>
+
+                    
+                    <!-- PENDING -->
+                    <VBox id="kpiCardPending" class="kpiCard kpiPending">
+                        <Text id="kpiLabelPending" text="Pending Approval" class="kpiCardLabel"/>
+                        <Text id="kpiSubLabelPending" text="Pending, submitted or L1 approved" class="kpiCardSubLabel"/>
+                        <HBox id="kpiRowPending" alignItems="Center" class="kpiCardValueRow">
+                            <core:Icon id="kpiIconPending" src="sap-icon://pending" size="1.5rem" class="kpiCardIcon"/>
+                            <Title id="kpiValuePending" text="{kpi>/pendingDealers}" level="H2" class="kpiCardValue"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- REJECTED -->
+                    <VBox id="kpiCardRejected" class="kpiCard kpiRejected">
+                        <Text id="kpiLabelRejected" text="Rejected / Blocked" class="kpiCardLabel"/>
+                        <Text id="kpiSubLabelRejected" text="Needs attention" class="kpiCardSubLabel"/>
+                        <HBox id="kpiRowRejected" alignItems="Center" class="kpiCardValueRow">
+                            <core:Icon id="kpiIconRejected" src="sap-icon://decline" size="1.5rem" class="kpiCardIcon"/>
+                            <Title id="kpiValueRejected" text="{kpi>/rejectedDealers}" level="H2" class="kpiCardValue"/>
+                        </HBox>
+                    </VBox>
+
+                </FlexBox>
+
+
+                <!-- ================================= -->
+                <!-- CHARTS GRID -->
+                <!-- ================================= -->
+
+                <FlexBox
+                    id="chartsGrid"
+                    wrap="Wrap"
+                    width="100%"
+                    class="homePanelsRow sapUiMediumMarginBottom">
+
+                    <!-- 1. DEALERS BY STATUS (DONUT) -->
+                    <VBox id="statusChartPanel" class="homePanel homePanelBlue">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="26rem" minWidth="20rem"/>
+                        </layoutData>
+
+                        <Title id="statusChartTitle" text="Dealers by Status" level="H4" class="homePanelTitle"/>
+
+                        <viz:VizFrame
+                            id="statusChart"
+                            vizType="donut"
+                            width="100%"
+                            height="18rem"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizProperties="{
+                                title: { visible: false },
+                                plotArea: { dataLabel: { visible: true } },
+                                legend: { visible: true }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{chart>/statusData}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Status" value="{chart>label}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Count" value="{chart>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="size" type="Measure" values="Count"/>
+                                <viz.feeds:FeedItem uid="color" type="Dimension" values="Status"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </VBox>
+
+
+                    <!-- 2. DEALERS BY TYPE (DONUT) -->
+                    <VBox id="typeChartPanel" class="homePanel homePanelPurple">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="26rem" minWidth="20rem"/>
+                        </layoutData>
+
+                        <Title id="typeChartTitle" text="Dealers by Type" level="H4" class="homePanelTitle"/>
+
+                        <viz:VizFrame
+                            id="typeChart"
+                            vizType="donut"
+                            width="100%"
+                            height="18rem"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizProperties="{
+                                title: { visible: false },
+                                plotArea: { dataLabel: { visible: true } },
+                                legend: { visible: true }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{chart>/typeData}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Type" value="{chart>label}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Dealers" value="{chart>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="size" type="Measure" values="Dealers"/>
+                                <viz.feeds:FeedItem uid="color" type="Dimension" values="Type"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </VBox>
+
+
+                    <!-- 3. APPROVAL PIPELINE (BAR) -->
+                    <VBox id="pipelineChartPanel" class="homePanel homePanelOrange">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="26rem" minWidth="20rem"/>
+                        </layoutData>
+
+                        <Title id="pipelineChartTitle" text="Approval Pipeline" level="H4" class="homePanelTitle"/>
+
+                        <viz:VizFrame
+                            id="pipelineChart"
+                            vizType="bar"
+                            width="100%"
+                            height="18rem"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizProperties="{
+                                title: { visible: false },
+                                plotArea: { dataLabel: { visible: true }, colorPalette: ['#E9730C'] },
+                                legend: { visible: false },
+                                categoryAxis: { title: { visible: false } },
+                                valueAxis: { title: { visible: false } }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{chart>/pipelineData}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Stage" value="{chart>label}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Dealers" value="{chart>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Dealers"/>
+                                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Stage"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </VBox>
+
+
+                    <!-- 4. DEALERS ONBOARDED BY MONTH (COLUMN) -->
+                    <VBox id="monthlyChartPanel" class="homePanel homePanelBlue">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="26rem" minWidth="20rem"/>
+                        </layoutData>
+
+                        <Title id="monthlyChartTitle" text="Dealers Onboarded by Month" level="H4" class="homePanelTitle"/>
+
+                        <viz:VizFrame
+                            id="monthlyChart"
+                            vizType="column"
+                            width="100%"
+                            height="18rem"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizProperties="{
+                                title: { visible: false },
+                                plotArea: { dataLabel: { visible: true }, colorPalette: ['#0A6ED1'] },
+                                legend: { visible: false },
+                                categoryAxis: { title: { visible: false } },
+                                valueAxis: { title: { visible: false } }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{chart>/monthlyData}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Month" value="{chart>label}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Dealers" value="{chart>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Dealers"/>
+                                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Month"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </VBox>
+
+
+                    <!-- 5. AVERAGE UNIT PRICE BY CATEGORY (COLUMN) -->
+                    <VBox id="priceChartPanel" class="homePanel homePanelPurple">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="26rem" minWidth="20rem"/>
+                        </layoutData>
+
+                        <Title id="priceChartTitle" text="Avg Unit Price by Category (INR)" level="H4" class="homePanelTitle"/>
+
+                        <viz:VizFrame
+                            id="priceChart"
+                            vizType="column"
+                            width="100%"
+                            height="18rem"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizProperties="{
+                                title: { visible: false },
+                                plotArea: { dataLabel: { visible: true, formatString: '#,##0' }, colorPalette: ['#5B3FD0'] },
+                                legend: { visible: false },
+                                categoryAxis: { title: { visible: false } },
+                                valueAxis: { title: { visible: false }, label: { formatString: '#,##0' } }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{chart>/priceData}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Category" value="{chart>label}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Avg Price" value="{chart>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Avg Price"/>
+                                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Category"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </VBox>
+
+
+                    <!-- 6. TOP 5 PRODUCTS BY PRICE (BAR) -->
+                    <VBox id="topProductChartPanel" class="homePanel homePanelOrange">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="26rem" minWidth="20rem"/>
+                        </layoutData>
+
+                        <Title id="topProductChartTitle" text="Top 5 Products by Price (INR)" level="H4" class="homePanelTitle"/>
+
+                        <viz:VizFrame
+                            id="topProductChart"
+                            vizType="bar"
+                            width="100%"
+                            height="18rem"
+                            uiConfig="{applicationSet:'fiori'}"
+                            vizProperties="{
+                                title: { visible: false },
+                                plotArea: { dataLabel: { visible: true, formatString: '#,##0' }, colorPalette: ['#E9730C'] },
+                                legend: { visible: false },
+                                categoryAxis: { title: { visible: false } },
+                                valueAxis: { title: { visible: false }, label: { formatString: '#,##0' } }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset data="{chart>/topProductData}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition name="Product" value="{chart>label}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition name="Price" value="{chart>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Price"/>
+                                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Product"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </VBox>
+
+
+                </FlexBox>
+
+
+                <!-- ================================= -->
+                <!-- RECENT DEALERS (TABLE) -->
+                <!-- ================================= -->
+
+                <VBox
+                    id="recentDealersPanel"
+                    class="homePanel homePanelFull homePanelBlue sapUiMediumMarginBottom">
+
+                    <HBox
+                        id="recentDealersHeader"
+                        justifyContent="SpaceBetween"
+                        alignItems="Center"
+                        class="homePanelHeader">
+
+                        <Title
+                            id="recentDealersTitle"
+                            text="Recent Dealers"
+                            level="H4"
+                            class="homePanelTitle"/>
+
+                        <Button
+                            id="recentDealersViewAll"
+                            text="View All"
+                            type="Transparent"
+                            press=".onGoToDealers"/>
+
+                    </HBox>
+
+                    <Table
+                        id="recentDealersTable"
+                        class="recentDealersTable"
+                        noDataText="No dealers found"
+                        items="{
+                            path: '/Dealers',
+                            sorter: { path: 'createdAt', descending: true },
+                            length: 5
+                        }">
+
+                        <columns>
+                            <Column id="colDealerCode" width="7rem">
+                                <Text id="txtColDealerCode" text="Code"/>
+                            </Column>
+                            <Column id="colDealerName">
+                                <Text id="txtColDealerName" text="Dealer Name"/>
+                            </Column>
+                            <Column id="colDealerPhone" minScreenWidth="Tablet" demandPopin="true">
+                                <Text id="txtColDealerPhone" text="Phone"/>
+                            </Column>
+                            <Column id="colDealerStatus" width="8rem">
+                                <Text id="txtColDealerStatus" text="Status"/>
+                            </Column>
+                            <Column id="colDealerCreated" minScreenWidth="Desktop" demandPopin="true">
+                                <Text id="txtColDealerCreated" text="Created On"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem
+                                id="recentDealerItem"
+                                type="Navigation"
+                                press=".onGoToDealers">
+                                <cells>
+                                    <ObjectIdentifier id="cellDealerCode" text="{dealerCode}"/>
+                                    <Text id="cellDealerName" text="{dealerName}"/>
+                                    <Text id="cellDealerPhone" text="{phone}"/>
+                                    <ObjectStatus
+                                        id="cellDealerStatus"
+                                        text="{status}"
+                                        state="{path: 'status', formatter: '.formatStatusState'}"
+                                        inverted="true"/>
+                                    <Text
+                                        id="cellDealerCreated"
+                                        text="{
+                                            path: 'createdAt',
+                                            type: 'sap.ui.model.odata.type.DateTimeOffset',
+                                            formatOptions: { style: 'medium' }
+                                        }"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                </VBox>
+
+
+                <!-- ================================= -->
+                <!-- QUICK LINKS -->
+                <!-- ================================= -->
+
+                <Title
+                    id="homeQuickLinksTitle"
+                    text="Quick Links"
+                    level="H4"
+                    class="sapUiSmallMarginBottom"/>
+
+                <HBox id="homeQuickLinks">
+
+                    <Button
+                        id="homeGoToDealersButton"
+                        text="Go to Dealer Detail"
+                        icon="sap-icon://customer"
+                        type="Emphasized"
+                        class="sapUiTinyMarginEnd"
+                        press=".onGoToDealers"/>
+
+                    <Button
+                        id="homeGoToProductsButton"
+                        text="Go to Product Details"
+                        icon="sap-icon://product"
+                        press=".onGoToProducts"/>
+
+                </HBox>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

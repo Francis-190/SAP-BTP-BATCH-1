@@ -1,0 +1,647 @@
+<mvc:View
+    id="productObjectPageView"
+    controllerName="dealermangement.controller.ProductObjectPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:uxap="sap.uxap"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+
+    <uxap:ObjectPageLayout
+        id="productObjectPage"
+        class="productObjectPage"
+        showTitleInHeaderContent="false"
+        upperCaseAnchorBar="false"
+        headerContentPinnable="true">
+
+        <!-- ================================= -->
+        <!-- TITLE -->
+        <!-- ================================= -->
+
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle id="productObjectPageTitle">
+
+                <uxap:expandedHeading>
+                    <Title
+                        id="productExpandedTitle"
+                        text="{productName}"
+                        level="H2"
+                        class="productPageTitle"/>
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title
+                        id="productSnappedTitle"
+                        text="{productName}"
+                        level="H3"
+                        class="productPageTitle"/>
+                </uxap:snappedHeading>
+
+                <uxap:expandedContent>
+                    <Text
+                        id="productExpandedSubtitle"
+                        text="{productCode}  •  {category}"
+                        class="productPageSubtitle"/>
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <Text
+                        id="productSnappedSubtitle"
+                        text="{productCode}"
+                        class="productPageSubtitle"/>
+                </uxap:snappedContent>
+
+                <uxap:actions>
+                    <Button
+                        id="productBackButton"
+                        text="Back"
+                        icon="sap-icon://nav-back"
+                        type="Emphasized"
+                        tooltip="Back to products"
+                        press=".onBack"/>
+                </uxap:actions>
+
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+
+        <!-- ================================= -->
+        <!-- HEADER TILES -->
+        <!-- ================================= -->
+
+        <uxap:headerContent>
+
+            <FlexBox
+                id="productHeaderTiles"
+                wrap="Wrap"
+                class="productTiles">
+
+                <!-- PRICE -->
+                <VBox id="productTilePrice" class="productTile productTilePrice">
+                    <HBox id="productTilePriceHead" alignItems="Center">
+                        <core:Icon
+                            id="productTilePriceIcon"
+                            src="sap-icon://money-bills"
+                            size="1.1rem"
+                            class="productTileIcon"/>
+                        <Text
+                            id="productTilePriceLabel"
+                            text="Unit Price"
+                            class="productTileLabel"/>
+                    </HBox>
+                    <ObjectNumber
+                        id="productHeaderPrice"
+                        number="{unitPrice}"
+                        unit="INR"
+                        emphasized="true"
+                        class="productTileValue"/>
+                </VBox>
+
+                <!-- STATUS -->
+                <VBox id="productTileStatus" class="productTile productTileStatus">
+                    <HBox id="productTileStatusHead" alignItems="Center">
+                        <core:Icon
+                            id="productTileStatusIcon"
+                            src="sap-icon://status-positive"
+                            size="1.1rem"
+                            class="productTileIcon"/>
+                        <Text
+                            id="productTileStatusLabel"
+                            text="Status"
+                            class="productTileLabel"/>
+                    </HBox>
+                    <ObjectStatus
+                        id="productHeaderStatus"
+                        text="{= ${active} ? 'Active' : 'Inactive' }"
+                        state="{= ${active} ? 'Success' : 'Error' }"
+                        icon="{= ${active} ? 'sap-icon://accept' : 'sap-icon://decline' }"
+                        class="productTileStatusValue"/>
+                </VBox>
+
+                <!-- CATEGORY -->
+                <VBox id="productTileCategory" class="productTile productTileCategory">
+                    <HBox id="productTileCategoryHead" alignItems="Center">
+                        <core:Icon
+                            id="productTileCategoryIcon"
+                            src="sap-icon://tag"
+                            size="1.1rem"
+                            class="productTileIcon"/>
+                        <Text
+                            id="productTileCategoryLabel"
+                            text="Category"
+                            class="productTileLabel"/>
+                    </HBox>
+                    <Text
+                        id="productHeaderCategoryText"
+                        text="{category}"
+                        class="productTileText"/>
+                </VBox>
+
+                <!-- CODE -->
+                <VBox id="productTileCode" class="productTile productTileCode">
+                    <HBox id="productTileCodeHead" alignItems="Center">
+                        <core:Icon
+                            id="productTileCodeIcon"
+                            src="sap-icon://product"
+                            size="1.1rem"
+                            class="productTileIcon"/>
+                        <Text
+                            id="productTileCodeLabel"
+                            text="Product Code"
+                            class="productTileLabel"/>
+                    </HBox>
+                    <Text
+                        id="productHeaderCodeText"
+                        text="{productCode}"
+                        class="productTileText"/>
+                </VBox>
+
+            </FlexBox>
+
+        </uxap:headerContent>
+
+
+        <!-- ================================= -->
+        <!-- SECTIONS -->
+        <!-- ================================= -->
+
+        <uxap:sections>
+
+            <!-- ========================================= -->
+            <!-- 1. GENERAL INFORMATION -->
+            <!-- ========================================= -->
+
+            <uxap:ObjectPageSection
+                id="productGeneralSection"
+                title="General Information"
+                titleUppercase="false">
+
+                <uxap:subSections>
+
+                    <uxap:ObjectPageSubSection id="productGeneralSubSection">
+
+                        <uxap:blocks>
+
+                            <FlexBox
+                                id="productCards"
+                                wrap="Wrap"
+                                class="productCards">
+
+                                <!-- PRODUCT INFORMATION CARD -->
+                                <VBox id="productInfoCard" class="productCard productCardBlue">
+
+                                    <HBox
+                                        id="productInfoCardHead"
+                                        alignItems="Center"
+                                        class="productCardHead">
+                                        <core:Icon
+                                            id="productInfoCardIcon"
+                                            src="sap-icon://product"
+                                            size="1.25rem"
+                                            class="productCardIcon"/>
+                                        <Title
+                                            id="productInfoCardTitle"
+                                            text="Product Information"
+                                            level="H4"
+                                            class="productCardTitle"/>
+                                    </HBox>
+
+                                    <VBox id="productNameField" class="productField">
+                                        <Label id="productNameLabel" text="Product Name"/>
+                                        <Text id="productNameText" text="{productName}"/>
+                                    </VBox>
+
+                                    <VBox id="productCodeField" class="productField">
+                                        <Label id="productCodeLabel" text="Product Code"/>
+                                        <Text id="productCodeText" text="{productCode}"/>
+                                    </VBox>
+
+                                    <VBox id="productStatusField" class="productField">
+                                        <Label id="productStatusLabel" text="Status"/>
+                                        <ObjectStatus
+                                            id="productStatusValue"
+                                            text="{= ${active} ? 'Active' : 'Inactive' }"
+                                            state="{= ${active} ? 'Success' : 'Error' }"
+                                            icon="{= ${active} ? 'sap-icon://accept' : 'sap-icon://decline' }"
+                                            inverted="true"/>
+                                    </VBox>
+
+                                </VBox>
+
+
+                                <!-- CATEGORY AND PRICING CARD -->
+                                <VBox id="productPricingCard" class="productCard productCardGreen">
+
+                                    <HBox
+                                        id="productPricingCardHead"
+                                        alignItems="Center"
+                                        class="productCardHead">
+                                        <core:Icon
+                                            id="productPricingCardIcon"
+                                            src="sap-icon://money-bills"
+                                            size="1.25rem"
+                                            class="productCardIcon"/>
+                                        <Title
+                                            id="productPricingCardTitle"
+                                            text="Category &amp; Pricing"
+                                            level="H4"
+                                            class="productCardTitle"/>
+                                    </HBox>
+
+                                    <VBox id="productCategoryField" class="productField">
+                                        <Label id="productCategoryLabel" text="Category"/>
+                                        <Text id="productCategoryText" text="{category}"/>
+                                    </VBox>
+
+                                    <!-- <VBox id="productCategoryDescField" class="productField">
+                                        <Label id="productCategoryDescLabel" text="Category Description"/>
+                                        <Text id="productCategoryDescText" text="{category/description}"/>
+                                    </VBox> -->
+
+                                    <VBox id="productUnitPriceField" class="productField">
+                                        <Label id="productUnitPriceLabel" text="Unit Price"/>
+                                        <ObjectNumber
+                                            id="productUnitPriceNumber"
+                                            number="{unitPrice}"
+                                            unit="INR"
+                                            emphasized="true"
+                                            class="productPriceBig"/>
+                                    </VBox>
+
+                                </VBox>
+
+                            </FlexBox>
+
+                        </uxap:blocks>
+
+                    </uxap:ObjectPageSubSection>
+
+                </uxap:subSections>
+
+            </uxap:ObjectPageSection>
+
+
+            <!-- ========================================= -->
+            <!-- 2. PRICING INSIGHTS -->
+            <!-- ========================================= -->
+
+            <uxap:ObjectPageSection
+                id="productInsightsSection"
+                title="Pricing Insights"
+                titleUppercase="false">
+
+                <uxap:subSections>
+
+                    <uxap:ObjectPageSubSection id="productInsightsSubSection">
+
+                        <uxap:blocks>
+
+                            <FlexBox
+                                id="productInsightCards"
+                                wrap="Wrap"
+                                class="productCards">
+
+                                <!-- PRICE POSITION CARD -->
+                                <VBox id="productPositionCard" class="productCard productCardPurple">
+
+                                    <HBox
+                                        id="productPositionCardHead"
+                                        alignItems="Center"
+                                        class="productCardHead">
+                                        <core:Icon
+                                            id="productPositionCardIcon"
+                                            src="sap-icon://trend-up"
+                                            size="1.25rem"
+                                            class="productCardIcon"/>
+                                        <Title
+                                            id="productPositionCardTitle"
+                                            text="Price Position"
+                                            level="H4"
+                                            class="productCardTitle"/>
+                                    </HBox>
+
+                                    <VBox id="productRankField" class="productField">
+                                        <Label id="productRankLabel" text="Price Rank in Category"/>
+                                        <Title
+                                            id="productRankValue"
+                                            text="{insight>/rankText}"
+                                            level="H3"
+                                            class="productBigNumber"/>
+                                    </VBox>
+
+                                    <VBox id="productVsMaxField" class="productField">
+                                        <Label id="productVsMaxLabel" text="Compared to Category Highest"/>
+                                        <ProgressIndicator
+                                            id="productVsMaxBar"
+                                            percentValue="{insight>/pctOfMax}"
+                                            displayValue="{insight>/pctOfMaxText}"
+                                            state="Information"
+                                            class="productProgress"/>
+                                    </VBox>
+
+                                    <VBox id="productVsAvgField" class="productField">
+                                        <Label id="productVsAvgLabel" text="Compared to Category Average"/>
+                                        <ProgressIndicator
+                                            id="productVsAvgBar"
+                                            percentValue="{insight>/pctOfAvg}"
+                                            displayValue="{insight>/pctOfAvgText}"
+                                            state="{insight>/vsAvgState}"
+                                            class="productProgress"/>
+                                        <Text
+                                            id="productVsAvgText"
+                                            text="{insight>/vsAvgText}"
+                                            class="productHint"/>
+                                    </VBox>
+
+                                </VBox>
+
+
+                                <!-- PRICE COMPARISON CHART CARD -->
+                                <VBox id="productChartCard" class="productCard productCardOrange">
+
+                                    <HBox
+                                        id="productChartCardHead"
+                                        alignItems="Center"
+                                        class="productCardHead">
+                                        <core:Icon
+                                            id="productChartCardIcon"
+                                            src="sap-icon://vertical-bar-chart"
+                                            size="1.25rem"
+                                            class="productCardIcon"/>
+                                        <Title
+                                            id="productChartCardTitle"
+                                            text="Price Comparison (INR)"
+                                            level="H4"
+                                            class="productCardTitle"/>
+                                    </HBox>
+
+                                    <viz:VizFrame
+                                        id="productPriceChart"
+                                        vizType="column"
+                                        width="100%"
+                                        height="16rem"
+                                        uiConfig="{applicationSet:'fiori'}"
+                                        vizProperties="{
+                                            title: { visible: false },
+                                            plotArea: { dataLabel: { visible: true, formatString: '#,##0' }, colorPalette: ['#E9730C'] },
+                                            legend: { visible: false },
+                                            categoryAxis: { title: { visible: false } },
+                                            valueAxis: { title: { visible: false }, label: { formatString: '#,##0' } }
+                                        }">
+
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset data="{insight>/chartData}">
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition name="Item" value="{insight>label}"/>
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition name="Price" value="{insight>value}"/>
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
+
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Price"/>
+                                            <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Item"/>
+                                        </viz:feeds>
+
+                                    </viz:VizFrame>
+
+                                </VBox>
+
+                            </FlexBox>
+
+                        </uxap:blocks>
+
+                    </uxap:ObjectPageSubSection>
+
+                </uxap:subSections>
+
+            </uxap:ObjectPageSection>
+
+
+            <!-- ========================================= -->
+            <!-- 3. CATEGORY DETAILS -->
+            <!-- ========================================= -->
+
+            <uxap:ObjectPageSection
+                id="productCategorySection"
+                title="Category Details"
+                titleUppercase="false">
+
+                <uxap:subSections>
+
+                    <uxap:ObjectPageSubSection id="productCategorySubSection">
+
+                        <uxap:blocks>
+
+                            <FlexBox
+                                id="productCategoryCards"
+                                wrap="Wrap"
+                                class="productCards">
+
+                                <!-- ABOUT THE CATEGORY -->
+                                <VBox id="productAboutCategoryCard" class="productCard productCardBlue">
+
+                                    <HBox
+                                        id="productAboutCategoryHead"
+                                        alignItems="Center"
+                                        class="productCardHead">
+                                        <core:Icon
+                                            id="productAboutCategoryIcon"
+                                            src="sap-icon://tag"
+                                            size="1.25rem"
+                                            class="productCardIcon"/>
+                                        <Title
+                                            id="productAboutCategoryTitle"
+                                            text="About This Category"
+                                            level="H4"
+                                            class="productCardTitle"/>
+                                    </HBox>
+
+                                    <VBox id="productAboutNameField" class="productField">
+                                        <Label id="productAboutNameLabel" text="Category"/>
+                                        <Text id="productAboutNameText" text="{category}"/>
+                                    </VBox>
+
+                                    <!-- <VBox id="productAboutDescField" class="productField">
+                                        <Label id="productAboutDescLabel" text="Description"/>
+                                        <Text id="productAboutDescText" text="{insight>/categoryDescription}"/>
+                                    </VBox> -->
+
+                                    <VBox id="productAboutCountField" class="productField">
+                                        <Label id="productAboutCountLabel" text="Products in Category"/>
+                                        <Title
+                                            id="productAboutCountValue"
+                                            text="{insight>/categoryCount}"
+                                            level="H3"
+                                            class="productBigNumber"/>
+                                    </VBox>
+
+                                </VBox>
+
+
+                                <!-- CATEGORY STATISTICS -->
+                                <VBox id="productStatsCard" class="productCard productCardGreen">
+
+                                    <HBox
+                                        id="productStatsHead"
+                                        alignItems="Center"
+                                        class="productCardHead">
+                                        <core:Icon
+                                            id="productStatsIcon"
+                                            src="sap-icon://business-objects-experience"
+                                            size="1.25rem"
+                                            class="productCardIcon"/>
+                                        <Title
+                                            id="productStatsTitle"
+                                            text="Category Statistics"
+                                            level="H4"
+                                            class="productCardTitle"/>
+                                    </HBox>
+
+                                    <VBox id="productStatsActiveField" class="productField">
+                                        <Label id="productStatsActiveLabel" text="Active Products"/>
+                                        <Text id="productStatsActiveText" text="{insight>/categoryActiveText}"/>
+                                    </VBox>
+
+                                    <VBox id="productStatsAvgField" class="productField">
+                                        <Label id="productStatsAvgLabel" text="Average Price"/>
+                                        <Text id="productStatsAvgText" text="{insight>/avgText}"/>
+                                    </VBox>
+
+                                    <VBox id="productStatsLowField" class="productField">
+                                        <Label id="productStatsLowLabel" text="Lowest Price"/>
+                                        <Text id="productStatsLowText" text="{insight>/lowestText}"/>
+                                    </VBox>
+
+                                    <VBox id="productStatsHighField" class="productField">
+                                        <Label id="productStatsHighLabel" text="Highest Price"/>
+                                        <Text id="productStatsHighText" text="{insight>/highestText}"/>
+                                    </VBox>
+
+                                </VBox>
+
+                            </FlexBox>
+
+                        </uxap:blocks>
+
+                    </uxap:ObjectPageSubSection>
+
+                </uxap:subSections>
+
+            </uxap:ObjectPageSection>
+
+
+            <!-- ========================================= -->
+            <!-- 4. RELATED PRODUCTS -->
+            <!-- ========================================= -->
+
+            <uxap:ObjectPageSection
+                id="productRelatedSection"
+                title="Related Products"
+                titleUppercase="false">
+
+                <uxap:subSections>
+
+                    <uxap:ObjectPageSubSection id="productRelatedSubSection">
+
+                        <uxap:blocks>
+
+                            <VBox id="productRelatedCard" class="productCard productCardFull productCardBlue">
+
+                                <HBox
+                                    id="productRelatedHead"
+                                    alignItems="Center"
+                                    class="productCardHead">
+                                    <core:Icon
+                                        id="productRelatedIcon"
+                                        src="sap-icon://list"
+                                        size="1.25rem"
+                                        class="productCardIcon"/>
+                                    <Title
+                                        id="productRelatedTitle"
+                                        text="More Products in This Category"
+                                        level="H4"
+                                        class="productCardTitle"/>
+                                </HBox>
+
+                                <Table
+                                    id="productRelatedTable"
+                                    class="productRelatedTable"
+                                    width="100%"
+                                    noDataText="No other products in this category"
+                                    items="{insight>/related}">
+
+                                    <columns>
+                                        <Column id="relCodeColumn" width="8rem">
+                                            <Text id="relCodeHeader" text="Product Code"/>
+                                        </Column>
+                                        <Column id="relNameColumn">
+                                            <Text id="relNameHeader" text="Product Name"/>
+                                        </Column>
+                                        <Column
+                                            id="relPriceColumn"
+                                            hAlign="End"
+                                            width="10rem"
+                                            demandPopin="true"
+                                            minScreenWidth="600px"
+                                            popinDisplay="Inline">
+                                            <Text id="relPriceHeader" text="Unit Price"/>
+                                        </Column>
+                                        <Column
+                                            id="relStatusColumn"
+                                            width="7rem"
+                                            hAlign="Center"
+                                            demandPopin="true"
+                                            minScreenWidth="500px"
+                                            popinDisplay="Inline">
+                                            <Text id="relStatusHeader" text="Status"/>
+                                        </Column>
+                                    </columns>
+
+                                    <items>
+                                        <ColumnListItem
+                                            id="relatedProductRow"
+                                            type="Navigation"
+                                            press=".onViewRelated">
+                                            <cells>
+                                                <ObjectIdentifier
+                                                    id="relCodeIdentifier"
+                                                    title="{insight>productCode}"/>
+                                                <Text
+                                                    id="relNameText"
+                                                    text="{insight>productName}"/>
+                                                <ObjectNumber
+                                                    id="relPriceNumber"
+                                                    number="{insight>priceNumber}"
+                                                    unit="INR"
+                                                    emphasized="true"/>
+                                                <ObjectStatus
+                                                    id="relStatusObject"
+                                                    text="{= ${insight>active} ? 'Active' : 'Inactive' }"
+                                                    state="{= ${insight>active} ? 'Success' : 'Error' }"
+                                                    icon="{= ${insight>active} ? 'sap-icon://accept' : 'sap-icon://decline' }"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+
+                                </Table>
+
+                            </VBox>
+
+                        </uxap:blocks>
+
+                    </uxap:ObjectPageSubSection>
+
+                </uxap:subSections>
+
+            </uxap:ObjectPageSection>
+
+        </uxap:sections>
+
+    </uxap:ObjectPageLayout>
+
+</mvc:View>

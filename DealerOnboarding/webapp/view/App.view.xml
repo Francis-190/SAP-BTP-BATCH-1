@@ -1,0 +1,81 @@
+<mvc:View
+    controllerName="dealermangement.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt">
+
+    <tnt:ToolPage id="toolPage">
+
+        <tnt:header>
+            <tnt:ToolHeader id="appToolHeader">
+
+                <Button
+                    id="sideNavToggleButton"
+                    icon="sap-icon://menu2"
+                    type="Transparent"
+                    tooltip="Menu"
+                    press=".onSideNavToggle"/>
+
+                <Title
+                    id="appHeaderTitle"
+                    text="Dealer Management"
+                    level="H4"
+                    class="sapUiTinyMarginBegin"/>
+
+                <ToolbarSpacer id="appHeaderSpacer"/>
+
+            </tnt:ToolHeader>
+        </tnt:header>
+
+        <tnt:sideContent>
+            <tnt:SideNavigation
+                id="appSideNavigation"
+                selectedKey="home"
+                itemSelect=".onSideNavItemSelect">
+
+                <tnt:NavigationList id="appSideNavList">
+
+                    <tnt:NavigationListItem
+                        id="navHome"
+                        key="home"
+                        text="Home"
+                        icon="sap-icon://home"/>
+
+                    <tnt:NavigationListItem
+                        id="navDealerDetail"
+                        key="dealer"
+                        text="Dealer Detail"
+                        icon="sap-icon://customer"/>
+
+                    <tnt:NavigationListItem
+                        id="navProductDetail"
+                        key="product"
+                        text="Product Details"
+                        icon="sap-icon://product"/>
+
+                    <tnt:NavigationListItem
+                        id="navApprovalHistory"
+                        key="approvalHistory"
+                        text="Approval History"
+                        icon="sap-icon://history"/>
+
+                </tnt:NavigationList>
+
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <tnt:mainContents>
+
+            <!--
+                This App control keeps the id "app" so the existing routing
+                config in manifest.json (controlId: "app", controlAggregation: "pages")
+                keeps working unchanged. It now lives inside the ToolPage instead
+                of being the root view itself.
+            -->
+            <App id="app"/>
+
+        </tnt:mainContents>
+
+    </tnt:ToolPage>
+
+</mvc:View>

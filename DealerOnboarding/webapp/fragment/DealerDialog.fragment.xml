@@ -1,0 +1,322 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        id="dealerDialog"
+        title="Create Dealer"
+        contentWidth="650px"
+        contentHeight="80vh"
+        stretchOnPhone="true"
+        draggable="true"
+        resizable="true"
+        verticalScrolling="false">
+
+        <content>
+
+            <ScrollContainer
+                id="dealerDialogScroll"
+                width="100%"
+                height="100%"
+                vertical="true"
+                horizontal="false">
+
+                <VBox
+                    id="dealerForm"
+                    class="sapUiMediumMargin">
+
+                    <Title
+                        id="basicInformationTitle"
+                        text="Basic Information"
+                        level="H3"
+                        class="sapUiSmallMarginBottom"/>
+
+                    <Label
+                        id="dealerNameLabel"
+                        text="Dealer Name"
+                        required="true"/>
+
+                    <Input
+                        id="dealerNameInpput"
+                        value="{createDealer>/dealerName}"
+                        placeholder="Enter dealer name"
+                        required="true"
+                        maxLength="100"
+                        width="100%"/>
+
+
+                    <Label
+                        id="dealerTypeLabell"
+                        text="Dealer Type"
+                        class="sapUiSmallMarginTop"/>
+
+                    <Select
+                        id="dealerTypeeSelect"
+                        selectedKey="{createDealer>/dealerType}"
+                        width="100%">
+
+                        <items>
+
+                            <core:Item
+                                id="dealerTypeDeealer"
+                                key="DEALER"
+                                text="Dealer"/>
+
+                            <core:Item
+                                id="dealerTypeDistritbutor"
+                                key="DISTRIBUTOR"
+                                text="Distributor"/>
+
+                            <core:Item
+                                id="dealerTypeRetaitler"
+                                key="RETAILER"
+                                text="Retailer"/>
+
+                        </items>
+
+                    </Select>
+
+
+                    <Title
+                        id="taxInformationTitle"
+                        text="Tax Information"
+                        level="H3"
+                        class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+
+                    <Label
+                        id="gstLabel"
+                        text="GST Number"
+                        required="true"/>
+
+                    <Input
+                        id="gstInput"
+                        value="{createDealer>/gstNumber}"
+                        placeholder="Enter GST number"
+                        maxLength="15"
+                        required="true"
+                        width="100%"
+                        valueStateText="Enter a valid GST number"/>
+
+
+                    <Label
+                        id="panLabel"
+                        text="PAN Number"
+                        required="true"
+                        class="sapUiSmallMarginTop"/>
+
+                    <Input
+                        id="panInput"
+                        value="{createDealer>/panNumber}"
+                        placeholder="Enter PAN number"
+                        maxLength="10"
+                        required="true"
+                        width="100%"
+                        valueStateText="Enter a valid PAN number"/>
+
+
+                    <Title
+                        id="contactInformationTitle"
+                        text="Contact Information"
+                        level="H3"
+                        class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+
+                    <Label
+                        id="phoneLabel"
+                        text="Phone"
+                        required="true"/>
+
+                    <Input
+                        id="phoneInnput"
+                        value="{createDealer>/phone}"
+                        placeholder="Enter 10 digit phone number"
+                        type="Tel"
+                        maxLength="10"
+                        required="true"
+                        width="100%"
+                        valueStateText="Enter a valid 10 digit phone number"/>
+
+
+                    <Label
+                        id="emailLabel"
+                        text="Email"
+                        class="sapUiSmallMarginTop"/>
+
+                    <Input
+                        id="emailInput"
+                        value="{createDealer>/email}"
+                        placeholder="Enter email address"
+                        type="Email"
+                        maxLength="100"
+                        width="100%"/>
+
+
+                    <Title
+                        id="addressInformationTitle"
+                        text="Address Information"
+                        level="H3"
+                        class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+
+                    <Label
+                        id="addressLabel"
+                        text="Address"/>
+
+                    <TextArea
+                        id="addressInput"
+                        value="{createDealer>/address}"
+                        placeholder="Enter complete address"
+                        rows="3"
+                        maxLength="250"
+                        width="100%"
+                        change=".onAddressChange"/>
+
+
+                    <Text
+                        id="geocodeStatusText"
+                        text="{address>/geocodeStatus}"
+                        visible="{= !!${address>/geocodeStatus} }"
+                        class="sapUiTinyMarginTop"/>
+
+
+                    <HBox
+                        id="locationActionsBox"
+                        width="100%"
+                        alignItems="Center"
+                        class="sapUiTinyMarginTop">
+
+                        <Button
+                            id="validateLocationButton"
+                            text="Validate Location"
+                            icon="sap-icon://compare"
+                            type="Transparent"
+                            press=".onValidateLocation"/>
+
+                        <core:Icon
+                            id="locationValidIcon"
+                            src="{address>/locationValidIcon}"
+                            color="{address>/locationValidIconColor}"
+                            visible="{= !!${address>/locationValidIcon} }"
+                            size="1.4rem"
+                            class="sapUiTinyMarginBegin"/>
+
+                    </HBox>
+
+
+                    <Button
+                        id="viewOnMapButton"
+                        text="View on Map"
+                        icon="sap-icon://map"
+                        type="Transparent"
+                        class="sapUiTinyMarginTop sapUiSmallMarginBottom"
+                        press=".onViewOnMap"/>
+
+
+                    <Label
+                        id="stateLabel"
+                        text="State"
+                        class="sapUiSmallMarginTop"/>
+
+                    <Select
+                        id="stateInnput"
+                        selectedKey="{createDealer>/state}"
+                        width="100%"
+                        forceSelection="false"
+                        items="{address>/states}"
+                        change=".onStateChange">
+
+                        <core:Item
+                            id="stateItemTemplate"
+                            key="{address>key}"
+                            text="{address>text}"/>
+
+                    </Select>
+
+
+                    <Label
+                        id="cityLabel"
+                        text="City"
+                        class="sapUiSmallMarginTop"/>
+
+                    <Select
+                        id="cityInnput"
+                        selectedKey="{createDealer>/city}"
+                        width="100%"
+                        enabled="false"
+                        forceSelection="false"
+                        items="{address>/filteredCities}"
+                        change=".onCityChange">
+
+                        <core:Item
+                            id="cityItemTemplate"
+                            key="{address>key}"
+                            text="{address>text}"/>
+
+                    </Select>
+
+
+                    <Label
+                        id="countryLabel"
+                        text="Country"
+                        class="sapUiSmallMarginTop"/>
+
+                    <Input
+                        id="countryInput"
+                        value="{createDealer>/country}"
+                        placeholder="Enter country"
+                        maxLength="50"
+                        width="100%"
+                        change=".onAddressChange"/>
+
+
+                    <Title
+                        id="additionalInformationTitle"
+                        text="Additional Information"
+                        level="H3"
+                        class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+
+                    <Label
+                        id="remarksLabel"
+                        text="Remarks"/>
+
+                    <TextArea
+                        id="remarksInput"
+                        value="{createDealer>/remarks}"
+                        placeholder="Enter remarks"
+                        rows="3"
+                        maxLength="500"
+                        width="100%"/>
+
+
+                    <VBox
+                        id="formBottomSpace"
+                        class="sapUiSmallMarginBottom"/>
+
+                </VBox>
+
+            </ScrollContainer>
+
+        </content>
+
+
+        <beginButton>
+
+            <Button
+                id="saveDealerButton"
+                text="Create Dealer"
+                type="Emphasized"
+                icon="sap-icon://save"
+                press=".onSaveDealer"/>
+
+        </beginButton>
+
+        <endButton>
+
+            <Button
+                id="cancelDealerButton"
+                text="Cancel"
+                press=".onCloseDealer"/>
+
+        </endButton>
+
+    </Dialog>
+
+</core:FragmentDefinition>

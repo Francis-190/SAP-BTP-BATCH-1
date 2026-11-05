@@ -1,0 +1,277 @@
+<mvc:View
+    id="productDetailsView"
+    controllerName="dealermangement.controller.ProductDetails"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="productDetailsPage"
+        title="Product Details"
+        enableScrolling="true">
+
+        <headerContent>
+            <Button
+                id="productRefreshButton"
+                icon="sap-icon://refresh"
+                type="Transparent"
+                tooltip="Refresh"
+                press=".onRefresh"/>
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="productDetailsContainer"
+                width="100%"
+                class="sapUiResponsiveContentPadding pdPageBg">
+
+                <!-- ================================= -->
+                <!-- BANNER -->
+                <!-- ================================= -->
+
+                <HBox
+                    id="productBanner"
+                    class="pdBanner sapUiMediumMarginBottom"
+                    alignItems="Center">
+
+                    <core:Icon
+                        id="productBannerIcon"
+                        src="sap-icon://product"
+                        size="2.2rem"
+                        class="pdBannerIcon"/>
+
+                    <VBox id="productBannerText">
+                        <Title
+                            id="productBannerTitle"
+                            text="Product Catalogue"
+                            level="H2"
+                            class="pdBannerTitle"/>
+                        <Text
+                            id="productBannerSubtitle"
+                            text="Browse, search and open the products you offer."
+                            class="pdBannerSubtitle"/>
+                    </VBox>
+
+                </HBox>
+
+
+                <!-- ================================= -->
+                <!-- SUMMARY TILES -->
+                <!-- ================================= -->
+
+                <FlexBox
+                    id="productTileRow"
+                    wrap="Wrap"
+                    class="pdTiles sapUiMediumMarginBottom">
+
+                    <!-- TOTAL -->
+                    <VBox id="pdTileTotal" class="pdTile pdTileTotal">
+                        <Text id="pdTileTotalLabel" text="Total Products" class="pdTileLabel"/>
+                        <Text id="pdTileTotalSub" text="In the catalogue" class="pdTileSub"/>
+                        <HBox id="pdTileTotalRow" alignItems="Center" class="pdTileValueRow">
+                            <core:Icon id="pdTileTotalIcon" src="sap-icon://product" size="1.5rem" class="pdTileIcon"/>
+                            <Title id="pdTileTotalValue" text="{pkpi>/total}" level="H2" class="pdTileValue"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ACTIVE -->
+                    <VBox id="pdTileActive" class="pdTile pdTileActive">
+                        <Text id="pdTileActiveLabel" text="Active Products" class="pdTileLabel"/>
+                        <Text id="pdTileActiveSub" text="Available now" class="pdTileSub"/>
+                        <HBox id="pdTileActiveRow" alignItems="Center" class="pdTileValueRow">
+                            <core:Icon id="pdTileActiveIcon" src="sap-icon://accept" size="1.5rem" class="pdTileIcon"/>
+                            <Title id="pdTileActiveValue" text="{pkpi>/active}" level="H2" class="pdTileValue"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- INACTIVE -->
+                    <VBox id="pdTileInactive" class="pdTile pdTileInactive">
+                        <Text id="pdTileInactiveLabel" text="Inactive Products" class="pdTileLabel"/>
+                        <Text id="pdTileInactiveSub" text="Not available" class="pdTileSub"/>
+                        <HBox id="pdTileInactiveRow" alignItems="Center" class="pdTileValueRow">
+                            <core:Icon id="pdTileInactiveIcon" src="sap-icon://decline" size="1.5rem" class="pdTileIcon"/>
+                            <Title id="pdTileInactiveValue" text="{pkpi>/inactive}" level="H2" class="pdTileValue"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- CATEGORIES -->
+                    <VBox id="pdTileCategories" class="pdTile pdTileCategories">
+                        <Text id="pdTileCategoriesLabel" text="Categories" class="pdTileLabel"/>
+                        <Text id="pdTileCategoriesSub" text="Product groups" class="pdTileSub"/>
+                        <HBox id="pdTileCategoriesRow" alignItems="Center" class="pdTileValueRow">
+                            <core:Icon id="pdTileCategoriesIcon" src="sap-icon://tag" size="1.5rem" class="pdTileIcon"/>
+                            <Title id="pdTileCategoriesValue" text="{pkpi>/categoryCount}" level="H2" class="pdTileValue"/>
+                        </HBox>
+                    </VBox>
+
+                </FlexBox>
+
+
+                <!-- ================================= -->
+                <!-- PRODUCT LIST CARD -->
+                <!-- ================================= -->
+
+                <VBox id="productListPanel" class="pdPanel">
+
+                    <OverflowToolbar
+                        id="productSearchToolbar"
+                        width="100%"
+                        class="pdToolbar">
+
+                        <Title
+                            id="productListTitle"
+                            text="Products"
+                            level="H4"
+                            class="pdPanelTitle"/>
+
+                        <ToolbarSpacer id="productTitleSpacer"/>
+
+                        <SearchField
+                            id="productSearchField"
+                            width="18rem"
+                            placeholder="Search product..."
+                            liveChange=".onSearch"/>
+
+                        <Select
+                            id="productCategorySelect"
+                            width="13rem"
+                            selectedKey="ALL"
+                            change=".onCategoryChange"
+                            items="{pkpi>/categories}">
+                            <core:Item
+                                id="productCategoryItem"
+                                key="{pkpi>key}"
+                                text="{pkpi>text}"/>
+                        </Select>
+
+                        <Button
+                            id="productClearFilters"
+                            text="Clear"
+                            icon="sap-icon://clear-filter"
+                            type="Transparent"
+                            press=".onClearFilters"/>
+
+                    </OverflowToolbar>
+
+                    <Table
+                        id="productTable"
+                        width="100%"
+                        fixedLayout="true"
+                        class="pdTable"
+                        growing="true"
+                        growingThreshold="15"
+                        growingScrollToLoad="true"
+                        sticky="ColumnHeaders"
+                        noDataText="No products found"
+                        items="{
+                            path: '/Products'
+                        }">
+
+                        <columns>
+
+                            <Column id="productCodeColumn" width="8rem">
+                                <Text id="productCodeHeader" text="Product Code"/>
+                            </Column>
+
+                            <Column id="productNameColumn">
+                                <Text id="productNameHeader" text="Product Name"/>
+                            </Column>
+
+                            <Column
+                                id="productCategoryColumn"
+                                width="10rem"
+                                demandPopin="true"
+                                minScreenWidth="700px"
+                                popinDisplay="Inline">
+                                <Text id="productCategoryHeader" text="Category"/>
+                            </Column>
+
+                            <Column
+                                id="productPriceColumn"
+                                width="10rem"
+                                hAlign="End"
+                                demandPopin="true"
+                                minScreenWidth="600px"
+                                popinDisplay="Inline">
+                                <Text id="productPriceHeader" text="Unit Price"/>
+                            </Column>
+
+                            <Column
+                                id="productActiveColumn"
+                                width="7rem"
+                                hAlign="Center"
+                                demandPopin="true"
+                                minScreenWidth="500px"
+                                popinDisplay="Inline">
+                                <Text id="productActiveHeader" text="Status"/>
+                            </Column>
+
+                            <Column
+                                id="productNavigationColumn"
+                                width="3rem"
+                                hAlign="Center">
+                                <Text id="productNavigationHeader" text=""/>
+                            </Column>
+
+                        </columns>
+
+                        <items>
+
+                            <ColumnListItem
+                                id="productRow"
+                                type="Inactive">
+
+                                <cells>
+
+                                    <ObjectIdentifier
+                                        id="productCodeIdentifier"
+                                        title="{productCode}"/>
+
+                                    <Text
+                                        id="productNameeText"
+                                        text="{productName}"
+                                        class="pdProductName"/>
+
+                                    <ObjectStatus
+                                        id="productCategoryStatus"
+                                        text="{category}"
+                                        state="{path: 'category', formatter: '.formatCategoryState'}"
+                                        inverted="true"/>
+
+                                    <ObjectNumber
+                                        id="productPriceNumber"
+                                        number="{unitPrice}"
+                                        unit="INR"
+                                        emphasized="true"/>
+
+                                    <ObjectStatus
+                                        id="productActiveStatus"
+                                        text="{= ${active} ? 'Active' : 'Inactive' }"
+                                        state="{= ${active} ? 'Success' : 'Error' }"
+                                        icon="{= ${active} ? 'sap-icon://accept' : 'sap-icon://decline' }"/>
+
+                                    <Button
+                                        id="openProductButton"
+                                        icon="sap-icon://navigation-right-arrow"
+                                        type="Transparent"
+                                        tooltip="Open Product"
+                                        press=".onViewProduct"/>
+
+                                </cells>
+
+                            </ColumnListItem>
+
+                        </items>
+
+                    </Table>
+
+                </VBox>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

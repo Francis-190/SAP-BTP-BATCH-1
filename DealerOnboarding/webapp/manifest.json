@@ -1,0 +1,193 @@
+{
+  "_version": "1.86.0",
+  "sap.app": {
+    "id": "dealermangement",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.31.1",
+      "toolsId": "50e332e8-39d6-4323-9bc5-42ee9f6307bb"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/dealer/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "dealer-display": {
+          "semanticObject": "dealer",
+          "action": "display",
+          "title": "{{dealer-display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.151.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.viz": {},
+        "sap.tnt": {},
+        "sap.uxap": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "dealermangement.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "dealermangement.view",
+        "async": true,
+        "viewPath": "dealermangement.view"
+      },
+      "routes": [
+        {
+          "name": "RouteHome",
+          "pattern": ":?query:",
+          "target": [
+            "TargetHome"
+          ]
+        },
+        {
+          "name": "RouteDealer",
+          "pattern": "Dealer",
+          "target": [
+            "TargetDealer"
+          ]
+        },
+        {
+          "name": "DealerDetails",
+          "pattern": "DealerDetails/{dealerId}",
+          "target": [
+            "TargetDealerDetails"
+          ]
+        },
+        {
+          "name": "RouteProducts",
+          "pattern": "Products",
+          "target": [
+            "TargetProducts"
+          ]
+        },
+        {
+          "name": "ProductObjectPage",
+          "pattern": "Products/{productId}",
+          "target": [
+            "TargetProductObjectPage"
+          ]
+        },
+        {
+          "name": "ApprovalHistory",
+          "pattern": "ApprovalHistory",
+          "target": [
+            "TargetApprovalHistory"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetHome": {
+          "id": "Home",
+          "name": "Home"
+        },
+        "TargetDealer": {
+          "id": "Dealer",
+          "name": "Dealer"
+        },
+        "TargetDealerDetails": {
+          "id": "DealerDetails",
+          "name": "DealerDetails"
+        },
+        "TargetProducts": {
+          "id": "ProductDetails",
+          "name": "ProductDetails"
+        },
+        "TargetProductObjectPage": {
+          "id": "ProductObjectPage",
+          "name": "ProductObjectPage"
+        },
+        "TargetApprovalHistory": {
+          "id": "ApprovalHistory",
+          "name": "ApprovalHistory"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "dealermangement.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "dealermangement"
+  }
+}

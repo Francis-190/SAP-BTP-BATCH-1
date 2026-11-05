@@ -1,0 +1,23 @@
+{
+  "generationParameters": {
+    "generationDate": "Mon Aug 31 2026 12:13:27 GMT+0000 (Coordinated Universal Time)",
+    "generatorPlatform": "CLI",
+    "serviceType": "OData URL",
+    "metadataFilename": "",
+    "serviceUrl": "https://6a738d3btrial-dev-tafe-srv.cfapps.us10-003.hana.ondemand.com/odata/v4/dealer",
+    "appName": "dealer-mangement",
+    "appTitle": "App Title",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.151.0",
+    "enableEslint": true,
+    "enableTypeScript": false,
+    "showMockDataInfo": true,
+    "generatorVersion": "1.31.1",
+    "template": "Basic V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [],
+    "launchText": "To launch the generated application, run the following from the generated application root folder:\n\n```\n    npm start\n```"
+  }
+}

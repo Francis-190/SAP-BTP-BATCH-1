@@ -1,0 +1,542 @@
+<mvc:View
+    id="dealerView"
+    controllerName="dealermangement.controller.Dealer"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="dealerPage" title="Dealer Management" enableScrolling="true">
+
+        <headerContent>
+
+            <Button
+                id="refreshButton"
+                icon="sap-icon://refresh"
+                type="Transparent"
+                tooltip="Refresh"
+                press=".onRefresh"/>
+
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="dealerMainContainer"
+                width="100%"
+                class="sapUiResponsiveContentPadding">
+
+                <!-- ================================================= -->
+                <!-- ACTION TOOLBAR -->
+                <!-- ================================================= -->
+
+                <OverflowToolbar
+                    id="dealerActionToolbar"
+                    width="100%"
+                    class="sapUiSmallMarginBottom">
+
+                    <SearchField
+                        id="dealerSearchField"
+                        width="22rem"
+                        placeholder="Search dealer..."
+                        liveChange=".onSearch"/>
+
+                    <ToolbarSpacer
+                        id="topToolbarSpacer"/>
+
+                    <Button
+                        id="createDealerButton"
+                        text="Create Dealer"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        press=".onCreateDealer"/>
+
+                    <Button
+                        id="editDealerButton"
+                        text="Edit"
+                        icon="sap-icon://edit"
+                        enabled="false"
+                        press=".onEditDealer"
+                        class="sapUiTinyMarginBegin"/>
+
+                    <Button
+                        id="multipleEditButton"
+                        text="Multiple Edit"
+                        icon="sap-icon://edit"
+                        enabled="false"
+                        press=".onMultipleEdit"
+                        class="sapUiTinyMarginBegin"/>
+
+                    <Button
+                        id="deleteDealerButton"
+                        text="Delete"
+                        icon="sap-icon://delete"
+                        type="Reject"
+                        enabled="false"
+                        press=".onDeleteDealer"
+                        class="sapUiTinyMarginBegin"/>
+
+                    <ToolbarSeparator
+                        id="actionSeparator"/>
+
+                    <!-- WORKFLOW BUTTONS (enabled by status of selected dealer) -->
+
+                    <Button
+                        id="submitDealerButton"
+                        text="Submit"
+                        icon="sap-icon://paper-plane"
+                        enabled="false"
+                        press=".onSubmitDealer"
+                        class="sapUiTinyMarginBegin"/>
+
+                </OverflowToolbar>
+
+                <!-- ================================================= -->
+                <!-- FILTER TOOLBAR -->
+                <!-- ================================================= -->
+
+                <OverflowToolbar
+                    id="dealerFilterToolbar"
+                    width="100%"
+                    class="sapUiSmallMarginBottom">
+
+                    <Label
+                        id="statusLabel"
+                        text="Status"
+                        class="sapUiTinyMarginEnd"/>
+
+                    <Select
+                        id="statusFilterSelect"
+                        selectedKey="ALL"
+                        width="14rem"
+                        change=".onStatusFilterChange">
+
+                        <items>
+
+                            <core:Item
+                                id="statusAll"
+                                key="ALL"
+                                text="All Status"/>
+
+                            <core:Item
+                                id="statusPending"
+                                key="PENDING"
+                                text="PENDING"/>
+
+                            <core:Item
+                                id="statusSubmitted"
+                                key="SUBMITTED"
+                                text="SUBMITTED"/>
+
+                            <core:Item
+                                id="statusL1Approved"
+                                key="L1_APPROVED"
+                                text="L1 APPROVED"/>
+
+                            <core:Item
+                                id="statusL2Approved"
+                                key="L2_APPROVED"
+                                text="L2 APPROVED"/>
+
+                            <core:Item
+                                id="statusActive"
+                                key="ACTIVE"
+                                text="ACTIVE"/>
+
+                            <core:Item
+                                id="statusRejected"
+                                key="REJECTED"
+                                text="REJECTED"/>
+
+                            <core:Item
+                                id="statusBlocked"
+                                key="BLOCKED"
+                                text="BLOCKED"/>
+
+                            <core:Item
+                                id="statusInactive"
+                                key="INACTIVE"
+                                text="INACTIVE"/>
+
+                        </items>
+
+                    </Select>
+
+                    <ToolbarSeparator
+                        id="filterSeparator"
+                        class="sapUiSmallMarginBegin sapUiSmallMarginEnd"/>
+
+                    <Label
+                        id="dealerTypeFilterLabel"
+                        text="Dealer Type"
+                        class="sapUiTinyMarginEnd"/>
+
+                    <Select
+                        id="dealerTypeFilterSelect"
+                        selectedKey="ALL"
+                        width="14rem"
+                        change=".onDealerTypeFilterChange">
+
+                        <items>
+
+                            <core:Item
+                                id="typeAll"
+                                key="ALL"
+                                text="All Types"/>
+
+                            <core:Item
+                                id="typeDealer"
+                                key="DEALER"
+                                text="DEALER"/>
+
+                            <core:Item
+                                id="typeDistributor"
+                                key="DISTRIBUTOR"
+                                text="DISTRIBUTOR"/>
+
+                            <core:Item
+                                id="typeRetailer"
+                                key="RETAILER"
+                                text="RETAILER"/>
+
+                        </items>
+
+                    </Select>
+
+                    <ToolbarSpacer
+                        id="filterToolbarSpacer"/>
+
+                    <Button
+                        id="clearFiltersButton"
+                        text="Clear Filters"
+                        icon="sap-icon://clear-filter"
+                        type="Transparent"
+                        press=".onClearFilters"/>
+
+                </OverflowToolbar>
+
+                <!-- ================================================= -->
+                <!-- LIST TOOLBAR -->
+                <!-- ================================================= -->
+
+                <OverflowToolbar
+                    id="dealerListToolbar"
+                    width="100%">
+
+                    <Title
+                        id="dealerListTitle"
+                        text="Dealer List"
+                        level="H3"/>
+
+                    <ToolbarSpacer
+                        id="dealerListSpacer"/>
+
+                    <Text
+                        id="batchStatusText"
+                        text="Changes will be saved together"
+                        visible="false"
+                        class="sapUiSmallMarginEnd"/>
+
+                    <Button
+                        id="saveAllButton"
+                        text="Save All Changes"
+                        icon="sap-icon://save"
+                        type="Emphasized"
+                        enabled="false"
+                        press=".onSaveAll"/>
+
+                    <Button
+                        id="cancelChangesButton"
+                        text="Cancel"
+                        icon="sap-icon://reset"
+                        enabled="false"
+                        press=".onCancelChanges"
+                        class="sapUiTinyMarginBegin"/>
+
+                </OverflowToolbar>
+
+                <!-- ================================================= -->
+                <!-- TABLE -->
+                <!-- ================================================= -->
+
+                <Table
+                    id="dealerTable"
+                    width="100%"
+                    fixedLayout="true"
+                    mode="MultiSelect"
+                    class="sapUiSmallMargin"
+                    growing="true"
+                    growingThreshold="15"
+                    growingScrollToLoad="true"
+                    inset="false"
+                    sticky="ColumnHeaders"
+                    selectionChange=".onSelectionChange"
+                    updateFinished=".onDealerTableUpdateFinished"
+                    items="{
+                        path: '/Dealers',
+                        parameters: {
+                            $$updateGroupId: 'dealerBatchGroup'
+                        }
+                    }">
+
+                    <columns>
+
+                        <Column
+                            id="dealerCodeColumn"
+                            width="7rem">
+
+                            <Text
+                                id="dealerCodeHeader"
+                                text="Dealer Code"/>
+
+                        </Column>
+
+                        <Column
+                            id="dealerNameColumn"
+                            width="11rem">
+
+                            <Text
+                                id="dealerNameHeader"
+                                text="Dealer Name"/>
+
+                        </Column>
+
+                        <Column
+                            id="dealerTypeColumn"
+                            width="7.5rem"
+                            demandPopin="true"
+                            minScreenWidth="700px"
+                            popinDisplay="Inline">
+
+                            <Text
+                                id="dealerTypeHeader"
+                                text="Type"/>
+
+                        </Column>
+
+                        <!-- GST -->
+
+                        <Column
+                            id="gstColumn"
+                            width="9.5rem"
+                            demandPopin="true"
+                            minScreenWidth="900px"
+                            popinDisplay="Inline">
+
+                            <Text
+                                id="gstHeader"
+                                text="GST Number"/>
+
+                        </Column>
+
+                        <!-- PAN -->
+
+                        <Column
+                            id="panColumn"
+                            width="8rem"
+                            demandPopin="true"
+                            minScreenWidth="1000px"
+                            popinDisplay="Inline">
+
+                            <Text
+                                id="panHeader"
+                                text="PAN Number"/>
+
+                        </Column>
+
+                        <!-- PHONE -->
+
+                        <Column
+                            id="phoneColumn"
+                            width="8rem"
+                            demandPopin="true"
+                            minScreenWidth="900px"
+                            popinDisplay="Inline">
+
+                            <Text
+                                id="phoneHeader"
+                                text="Phone"/>
+
+                        </Column>
+
+                        <!-- LOCATION -->
+
+                        <Column
+                            id="locationColumn"
+                            width="11rem"
+                            demandPopin="true"
+                            minScreenWidth="1000px"
+                            popinDisplay="Inline">
+
+                            <Text
+                                id="locationHeader"
+                                text="Location"/>
+
+                        </Column>
+
+                        <!-- STATUS -->
+
+                        <Column
+                            id="statusColumn"
+                            width="9rem"
+                            demandPopin="true"
+                            minScreenWidth="700px"
+                            popinDisplay="Inline">
+
+                            <Text
+                                id="statusHeader"
+                                text="Status"/>
+
+                        </Column>
+
+                        <!-- NAVIGATION -->
+
+                        <Column
+                            id="navigationColumn"
+                            width="3rem"
+                            hAlign="Center">
+
+                            <Text
+                                id="navigationHeader"
+                                text=""/>
+
+                        </Column>
+
+                    </columns>
+
+                    <!-- ================================================= -->
+                    <!-- ROW -->
+                    <!-- ================================================= -->
+
+                    <items>
+
+                        <ColumnListItem
+                            id="dealerRow"
+                            type="Inactive">
+
+                            <cells>
+
+                                <!-- 0 - DEALER CODE -->
+
+                                <ObjectIdentifier
+                                    id="dealerCodeIdentifier"
+                                    title="{dealerCode}"/>
+
+                                <!-- 1 - DEALER NAME -->
+
+                                <Input
+                                    id="dealerNameInput"
+                                    value="{dealerName}"
+                                    editable="false"
+                                    width="100%"
+                                    change=".onDealerFieldChange"/>
+
+                                <!-- 2 - DEALER TYPE -->
+
+                                <Select
+                                    id="dealerTypeSelect"
+                                    selectedKey="{dealerType}"
+                                    enabled="false"
+                                    width="100%"
+                                    change=".onDealerFieldChange">
+
+                                    <items>
+
+                                        <core:Item
+                                            id="rowDealerTypeDealer"
+                                            key="DEALER"
+                                            text="DEALER"/>
+
+                                        <core:Item
+                                            id="rowDealerTypeDistributor"
+                                            key="DISTRIBUTOR"
+                                            text="DISTRIBUTOR"/>
+
+                                        <core:Item
+                                            id="rowDealerTypeRetailer"
+                                            key="RETAILER"
+                                            text="RETAILER"/>
+
+                                    </items>
+
+                                </Select>
+
+                                <!-- 3 - GST -->
+
+                                <Input
+                                    id="gstNumberInput"
+                                    value="{gstNumber}"
+                                    editable="false"
+                                    width="100%"
+                                    maxLength="15"
+                                    valueState="None"
+                                    change=".onDealerFieldChange"/>
+
+                                <!-- 4 - PAN -->
+
+                                <Input
+                                    id="panNumberInput"
+                                    value="{panNumber}"
+                                    editable="false"
+                                    width="100%"
+                                    maxLength="10"
+                                    valueState="None"
+                                    change=".onDealerFieldChange"/>
+
+                                <!-- 5 - PHONE -->
+
+                                <Input
+                                    id="phoneInput"
+                                    value="{phone}"
+                                    type="Tel"
+                                    editable="false"
+                                    width="100%"
+                                    maxLength="10"
+                                    valueState="None"
+                                    change=".onDealerFieldChange"/>
+
+                                <!-- 6 - LOCATION -->
+                                <!-- Editable in Edit/Multiple Edit mode. When read-only, -->
+                                <!-- clicking the field opens a map (wired in controller). -->
+
+                                <Input
+                                    id="locationInput"
+                                    value="{= ${city} + ', ' + ${state} }"
+                                    editable="false"
+                                    width="100%"
+                                    placeholder="City, State"
+                                    valueState="None"
+                                    change=".onLocationChange"/>
+
+                                <!-- 7 - STATUS -->
+
+                                <ObjectStatus
+                                    id="dealerStatus"
+                                    text="{status}"
+                                    state="{
+                                        path: 'status',
+                                        formatter: '.formatStatusState'
+                                    }"/>
+
+                                <!-- 8 - NAVIGATION -->
+
+                                <Button
+                                    id="openDealerButton"
+                                    icon="sap-icon://navigation-right-arrow"
+                                    type="Transparent"
+                                    tooltip="Open Dealer"
+                                    press=".onViewDealer"/>
+
+                            </cells>
+
+                        </ColumnListItem>
+
+                    </items>
+
+                </Table>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

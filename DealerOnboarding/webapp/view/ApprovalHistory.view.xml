@@ -1,0 +1,225 @@
+<mvc:View
+    controllerName="dealermangement.controller.ApprovalHistory"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page
+        id="approvalHistoryPage"
+        title="Approval History"
+        enableScrolling="true"
+        backgroundDesign="Transparent"
+        class="approvalHistoryPageBg">
+
+        <headerContent>
+            <Button
+                id="approvalRefreshButton"
+                icon="sap-icon://refresh"
+                type="Transparent"
+                tooltip="Refresh"
+                press=".onRefresh"/>
+        </headerContent>
+
+        <content>
+
+            <VBox
+                id="approvalMainContainer"
+                width="100%"
+                class="approvalMainContainer">
+
+                <!-- ================= BANNER ================= -->
+
+                <HBox
+                    id="approvalBanner"
+                    alignItems="Center"
+                    renderType="Bare"
+                    class="approvalBanner">
+                    <core:Icon
+                        id="approvalBannerIcon"
+                        src="sap-icon://history"
+                        size="2.5rem"
+                        class="sapUiSmallMarginEnd"/>
+                    <VBox id="approvalBannerText">
+                        <Title id="approvalBannerTitle" text="Onboarding Approval History" level="H2"/>
+                        <Text id="approvalBannerSub" text="Audit trail of every submit, approve, reject and block action on dealers."/>
+                    </VBox>
+                </HBox>
+
+                <!-- ================= KPI TILES ================= -->
+
+                <HBox
+                    id="approvalKpiRow"
+                    wrap="Wrap"
+                    class="approvalKpiRow sapUiSmallMarginBottom">
+
+                    <VBox id="kpiTotalBox" class="approvalKpiBox">
+                        <GenericTile
+                            id="kpiTotal"
+                            header="Total Actions"
+                            subheader="All recorded"
+                            class="approvalKpiTile approvalKpiTotal">
+                            <TileContent id="kpiTotalContent">
+                                <NumericContent id="kpiTotalValue" value="{kpi>/total}" icon="sap-icon://history" withMargin="false"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                    <VBox id="kpiApprovedBox" class="approvalKpiBox">
+                        <GenericTile
+                            id="kpiApproved"
+                            header="Approvals"
+                            subheader="L1 + L2"
+                            class="approvalKpiTile approvalKpiApproved">
+                            <TileContent id="kpiApprovedContent">
+                                <NumericContent id="kpiApprovedValue" value="{kpi>/approved}" valueColor="Good" icon="sap-icon://accept" withMargin="false"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                    <VBox id="kpiRejectedBox" class="approvalKpiBox">
+                        <GenericTile
+                            id="kpiRejected"
+                            header="Rejections"
+                            subheader="Declined onboarding"
+                            class="approvalKpiTile approvalKpiRejected">
+                            <TileContent id="kpiRejectedContent">
+                                <NumericContent id="kpiRejectedValue" value="{kpi>/rejected}" valueColor="Error" icon="sap-icon://decline" withMargin="false"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                    <VBox id="kpiBlockedBox" class="approvalKpiBox">
+                        <GenericTile
+                            id="kpiBlocked"
+                            header="Blocks"
+                            subheader="Active dealers blocked"
+                            class="approvalKpiTile approvalKpiBlocked">
+                            <TileContent id="kpiBlockedContent">
+                                <NumericContent id="kpiBlockedValue" value="{kpi>/blocked}" valueColor="Critical" icon="sap-icon://cancel" withMargin="false"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                </HBox>
+
+                <!-- ================= TABLE PANEL ================= -->
+
+                <VBox id="approvalTablePanel" width="100%" class="approvalTablePanel">
+
+                    <Table
+                        id="approvalTable"
+                        width="100%"
+                        inset="false"
+                        growing="true"
+                        growingThreshold="20"
+                        growingScrollToLoad="true"
+                        sticky="ColumnHeaders,HeaderToolbar"
+                        class="approvalTable"
+                        items="{
+                            path: '/OnboardingApprovals',
+                            parameters: {
+                                $expand: { dealer: { $select: 'ID,dealerCode,dealerName' } },
+                                $count: true
+                            },
+                            sorter: { path: 'actionAt', descending: true }
+                        }">
+
+                        <headerToolbar>
+                            <OverflowToolbar id="approvalToolbar" class="approvalToolbar">
+                                <Title id="approvalListTitle" text="Actions" level="H3"/>
+                                <ToolbarSpacer id="approvalToolbarSpacer"/>
+
+                                <SearchField
+                                    id="approvalSearch"
+                                    width="18rem"
+                                    placeholder="Search dealer..."
+                                    class="approvalSearch"
+                                    liveChange=".onSearch"/>
+
+                                <Select
+                                    id="approvalActionFilter"
+                                    selectedKey="ALL"
+                                    width="12rem"
+                                    change=".onActionFilterChange">
+                                    <items>
+                                        <core:Item id="actAll" key="ALL" text="All Actions"/>
+                                        <core:Item id="actSubmitted" key="SUBMITTED" text="SUBMITTED"/>
+                                        <core:Item id="actL1" key="L1_APPROVED" text="L1 APPROVED"/>
+                                        <core:Item id="actL2" key="L2_APPROVED" text="L2 APPROVED"/>
+                                        <core:Item id="actRejected" key="REJECTED" text="REJECTED"/>
+                                        <core:Item id="actBlocked" key="BLOCKED" text="BLOCKED"/>
+                                    </items>
+                                </Select>
+
+                                <Button
+                                    id="approvalClearButton"
+                                    text="Clear"
+                                    icon="sap-icon://clear-filter"
+                                    type="Transparent"
+                                    class="approvalClearButton"
+                                    press=".onClearFilters"/>
+                            </OverflowToolbar>
+                        </headerToolbar>
+
+                        <columns>
+                            <Column id="colActionAt" width="12rem">
+                                <Text id="hdrActionAt" text="Date &amp; Time"/>
+                            </Column>
+                            <Column id="colDealer" width="16rem">
+                                <Text id="hdrDealer" text="Dealer"/>
+                            </Column>
+                            <Column id="colAction" width="9rem">
+                                <Text id="hdrAction" text="Action"/>
+                            </Column>
+                            <Column id="colLevel" width="5rem" demandPopin="true" minScreenWidth="800px" popinDisplay="Inline">
+                                <Text id="hdrLevel" text="Level"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem id="approvalRow" type="Navigation" press=".onRowPress">
+                                <cells>
+                                    <Text
+                                        id="cellActionAt"
+                                        class="approvalDateTime"
+                                        text="{
+                                            path: 'actionAt',
+                                            type: 'sap.ui.model.odata.type.DateTimeOffset',
+                                            formatOptions: { style: 'medium' }
+                                        }"/>
+
+                                    <ObjectIdentifier
+                                        id="cellDealer"
+                                        class="approvalDealer"
+                                        title="{dealer/dealerName}"
+                                        text="{dealer/dealerCode}"/>
+
+                                    <ObjectStatus
+                                        id="cellAction"
+                                        class="approvalAction"
+                                        text="{
+                                            path: 'action',
+                                            formatter: '.formatActionText'
+                                        }"
+                                        state="{
+                                            path: 'action',
+                                            formatter: '.formatActionState'
+                                        }"/>
+
+                                    <Text id="cellLevel" class="approvalLevel" text="{level}"/>
+
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+
+                    </Table>
+
+                </VBox>
+
+            </VBox>
+
+        </content>
+
+    </Page>
+
+</mvc:View>
