@@ -1,0 +1,177 @@
+<mvc:View controllerName="managerapprovals.controller.ObjectPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap">
+
+    <Page id="opPage" title="Purchase Requisition" showNavButton="true"
+          navButtonPress=".onNavBack" enableScrolling="false">
+        <content>
+            <uxap:ObjectPageLayout id="opLayout" upperCaseAnchorBar="false">
+
+                <!-- ===== Title ===== -->
+                <uxap:headerTitle>
+                    <uxap:ObjectPageDynamicHeaderTitle id="opHeaderTitle">
+                        <uxap:heading>
+                            <Title id="opHeading" text="{pr>/prNumber}"/>
+                        </uxap:heading>
+                        <uxap:snappedContent>
+                            <ObjectStatus id="opSnapStatus" text="{pr>/statusText}" state="{pr>/statusState}"/>
+                        </uxap:snappedContent>
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                </uxap:headerTitle>
+
+                <!-- ===== Header facts ===== -->
+                <uxap:headerContent>
+                    <VBox id="hcStatusBox" class="sapUiMediumMarginEnd">
+                        <Label id="hcStatusLbl" text="Status"/>
+                        <ObjectStatus id="hcStatus" text="{pr>/statusText}" state="{pr>/statusState}" inverted="true"/>
+                    </VBox>
+                    <VBox id="hcReqBox" class="sapUiMediumMarginEnd">
+                        <Label id="hcReqLbl" text="Requested by"/>
+                        <Text id="hcReq" text="{pr>/requestedBy}"/>
+                    </VBox>
+                    <VBox id="hcLocBox" class="sapUiMediumMarginEnd" visible="{pr>/hasLocation}">
+                        <Label id="hcLocLbl" text="Location"/>
+                        <Text id="hcLoc" text="{pr>/locationName}"/>
+                    </VBox>
+                    <VBox id="hcItemsBox" class="sapUiMediumMarginEnd">
+                        <Label id="hcItemsLbl" text="Items"/>
+                        <Text id="hcItems" text="{pr>/itemCount}"/>
+                    </VBox>
+                    <VBox id="hcTotalBox" class="sapUiMediumMarginEnd">
+                        <Label id="hcTotalLbl" text="Total estimated value"/>
+                        <ObjectNumber id="hcTotal" number="{pr>/totalText}" emphasized="true"/>
+                    </VBox>
+                    <VBox id="hcCreatedBox">
+                        <Label id="hcCreatedLbl" text="Created on"/>
+                        <Text id="hcCreated" text="{pr>/createdAtText}"/>
+                    </VBox>
+                </uxap:headerContent>
+
+                <uxap:sections>
+
+                    <!-- ===== 1. Overview ===== -->
+                    <uxap:ObjectPageSection id="secOverview" title="Overview">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="subOverview">
+                                <uxap:blocks>
+                                    <HBox id="overviewHBox" wrap="Wrap">
+                                        <VBox id="reqBox" class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                                            <Title id="reqTitle" text="Requisition" level="H5" class="sapUiTinyMarginBottom"/>
+                                            <ObjectAttribute id="oaPrNo" title="PR number" text="{pr>/prNumber}"/>
+                                            <ObjectAttribute id="oaStatus" title="Status" text="{pr>/statusText}"/>
+                                            <ObjectAttribute id="oaReqBy" title="Requested by" text="{pr>/requestedBy}"/>
+                                            <ObjectAttribute id="oaCreatedAt" title="Created on" text="{pr>/createdAtText}"/>
+                                            <ObjectAttribute id="oaCreatedBy" title="Created by" text="{pr>/createdBy}"
+                                                             visible="{= !!${pr>/createdBy} }"/>
+                                            <ObjectAttribute id="oaModAt" title="Last changed" text="{pr>/modifiedAtText}"
+                                                             visible="{= !!${pr>/modifiedAtText} }"/>
+                                        </VBox>
+                                        <VBox id="locBox" class="sapUiSmallMarginBottom" visible="{pr>/hasLocation}">
+                                            <Title id="locTitle" text="Delivery location" level="H5" class="sapUiTinyMarginBottom"/>
+                                            <ObjectAttribute id="oaLocName" title="Name" text="{pr>/locationName}"/>
+                                            <ObjectAttribute id="oaLocCode" title="Code" text="{pr>/locationCode}"
+                                                             visible="{= !!${pr>/locationCode} }"/>
+                                            <ObjectAttribute id="oaLocType" title="Type" text="{pr>/locationType}"
+                                                             visible="{= !!${pr>/locationType} }"/>
+                                            <ObjectAttribute id="oaLocCity" title="City" text="{pr>/locationCity}"
+                                                             visible="{= !!${pr>/locationCity} }"/>
+                                            <ObjectAttribute id="oaLocRegion" title="Region" text="{pr>/locationRegion}"
+                                                             visible="{= !!${pr>/locationRegion} }"/>
+                                        </VBox>
+                                    </HBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <!-- ===== 2. Items ===== -->
+                    <uxap:ObjectPageSection id="secItems" title="Items">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="subItems">
+                                <uxap:blocks>
+                                    <VBox id="itemsBox">
+                                        <Table id="itemsTable" items="{pr>/items}" noDataText="This PR has no items">
+                                            <columns>
+                                                <Column id="icPart"><Text id="icPartt" text="Part"/></Column>
+                                                <Column id="icCat" minScreenWidth="Tablet" demandPopin="true"><Text id="icCatt" text="Category"/></Column>
+                                                <Column id="icReq" hAlign="End"><Text id="icReqt" text="Required qty"/></Column>
+                                                <Column id="icPrice" hAlign="End" minScreenWidth="Tablet" demandPopin="true"><Text id="icPricet" text="Est. price"/></Column>
+                                                <Column id="icTotal" hAlign="End" minScreenWidth="Tablet" demandPopin="true"><Text id="icTotalt" text="Line total"/></Column>
+                                                <Column id="icSupp" minScreenWidth="Desktop" demandPopin="true"><Text id="icSuppt" text="Supplier"/></Column>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem id="itemRow">
+                                                    <cells>
+                                                        <ObjectIdentifier id="iPart" title="{pr>partNumber}" text="{pr>description}"/>
+                                                        <Text id="iCat" text="{pr>category}"/>
+                                                        <ObjectNumber id="iReq" number="{pr>requiredQty}" unit="{pr>uom}"/>
+                                                        <ObjectNumber id="iPrice" number="{pr>estimatedPriceText}"/>
+                                                        <ObjectNumber id="iTotal" number="{pr>lineTotalText}"/>
+                                                        <VBox id="iSuppBox">
+                                                            <ObjectIdentifier id="iSupp" title="{pr>supplierName}" text="{pr>supplierInfo}"/>
+                                                            <ObjectStatus id="iSuppWarn" text="Supplier not eligible" state="Error"
+                                                                          visible="{pr>supplierIneligible}"/>
+                                                        </VBox>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                        <Text id="totalText" class="sapUiSmallMarginTop"
+                                              text="{= 'Total estimated value: ' + ${pr>/totalText} }"/>
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <!-- ===== 3. Purchase orders created from this PR ===== -->
+                    <uxap:ObjectPageSection id="secPOs" title="Purchase orders" visible="{pr>/hasPOs}">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="subPOs">
+                                <uxap:blocks>
+                                    <Table id="poTable" items="{pr>/purchaseOrders}" noDataText="No purchase orders">
+                                        <columns>
+                                            <Column id="pcNo"><Text id="pcNot" text="PO number"/></Column>
+                                            <Column id="pcSupp"><Text id="pcSuppt" text="Supplier"/></Column>
+                                            <Column id="pcSt"><Text id="pcStt" text="Status"/></Column>
+                                            <Column id="pcCr" minScreenWidth="Tablet" demandPopin="true"><Text id="pcCrt" text="Created on"/></Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem id="poRow">
+                                                <cells>
+                                                    <ObjectIdentifier id="poNo" title="{pr>poNumber}"/>
+                                                    <Text id="poSupp" text="{pr>supplierName}"/>
+                                                    <ObjectStatus id="poSt" text="{pr>status}"/>
+                                                    <Text id="poCr" text="{pr>createdAtText}"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <!-- ===== 4. Approval details (only for decided PRs) ===== -->
+                    <uxap:ObjectPageSection id="secDecision" title="Approval details"
+                                            visible="{= !${pr>/pending} }">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection id="subDecision">
+                                <uxap:blocks>
+                                    <VBox id="decisionBox">
+                                        <ObjectAttribute id="dBy" title="Decided by" text="{pr>/approvedBy}"/>
+                                        <ObjectAttribute id="dAt" title="Decided on" text="{pr>/approvedAtText}"/>
+                                        <ObjectAttribute id="dReason" title="Rejection reason" text="{pr>/rejectionReason}"
+                                                         visible="{= !!${pr>/rejectionReason} }"/>
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                </uxap:sections>
+            </uxap:ObjectPageLayout>
+        </content>
+    </Page>
+</mvc:View>

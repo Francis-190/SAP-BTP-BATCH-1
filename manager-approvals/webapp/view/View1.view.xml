@@ -1,0 +1,134 @@
+<mvc:View controllerName="managerapprovals.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="page" title="Procurement Manager - PR Approvals">
+        <content>
+            <IconTabBar id="tabs" expandable="false" class="sapUiResponsiveContentPadding">
+                <items>
+
+                    <!-- TAB 1: pending approvals with stock check -->
+                    <IconTabFilter id="tabPending" key="pending" text="Pending approval"
+                                   icon="sap-icon://pending" count="{ap>/pendingCount}">
+                        <Text id="pendingInfo" text="PRs sent for approval by procurement. Check the stock against inventory before deciding."/>
+
+                        <OverflowToolbar id="pendingToolbar" class="sapUiSmallMarginTop">
+                            <SearchField id="pendingSearch" width="16rem"
+                                         placeholder="Search PR number or requester"
+                                         search=".onPendingFilter" liveChange=".onPendingFilter"/>
+                            <SegmentedButton id="stockFilter" selectedKey="ALL" selectionChange=".onPendingFilter">
+                                
+                            </SegmentedButton>
+                            <ToolbarSpacer id="pendingSpacer"/>
+                            <Button id="refreshBtn" icon="sap-icon://refresh" tooltip="Refresh" press=".onRefresh"/>
+                        </OverflowToolbar>
+
+                        <Table id="pendingTable"
+                               mode="SingleSelectLeft"
+                               selectionChange=".onSelect"
+                               growing="true" growingThreshold="20"
+                               sticky="ColumnHeaders"
+                               noDataText="No PRs are waiting for approval"
+                               items="{ap>/pending}">
+                            <columns>
+                                <Column id="pcPR"><Text id="pcPRt" text="PR number"/></Column>
+                                <Column id="pcReq"><Text id="pcReqt" text="Requested by"/></Column>
+                                <Column id="pcStock"><Text id="pcStockt" text="Stock check"/></Column>
+                                <Column id="pcDec" width="14rem"><Text id="pcDect" text="Decision"/></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="pendingItem" type="Navigation" press=".onOpenPR">
+                                    <cells>
+                                        <ObjectIdentifier id="pPR" title="{ap>prNumber}"/>
+                                        <Text id="pReq" text="{ap>requestedBy}"/>
+                                        <VBox id="pStockBox">
+                                            <ObjectStatus id="pStockStatus" text="{ap>stockText}"
+                                                          state="{ap>stockState}" inverted="true"/>
+                                            <Text id="pStockInfo" text="{ap>stockInfo}"/>
+                                        </VBox>
+                                        <HBox id="pDecBox">
+                                            <Button id="approveBtn" text="Approve" type="Accept"
+                                                    icon="sap-icon://accept" class="sapUiTinyMarginEnd"
+                                                    press=".onApprove"/>
+                                            <Button id="rejectBtn" text="Reject" type="Reject"
+                                                    icon="sap-icon://decline" press=".onReject"/>
+                                        </HBox>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+
+                        <Panel id="itemsPanel" headerText="Stock check (select a PR above)" class="sapUiSmallMarginTop">
+                            <Table id="itemsTable" items="{ap>items}" noDataText="Select a PR to see its items">
+                                <columns>
+                                    <Column id="icPart"><Text id="icPartt" text="Part"/></Column>
+                                    <Column id="icReq" hAlign="End"><Text id="icReqt" text="Required qty"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem id="itemRow">
+                                        <cells>
+                                            <ObjectIdentifier id="iPart" title="{ap>partNumber}" text="{ap>description}"/>
+                                            <ObjectNumber id="iReq" number="{ap>requiredQty}"/>
+                                            <ObjectNumber id="iHand" number="{ap>onHand}" state="{ap>stockState}"/>
+                                            <ObjectNumber id="iReorder" number="{ap>reorderLevel}"/>
+                                            <ObjectStatus id="iStock" text="{ap>stockText}" state="{ap>stockState}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </Panel>
+                    </IconTabFilter>
+
+                    <!-- TAB 2: approval history -->
+                    <IconTabFilter id="tabHistory" key="history" text="Approval history"
+                                   icon="sap-icon://history" count="{ap>/historyCount}">
+                        <Text id="historyInfo" text="PRs that have been approved or rejected."/>
+
+                        <OverflowToolbar id="historyToolbar" class="sapUiSmallMarginTop">
+                            <SearchField id="historySearch" width="16rem"
+                                         placeholder="Search PR number or approver"
+                                         search=".onHistoryFilter" liveChange=".onHistoryFilter"/>
+                            <SegmentedButton id="historyFilter" selectedKey="ALL" selectionChange=".onHistoryFilter">
+                                <items>
+                                    <SegmentedButtonItem id="hfAll" key="ALL" text="All"/>
+                                    <SegmentedButtonItem id="hfApproved" key="APPROVED" text="Approved"/>
+                                    <SegmentedButtonItem id="hfRejected" key="REJECTED" text="Rejected"/>
+                                </items>
+                            </SegmentedButton>
+                            <ToolbarSpacer id="historySpacer"/>
+                            <Button id="refreshBtn2" icon="sap-icon://refresh" tooltip="Refresh" press=".onRefresh"/>
+                        </OverflowToolbar>
+
+                        <Table id="historyTable"
+                               growing="true" growingThreshold="20"
+                               sticky="ColumnHeaders"
+                               noDataText="No approved or rejected PRs yet"
+                               items="{ap>/history}">
+                            <columns>
+                                <Column id="hcPR"><Text id="hcPRt" text="PR number"/></Column>
+                                <Column id="hcReq"><Text id="hcReqt" text="Requested by"/></Column>
+                                <Column id="hcStatus"><Text id="hcStatust" text="Status"/></Column>
+                                <Column id="hcBy"><Text id="hcByt" text="Decided by"/></Column>
+                                <Column id="hcAt"><Text id="hcAtt" text="Decided on"/></Column>
+                                <Column id="hcReason"><Text id="hcReasont" text="Rejection reason"/></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="historyItem" type="Navigation" press=".onOpenPR">
+                                    <cells>
+                                        <ObjectIdentifier id="hPR" title="{ap>prNumber}"/>
+                                        <Text id="hReq" text="{ap>requestedBy}"/>
+                                        <ObjectStatus id="hStatus" text="{ap>status}" state="{ap>statusState}" inverted="true"/>
+                                        <Text id="hBy" text="{ap>approvedBy}"/>
+                                        <Text id="hAt" text="{ap>approvedAtText}"/>
+                                        <Text id="hReason" text="{ap>rejectionReason}"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

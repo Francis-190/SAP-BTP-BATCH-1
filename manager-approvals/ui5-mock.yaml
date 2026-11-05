@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "4.0"
+metadata:
+  name: managerapprovals
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /procurement
+            url: https://1e946729trial-dev-inventory-procurement-srv.cfapps.us10-001.hana.ondemand.com
+            destination: inventory-procuremnet-srv
+          - path: /inventory
+            url: https://1e946729trial-dev-inventory-procurement-srv.cfapps.us10-001.hana.ondemand.com
+            destination: inventory-procuremnet-srv
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        flp:
+          theme: sap_horizon
+        test:
+          - framework: OPA5
+            path: /test/integration/opaTests.qunit.html
+            pattern: /test/**/AllJourneys.*
+          - framework: Testsuite
+          - framework: QUnit
+            path: /test/unit/unitTests.qunit.html
+            pattern: /test/unit/controller/*.{js,ts}
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /procurement
+            metadataPath: ./webapp/localService/mainService/metadata.xml
+            mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+          - urlPath: /inventory
+            metadataPath: ./webapp/localService/inventory/metadata.xml
+            mockdataPath: ./webapp/localService/inventory/data
+            generateMockData: true
+        annotations: []
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
