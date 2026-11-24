@@ -1,0 +1,2 @@
+ID,quoteNo,opportunity_ID,version,status,validUntil,netAmount,createdAt,createdBy,modifiedAt,modifiedBy
+12000000-0000-0000-0000-000000000001,Q-2026-000001,11000000-0000-0000-0000-000000000001,1,Accepted,2026-06-30,35000,2026-05-09T10:00:00.000Z,admin,2026-05-20T10:00:00.000Z,admin

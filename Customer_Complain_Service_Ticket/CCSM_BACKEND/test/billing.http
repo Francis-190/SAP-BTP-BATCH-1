@@ -1,0 +1,216 @@
+@host = http://localhost:4004
+
+# ==========================================================
+#  SETUP: builds a delivered order and an invoice (run S1 to S11 in order)
+# ==========================================================
+
+### S1. Raise opportunity on T2
+# @name raiseOpp
+POST {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000002)/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000003", "expectedValue": 20000 }
+
+### S2. Create quote
+# @name createQuote
+POST {{host}}/sales/Quotes
+Content-Type: application/json
+
+{ "opportunity_ID": "{{raiseOpp.response.body.opportunityID}}" }
+
+### S3. Add item 1 (2 x 5000)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{createQuote.response.body.ID}}", "product_ID": "a1000000-0000-0000-0000-000000000002", "quantity": 2, "unitPrice": 5000 }
+
+### S4. Add item 2 (1 x 15000)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{createQuote.response.body.ID}}", "product_ID": "a1000000-0000-0000-0000-000000000001", "quantity": 1, "unitPrice": 15000 }
+
+### S5. Submit, approve and send the quote (run these three one after another)
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.submitForApproval
+Content-Type: application/json
+
+{}
+
+###
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.approve
+Content-Type: application/json
+
+{}
+
+###
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.send
+Content-Type: application/json
+
+{}
+
+### S6. Accept (returns salesOrderID)
+# @name acceptQuote
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.accept
+Content-Type: application/json
+
+{}
+
+###
+@salesOrderId = {{acceptQuote.response.body.salesOrderID}}
+@O = {{host}}/orders/SalesOrders({{salesOrderId}})/OrderService
+
+### S7. Confirm, start fulfilment and deliver (run these three one after another)
+POST {{O}}.confirm
+Content-Type: application/json
+
+{}
+
+###
+POST {{O}}.startFulfil
+Content-Type: application/json
+
+{}
+
+###
+POST {{O}}.markDelivered
+Content-Type: application/json
+
+{ "deliveryDate": "2026-11-10" }
+
+### S8. Create invoice (returns invoiceID, netAmount should be 25000)
+# @name createInv
+POST {{O}}.createInvoice
+Content-Type: application/json
+
+{ "dueInDays": 30 }
+
+###
+@invoiceId = {{createInv.response.body.invoiceID}}
+@I = {{host}}/billing/Invoices({{invoiceId}})/BillingService
+
+
+# ==========================================================
+#  A. INVOICE CHECKS
+# ==========================================================
+
+### A1. Read invoice (expect Open, netAmount 25000, dueDate = invoiceDate + 30, customer = Acme)
+GET {{host}}/billing/Invoices({{invoiceId}})
+
+### A2. Order status (expect Invoiced)
+GET {{host}}/orders/SalesOrders({{salesOrderId}})
+
+### A3. Create an invoice directly (expect 405)
+POST {{host}}/billing/Invoices
+Content-Type: application/json
+
+{ "customer_ID": "c1000000-0000-0000-0000-000000000001", "salesOrder_ID": "{{salesOrderId}}" }
+
+### A4. Change status directly (expect 400)
+PATCH {{host}}/billing/Invoices({{invoiceId}})
+Content-Type: application/json
+
+{ "status": "Paid" }
+
+### A5. Change net amount directly (expect 400)
+PATCH {{host}}/billing/Invoices({{invoiceId}})
+Content-Type: application/json
+
+{ "netAmount": 1 }
+
+### A6. Due date before invoice date (expect 400)
+PATCH {{host}}/billing/Invoices({{invoiceId}})
+Content-Type: application/json
+
+{ "dueDate": "2020-01-01" }
+
+### A7. Delete invoice (expect 405)
+DELETE {{host}}/billing/Invoices({{invoiceId}})
+
+
+# ==========================================================
+#  B. PAYMENTS (run in order)
+# ==========================================================
+
+### B1. Amount 0 (expect 400)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 0, "method": "UPI" }
+
+### B2. Negative amount (expect 400)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": -100, "method": "UPI" }
+
+### B3. Amount above the balance (expect 400: exceeds outstanding balance 25000)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 99999, "method": "UPI" }
+
+### B4. Payment date in the future (expect 400)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 1000, "method": "UPI", "paymentDate": "2030-01-01" }
+
+### B5. Payment for an invoice that doesn't exist (expect 404)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "17000000-0000-0000-0000-000000000099", "amount": 1000, "method": "UPI" }
+
+### B6. Partial payment 10000 (expect 201, paymentNo PAY-2026-000003)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 10000, "method": "UPI", "referenceNo": "UPI-3001" }
+
+### B7. Invoice status (expect Partially Paid)
+GET {{host}}/billing/Invoices({{invoiceId}})
+
+### B8. Cancel an invoice that has payments (expect 409)
+POST {{I}}.cancel
+Content-Type: application/json
+
+{}
+
+### B9. Overpay the remaining balance (expect 400: balance is 15000)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 15001, "method": "Card" }
+
+### B10. Pay the remaining 15000 (expect 201)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 15000, "method": "Bank Transfer", "referenceNo": "NEFT-3002" }
+
+### B11. Invoice status (expect Paid)
+GET {{host}}/billing/Invoices({{invoiceId}})?$expand=payments
+
+### B12. Order status (expect Closed)
+GET {{host}}/orders/SalesOrders({{salesOrderId}})
+
+### B13. Pay a Paid invoice (expect 409)
+POST {{host}}/billing/Payments
+Content-Type: application/json
+
+{ "invoice_ID": "{{invoiceId}}", "amount": 100, "method": "UPI" }
+
+### B14. Cancel a Paid invoice (expect 409)
+POST {{I}}.cancel
+Content-Type: application/json
+
+{}
+
+### B15. Edit a payment (expect 405)
+PATCH {{host}}/billing/Payments(18000000-0000-0000-0000-000000000001)
+Content-Type: application/json
+
+{ "amount": 1 }
+
+### B16. Delete a payment (expect 405)
+DELETE {{host}}/billing/Payments(18000000-0000-0000-0000-000000000001)

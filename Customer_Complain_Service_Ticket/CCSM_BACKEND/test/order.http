@@ -1,0 +1,61 @@
+@host = http://localhost:4004
+
+# ==========================================================
+#  SETUP: builds a Sales Order automatically (run 1 to 8 in order)
+# ==========================================================
+
+### S1. Raise opportunity on ticket T2 (expect 200)
+# @name raiseOpp
+POST {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000002)/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000003", "expectedValue": 20000 }
+
+### S2. Create quote
+# @name createQuote
+POST {{host}}/sales/Quotes
+Content-Type: application/json
+
+{ "opportunity_ID": "{{raiseOpp.response.body.opportunityID}}" }
+
+### S3. Add item 1
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{createQuote.response.body.ID}}", "product_ID": "a1000000-0000-0000-0000-000000000002", "quantity": 2, "unitPrice": 5000 }
+
+### S4. Add item 2
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{createQuote.response.body.ID}}", "product_ID": "a1000000-0000-0000-0000-000000000001", "quantity": 1, "unitPrice": 15000 }
+
+### S5. Submit for approval
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.submitForApproval
+Content-Type: application/json
+
+{}
+
+### S6. Approve
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.approve
+Content-Type: application/json
+
+{}
+
+### S7. Send
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.send
+Content-Type: application/json
+
+{}
+
+### S8. Accept (expect 200 with salesOrderID)
+# @name acceptQuote
+POST {{host}}/sales/Quotes({{createQuote.response.body.ID}})/SalesService.accept
+Content-Type: application/json
+
+{}
+
+###
+@salesOrderId = {{acceptQuote.response.body.salesOrderID}}
+@O = {{host}}/orders/SalesOrders({{salesOrderId}})/OrderService
+@t4 = f1000000-0000-0000-0000-000000000004

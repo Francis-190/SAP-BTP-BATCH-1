@@ -1,0 +1,94 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Admin"
+    },
+    {
+      "name": "$XSAPPNAME.ServiceAgent",
+      "description": "ServiceAgent"
+    },
+    {
+      "name": "$XSAPPNAME.TeamLead",
+      "description": "TeamLead"
+    },
+    {
+      "name": "$XSAPPNAME.ServiceManager",
+      "description": "ServiceManager"
+    },
+    {
+      "name": "$XSAPPNAME.SalesManager",
+      "description": "SalesManager"
+    },
+    {
+      "name": "$XSAPPNAME.Consultant",
+      "description": "Consultant"
+    },
+    {
+      "name": "$XSAPPNAME.Finance",
+      "description": "Finance",
+      "grant-as-authority-to-apps":[
+        "$XSSERVICENAME(Job-scheduling_instance)"
+      ]
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Admin",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "ServiceAgent",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.ServiceAgent"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "TeamLead",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.TeamLead"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "ServiceManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.ServiceManager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "SalesManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.SalesManager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Consultant",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Consultant"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Finance",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Finance"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

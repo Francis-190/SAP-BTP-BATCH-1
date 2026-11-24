@@ -1,0 +1,71 @@
+@host = http://localhost:4004
+
+### 1. Read customers (should return 2 records)
+GET {{host}}/master-data/Customers
+
+### 2. Create a valid contact (should return 201)
+POST {{host}}/master-data/CustomerContacts
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "firstName": "Neha",
+  "lastName": "Rao",
+  "email": "neha@acme.com",
+  "phone": "+919800000003"
+}
+
+### 3. Invalid email (should return 400)
+POST {{host}}/master-data/CustomerContacts
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "firstName": "Test",
+  "email": "not-an-email"
+}
+
+### 4. Contact with no email and no phone (should return 400)
+POST {{host}}/master-data/CustomerContacts
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "firstName": "Test"
+}
+
+### 5. Duplicate category code (should return 409)
+POST {{host}}/master-data/IssueCategories
+Content-Type: application/json
+
+{
+  "code": "NETWORK",
+  "name": "Duplicate"
+}
+
+### 6. SLA policy where resolution is shorter than first response (should return 400)
+POST {{host}}/master-data/SLAPolicies
+Content-Type: application/json
+
+{
+  "name": "Bad policy",
+  "priority": "P1",
+  "customerTier": "Silver",
+  "firstResponseMins": 60,
+  "resolutionMins": 30
+}
+
+### 7. Negative product price (should return 400)
+POST {{host}}/master-data/Products
+Content-Type: application/json
+
+{
+  "productCode": "PRD-999",
+  "name": "Bad product",
+  "productType": "PHYSICAL",
+  "billingModel": "ONE_TIME",
+  "unitPrice": -10
+}
+
+### 8. Delete a customer (should return 405)
+DELETE {{host}}/master-data/Customers(c1000000-0000-0000-0000-000000000001)

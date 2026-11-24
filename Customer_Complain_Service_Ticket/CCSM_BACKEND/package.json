@@ -1,0 +1,81 @@
+{
+  "name": "ccsm_backend",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "main": "index.js",
+  "scripts": {
+    "start": "cds-serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "cds": {
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "admin": {
+              "password": "x",
+              "roles": [
+                "Admin"
+              ]
+            },
+            "anita": {
+              "password": "x",
+              "roles": [
+                "ServiceAgent"
+              ]
+            },
+            "suresh": {
+              "password": "x",
+              "roles": [
+                "ServiceAgent",
+                "TeamLead"
+              ]
+            },
+            "sam": {
+              "password": "x",
+              "roles": [
+                "ServiceManager"
+              ]
+            },
+            "priya": {
+              "password": "x",
+              "roles": [
+                "SalesManager"
+              ]
+            },
+            "carl": {
+              "password": "x",
+              "roles": [
+                "Consultant"
+              ]
+            },
+            "fiona": {
+              "password": "x",
+              "roles": [
+                "Finance"
+              ]
+            }
+          }
+        }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@cap-js/hana": "^3",
+    "@sap_oss/alert-notification-client": "^1.14.0",
+    "@sap/cds": "^10.2.2",
+    "@sap/xssec": "^4.16.0"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3.1.3",
+    "@sap/cds-dk": "^10.2.1"
+  }
+}

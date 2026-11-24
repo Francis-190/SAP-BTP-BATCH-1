@@ -1,0 +1,25 @@
+@host = http://localhost:4004
+
+### 1. Read seed data
+GET {{host}}/master-data/Customers
+
+### 2. Invalid email on contact → 400
+POST {{host}}/master-data/CustomerContacts
+Content-Type: application/json
+
+{ "customer_ID": "c1000000-0000-0000-0000-000000000001", "firstName": "Test", "email": "not-an-email" }
+
+### 3. SLA policy with resolution shorter than first response → 400
+POST {{host}}/master-data/SLAPolicies
+Content-Type: application/json
+
+{ "name": "Bad", "priority": "P1", "customerTier": "Silver", "firstResponseMins": 60, "resolutionMins": 30 }
+
+### 4. Duplicate category code → 409
+POST {{host}}/master-data/IssueCategories
+Content-Type: application/json
+
+{ "code": "NETWORK", "name": "Duplicate" }
+
+### 5. Delete customer → 405
+DELETE {{host}}/master-data/Customers(c1000000-0000-0000-0000-000000000001)

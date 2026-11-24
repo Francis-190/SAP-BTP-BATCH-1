@@ -1,0 +1,183 @@
+@host = http://localhost:4004
+@t4 = f1000000-0000-0000-0000-000000000004
+
+# ==========================================================
+#  A. OPPORTUNITY
+# ==========================================================
+
+### A1. Raise opportunity from ticket T4 (expect 200 with opportunityID)
+# @name raiseOpp
+POST {{host}}/tickets/ServiceTickets({{t4}})/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000003", "expectedValue": 20000 }
+
+###
+@oppId = {{raiseOpp.response.body.opportunityID}}
+@O = {{host}}/sales/Opportunities({{oppId}})/SalesService
+
+### A2. Read it (expect stage Prospecting, oppNo OPP-2026-000002)
+GET {{host}}/sales/Opportunities({{oppId}})
+
+### A3. Raise a second one on the same ticket (expect 409)
+POST {{host}}/tickets/ServiceTickets({{t4}})/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000003", "expectedValue": 20000 }
+
+### A4. Change stage directly (expect 400)
+PATCH {{host}}/sales/Opportunities({{oppId}})
+Content-Type: application/json
+
+{ "stage": "Closed Won" }
+
+### A5. Qualify (expect stage Qualification)
+POST {{O}}.qualify
+Content-Type: application/json
+
+{}
+
+### A6. Qualify again (expect 409: stage is not Prospecting)
+POST {{O}}.qualify
+Content-Type: application/json
+
+{}
+
+
+# ==========================================================
+#  B. QUOTE
+# ==========================================================
+
+### B1. Create quote (expect 201: Draft, version 1, validUntil = today + 30)
+# @name createQuote
+POST {{host}}/sales/Quotes
+Content-Type: application/json
+
+{ "opportunity_ID": "{{oppId}}" }
+
+###
+@quoteId = {{createQuote.response.body.ID}}
+@Q = {{host}}/sales/Quotes({{quoteId}})/SalesService
+
+### B2. Opportunity stage should now be Proposal
+GET {{host}}/sales/Opportunities({{oppId}})
+
+### B3. Second quote for the same opportunity (expect 409: active quote exists)
+POST {{host}}/sales/Quotes
+Content-Type: application/json
+
+{ "opportunity_ID": "{{oppId}}" }
+
+### B4. Submit with no items (expect 400)
+POST {{Q}}.submitForApproval
+Content-Type: application/json
+
+{}
+
+### B5. Item with quantity 0 (expect 400)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{quoteId}}", "product_ID": "a1000000-0000-0000-0000-000000000002", "quantity": 0, "unitPrice": 5000 }
+
+### B6. Item with negative price (expect 400)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{quoteId}}", "product_ID": "a1000000-0000-0000-0000-000000000002", "quantity": 1, "unitPrice": -1 }
+
+### B7. Add item 2 x 5000 (expect 201)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{quoteId}}", "product_ID": "a1000000-0000-0000-0000-000000000002", "quantity": 2, "unitPrice": 5000 }
+
+### B8. Add item 1 x 15000 (expect 201)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{quoteId}}", "product_ID": "a1000000-0000-0000-0000-000000000001", "quantity": 1, "unitPrice": 15000 }
+
+### B9. Quote netAmount should now be 25000
+GET {{host}}/sales/Quotes({{quoteId}})?$expand=items
+
+### B10. Edit netAmount directly (expect 400)
+PATCH {{host}}/sales/Quotes({{quoteId}})
+Content-Type: application/json
+
+{ "netAmount": 1 }
+
+### B11. Approve while still Draft (expect 409)
+POST {{Q}}.approve
+Content-Type: application/json
+
+{}
+
+### B12. Submit for approval (expect status Pending Approval)
+POST {{Q}}.submitForApproval
+Content-Type: application/json
+
+{}
+
+### B13. Add an item now (expect 409: only Draft quotes can change)
+POST {{host}}/sales/QuoteItems
+Content-Type: application/json
+
+{ "quote_ID": "{{quoteId}}", "product_ID": "a1000000-0000-0000-0000-000000000002", "quantity": 1, "unitPrice": 5000 }
+
+### B14. Send before approving (expect 409)
+POST {{Q}}.send
+Content-Type: application/json
+
+{}
+
+### B15. Approve (expect status Approved)
+POST {{Q}}.approve
+Content-Type: application/json
+
+{}
+
+### B16. Send (expect status Sent, opportunity stage Negotiation)
+POST {{Q}}.send
+Content-Type: application/json
+
+{}
+
+### B17. Opportunity stage should be Negotiation
+GET {{host}}/sales/Opportunities({{oppId}})
+
+
+# ==========================================================
+#  C. CUSTOMER DECISION: ACCEPT (happy path)
+# ==========================================================
+
+### C1. Accept (expect 200 with salesOrderID, quote Accepted, opportunity Closed Won)
+# @name acceptQuote
+POST {{Q}}.accept
+Content-Type: application/json
+
+{}
+
+###
+@salesOrderId = {{acceptQuote.response.body.salesOrderID}}
+
+### C2. Quote status (expect Accepted)
+GET {{host}}/sales/Quotes({{quoteId}})
+
+### C3. Opportunity stage (expect Closed Won)
+GET {{host}}/sales/Opportunities({{oppId}})
+
+### C4. Sales order was created with items copied (expect status Created, 2 items, orderNo SO-2026-000002)
+GET {{host}}/orders/SalesOrders({{salesOrderId}})?$expand=items
+
+### C5. Accept again (expect 409: quote is Accepted)
+POST {{Q}}.accept
+Content-Type: application/json
+
+{}
+
+### C6. Mark the won opportunity as lost (expect 409)
+POST {{O}}.markLost
+Content-Type: application/json
+
+{ "reason": "Too late" }

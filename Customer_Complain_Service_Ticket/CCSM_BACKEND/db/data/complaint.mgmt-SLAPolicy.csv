@@ -1,0 +1,3 @@
+ID,name,priority,customerTier,firstResponseMins,resolutionMins,workStart,workEnd,workDays,isActive
+e1000000-0000-0000-0000-000000000001,Gold P2,P2,Gold,60,480,00:00:00,23:59:00,"MON,TUE,WED,THU,FRI",true
+e1000000-0000-0000-0000-000000000002,Platinum P2,P2,Platinum,30,240,00:00:00,23:59:00,"MON,TUE,WED,THU,FRI",true

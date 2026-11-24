@@ -1,0 +1,256 @@
+@host = http://localhost:4004
+@t3 = f1000000-0000-0000-0000-000000000003
+@T3 = {{host}}/tickets/ServiceTickets({{t3}})/TicketService
+
+# ==========================================================
+#  A. CHECK THE SEED DATA (run first)
+# ==========================================================
+
+### A1. All tickets (expect 4: T-2026-000001 to T-2026-000004)
+GET {{host}}/tickets/ServiceTickets
+
+### A2. T3 details (expect status New, priority P1, no assigned agent)
+GET {{host}}/tickets/ServiceTickets({{t3}})
+
+### A3. T3 SLA clocks (expect FIRST_RESPONSE and RESOLUTION, both Running)
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq {{t3}}
+
+
+# ==========================================================
+#  B. VALIDATIONS ON A NEW TICKET (T3)
+# ==========================================================
+
+### B1. Resolve while status is New (expect 409)
+POST {{T3}}.resolve
+Content-Type: application/json
+
+{ "resolutionNote": "Too early" }
+
+### B2. Start work before assigning (expect 409)
+POST {{T3}}.startWork
+Content-Type: application/json
+
+{}
+
+### B3. Change status directly (expect 400)
+PATCH {{host}}/tickets/ServiceTickets({{t3}})
+Content-Type: application/json
+
+{ "status": "Closed" }
+
+### B4. Assign a Sales user (expect 400: only a Service agent)
+POST {{T3}}.assign
+Content-Type: application/json
+
+{ "agent": "d1000000-0000-0000-0000-000000000003" }
+
+### B5. Assign an agent that doesn't exist (expect 404)
+POST {{T3}}.assign
+Content-Type: application/json
+
+{ "agent": "d1000000-0000-0000-0000-000000000099" }
+
+
+# ==========================================================
+#  C. FULL LIFECYCLE ON T3 (run in order, one time per restart)
+# ==========================================================
+
+### C1. Assign to the Service agent (expect status Assigned)
+POST {{T3}}.assign
+Content-Type: application/json
+
+{ "agent": "d1000000-0000-0000-0000-000000000001" }
+
+### C2. Accept
+POST {{T3}}.accept
+Content-Type: application/json
+
+{}
+
+### C3. Start work (expect status In Progress)
+POST {{T3}}.startWork
+Content-Type: application/json
+
+{}
+
+### C4. Agent emails the customer (FIRST_RESPONSE clock should stop)
+POST {{host}}/tickets/Interactions
+Content-Type: application/json
+
+{
+  "ticket_ID": "{{t3}}",
+  "type": "Email",
+  "message": "We are checking the outage. Please confirm which services are down.",
+  "author_ID": "d1000000-0000-0000-0000-000000000001"
+}
+
+### C5. Clocks (FIRST_RESPONSE: stoppedAt filled, status Met or Breached)
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq {{t3}}
+
+### C6. Wait for customer (RESOLUTION clock becomes Paused, pausedAt set)
+POST {{T3}}.waitForCustomer
+Content-Type: application/json
+
+{}
+
+### C7. Clocks (RESOLUTION: status Paused)
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq {{t3}}
+
+### C8. Customer replied (RESOLUTION back to Running, dueAt pushed later, totalPausedMins updated)
+POST {{T3}}.customerReplied
+Content-Type: application/json
+
+{}
+
+### C9. Clocks again
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq {{t3}}
+
+### C10. Escalate without a reason (expect 400)
+POST {{T3}}.escalate
+Content-Type: application/json
+
+{ "agent": "d1000000-0000-0000-0000-000000000002" }
+
+### C11. Escalate to a non-lead agent (expect 400: must be Team Lead or Manager)
+POST {{T3}}.escalate
+Content-Type: application/json
+
+{ "agent": "d1000000-0000-0000-0000-000000000003", "reason": "Wrong target" }
+
+### C12. Escalate to the Team Lead
+POST {{T3}}.escalate
+Content-Type: application/json
+
+{ "agent": "d1000000-0000-0000-0000-000000000002", "reason": "Needs L2 network expert" }
+
+### C13. Assignment history (expect Assign, Accept, Escalate)
+GET {{host}}/tickets/TicketAssignments?$filter=ticket_ID eq {{t3}}
+
+### C14. Resolve without a note (expect 400)
+POST {{T3}}.resolve
+Content-Type: application/json
+
+{ "resolutionNote": "" }
+
+### C15. Resolve (expect status Resolved, RESOLUTION clock stopped)
+POST {{T3}}.resolve
+Content-Type: application/json
+
+{ "resolutionNote": "Core switch replaced, services restored." }
+
+### C16. Close before resolving is not possible now, so close after resolve (expect status Closed)
+POST {{T3}}.close
+Content-Type: application/json
+
+{}
+
+### C17. Reopen (expect status Reopened, new RESOLUTION clock)
+POST {{T3}}.reopen
+Content-Type: application/json
+
+{}
+
+### C18. Final check: ticket, interactions, clocks
+GET {{host}}/tickets/ServiceTickets({{t3}})
+
+###
+GET {{host}}/tickets/Interactions?$filter=ticket_ID eq {{t3}}
+
+###
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq {{t3}}
+
+
+# ==========================================================
+#  D. TICKET T4: RESUME A PAUSED CLOCK (seed: Waiting for Customer)
+# ==========================================================
+
+### D1. T4 clocks (expect RESOLUTION Paused)
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq f1000000-0000-0000-0000-000000000004
+
+### D2. Customer replied on T4 (expect status In Progress, clock Running)
+POST {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000004)/TicketService.customerReplied
+Content-Type: application/json
+
+{}
+
+### D3. T4 clocks again
+GET {{host}}/tickets/SLAClocks?$filter=ticket_ID eq f1000000-0000-0000-0000-000000000004
+
+
+# ==========================================================
+#  E. TICKET T2: WARRANTY CHECK AND SALES HAND-OVER (seed: In Progress)
+# ==========================================================
+
+### E1. Warranty check (expect underWarranty true, warrantyEndDate 2027-06-01)
+GET {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000002)/TicketService.checkWarranty()
+
+### E2. Warranty check on a ticket without product/order (expect 400)
+GET {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000003)/TicketService.checkWarranty()
+
+### E3. Raise opportunity with a Service user as owner (expect 400: must be Sales)
+POST {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000002)/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000001", "expectedValue": 20000 }
+
+### E4. Raise opportunity (expect 200 with opportunityID)
+POST {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000002)/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000003", "expectedValue": 20000 }
+
+### E5. Raise it again (expect 409: already has an open opportunity)
+POST {{host}}/tickets/ServiceTickets(f1000000-0000-0000-0000-000000000002)/TicketService.raiseOpportunity
+Content-Type: application/json
+
+{ "owner": "d1000000-0000-0000-0000-000000000003", "expectedValue": 20000 }
+
+
+# ==========================================================
+#  F. CREATE A NEW TICKET (independent, does not feed other requests)
+# ==========================================================
+
+### F1. Create ticket (expect 201, ticketNo T-2026-000005, status New, priority P2)
+POST {{host}}/tickets/ServiceTickets
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "contact_ID":  "c2000000-0000-0000-0000-000000000001",
+  "category_ID": "b2000000-0000-0000-0000-000000000001",
+  "title": "Slow internet in branch office",
+  "description": "Speed drops after 5 PM"
+}
+
+### F2. Contact that doesn't exist (expect 400)
+POST {{host}}/tickets/ServiceTickets
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "contact_ID":  "c2000000-0000-0000-0000-000000000099",
+  "category_ID": "b2000000-0000-0000-0000-000000000001",
+  "title": "x"
+}
+
+### F3. Contact of another customer (expect 400)
+POST {{host}}/tickets/ServiceTickets
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "contact_ID":  "c2000000-0000-0000-0000-000000000002",
+  "category_ID": "b2000000-0000-0000-0000-000000000001",
+  "title": "x"
+}
+
+### F4. Missing title (expect 400)
+POST {{host}}/tickets/ServiceTickets
+Content-Type: application/json
+
+{
+  "customer_ID": "c1000000-0000-0000-0000-000000000001",
+  "contact_ID":  "c2000000-0000-0000-0000-000000000001",
+  "category_ID": "b2000000-0000-0000-0000-000000000001",
+  "title": ""
+}
