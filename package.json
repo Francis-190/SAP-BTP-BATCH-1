@@ -1,0 +1,40 @@
+{
+  "name": "soadv",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cds-serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "cds": {
+    "server": {
+      "index": true
+    },
+    "requires": {
+      "auth": {
+        "[development]": {
+          "impl": "srv/local-role-auth.js"
+        },
+        "[hybrid]": {
+          "impl": "srv/local-role-auth.js"
+        },
+        "[production]": {
+          "kind": "xsuaa"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@cap-js/hana": "^3.2.0",
+    "@sap/xssec": "^4",
+    "axios": "^1.21.1"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^10"
+  }
+}

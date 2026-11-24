@@ -1,0 +1,228 @@
+
+#####################################################
+# SOADV - MAIN BUSINESS WORKFLOW
+#####################################################
+
+@baseUrl = http://localhost:4004
+@dealerUrl = {{baseUrl}}/odata/v4/dealer
+@internalUrl = {{baseUrl}}/odata/v4/internal
+
+# Existing Dealer 1 account
+@dealer1Id = 11111111-1111-4111-8111-111111111111
+
+# Copy actual IDs from responses
+@orderId = f1aee371-12b3-496c-8057-50e40eadbc1a
+@itemId = 157159c1-4b6f-4bba-a244-3eabd0d2a559
+@deliveryId = 873a7018-ea04-47d3-9550-d53267f847a7
+@exceptionId = 1fc68295-0d8c-4331-9928-71f23879144a
+
+
+#####################################################
+# 1. ADMIN - CREATE DEALER
+#####################################################
+
+### Create a new dealer
+POST {{internalUrl}}/DealerAccounts?role=admin
+Content-Type: application/json
+
+{
+  "dealerNo": "D1007",
+  "name": "New Royal Motors",
+  "region": "South",
+  "contactEmail": "newdealer@example.com",
+  "status": "Active"
+}
+
+
+#####################################################
+# 2. DEALER - CREATE SALES ORDER
+#####################################################
+
+### Create sales order as Dealer 1 (D1001)
+POST {{dealerUrl}}/SalesOrders?role=dealer1
+Content-Type: application/json
+
+{
+  "orderNo": "SO-2026-143",
+  "deliveryLocation": "Bengaluru",
+  "orderDate": "2026-11-19",
+  "requestedDate": "2026-11-30",
+  "customerReference": "CUST-143",
+  "items": [
+    {
+      "lineNo": 10,
+      "model": "Classic 350",
+      "description": "Royal Enfield Classic 350",
+      "quantity": 5,
+      "confirmedQty": 0,
+      "uom": "EA",
+      "requestedDate": "2026-11-30"
+    }
+  ]
+}
+
+
+#####################################################
+# 3. SALES COORDINATOR - CONFIRM ORDER
+#####################################################
+
+### Read order items and copy item ID
+GET {{internalUrl}}/SalesOrderItems?role=coordinator
+
+### Confirm order quantity
+PATCH {{internalUrl}}/SalesOrderItems({{itemId}})?role=coordinator
+Content-Type: application/json
+
+{
+  "confirmedQty": 5
+}
+
+
+#####################################################
+# 4. SALES COORDINATOR - CREATE DELIVERY
+#####################################################
+
+### Create delivery
+POST {{internalUrl}}/SalesOrders({{orderId}})/createDelivery?role=coordinator
+Content-Type: application/json
+
+{
+  "deliveryNo": "DL-2026-143",
+  "trackingNo": "TRACK-2026-143",
+  "carrier": "BlueDart",
+  "plannedDate": "2026-11-30"
+}
+
+
+#####################################################
+# 5. WAREHOUSE - ADD ITEM TO DELIVERY
+#####################################################
+
+### Add confirmed order item to delivery
+POST {{internalUrl}}/Deliveries({{deliveryId}})/addDeliveryItem?role=warehouse
+Content-Type: application/json
+
+{
+  "orderItem": "{{itemId}}",
+  "shippedQty": 5
+}
+
+
+#####################################################
+# 6. WAREHOUSE - DISPATCH ORDER
+#####################################################
+
+### Change delivery status to Dispatched
+POST {{internalUrl}}/Deliveries({{deliveryId}})/addMilestone?role=warehouse
+Content-Type: application/json
+
+{
+  "sourceEventId": "EVENT-143",
+  "milestoneType": "Dispatched",
+  "eventTime": "2026-11-19T10:00:00Z",
+  "location": "Bengaluru Warehouse",
+  "rawStatusCode": "DSP",
+  "notes": "Order dispatched from warehouse"
+}
+
+
+#####################################################
+# 7. WAREHOUSE - CHANGE TO IN TRANSIT
+#####################################################
+
+### Change delivery status to InTransit
+POST {{internalUrl}}/Deliveries({{deliveryId}})/addMilestone?role=warehouse
+Content-Type: application/json
+
+{
+  "sourceEventId": "EVENT-144",
+  "milestoneType": "InTransit",
+  "eventTime": "2026-11-19T10:00:00Z",
+  "location": "Hosur",
+  "rawStatusCode": "TRANSIT",
+  "notes": "Order is in transit"
+}
+
+
+#####################################################
+# 8. SALES COORDINATOR - RAISE DELAY EXCEPTION
+#####################################################
+
+### Raise delay exception
+POST {{internalUrl}}/SalesOrders({{orderId}})/raiseDeliveryException?role=coordinator
+Content-Type: application/json
+
+{
+  "type": "Delayed",
+  "reason": "Delivery delayed due to transport issues",
+  "expectedResolutionDate": "2026-11-30"
+}
+
+
+#####################################################
+# 8A. SALES COORDINATOR - CHECK ORDER DELAY
+#####################################################
+
+### Check delay for a specific sales order
+POST {{internalUrl}}/SalesOrders({{orderId}})/checkDelay?role=coordinator
+Content-Type: application/json
+
+{}
+
+
+#####################################################
+# 9. SALES COORDINATOR - RESOLVE DELAY
+#####################################################
+
+### Resolve delay exception
+POST {{internalUrl}}/ExceptionNotes({{exceptionId}})/resolveException?role=coordinator
+Content-Type: application/json
+
+{
+  "resolutionNote": "Transport issue resolved. Delivery rescheduled.",
+  "expectedResolutionDate": "2026-11-23"
+}
+
+
+#####################################################
+# 10. WAREHOUSE - DELIVER ORDER
+#####################################################
+
+### Change delivery status to Delivered
+POST {{internalUrl}}/Deliveries({{deliveryId}})/addMilestone?role=warehouse
+Content-Type: application/json
+
+{
+  "sourceEventId": "EVENT-003",
+  "milestoneType": "Delivered",
+  "eventTime": "2026-11-20T10:00:00Z",
+  "location": "Dealer Location",
+  "rawStatusCode": "DEL",
+  "notes": "Order delivered successfully"
+}
+
+
+#####################################################
+# 11. ADMIN - VERIFY COMPLETE WORKFLOW
+#####################################################
+
+### Check dealer accounts
+GET {{internalUrl}}/DealerAccounts?role=admin
+
+### Check sales orders
+GET {{internalUrl}}/SalesOrders?role=admin
+
+### Check deliveries
+GET {{internalUrl}}/Deliveries?role=admin
+
+### Check delivery items
+GET {{internalUrl}}/DeliveryItems?role=admin
+
+### Check delivery milestones
+GET {{internalUrl}}/DeliveryMilestones?role=admin
+
+### Check exceptions
+GET {{internalUrl}}/ExceptionNotes?role=admin
+
+### Check open exceptions
+GET {{internalUrl}}/OpenExceptions?role=admin

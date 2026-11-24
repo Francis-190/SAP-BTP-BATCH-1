@@ -1,0 +1,111 @@
+_schema-version: 3.3.0
+ID: soadv
+version: 1.0.0
+description: "Welcome to your new CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: soadv-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: soadv-auth
+      - name: soadv-db
+      - name: soadv-jobscheduler
+      - name: soadv-alertnotification
+
+  - name: soadv-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: soadv-db
+  - name: soadv
+    type: approuter.nodejs
+    path: .deploy/app-router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: soadv-auth
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+resources:
+  - name: soadv-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: soadv-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+        role-collections:
+          - name: 'DealerUser (soadv ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.DealerUser'
+          - name: 'SalesCoordinator (soadv ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.SalesCoordinator'
+          - name: 'WarehouseUser (soadv ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.WarehouseUser'
+          - name: 'Administrator (soadv ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Administrator'
+          - name: 'userattributes (soadv ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.userattributes'
+    requires:
+      - name: app-api
+  - name: soadv-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: soadv-jobscheduler
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: soadv-jobscheduler
+  - name: soadv-alertnotification
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: soadv-alertnotification

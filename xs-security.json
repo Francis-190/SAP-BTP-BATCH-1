@@ -1,0 +1,80 @@
+{
+  "xsappname": "soadv-32b51150trial-dev",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.DealerUser",
+      "description": "DealerUser"
+    },
+    {
+      "name": "$XSAPPNAME.SalesCoordinator",
+      "description": "SalesCoordinator"
+    },
+    {
+      "name": "$XSAPPNAME.WarehouseUser",
+      "description": "WarehouseUser"
+    },
+    {
+      "name": "$XSAPPNAME.Administrator",
+      "description": "Administrator"
+    },
+    {
+      "name": "$XSAPPNAME.jobscheduler",
+      "description": "Allows Job Scheduler to run SOADV automatic delay detection",
+      "grant-as-authority-to-apps": [
+        "$XSSERVICENAME(soadv-jobscheduler)"
+      ]
+    }
+  ],
+  "attributes": [
+    {
+      "name": "dealerNo",
+      "description": "dealerNo",
+      "valueType": "s",
+      "valueRequired": false
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "DealerUser",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.DealerUser"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "SalesCoordinator",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.SalesCoordinator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "WarehouseUser",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.WarehouseUser"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Administrator",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.Administrator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "userattributes",
+      "description": "generated",
+      "default-role-name": "Attributes of a User",
+      "scope-references": [],
+      "attribute-references": [
+        "dealerNo"
+      ]
+    }
+  ]
+}

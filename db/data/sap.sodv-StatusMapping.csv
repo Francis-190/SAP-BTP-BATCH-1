@@ -1,0 +1,6 @@
+ID,sourceSystem,sourceCode,appStatus,sequenceNo,isActive
+a1a1a1a1-a1a1-41a1-81a1-a1a1a1a1a1a1,Manual,NEW,Submitted,1,true
+a2a2a2a2-a2a2-42a2-82a2-a2a2a2a2a2a2,Manual,CNF,Confirmed,2,true
+a3a3a3a3-a3a3-43a3-83a3-a3a3a3a3a3a3,Manual,SHIPPED,Dispatched,3,true
+a4a4a4a4-a4a4-44a4-84a4-a4a4a4a4a4a4,Manual,IN_TRANSIT,InTransit,4,true
+a5a5a5a5-a5a5-45a5-85a5-a5a5a5a5a5a5,Manual,DLV,Delivered,5,true

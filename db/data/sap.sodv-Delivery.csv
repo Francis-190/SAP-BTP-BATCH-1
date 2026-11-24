@@ -1,0 +1,7 @@
+
+ID,salesOrder_ID,deliveryNo,sourceDeliveryId,trackingNo,carrier,status,plannedDate,dispatchedAt,deliveredAt,lastSyncAt
+61616161-6161-4161-8161-616161616161,aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,DLV1001,,TRACK1001,ABC Logistics,InTransit,2026-11-15,2026-11-10,,2026-11-12
+62626262-6262-4262-8262-626262626262,bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb,DLV1002,,TRACK1002,XYZ Transport,Dispatched,2026-11-18,2026-11-11,,2026-11-12
+63636363-6363-4363-8363-636363636363,cccccccc-cccc-4ccc-8ccc-cccccccccccc,DLV1003,,TRACK1003,Prime Logistics,Dispatched,2026-11-25,,,2026-11-12
+64646464-6464-4464-8464-646464646464,dddddddd-dddd-4ddd-8ddd-dddddddddddd,DLV1004,,TRACK1004,Star Transport,Delivered,2026-11-12,2026-11-08,2026-11-12,2026-11-12
+65656565-6565-4565-8565-656565656565,eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee,DLV1005,,TRACK1005,Metro Logistics,Dispatched,2026-11-22,2026-11-12,,2026-11-12

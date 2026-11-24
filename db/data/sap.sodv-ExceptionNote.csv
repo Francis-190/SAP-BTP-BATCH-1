@@ -1,0 +1,6 @@
+ID,salesOrder_ID,delivery_ID,type,reason,expectedResolutionDate,resolutionNote,status,raisedBy,resolvedBy,raisedAt,resolvedAt
+b1b1b1b1-b1b1-41b1-81b1-b1b1b1b1b1b1,aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,61616161-6161-4161-8161-616161616161,Delayed,Vehicle transit taking longer than expected,2026-11-15,,Open,coordinator,,2026-11-12T09:00:00Z,
+b2b2b2b2-b2b2-42b2-82b2-b2b2b2b2b2b2,bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb,62626262-6262-4262-8262-626262626262,Blocked,Awaiting warehouse clearance,2026-11-16,,Open,coordinator,,2026-11-12T09:30:00Z,
+b3b3b3b3-b3b3-43b3-83b3-b3b3b3b3b3b3,cccccccc-cccc-4ccc-8ccc-cccccccccccc,,Delayed,Order confirmation pending,2026-11-18,,Open,coordinator,,2026-11-12T10:00:00Z,
+b4b4b4b4-b4b4-44b4-84b4-b4b4b4b4b4b4,dddddddd-dddd-4ddd-8ddd-dddddddddddd,64646464-6464-4464-8464-646464646464,Delayed,Delivery completed after expected date,2026-11-12,Closed after delivery,Resolved,coordinator,admin,2026-11-11T10:00:00Z,2026-11-12T12:30:00Z
+b5b5b5b5-b5b5-45b5-85b5-b5b5b5b5b5b5,eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee,65656565-6565-4565-8565-656565656565,Blocked,Quality inspection pending,2026-11-17,,Open,coordinator,,2026-11-12T11:00:00Z,

@@ -1,0 +1,6 @@
+ID,orderNo,sourceOrderId,dealer_ID,status,isBlocked,isDelayed,orderDate,deliveryLocation,requestedDate,confirmedDate,customerReference,delayAlertSentAt,lastSyncAt
+aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,SO1001,,11111111-1111-4111-8111-111111111111,InTransit,false,true,2026-11-01,Bengaluru,2026-11-15,2026-11-02,PO-ABC-001,,2026-11-19T06:30:00Z
+bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb,SO1002,,22222222-2222-4222-8222-222222222222,Confirmed,false,false,2026-11-02,Chennai,2026-11-22,2026-11-03,PO-XYZ-002,,2026-11-19T06:30:00Z
+cccccccc-cccc-4ccc-8ccc-cccccccccccc,SO1003,,33333333-3333-4333-8333-333333333333,Submitted,false,false,2026-11-03,Hyderabad,2026-11-25,,PO-PRM-003,,2026-11-19T06:30:00Z
+dddddddd-dddd-4ddd-8ddd-dddddddddddd,SO1004,,44444444-4444-4444-8444-444444444444,Delivered,false,false,2026-11-04,Mumbai,2026-11-18,2026-11-05,PO-STR-004,,2026-11-19T06:30:00Z
+eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee,SO1005,,55555555-5555-4555-8555-555555555555,Confirmed,true,false,2026-11-05,Mysuru,2026-11-24,2026-11-06,PO-MET-005,,2026-11-19T06:30:00Z
