@@ -1,0 +1,5 @@
+ID,claim_ID,idempotencyKey,erpReference,exportStatus,exportDate,exportAttemptCount,lastExportError,paymentReference,paymentStatus,paymentDate,reimbursedAmount,paymentRemarks
+bbbbbbbb-bbbb-bbbb-bbbb-000000000001,66666666-6666-6666-6666-000000000001,CLM-2026-0001-EXP-1,ERP-FI-4900001,Exported,2026-09-12T08:00:00Z,1,,PAY-2026-000451,Paid,2026-09-18T15:00:00Z,33800.00,Paid via bank transfer
+bbbbbbbb-bbbb-bbbb-bbbb-000000000002,66666666-6666-6666-6666-000000000002,CLM-2026-0002-EXP-1,,Failed,2026-09-27T08:05:00Z,3,ERP connection timeout while posting vendor invoice,,Pending,,,Awaiting export retry
+bbbbbbbb-bbbb-bbbb-bbbb-000000000003,66666666-6666-6666-6666-000000000006,CLM-2026-0006-EXP-1,ERP-FI-4900003,Exported,2026-11-06T08:00:00Z,1,,PAY-2026-000453,Paid,2026-11-08T15:00:00Z,22600.00,Payment processed after Finance Administrator Varun Patel completed ERP export.
+bbbbbbbb-bbbb-bbbb-bbbb-000000000004,66666666-6666-6666-6666-000000000009,CLM-2026-0009-EXP-1,ERP-FI-4900009,Exported,2026-10-22T08:00:00Z,1,,PAY-2026-000459,Paid,2026-10-27T15:30:00Z,18500.00,ERP export and payment recorded by Finance Administrator Varun Patel.

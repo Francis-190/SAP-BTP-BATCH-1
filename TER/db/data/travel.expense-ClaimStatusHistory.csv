@@ -1,0 +1,38 @@
+ID,claim_ID,previousStatus,newStatus,changedBy_ID,changedAt,changeReason,actionName
+dddddddd-dddd-dddd-dddd-000000000001,66666666-6666-6666-6666-000000000001,Draft,Submitted,22222222-2222-2222-2222-000000000003,2026-09-06T10:00:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000002,66666666-6666-6666-6666-000000000001,Submitted,ManagerApproved,22222222-2222-2222-2222-000000000002,2026-09-08T10:00:00Z,Manager approved,approve
+dddddddd-dddd-dddd-dddd-000000000003,66666666-6666-6666-6666-000000000001,ManagerApproved,FinanceReview,,2026-09-08T10:00:05Z,Moved to finance review,autoRoute
+dddddddd-dddd-dddd-dddd-000000000004,66666666-6666-6666-6666-000000000001,FinanceReview,FinanceApproved,22222222-2222-2222-2222-000000000007,2026-09-10T14:30:00Z,Finance approved,approve
+dddddddd-dddd-dddd-dddd-000000000005,66666666-6666-6666-6666-000000000001,FinanceApproved,ExportPending,,2026-09-10T14:30:05Z,Queued for ERP export,queueExport
+dddddddd-dddd-dddd-dddd-000000000006,66666666-6666-6666-6666-000000000001,ExportPending,Exported,,2026-09-12T08:00:00Z,Exported to ERP,export
+dddddddd-dddd-dddd-dddd-000000000007,66666666-6666-6666-6666-000000000001,Exported,Reimbursed,,2026-09-18T15:00:00Z,Payment received,markPaid
+dddddddd-dddd-dddd-dddd-000000000008,66666666-6666-6666-6666-000000000002,Draft,Submitted,22222222-2222-2222-2222-000000000004,2026-09-22T09:00:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000009,66666666-6666-6666-6666-000000000002,Submitted,ManagerApproved,22222222-2222-2222-2222-000000000002,2026-09-24T09:45:00Z,Manager approved,approve
+dddddddd-dddd-dddd-dddd-000000000010,66666666-6666-6666-6666-000000000002,ManagerApproved,FinanceReview,,2026-09-24T09:45:05Z,Moved to finance review,autoRoute
+dddddddd-dddd-dddd-dddd-000000000011,66666666-6666-6666-6666-000000000002,FinanceReview,FinanceApproved,22222222-2222-2222-2222-000000000007,2026-09-26T16:00:00Z,Finance approved eligible amount,approve
+dddddddd-dddd-dddd-dddd-000000000012,66666666-6666-6666-6666-000000000002,FinanceApproved,ExportPending,,2026-09-26T16:00:05Z,Queued for ERP export,queueExport
+dddddddd-dddd-dddd-dddd-000000000013,66666666-6666-6666-6666-000000000002,ExportPending,ExportFailed,,2026-09-27T08:05:00Z,ERP connection timeout,export
+dddddddd-dddd-dddd-dddd-000000000014,66666666-6666-6666-6666-000000000003,Draft,Submitted,22222222-2222-2222-2222-000000000006,2026-10-09T17:30:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000015,66666666-6666-6666-6666-000000000003,Submitted,ManagerApproved,22222222-2222-2222-2222-000000000005,2026-10-12T11:15:00Z,Manager approved,approve
+dddddddd-dddd-dddd-dddd-000000000016,66666666-6666-6666-6666-000000000003,ManagerApproved,FinanceReview,,2026-10-12T11:15:05Z,Moved to finance review,autoRoute
+dddddddd-dddd-dddd-dddd-000000000017,66666666-6666-6666-6666-000000000004,Draft,Submitted,22222222-2222-2222-2222-000000000003,2026-11-02T10:10:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000018,66666666-6666-6666-6666-000000000005,Draft,Submitted,22222222-2222-2222-2222-000000000006,2026-10-10T11:00:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000019,66666666-6666-6666-6666-000000000005,Submitted,Returned,22222222-2222-2222-2222-000000000005,2026-10-14T10:20:00Z,Receipt missing for miscellaneous expense,return
+dddddddd-dddd-dddd-dddd-000000000020,66666666-6666-6666-6666-000000000006,Draft,Submitted,1b2d683d-4602-4032-8b26-0014e947464b,2026-10-31T10:00:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000021,66666666-6666-6666-6666-000000000006,Submitted,ManagerApproved,33333333-3333-3333-3333-000000000001,2026-11-02T10:00:00Z,Manager approved,approve
+dddddddd-dddd-dddd-dddd-000000000022,66666666-6666-6666-6666-000000000006,ManagerApproved,FinanceReview,,2026-11-02T10:00:05Z,Moved to finance review,autoRoute
+dddddddd-dddd-dddd-dddd-000000000023,66666666-6666-6666-6666-000000000006,FinanceReview,FinanceApproved,33333333-3333-3333-3333-000000000002,2026-11-05T14:00:00Z,Finance reviewer Shivani Dubey approved after receipt verification.,approve
+dddddddd-dddd-dddd-dddd-000000000024,66666666-6666-6666-6666-000000000006,FinanceApproved,ExportPending,,2026-11-05T14:00:05Z,Queued for ERP export,queueExport
+dddddddd-dddd-dddd-dddd-000000000025,66666666-6666-6666-6666-000000000006,ExportPending,Exported,,2026-11-06T08:00:00Z,Exported to ERP,export
+dddddddd-dddd-dddd-dddd-000000000026,66666666-6666-6666-6666-000000000006,Exported,Reimbursed,,2026-11-08T15:00:00Z,Payment received,markPaid
+dddddddd-dddd-dddd-dddd-000000000027,66666666-6666-6666-6666-000000000007,Draft,Submitted,1b2d683d-4602-4032-8b26-0014e947464b,2026-11-13T09:30:00Z,Claim submitted,submit
+dddddddd-dddd-dddd-dddd-000000000028,66666666-6666-6666-6666-000000000007,Submitted,ManagerApproved,33333333-3333-3333-3333-000000000001,2026-11-14T11:00:00Z,Manager approved,approve
+dddddddd-dddd-dddd-dddd-000000000029,66666666-6666-6666-6666-000000000007,ManagerApproved,FinanceReview,,2026-11-14T11:00:05Z,Moved to finance review,autoRoute
+dddddddd-dddd-dddd-dddd-000000000030,66666666-6666-6666-6666-000000000008,Draft,Submitted,1b2d683d-4602-4032-8b26-0014e947464b,2026-11-17T09:00:00Z,Claim submitted for manager approval.,submit
+dddddddd-dddd-dddd-dddd-000000000031,66666666-6666-6666-6666-000000000009,Draft,Submitted,33333333-3333-3333-3333-000000000001,2026-10-16T10:00:00Z,Claim submitted.,submit
+dddddddd-dddd-dddd-dddd-000000000032,66666666-6666-6666-6666-000000000009,Submitted,ManagerApproved,22222222-2222-2222-2222-000000000001,2026-10-18T10:00:00Z,Manager approved.,approve
+dddddddd-dddd-dddd-dddd-000000000033,66666666-6666-6666-6666-000000000009,ManagerApproved,FinanceReview,,2026-10-18T10:00:05Z,Moved to finance review.,autoRoute
+dddddddd-dddd-dddd-dddd-000000000034,66666666-6666-6666-6666-000000000009,FinanceReview,FinanceApproved,33333333-3333-3333-3333-000000000002,2026-10-20T14:00:00Z,Finance reviewer approved after receipt verification.,approve
+dddddddd-dddd-dddd-dddd-000000000035,66666666-6666-6666-6666-000000000009,FinanceApproved,ExportPending,,2026-10-20T14:00:05Z,Queued for ERP export.,queueExport
+dddddddd-dddd-dddd-dddd-000000000036,66666666-6666-6666-6666-000000000009,ExportPending,Exported,33333333-3333-3333-3333-000000000003,2026-10-22T08:00:00Z,Finance Administrator Varun Patel completed ERP export.,export
+dddddddd-dddd-dddd-dddd-000000000037,66666666-6666-6666-6666-000000000009,Exported,Reimbursed,33333333-3333-3333-3333-000000000003,2026-10-27T15:30:00Z,Finance Administrator Varun Patel recorded payment completion.,markPaid

@@ -1,0 +1,12 @@
+{
+  "welcomeFile": "/travel-expense/",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/travel-expense(/.*)?$",
+      "target": "/travel-expense$1",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

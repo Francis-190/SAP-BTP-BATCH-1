@@ -1,0 +1,8 @@
+ID,categoryCode,categoryName,description,requiresDistance,requiresDuration,isActive
+33333333-3333-3333-3333-000000000001,FLIGHT,Flight,Air travel tickets,false,false,true
+33333333-3333-3333-3333-000000000002,HOTEL,Hotel,Hotel accommodation,false,true,true
+33333333-3333-3333-3333-000000000003,MEALS,Meals,Food and beverages during travel,false,true,true
+33333333-3333-3333-3333-000000000004,TAXI,Taxi,Local taxi and ride services,false,false,true
+33333333-3333-3333-3333-000000000005,MILEAGE,Mileage,Personal vehicle usage for business travel,true,false,true
+33333333-3333-3333-3333-000000000006,PER_DIEM,Per Diem,Daily allowance during travel,false,true,true
+33333333-3333-3333-3333-000000000007,MISC,Miscellaneous,Other business travel expenses,false,false,true

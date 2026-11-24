@@ -1,0 +1,564 @@
+
+### ============================================================
+### TER - COMPLETE END-TO-END TEST FILE
+### SAP CAP Node.js | OData V4
+### ============================================================
+
+@baseURL = http://localhost:4004
+@servicePath = /travel-expense
+
+### ============================================================
+### 1. AUTHENTICATION
+### ============================================================
+
+### Employee: Karthik Subramanian
+@employeeAuth = Basic a2FydGhpay5zdWJyYW1hbmlhbkBleGFtcGxlLmNvbToxMjM0
+
+### Manager: Priya Raman
+@managerAuth = Basic cHJpeWEucmFtYW5AZXhhbXBsZS5jb206MTIzNA==
+
+### Finance Reviewer: Meera Nair
+@financeReviewerAuth = Basic bWVlcmEubmFpckBleGFtcGxlLmNvbToxMjM0
+
+### Finance Administrator: Vignesh Raj
+@financeAdminAuth = Basic dmlnbmVzaC5yYWpAZXhhbXBsZS5jb206MTIzNA==
+
+
+### ============================================================
+### 2. MASTER DATA IDs
+### ============================================================
+
+@employeeID = 22222222-2222-2222-2222-000000000003
+@managerEmployeeID = 22222222-2222-2222-2222-000000000002
+
+@baseCurrencyID = 11111111-1111-1111-1111-000000000001
+
+@mealsCategoryID = 33333333-3333-3333-3333-000000000003
+@hotelCategoryID = 33333333-3333-3333-3333-000000000002
+
+
+### ============================================================
+### 3. UNIQUE TEST DATA
+### Change these values again if you rerun the file.
+### ============================================================
+
+@travelRequestID = 6a7b8c91-2d43-4e50-9f16-3b5c7d8e9012
+@claimID = 7b8c9d02-3e54-4f61-a027-4c6d8e9f0123
+@expenseItemID = 8c9d0e13-4f65-4072-b138-5d7e9f012345
+@receiptID = 9d0e1f24-5076-4183-c249-6e8f01234567
+
+@rejectionTravelRequestID = ae1f2035-6187-4294-d35a-7f9012345678
+
+@requestNumber = TR-2026-E2E-93751
+@claimNumber = CLM-2026-E2E-93751
+@receiptNumber = MEALS-E2E-93751
+@paymentReference = PAY-TER-E2E-93751
+
+
+### ============================================================
+### SECTION 1 - SERVICE AND METADATA
+### ============================================================
+
+### 01 - Service document
+GET {{baseURL}}{{servicePath}}
+Authorization: {{employeeAuth}}
+
+
+### 02 - OData metadata
+GET {{baseURL}}{{servicePath}}/$metadata
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 2 - MASTER DATA
+### ============================================================
+
+### 03 - Get employees
+GET {{baseURL}}{{servicePath}}/Employees?$select=ID,employeeNumber,fullName,email,department,designation,isActive
+Authorization: {{employeeAuth}}
+
+
+### 04 - Get Karthik employee record
+GET {{baseURL}}{{servicePath}}/Employees({{employeeID}})
+Authorization: {{employeeAuth}}
+
+
+### 05 - Get currencies
+GET {{baseURL}}{{servicePath}}/Currencies
+Authorization: {{employeeAuth}}
+
+
+### 06 - Get expense categories
+GET {{baseURL}}{{servicePath}}/ExpenseCategories
+Authorization: {{employeeAuth}}
+
+
+### 07 - Get expense categories using function
+GET {{baseURL}}{{servicePath}}/getExpenseCategories()
+Authorization: {{employeeAuth}}
+
+
+### 08 - Get policy limits
+GET {{baseURL}}{{servicePath}}/PolicyLimits
+Authorization: {{employeeAuth}}
+
+
+### 09 - Get policy limits using function
+GET {{baseURL}}{{servicePath}}/getPolicyLimits()
+Authorization: {{employeeAuth}}
+
+
+### 10 - Get active Meals policy for INR
+GET {{baseURL}}{{servicePath}}/PolicyLimits?$filter=category_ID eq {{mealsCategoryID}} and currency_ID eq {{baseCurrencyID}} and isActive eq true
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 3 - EMPLOYEE CREATES TRAVEL REQUEST
+### ============================================================
+
+### 11 - Create travel request
+POST {{baseURL}}{{servicePath}}/TravelRequests
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "ID": "{{travelRequestID}}",
+  "requestNumber": "{{requestNumber}}",
+  "employee_ID": "{{employeeID}}",
+  "destination": "Chennai",
+  "purpose": "SAP project implementation workshop",
+  "startDate": "2026-11-20",
+  "endDate": "2026-11-22",
+  "estimatedBudget": 15000.00,
+  "status": "Draft"
+}
+
+
+### 12 - Read created travel request
+GET {{baseURL}}{{servicePath}}/TravelRequests({{travelRequestID}})
+Authorization: {{employeeAuth}}
+
+
+### 13 - Get employee travel requests
+GET {{baseURL}}{{servicePath}}/TravelRequests?$filter=employee_ID eq {{employeeID}}
+Authorization: {{employeeAuth}}
+
+
+### 14 - Submit travel request
+POST {{baseURL}}{{servicePath}}/submitTravelRequest
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "requestID": "{{travelRequestID}}"
+}
+
+
+### 15 - Verify submitted travel request
+GET {{baseURL}}{{servicePath}}/TravelRequests({{travelRequestID}})
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 4 - MANAGER APPROVES TRAVEL REQUEST
+### ============================================================
+
+### 16 - Manager reads travel request
+GET {{baseURL}}{{servicePath}}/TravelRequests({{travelRequestID}})
+Authorization: {{managerAuth}}
+
+
+### 17 - Manager approves travel request
+### Requires approveTravelRequest handler in travel-service.js
+POST {{baseURL}}{{servicePath}}/approveTravelRequest
+Authorization: {{managerAuth}}
+Content-Type: application/json
+
+{
+  "requestID": "{{travelRequestID}}"
+}
+
+
+### 18 - Verify approved travel request
+GET {{baseURL}}{{servicePath}}/TravelRequests({{travelRequestID}})
+Authorization: {{managerAuth}}
+
+
+### ============================================================
+### SECTION 5 - EMPLOYEE CREATES EXPENSE CLAIM
+### ============================================================
+
+### 19 - Create expense claim
+### Run after travel request approval.
+POST {{baseURL}}{{servicePath}}/ExpenseClaims
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "ID": "{{claimID}}",
+  "claimNumber": "{{claimNumber}}",
+  "employee_ID": "{{employeeID}}",
+  "travelRequest_ID": "{{travelRequestID}}",
+  "baseCurrency_ID": "{{baseCurrencyID}}",
+  "status": "Draft",
+  "employeeRemarks": "Expenses for Chennai project workshop"
+}
+
+
+### 20 - Read created expense claim
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{employeeAuth}}
+
+
+### 21 - Get employee claims
+GET {{baseURL}}{{servicePath}}/ExpenseClaims?$filter=employee_ID eq {{employeeID}}
+Authorization: {{employeeAuth}}
+
+
+### 22 - Get my claims using function
+GET {{baseURL}}{{servicePath}}/getMyClaims()
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 6 - ADD EXPENSE ITEMS
+### ============================================================
+
+### 23 - Create Meals expense item
+POST {{baseURL}}{{servicePath}}/ExpenseItems
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "ID": "{{expenseItemID}}",
+  "claim_ID": "{{claimID}}",
+  "category_ID": "{{mealsCategoryID}}",
+  "expenseDate": "2026-11-20",
+  "description": "Meals during Chennai business trip",
+  "amount": 1200.00,
+  "currency_ID": "{{baseCurrencyID}}",
+  "numberOfDays": 1
+}
+
+
+### 24 - Read expense item
+GET {{baseURL}}{{servicePath}}/ExpenseItems({{expenseItemID}})
+Authorization: {{employeeAuth}}
+
+
+### 25 - Get all items belonging to claim
+GET {{baseURL}}{{servicePath}}/ExpenseItems?$filter=claim_ID eq {{claimID}}
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 7 - ADD RECEIPT
+### ============================================================
+
+### 26 - Create receipt metadata
+### This does not upload the actual PDF file.
+POST {{baseURL}}{{servicePath}}/ReceiptDocuments
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "ID": "{{receiptID}}",
+  "expenseItem_ID": "{{expenseItemID}}",
+  "fileName": "chennai-meals-receipt.pdf",
+  "mimeType": "application/pdf",
+  "documentReference": "DOC-TER-E2E-93751",
+  "storageDocumentID": "STORAGE-TER-E2E-93751",
+  "receiptNumber": "{{receiptNumber}}",
+  "fileHash": "HASH-TER-E2E-93751",
+  "receiptAmount": 1200.00,
+  "receiptDate": "2026-11-20",
+  "status": "Uploaded"
+}
+
+
+### 27 - Read receipt
+GET {{baseURL}}{{servicePath}}/ReceiptDocuments({{receiptID}})
+Authorization: {{employeeAuth}}
+
+
+### 28 - Get receipts for expense item
+GET {{baseURL}}{{servicePath}}/ReceiptDocuments?$filter=expenseItem_ID eq {{expenseItemID}}
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 8 - EMPLOYEE SUBMITS CLAIM
+### ============================================================
+
+### 29 - Submit expense claim
+POST {{baseURL}}{{servicePath}}/submitClaim
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}"
+}
+
+
+### 30 - Verify submitted claim
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{employeeAuth}}
+
+
+### 31 - Verify calculated expense item values
+GET {{baseURL}}{{servicePath}}/ExpenseItems({{expenseItemID}})
+Authorization: {{employeeAuth}}
+
+
+### 32 - Verify exchange rate snapshots
+GET {{baseURL}}{{servicePath}}/ExchangeRateSnapshots
+Authorization: {{employeeAuth}}
+
+
+### 33 - Verify claim status history
+GET {{baseURL}}{{servicePath}}/ClaimStatusHistories?$filter=claim_ID eq {{claimID}}&$orderby=changedAt asc
+Authorization: {{employeeAuth}}
+
+
+### ============================================================
+### SECTION 9 - MANAGER CLAIM REVIEW
+### ============================================================
+
+### 34 - Get pending manager approvals
+GET {{baseURL}}{{servicePath}}/getPendingApprovals()
+Authorization: {{managerAuth}}
+
+
+### 35 - Manager reads claim
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{managerAuth}}
+
+
+### 36 - Manager approves claim
+### Expected workflow: Submitted -> FinanceReview
+POST {{baseURL}}{{servicePath}}/approveClaim
+Authorization: {{managerAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}",
+  "comments": "Approved by manager. Business purpose verified."
+}
+
+
+### 37 - Verify claim after manager approval
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{managerAuth}}
+
+
+### 38 - Verify manager approval decision
+GET {{baseURL}}{{servicePath}}/ApprovalDecisions?$filter=claim_ID eq {{claimID}}
+Authorization: {{managerAuth}}
+
+
+### ============================================================
+### SECTION 10 - FINANCE REVIEW
+### ============================================================
+
+### 39 - Get pending finance reviews
+GET {{baseURL}}{{servicePath}}/getPendingFinanceReviews()
+Authorization: {{financeReviewerAuth}}
+
+
+### 40 - Finance reviewer reads claim
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{financeReviewerAuth}}
+
+
+### 41 - Finance reviewer reads receipt
+GET {{baseURL}}{{servicePath}}/ReceiptDocuments({{receiptID}})
+Authorization: {{financeReviewerAuth}}
+
+
+### 42 - Finance approves claim
+### Expected workflow: FinanceReview -> FinanceApproved
+POST {{baseURL}}{{servicePath}}/approveClaim
+Authorization: {{financeReviewerAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}",
+  "comments": "Receipt verified. Policy and amount checked."
+}
+
+
+### 43 - Verify finance-approved claim
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{financeReviewerAuth}}
+
+
+### 44 - Get claim approval history
+GET {{baseURL}}{{servicePath}}/getClaimApprovalHistory(claimID={{claimID}})
+Authorization: {{financeReviewerAuth}}
+
+
+### 45 - Get all approval decisions for claim
+GET {{baseURL}}{{servicePath}}/ApprovalDecisions?$filter=claim_ID eq {{claimID}}&$orderby=decisionDate asc
+Authorization: {{financeReviewerAuth}}
+
+
+### ============================================================
+### SECTION 11 - ERP EXPORT
+### ============================================================
+
+### 46 - Export approved claim to ERP
+### Requires configured ERP destination and endpoint.
+POST {{baseURL}}{{servicePath}}/exportClaimToERP
+Authorization: {{financeAdminAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}"
+}
+
+
+### 47 - Verify ERP reimbursement reference
+GET {{baseURL}}{{servicePath}}/ReimbursementReferences?$filter=claim_ID eq {{claimID}}
+Authorization: {{financeAdminAuth}}
+
+
+### 48 - Verify claim after ERP export
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{financeAdminAuth}}
+
+
+### 49 - Retry failed ERP export
+### Run only if the previous export failed.
+POST {{baseURL}}{{servicePath}}/retryERPExport
+Authorization: {{financeAdminAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}"
+}
+
+
+### 50 - Verify ERP reference after retry
+GET {{baseURL}}{{servicePath}}/ReimbursementReferences?$filter=claim_ID eq {{claimID}}
+Authorization: {{financeAdminAuth}}
+
+
+### ============================================================
+### SECTION 12 - MARK REIMBURSED
+### ============================================================
+
+### 51 - Mark claim as reimbursed
+### Run only after successful ERP export.
+### Replace 1200 with the actual eligible amount if different.
+POST {{baseURL}}{{servicePath}}/markReimbursed
+Authorization: {{financeAdminAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}",
+  "paymentReference": "{{paymentReference}}",
+  "reimbursedAmount": 1200.00
+}
+
+
+### 52 - Verify final claim status
+GET {{baseURL}}{{servicePath}}/ExpenseClaims({{claimID}})
+Authorization: {{financeAdminAuth}}
+
+
+### 53 - Verify reimbursement reference
+GET {{baseURL}}{{servicePath}}/ReimbursementReferences?$filter=claim_ID eq {{claimID}}
+Authorization: {{financeAdminAuth}}
+
+
+### 54 - Verify complete claim status history
+GET {{baseURL}}{{servicePath}}/ClaimStatusHistories?$filter=claim_ID eq {{claimID}}&$orderby=changedAt asc
+Authorization: {{financeAdminAuth}}
+
+
+### ============================================================
+### SECTION 13 - REJECT TRAVEL REQUEST
+### ============================================================
+
+### 55 - Create second travel request
+POST {{baseURL}}{{servicePath}}/TravelRequests
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "ID": "{{rejectionTravelRequestID}}",
+  "requestNumber": "TR-2026-E2E-REJECT-93752",
+  "employee_ID": "{{employeeID}}",
+  "destination": "Hyderabad",
+  "purpose": "Customer project meeting",
+  "startDate": "2026-11-25",
+  "endDate": "2026-11-26",
+  "estimatedBudget": 8000.00,
+  "status": "Draft"
+}
+
+
+### 56 - Submit second travel request
+POST {{baseURL}}{{servicePath}}/submitTravelRequest
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "requestID": "{{rejectionTravelRequestID}}"
+}
+
+
+### 57 - Manager rejects second travel request
+### Requires rejectTravelRequest handler in travel-service.js
+POST {{baseURL}}{{servicePath}}/rejectTravelRequest
+Authorization: {{managerAuth}}
+Content-Type: application/json
+
+{
+  "requestID": "{{rejectionTravelRequestID}}",
+  "reason": "Business justification requires clarification."
+}
+
+
+### 58 - Verify rejected travel request
+GET {{baseURL}}{{servicePath}}/TravelRequests({{rejectionTravelRequestID}})
+Authorization: {{managerAuth}}
+
+
+### ============================================================
+### SECTION 14 - NEGATIVE TEST CASES
+### ============================================================
+
+### 59 - Employee tries to approve their own claim
+### Expected: 403 Forbidden
+POST {{baseURL}}{{servicePath}}/approveClaim
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}",
+  "comments": "Attempt to approve own claim"
+}
+
+
+### 60 - Submit already submitted claim again
+### Expected: validation error or conflict
+POST {{baseURL}}{{servicePath}}/submitClaim
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "claimID": "{{claimID}}"
+}
+
+
+### 61 - Submit non-existing travel request
+### Expected: 404 Not Found
+POST {{baseURL}}{{servicePath}}/submitTravelRequest
+Authorization: {{employeeAuth}}
+Content-Type: application/json
+
+{
+  "requestID": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+}

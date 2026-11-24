@@ -1,0 +1,116 @@
+{
+  "name": "ter",
+  "version": "1.0.0",
+  "description": "Travel and Expense Reimbursement Management",
+  "repository": {
+    "type": "git"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/hana": "^3",
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/http-client": "^4.9.1",
+    "@sap/cds": "^10.2.2",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3.1.2",
+    "@sap/cds-dk": "^10.2.1",
+    "cds-plugin-ui5": "^0.17.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch --with-mocks --in-memory",
+    "watch:hybrid": "cds watch --profile hybrid",
+    "watch-employee": "cds watch --open ter.employee.employee/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "cds": {
+    "server": {
+      "index": true
+    },
+    "requires": {
+      "db": {
+        "kind": "hana",
+        "pool": {
+          "acquireTimeoutMillis": 10000,
+          "min": 0
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "arvind.menon@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee",
+              "Manager"
+            ]
+          },
+          "priya.raman@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee",
+              "Manager"
+            ]
+          },
+          "kavya.uk@laderatechnology.com": {
+            "password": "1234",
+            "roles": [
+              "Employee"
+            ]
+          },
+          "karthik.subramanian@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee"
+            ]
+          },
+          "divya.lakshmi@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee"
+            ]
+          },
+          "suresh.babu@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee",
+              "Manager"
+            ]
+          },
+          "anitha.selvam@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee"
+            ]
+          },
+          "meera.nair@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee",
+              "FinanceReviewer"
+            ]
+          },
+          "vignesh.raj@example.com": {
+            "password": "1234",
+            "roles": [
+              "Employee",
+              "FinanceAdministrator"
+            ]
+          }
+        }
+      },
+      "[hybrid]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      },
+      "[production]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      }
+    }
+  }
+}

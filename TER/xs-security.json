@@ -1,0 +1,75 @@
+
+{
+  "xsappname": "ter-travel-expense",
+  "tenant-mode": "dedicated",
+  "description": "Travel and Expense Reimbursement Application",
+
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Employee",
+      "description": "Employee"
+    },
+    {
+      "name": "$XSAPPNAME.Manager",
+      "description": "Manager"
+    },
+    {
+      "name": "$XSAPPNAME.FinanceReviewer",
+      "description": "FinanceReviewer"
+    },
+    {
+      "name": "$XSAPPNAME.FinanceAdministrator",
+      "description": "FinanceAdministrator"
+    }
+  ],
+
+  "attributes": [],
+
+  "role-templates": [
+    {
+      "name": "Employee",
+      "description": "Employee role",
+      "scope-references": [
+        "$XSAPPNAME.Employee"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Manager",
+      "description": "Line Manager role",
+      "scope-references": [
+        "$XSAPPNAME.Employee",
+        "$XSAPPNAME.Manager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "FinanceReviewer",
+      "description": "Finance Reviewer role",
+      "scope-references": [
+        "$XSAPPNAME.Employee",
+        "$XSAPPNAME.FinanceReviewer"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "FinanceAdministrator",
+      "description": "Finance Administrator role",
+      "scope-references": [
+        "$XSAPPNAME.Employee",
+        "$XSAPPNAME.FinanceAdministrator"
+      ],
+      "attribute-references": []
+    }
+  ],
+
+  "oauth2-configuration": {
+    "redirect-uris": [
+       "https://d2b1a7ddtrial-dev-ter-approuter.cfapps.us10-001.hana.ondemand.com/login/callback",
+    "https://d2b1a7ddtrial-dev-teremployee-approuter.cfapps.us10-001.hana.ondemand.com/login/callback",
+    "https://d2b1a7ddtrial-dev-managerappmanager-approuter.cfapps.us10-001.hana.ondemand.com/login/callback",
+    "https://d2b1a7ddtrial-dev-finance-approuter.cfapps.us10-001.hana.ondemand.com/login/callback",
+    "https://oauth.pstmn.io/v1/callback"
+    ]
+  }
+}

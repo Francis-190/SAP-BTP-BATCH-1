@@ -1,0 +1,13 @@
+ID,employeeNumber,fullName,email,department,designation,isActive,manager_ID
+22222222-2222-2222-2222-000000000001,EMP1001,Arvind Menon,arvind.menon@example.com,Management,Director,true,
+22222222-2222-2222-2222-000000000002,EMP1002,Priya Raman,priya.raman@example.com,Engineering,Engineering Manager,true,22222222-2222-2222-2222-000000000001
+22222222-2222-2222-2222-000000000003,EMP1003,Karthik Subramanian,karthik.subramanian@example.com,Engineering,Software Engineer,true,22222222-2222-2222-2222-000000000002
+22222222-2222-2222-2222-000000000004,EMP1004,Divya Lakshmi,divya.lakshmi@example.com,Engineering,Software Engineer,true,22222222-2222-2222-2222-000000000002
+22222222-2222-2222-2222-000000000005,EMP1005,Suresh Babu,suresh.babu@example.com,Sales,Sales Manager,true,22222222-2222-2222-2222-000000000001
+22222222-2222-2222-2222-000000000006,EMP1006,Anitha Selvam,anitha.selvam@example.com,Sales,Sales Executive,true,22222222-2222-2222-2222-000000000005
+22222222-2222-2222-2222-000000000007,EMP1007,Meera Nair,meera.nair@example.com,Finance,Finance Controller,true,22222222-2222-2222-2222-000000000001
+22222222-2222-2222-2222-000000000008,EMP1008,Vignesh Raj,vignesh.raj@example.com,Finance,Finance Analyst,true,22222222-2222-2222-2222-000000000007
+1b2d683d-4602-4032-8b26-0014e947464b,EMP1009,Kavya U K,kavya.uk@laderatechnology.com,Engineering,SAP BTP Developer,true,33333333-3333-3333-3333-000000000001
+33333333-3333-3333-3333-000000000001,EMP1010,Rapeti Gowripriya,rapeti.gowripriya@laderatechnology.com,Engineering,Engineering Manager,true,22222222-2222-2222-2222-000000000001
+33333333-3333-3333-3333-000000000002,EMP1011,Shivani Dubey,shivani.dubey@laderatechnology.com,Finance,Finance Reviewer,true,22222222-2222-2222-2222-000000000007
+33333333-3333-3333-3333-000000000003,EMP1012,Varun Patel,varunpatelhr@laderatechnology.com,Finance,Finance Administrator,true,22222222-2222-2222-2222-000000000007
