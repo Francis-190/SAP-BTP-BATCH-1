@@ -1,0 +1,615 @@
+@host = http://localhost:4004
+@api = {{host}}/odata/v4/requisition
+
+@asalice = Basic alice alice
+@asvamsi = Basic vamsi vamsi
+@asbob = Basic bob bob
+@ascarol = Basic carol carol
+@asdave = Basic dave dave
+@asadmin = Basic admin admin
+
+# need-by date must be in the future
+@needBy = 2027-03-31
+
+
+
+# SECURITY
+
+### Admin can read metadata 
+GET {{api}}/$metadata
+Authorization: {{asadmin}}
+
+
+### Manager cannot create a requisition 
+POST {{api}}/Requisitions
+Authorization: {{asbob}}
+Content-Type: application/json
+
+{
+  "title": "Not allowed"
+}
+
+
+### Admin cannot create a requisition 
+POST {{api}}/Requisitions
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "title": "Not allowed"
+}
+
+
+### Requester cannot read the approver inbox 
+GET {{api}}/ApprovalInbox
+Authorization: {{asalice}}
+
+
+### Requester cannot write approval decisions 
+POST {{api}}/ApprovalDecisions
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "decision": "Approved",
+  "comment": "fake"
+}
+
+
+# READ MASTER DATA 
+### Materials (price list) - 200
+GET {{api}}/Materials
+Authorization: {{asalice}}
+
+
+### Cost centres - 200
+GET {{api}}/CostCentres
+Authorization: {{asalice}}
+
+
+### Purchase categories - 200
+GET {{api}}/PurchaseCategories
+Authorization: {{asalice}}
+
+
+### My requisitions
+GET {{api}}/Requisitions
+Authorization: {{asalice}}
+
+
+### Manager approver inbox 
+GET {{api}}/ApprovalInbox
+Authorization: {{asbob}}
+
+
+### Procurement queue 
+GET {{api}}/ProcurementQueue
+Authorization: {{asdave}}
+
+
+# VALIDATIONS 
+
+### Create draft with no title and no items
+POST {{api}}/Requisitions
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "costCentre_code": "CC2001",
+  "category_code": "IT"
+}
+
+### read it back
+GET {{api}}/Requisitions('')
+### V1 Activate the draft - 200/201
+POST {{api}}/Requisitions(ID={{v1Id}},IsActiveEntity=false)/RequisitionService.draftActivate
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### V1 Submit - 400 "Title is required; Add at least one item line"
+POST {{api}}/Requisitions(ID={{v1Id}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### V1 Cancel without a reason - 400 "A cancellation reason is required"
+POST {{api}}/Requisitions(ID={{v1Id}},IsActiveEntity=true)/RequisitionService.cancel
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "reason": "   "
+}
+
+
+### V1 Cancel with a reason (Draft can be cancelled) - 200, status Cancelled
+POST {{api}}/Requisitions(ID={{v1Id}},IsActiveEntity=true)/RequisitionService.cancel
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "reason": "Created by mistake"
+}
+
+
+### V2 Create draft with a bad item (unknown material, quantity 0, past date)
+# @name createV2
+POST {{api}}/Requisitions
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "title": "Validation test - bad item",
+  "justification": "Item validation",
+  "costCentre_code": "CC2001",
+  "category_code": "IT",
+  "deliveryLocation": "Bengaluru Office"
+}
+
+###
+@v2Id = {{createV2.response.body.ID}}
+
+
+###
+POST {{api}}/Requisitions(ID={{v2Id}},IsActiveEntity=false)/items
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "material": "MAT-UNKNOWN",
+  "quantity": 0,
+  "needByDate": "2020-01-01"
+}
+
+
+###
+POST {{api}}/Requisitions(ID={{v2Id}},IsActiveEntity=false)/RequisitionService.draftActivate
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### V2 Submit - 400 "not in the price list; quantity must be greater than zero; need-by date is in the past"
+POST {{api}}/Requisitions(ID={{v2Id}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### V2 Clean up
+POST {{api}}/Requisitions(ID={{v2Id}},IsActiveEntity=true)/RequisitionService.cancel
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "reason": "Validation test finished"
+}
+
+
+### V3 Create draft with a huge quantity (budget check)
+# @name createV3
+POST {{api}}/Requisitions
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "title": "Validation test - budget",
+  "justification": "Budget validation",
+  "costCentre_code": "CC2001",
+  "category_code": "IT",
+  "deliveryLocation": "Bengaluru Office"
+}
+
+###
+@v3Id = {{createV3.response.body.ID}}
+
+
+###
+POST {{api}}/Requisitions(ID={{v3Id}},IsActiveEntity=false)/items
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "material": "MAT-LAPTOP",
+  "quantity": 100,
+  "needByDate": "{{needBy}}"
+}
+
+
+###
+POST {{api}}/Requisitions(ID={{v3Id}},IsActiveEntity=false)/RequisitionService.draftActivate
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### V3 Submit - 409 "Insufficient budget on CC2001"
+POST {{api}}/Requisitions(ID={{v3Id}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### V3 Clean up
+POST {{api}}/Requisitions(ID={{v3Id}},IsActiveEntity=true)/RequisitionService.cancel
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "reason": "Validation test finished"
+}
+
+
+
+# Draft -> Submit -> Manager approves -> Finance approves -> Release to ERP
+# 1 laptop, IT category: net 80000 + 18% tax = total 94400 (2 approval steps)
+
+###Requester creates a draft
+POST {{api}}/Requisitions
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "title": "Laptop for new engineer",
+  "justification": "Onboarding of a new engineer",
+  "costCentre_code": "CC2001",
+  "category_code": "IT",
+  "deliveryLocation": "Bengaluru Office"
+}
+
+
+### 1.2 Add an item line - 201
+# @name createItem
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=false)/items
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "material": "MAT-LAPTOP",
+  "quantity": 1,
+  "needByDate": "{{needBy}}",
+  "deliveryLocation": "Bengaluru Office"
+}
+
+
+###
+@itemId = {{createItem.response.body.ID}}
+
+
+### 1.3 Change quantity - live recalculation: price comes from price list, totals from CAP
+PATCH {{api}}/RequisitionItems(ID={{itemId}},IsActiveEntity=false)
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "quantity": 1
+}
+
+
+### 1.4 Read draft with items - netAmount 80000, taxAmount 14400, totalAmount 94400
+GET {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=false)?$expand=items
+Authorization: {{asalice}}
+
+
+### 1.5 Save the draft (activate) - reqNumber PR-YYYY-NNNN generated, status Draft
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=false)/RequisitionService.draftActivate
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### 1.6 Read it back
+GET {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)?$expand=items
+Authorization: {{asalice}}
+
+
+### 1.7 Another requester cannot see it - 404
+GET {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)
+Authorization: {{asvamsi}}
+
+
+### 1.8 Another requester cannot submit it - 403/404
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asvamsi}}
+Content-Type: application/json
+
+{}
+
+
+### 1.9 Submit for approval - status InApproval, currentStep 1, budget committed
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### 1.10 Submit again - 409 "is InApproval and cannot be submitted"
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### 1.11 Approval route comes from the matrix - 2 tasks (Manager step 1, Finance step 2)
+GET {{api}}/ApprovalTasks?$filter=requisition_ID eq {{reqId}}&$orderby=stepNo
+Authorization: {{asalice}}
+
+
+### 1.12 Cost centre budget is committed - committedAmount increased by 94400
+GET {{api}}/CostCentres('CC2001')
+Authorization: {{asalice}}
+
+
+### 1.13 Editing an in-approval requisition is blocked - 409/400
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.draftEdit
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "PreserveChanges": true
+}
+
+
+### 1.14 Requester cannot approve own requisition - 403
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.approve
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "comment": "Approving my own request"
+}
+
+
+### 1.15 Finance cannot act on the Manager step - 403 "Only the assigned approver"
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.approve
+Authorization: {{ascarol}}
+Content-Type: application/json
+
+{
+  "comment": "Not my step"
+}
+
+
+### 1.16 Release before approval - 409 "Only approved requisitions can be released"
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.release
+Authorization: {{asdave}}
+Content-Type: application/json
+
+{}
+
+
+### 1.17 Manager returns without a comment - 400 "A comment is required"
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.returnForCorrection
+Authorization: {{asbob}}
+Content-Type: application/json
+
+{
+  "comment": ""
+}
+
+
+### 1.18 Manager approves step 1 - currentStep becomes 2
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.approve
+Authorization: {{asbob}}
+Content-Type: application/json
+
+{
+  "comment": "Business need confirmed"
+}
+
+
+### 1.19 Manager cannot approve again - 403/409
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.approve
+Authorization: {{asbob}}
+Content-Type: application/json
+
+{
+  "comment": "Second try"
+}
+
+
+### 1.20 Finance opens the approver inbox and finds the task
+# @name financeInbox
+GET {{api}}/ApprovalInbox?$filter=requisition_ID eq {{reqId}}
+Authorization: {{ascarol}}
+
+###
+@taskId = {{financeInbox.response.body.$.value[0].ID}}
+
+
+### 1.21 Finance approves from the inbox - status Approved
+POST {{api}}/ApprovalInbox(ID={{taskId}})/RequisitionService.approve
+Authorization: {{ascarol}}
+Content-Type: application/json
+
+{
+  "comment": "Budget available"
+}
+
+
+### 1.22 Approval history - 2 decisions (Manager, Finance) with comments
+# @name decisions
+GET {{api}}/ApprovalDecisions?$filter=requisition_ID eq {{reqId}}&$orderby=stepNo
+Authorization: {{asalice}}
+
+###
+@decisionId = {{decisions.response.body.$.value[0].ID}}
+
+
+### 1.23 Approval history is immutable - 403
+DELETE {{api}}/ApprovalDecisions({{decisionId}})
+Authorization: {{asadmin}}
+
+
+### 1.24 Approved requisition cannot be edited - 409/400
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.draftEdit
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "PreserveChanges": true
+}
+
+
+### 1.25 Procurement sees it in the queue - status Approved
+GET {{api}}/ProcurementQueue?$filter=ID eq {{reqId}}
+Authorization: {{asdave}}
+
+
+### 1.26 Requester cannot release - 403
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.release
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### 1.27 Procurement releases to ERP - status Published with PO number (or Failed with a warning)
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.release
+Authorization: {{asdave}}
+Content-Type: application/json
+
+{}
+
+
+### 1.28 ERP hand-off record - poNumber, publicationStatus, attempts, idempotencyKey
+GET {{api}}/ERPReferences?$filter=requisition_ID eq {{reqId}}
+Authorization: {{asdave}}
+
+
+### 1.29 Release again - 409 "An ERP hand-off already exists"
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.release
+Authorization: {{asdave}}
+Content-Type: application/json
+
+{}
+
+
+### 1.30 Retry - only if 1.27 ended in Failed (same idempotency key, no duplicate PO)
+### If it is already Published you get 409 "Only failed hand-offs can be retried"
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.retryHandoff
+Authorization: {{asdave}}
+Content-Type: application/json
+
+{}
+
+
+### 1.31 Published requisition cannot be cancelled - 409
+POST {{api}}/Requisitions(ID={{reqId}},IsActiveEntity=true)/RequisitionService.cancel
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "reason": "Too late"
+}
+
+
+# ============================================================
+# FLOW 2 - BELOW THRESHOLD, RETURN AND CANCEL
+# 2 office chairs, OFC category: net 8000 + 12% tax = total 8960 (1 approval step)
+# ============================================================
+
+### 2.1 Create draft
+# @name createReq2
+POST {{api}}/Requisitions
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "title": "Office chairs for sales team",
+  "justification": "Replace worn chairs",
+  "costCentre_code": "CC1001",
+  "category_code": "OFC",
+  "deliveryLocation": "Bengaluru Office"
+}
+
+###
+@req2Id = {{createReq2.response.body.ID}}
+
+
+### 2.2 Add item
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=false)/items
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "material": "MAT-CHAIR",
+  "quantity": 2,
+  "needByDate": "{{needBy}}"
+}
+
+
+### 2.3 Save draft
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=false)/RequisitionService.draftActivate
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### 2.4 Submit - InApproval
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}
+
+
+### 2.5 Below the threshold - only 1 approval task (Manager)
+GET {{api}}/ApprovalTasks?$filter=requisition_ID eq {{req2Id}}
+Authorization: {{asalice}}
+
+
+### 2.6 Manager returns with a comment - status Returned, budget released
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=true)/RequisitionService.returnForCorrection
+Authorization: {{asbob}}
+Content-Type: application/json
+
+{
+  "comment": "Please attach a vendor quotation"
+}
+
+
+### 2.7 Returned requisition is editable again - 200
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=true)/RequisitionService.draftEdit
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "PreserveChanges": true
+}
+
+
+### 2.8 Discard the revision draft
+DELETE {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=false)
+Authorization: {{asalice}}
+
+
+### 2.9 Cancel the returned requisition - status Cancelled, reason stored
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=true)/RequisitionService.cancel
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "reason": "Vendor quotation not available"
+}
+
+
+### 2.10 Cancelled requisition cannot be submitted - 409
+POST {{api}}/Requisitions(ID={{req2Id}},IsActiveEntity=true)/RequisitionService.submitForApproval
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{}

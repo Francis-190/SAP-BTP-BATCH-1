@@ -1,0 +1,128 @@
+{
+  "xsappname": "purchase-requisition-approval",
+  "tenant-mode": "dedicated",
+  "description": "Purchase Requisition Approval",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Requester",
+      "description": "Requester"
+    },
+    {
+      "name": "$XSAPPNAME.JobScheduler",
+      "description": "Run scheduled jobs",
+      "grant-as-authority-to-apps": [
+        "$XSSERVICENAME(pr-jobscheduler)"
+      ]
+    },
+    {
+      "name": "$XSAPPNAME.Manager",
+      "description": "Manager"
+    },
+    {
+      "name": "$XSAPPNAME.Finance",
+      "description": "Finance"
+    },
+    {
+      "name": "$XSAPPNAME.Procurement",
+      "description": "Procurement"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Admin"
+    },
+    {
+      "name": "$XSAPPNAME.WorkflowCallback",
+      "description": "WorkflowCallback"
+    }
+  ],
+  "authorities": [
+    "$XSAPPNAME.WorkflowCallback"
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Requester",
+      "description": "Create and track own requisitions",
+            "scope-references": [
+        "$XSAPPNAME.Requester"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Manager",
+      "description": "Approve requisitions as manager",
+      "scope-references": [
+        "$XSAPPNAME.Manager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Finance",
+      "description": "Approve requisitions as finance",
+      "scope-references": [
+        "$XSAPPNAME.Finance"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Procurement",
+      "description": "Release approved requisitions to ERP",
+      "scope-references": [
+        "$XSAPPNAME.Procurement"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Admin",
+      "description": "Maintain configuration data",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "PR_Requester",
+      "description": "Purchase Requisition Requester",
+      "role-template-references": [
+        "$XSAPPNAME.Requester"
+      ]
+    },
+    {
+      "name": "PR_Manager",
+      "description": "Purchase Requisition Manager",
+      "role-template-references": [
+        "$XSAPPNAME.Manager"
+      ]
+    },
+    {
+      "name": "PR_Finance",
+      "description": "Purchase Requisition Finance",
+      "role-template-references": [
+        "$XSAPPNAME.Finance"
+      ]
+    },
+    {
+      "name": "PR_Procurement",
+      "description": "Purchase Requisition Procurement",
+      "role-template-references": [
+        "$XSAPPNAME.Procurement"
+      ]
+    },
+    {
+      "name": "PR_Admin",
+      "description": "Purchase Requisition Admin",
+      "role-template-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "token-validity": 3600,
+    "redirect-uris": [
+      "https://*.cfapps.us10-001.hana.ondemand.com/**",
+      "https://*.cfapps.us10.hana.ondemand.com/**"
+    ]
+  }
+}

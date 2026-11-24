@@ -1,0 +1,4 @@
+code,name,orgUnit,managerId,financeApproverId,currency_code,budgetAmount,committedAmount,active,createdAt,createdBy,modifiedAt,modifiedBy
+CC1001,Sales Department,SALES,bob,carol,INR,500000.00,98480.00,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+CC2001,IT Department,IT,bob,carol,INR,800000.00,160480.00,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+CC3001,Operations,OPS,bob,carol,INR,300000.00,88500.00,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin

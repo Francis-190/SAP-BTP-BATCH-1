@@ -1,0 +1,841 @@
+@host = http://localhost:4004
+@api = {{host}}/odata/v4/admin
+
+@asadmin = Basic admin admin
+@asalice = Basic alice alice
+
+
+
+# AUTHORIZATION
+
+### Requester is not allowed - 403
+GET {{api}}/CostCentres
+Authorization: {{asalice}}
+
+### Requester cannot create a cost centre - 403
+POST {{api}}/CostCentres
+Authorization: {{asalice}}
+Content-Type: application/json
+
+{
+  "name": "Hacked",
+  "orgUnit": "X",
+  "currency_code": "INR",
+  "budgetAmount": 1000
+}
+
+### Admin can read metadata 
+GET {{api}}/$metadata
+Authorization: {{asadmin}}
+
+### Read all Cost centres 
+GET {{api}}/CostCentres
+Authorization: {{asadmin}}
+
+### Read all Purchase categories 
+GET {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+
+### Read all Approval matrix 
+GET {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+
+### Read all Materials 
+GET {{api}}/Materials
+Authorization: {{asadmin}}
+
+
+# COST CENTRES - Create
+
+###Create - 200
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "Marketing Department",
+  "orgUnit": "MKT",
+  "currency_code": "INR",
+  "budgetAmount": 250000,
+  "committedAmount": 100000,
+  "managerId": "bob",
+  "financeApproverId": "carol",
+  "active": true
+}
+
+
+### Read it back 
+GET {{api}}/CostCentres('CC3006')
+Authorization: {{asadmin}}
+
+
+#VALIDATIONS
+### Missing name 
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "MKT",
+  "currency_code": "INR",
+  "budgetAmount": 1000
+}
+
+
+### Blank org unit 
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "No Org Unit",
+  "orgUnit": "  ",
+  "currency_code": "INR",
+  "budgetAmount": 1000
+}
+
+
+### Missing currency 
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "No Currency",
+  "orgUnit": "MKT",
+  "budgetAmount": 1000
+}
+
+
+### Negative budget 
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "Negative Budget",
+  "orgUnit": "MKT",
+  "currency_code": "INR",
+  "budgetAmount": -5
+}
+
+### Several errors at once 
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "orgUnit": "",
+  "budgetAmount": -1
+}
+
+
+### Warning only (no approvers) 
+POST {{api}}/CostCentres
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "No Approvers",
+  "orgUnit": "MKT",
+  "currency_code": "INR",
+  "budgetAmount": 1000
+}
+
+
+### read it back
+GET {{api}}/CostCentres('CC3004')
+Authorization: {{asadmin}}
+
+
+# COST CENTRES - update
+
+### raise budget, change manager
+PATCH {{api}}/CostCentres('CC3004')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "budgetAmount": 300000,
+  "managerId": "bob"
+}
+
+
+### Update tries to overwrite committedAmount 
+PATCH {{api}}/CostCentres('CC3004')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "committedAmount": 123456
+}
+
+
+### Read back - committedAmount must still be 0
+GET {{api}}/CostCentres('CC3004')
+Authorization: {{asadmin}}
+
+
+### Budget below committed amount (CC1001 has 98480 committed) - 409
+PATCH {{api}}/CostCentres('CC1001')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "budgetAmount": 50000
+}
+
+
+### Budget equal to committed  
+PATCH {{api}}/CostCentres('CC1001')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "budgetAmount": 98480
+}
+
+
+### Currency change while budget is committed - 409
+PATCH {{api}}/CostCentres('CC1001')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "USD"
+}
+
+
+### Currency change with nothing committed - 200
+PATCH {{api}}/CostCentres('CC3004')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "USD"
+}
+
+
+### Update unknown cost centre 
+PATCH {{api}}/CostCentres('CC9999')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "Ghost"
+}
+
+
+### Deactivate instead of delete (CC3001) 
+PATCH {{api}}/CostCentres('CC3001')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "active": false
+}
+
+
+### Re-activate it 
+PATCH {{api}}/CostCentres('CC3001')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "active": true
+}
+
+
+# COST CENTRES - delete
+
+### Delete a cost centre used by requisitions - 409
+DELETE {{api}}/CostCentres('CC1001')
+Authorization: {{asadmin}}
+
+
+### Delete the unused one we created - 204
+DELETE {{api}}/CostCentres('CC3004')
+Authorization: {{asadmin}}
+
+
+
+
+# PURCHASE CATEGORIES
+
+
+### Create - 201
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "TST",
+  "name": "Test Category",
+  "defaultTaxRate": 5
+}
+
+
+### Missing code
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "No Code",
+  "defaultTaxRate": 5
+}
+
+
+### Missing name 
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "NNM",
+  "defaultTaxRate": 5
+}
+
+
+### Tax rate above 100 
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "BAD",
+  "name": "Bad Tax",
+  "defaultTaxRate": 150
+}
+
+
+### Negative tax rate 
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "BAD",
+  "name": "Bad Tax",
+  "defaultTaxRate": -1
+}
+
+
+### Tax boundary 
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "T0",
+  "name": "Tax Zero",
+  "defaultTaxRate": 0
+}
+
+
+### Tax boundary 
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "T100",
+  "name": "Tax Hundred",
+  "defaultTaxRate": 100
+}
+
+
+### Duplicate code (IT already exists)
+POST {{api}}/PurchaseCategories
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "IT",
+  "name": "Duplicate",
+  "defaultTaxRate": 18
+}
+
+
+### Update - 200
+PATCH {{api}}/PurchaseCategories('TST')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "defaultTaxRate": 12.5
+}
+
+
+### Update with invalid tax
+PATCH {{api}}/PurchaseCategories('TST')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "defaultTaxRate": 101
+}
+
+
+### Update unknown category 
+PATCH {{api}}/PurchaseCategories('NOPE')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "name": "x"
+}
+
+
+### Delete category used by requisitions 
+DELETE {{api}}/PurchaseCategories('IT')
+Authorization: {{asadmin}}
+
+
+### Create a matrix rule that uses TST 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "category_code": "TST",
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 100,
+  "stepNo": 2,
+  "approverRole": "Manager",
+  "active": true
+}
+
+### read it back
+GET {{api}}/ApprovalMatrix('d2161ec8-c724-48cd-be31-60e439decb0e')
+Authorization: {{asadmin}}
+
+### Delete category used only by the matrix (TST) 
+DELETE {{api}}/PurchaseCategories('TST')
+Authorization: {{asadmin}}
+
+
+### Delete unused category 
+DELETE {{api}}/PurchaseCategories('TST')
+Authorization: {{asadmin}}
+
+
+
+# APPROVAL MATRIX
+### Negative minimum - 400 "Minimum amount cannot be negative."
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": -1,
+  "maxAmount": 100,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Maximum lower than minimum
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": 5000,
+  "maxAmount": 1000,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Step number 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 1000,
+  "stepNo": 0,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Non-integer step 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 1000,
+  "stepNo": 1.5,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Missing approver role - 400 "Approver role is mandatory."
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 1000,
+  "stepNo": 1,
+  "active": true
+}
+
+
+### Invalid approver role (Admin) 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 1000,
+  "stepNo": 1,
+  "approverRole": "Admin",
+  "active": true
+}
+
+
+### Invalid approver role (Procurement) - 400
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 1000,
+  "stepNo": 2,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Unknown category
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "currency_code": "INR",
+  "category_code": "ZZZ",
+  "minAmount": 0,
+  "maxAmount": 1000,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Several errors at once 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "OFC",
+  "currency_code": "INR",
+  "minAmount": -1,
+  "maxAmount": 100,
+  "stepNo": 0,
+  "active": true
+}
+
+
+### Valid new rule 
+# @name createMatrix
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "OFC",
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+### Exact same scope and range again 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "OFC",
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Partially overlapping range
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "OFC",
+  "currency_code": "INR",
+  "minAmount": 5000,
+  "maxAmount": 20000,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Same range, different currency - 201
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "OFC",
+  "currency_code": "USD",
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Same range, different org unit
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "HR",
+  "category_code": "OFC",
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Same range, different category (IT)
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "IT",
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Blank scope differs from set scope 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": true
+}
+
+
+### Inactive rule with the same range 
+POST {{api}}/ApprovalMatrix
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "orgUnit": "SALES",
+  "category_code": "OFC",
+  "currency_code": "INR",
+  "minAmount": 0,
+  "maxAmount": 9999.99,
+  "stepNo": 1,
+  "approverRole": "Manager",
+  "active": false
+}
+
+
+
+### Re-activating the overlapping inactive rule 
+PATCH {{api}}/ApprovalMatrix('3ae51f72-b2ba-49be-8530-e9b966d79169')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "active": true
+}
+
+
+
+# MATERIALS
+
+
+### Create
+POST {{api}}/Materials
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "MAT-TEST",
+  "description": "Test keyboard",
+  "itemType": "Material",
+  "uom": "EA",
+  "unitPrice": 1500,
+  "currency_code": "INR",
+  "active": true
+}
+
+
+### Missing code 
+POST {{api}}/Materials
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "description": "No code",
+  "itemType": "Material",
+  "uom": "EA",
+  "unitPrice": 10,
+  "currency_code": "INR"
+}
+
+
+### Missing description 
+POST {{api}}/Materials
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "MAT-NODESC",
+  "itemType": "Material",
+  "uom": "EA",
+  "unitPrice": 10,
+  "currency_code": "INR"
+}
+
+
+### Missing unit of measure 
+POST {{api}}/Materials
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "MAT-NOUOM",
+  "description": "No uom",
+  "itemType": "Material",
+  "unitPrice": 10,
+  "currency_code": "INR"
+}
+
+
+### Negative price 
+POST {{api}}/Materials
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "MAT-NEG",
+  "description": "Negative price",
+  "itemType": "Material",
+  "uom": "EA",
+  "unitPrice": -10,
+  "currency_code": "INR"
+}
+
+
+### Price 0 
+POST {{api}}/Materials
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "code": "MAT-ZERO",
+  "description": "Free item",
+  "itemType": "Material",
+  "uom": "EA",
+  "unitPrice": 0,
+  "currency_code": "INR"
+}
+
+
+### Update price 
+PATCH {{api}}/Materials('MAT-TEST')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "unitPrice": 1750
+}
+
+
+### Update with negative price 
+PATCH {{api}}/Materials('MAT-TEST')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "unitPrice": -1
+}
+
+
+### Update unknown material 
+PATCH {{api}}/Materials('MAT-NOPE')
+Authorization: {{asadmin}}
+Content-Type: application/json
+
+{
+  "unitPrice": 5
+}
+
+
+### Delete material used on requisition items (MAT-LAPTOP) 
+DELETE {{api}}/Materials('MAT-LAPTOP')
+Authorization: {{asadmin}}
+
+
+### Delete unused material 
+DELETE {{api}}/Materials('MAT-TEST')
+Authorization: {{asadmin}}
+
+
+### Delete unused material 
+DELETE {{api}}/Materials('MAT-ZERO')
+Authorization: {{asadmin}}

@@ -1,0 +1,4 @@
+code,name,defaultTaxRate,createdAt,createdBy,modifiedAt,modifiedBy
+IT,IT Equipment and Software,18.00,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+OFC,Office Supplies,12.00,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+SRV,Services,18.00,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin

@@ -1,0 +1,62 @@
+_schema-version: 3.3.0
+ID: purchase-requisition-approval
+version: 1.0.0
+description: "Welcome to your new CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: purchase-requisition-approval-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: purchase-requisition-approval-auth
+      - name: purchase-requisition-approval-db
+      - name: purchase-requisition-destination
+
+  - name: purchase-requisition-approval-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: purchase-requisition-approval-db
+
+resources:
+  - name: purchase-requisition-approval-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: purchase-requisition-approval-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+  - name: purchase-requisition-approval-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: purchase-requisition-destination
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service: destination
+      service-name: purchase-requisition-destination

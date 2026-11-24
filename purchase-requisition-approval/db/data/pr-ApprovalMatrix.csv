@@ -1,0 +1,5 @@
+ID,orgUnit,category_code,currency_code,minAmount,maxAmount,stepNo,approverRole,active,createdAt,createdBy,modifiedAt,modifiedBy
+a1000000-0000-4000-8000-000000000001,,,INR,0.00,49999.99,1,Manager,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+a1000000-0000-4000-8000-000000000002,,,INR,50000.00,,1,Manager,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+a1000000-0000-4000-8000-000000000003,,,INR,50000.00,,2,Finance,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin
+a1000000-0000-4000-8000-000000000004,,IT,INR,0.00,49999.99,2,Finance,true,2026-10-01T09:00:00Z,admin,2026-10-01T09:00:00Z,admin

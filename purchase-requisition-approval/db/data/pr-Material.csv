@@ -1,0 +1,6 @@
+code,description,itemType,uom,unitPrice,currency_code,active
+MAT-CHAIR,Ergonomic office chair,Material,EA,4000,INR,true
+MAT-LAPTOP,Business laptop,Material,EA,80000,INR,true
+MAT-MONITOR,24 inch monitor,Material,EA,10620,INR,true
+MAT-TONER,Printer toner cartridge,Material,EA,2800,INR,true
+SRV-MAINT,Annual maintenance service,Service,EA,88500,INR,true

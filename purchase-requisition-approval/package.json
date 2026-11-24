@@ -1,0 +1,88 @@
+{
+  "name": "purchase-requisition-approval",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "main": "index.js",
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "mock-erp": "node mock-erp/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-myrequisitions": "cds watch --open myrequisitions/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-approverinbox": "cds watch --open approverinbox/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-purchase-requisition-approval": "cds watch --open purchaserequisitionapproval/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-adminconfig": "cds watch --open adminconfig/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cap-js/hana": "^3.1.2",
+    "@cap-js/sqlite": "^3.1.2",
+    "@sap-cloud-sdk/connectivity": "^4.10.0",
+    "@sap-cloud-sdk/http-client": "^4.10.0",
+    "@sap/cds": "^10.2.2",
+    "@sap/xssec": "^4"
+  },
+  "cds": {
+    "server": {
+      "index": true
+    },
+    "requires": {
+      "[hybrid]": {
+        "db": {
+          "kind": "hana"
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "alice": {
+            "password": "alice",
+            "roles": [
+              "Requester"
+            ]
+          },
+          "vamsi": {
+            "password": "vamsi",
+            "roles": [
+              "Requester"
+            ]
+          },
+          "bob": {
+            "password": "bob",
+            "roles": [
+              "Manager"
+            ]
+          },
+          "carol": {
+            "password": "carol",
+            "roles": [
+              "Finance"
+            ]
+          },
+          "dave": {
+            "password": "dave",
+            "roles": [
+              "Procurement"
+            ]
+          },
+          "admin": {
+            "password": "admin",
+            "roles": [
+              "Admin"
+            ]
+          }
+        }
+      },
+      "[production]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^10"
+  }
+}

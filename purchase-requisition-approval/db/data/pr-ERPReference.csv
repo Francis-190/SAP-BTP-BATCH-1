@@ -1,0 +1,3 @@
+ID,requisition_ID,poNumber,publicationStatus,idempotencyKey,attempts,lastError,lastAttemptAt,publishedAt,createdAt,createdBy,modifiedAt,modifiedBy
+a2000000-0000-4000-8000-000000000001,c1000000-0000-4000-8000-000000000004,4500012345,Published,9f1c2d3e-4b5a-4c6d-8e7f-0a1b2c3d4e5f,1,,2026-10-28T09:15:00Z,2026-10-28T09:15:00Z,2026-10-28T09:15:00Z,dave,2026-10-28T09:15:00Z,dave
+a2000000-0000-4000-8000-000000000002,c1000000-0000-4000-8000-000000000005,,Failed,7a8b9c0d-1e2f-4a3b-9c4d-5e6f7a8b9c0d,2,ERP endpoint timeout,2026-10-29T14:20:00Z,,2026-10-29T14:00:00Z,dave,2026-10-29T14:20:00Z,dave
