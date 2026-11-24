@@ -1,0 +1,572 @@
+###  get equipment list
+GET http://localhost:4004/odata/v4/equipment-maintenance/Equipment
+Authorization: Basic planner@company.com:lmn
+
+###  Read maintenance plans
+GET http://localhost:4004/odata/v4/equipment-maintenance/MaintenanceRequests
+Authorization: Basic productionUser@company.com:abc
+
+
+###  Read maintenance plans
+GET http://localhost:4004/odata/v4/equipment-maintenance/MaintenancePlans
+Authorization: Basic planner@company.com:lmn
+
+###  Create technician for the logged-in technician user
+POST http://localhost:4004/odata/v4/equipment-maintenance/Technicians
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "ID": "a0000003-0000-4000-8000-000000000001",
+  "userId": "technician@company.com",
+  "name": "Ravi Kumar",
+  "email": "technician@company.com",
+  "skill": "Mechanical",
+  "isActive": true
+}
+
+###  Create spare part( high value, used for the approval flow)
+POST http://localhost:4004/odata/v4/equipment-maintenance/SpareParts
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "ID": "a0000004-0000-4000-8000-000000000002",
+  "partNumber": "SP-006",
+  "partName": "Hydraulic Pump Unit",
+  "unitOfMeasure": "EA",
+  "standardCost": 60000,
+  "stockQuantity": 5
+}
+
+### 5. reportBreakdown - report the breakdown with a photo
+POST http://localhost:4004/odata/v4/equipment-maintenance/reportBreakdown
+Authorization: Basic productionUser@company.com:abc
+Content-Type: application/json
+
+{
+  "equipment": "78693ca5-58c6-4493-9648-1f7cd4f900a8",
+  "symptom": "Press stopped suddenly",
+  "description": "Hydraulic press stopped during production and is leaking oil",
+  "requestedPriority": "Critical",
+  "safetyImpact": "Medium",
+  "productionImpact": "High",
+  "category": "Mechanical",
+  "reportedBy": "productionUser@company.com",
+  "photos": [
+    {
+      "fileName": "leak.png",
+      "mimeType": "image/png",
+      "content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+    }
+  ]
+}
+
+### Production user reads own requests
+GET http://localhost:4004/odata/v4/equipment-maintenance/MaintenanceRequests?$select=ID,requestNumber,status,priority
+Authorization: Basic productionUser@company.com:abc
+
+###  Planner moves the request to UnderReview
+PATCH http://localhost:4004/odata/v4/equipment-maintenance/MaintenanceRequests(59419747-1a67-4704-92c9-71a86e8c33c4)
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "status": "UnderReview"
+}
+
+### 8. convertToWorkOrder - request to Breakdown work order
+POST http://localhost:4004/odata/v4/equipment-maintenance/convertToWorkOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "RequestID": "59419747-1a67-4704-92c9-71a86e8c33c4",
+  "orderType": "Breakdown",
+  "category": "Mechanical",
+  "plannedStartDate": "2026-11-20T08:00:00Z",
+  "plannedEndDate": "2026-11-20T16:00:00Z",
+  "operations": [
+    {
+      "operationName": "Inspect hydraulic lines",
+      "plannedHours": 2,
+      "isMandatory": true
+    },
+    {
+      "operationName": "Replace hose and test press",
+      "plannedHours": 3,
+      "isMandatory": true
+    }
+  ]
+}
+
+### Read the operations of the work order
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrderOperations
+Authorization: Basic planner@company.com:lmn
+
+###
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrders?$filter=orderNumber eq 'WO-0004'&$expand=operations
+Authorization: Basic planner@company.com:lmn
+
+###
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrders
+Authorization: Basic planner@company.com:lmn
+
+
+###  releaseOrder before a technician is assigned (rejected)
+POST http://localhost:4004/odata/v4/equipment-maintenance/releaseOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "f5b39d1b-731c-4707-9d5b-73a7f3db6bef"
+}
+
+###  assignTechnician - assign the technician
+POST http://localhost:4004/odata/v4/equipment-maintenance/assignTechnician
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "isLead": false
+}
+
+###  releaseOrder - release to the technician
+POST http://localhost:4004/odata/v4/equipment-maintenance/releaseOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a"
+}
+
+### Technician reads assigned work orders
+
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrders?$select=ID,orderNumber,orderType,status
+Authorization: Basic technician@company.com:pqr
+
+### confirmOperation - operation 2 before operation 1 (rejected, sequence)
+POST http://localhost:4004/odata/v4/equipment-maintenance/confirmOperation
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "f5b39d1b-731c-4707-9d5b-73a7f3db6bef",
+  "OperationID": "0cb617e5-e104-4f9f-b762-7fc91ebd2d23",
+  "TechnicianID": "1882c304-b9fd-41e3-9373-da157e9180c1",
+  "startTime": "2026-11-15T10:00:00Z",
+  "stopTime": "2026-11-15T12:00:00Z",
+  "workDescription": "Replaced hose",
+  "findings": "Hose cracked",
+  "meterReading": 4260,
+  "markCompleted": true
+}
+
+###  confirmOperation - operation 1 completed
+POST http://localhost:4004/odata/v4/equipment-maintenance/confirmOperation
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a",
+  "OperationID": "696bcc9c-b3a5-4465-bfd6-5e6ddb602a72",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "startTime": "2026-11-15T08:00:00Z",
+  "stopTime": "2026-11-15T10:00:00Z",
+  "workDescription": "Inspected hydraulic lines",
+  "findings": "Main hose cracked and leaking",
+  "meterReading": 4255,
+  "markCompleted": true
+}
+
+###  consumePart - hydraulic seal used
+POST http://localhost:4004/odata/v4/equipment-maintenance/consumePart
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a",
+  "OperationID": "696bcc9c-b3a5-4465-bfd6-5e6ddb602a72",
+  "SparePartID": "31a94cc6-b104-437c-95d7-f8d82ea4cb48",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "quantity": 1
+}
+
+###  consumePart - more than the stock (rejected)
+
+POST http://localhost:4004/odata/v4/equipment-maintenance/consumePart
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+ "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a",
+  "OperationID": "696bcc9c-b3a5-4465-bfd6-5e6ddb602a72",
+  "SparePartID": "31a94cc6-b104-437c-95d7-f8d82ea4cb48",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "quantity": 500
+}
+
+###  confirmOperation - operation 2 completed
+
+POST http://localhost:4004/odata/v4/equipment-maintenance/confirmOperation
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+ "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a",
+  "OperationID": "37a6bba0-40af-4478-8599-d96d5e2434a7",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "startTime": "2026-11-15T10:00:00Z",
+  "stopTime": "2026-11-15T13:00:00Z",
+  "workDescription": "Replaced hose and tested the press",
+  "findings": "Press running normally",
+  "meterReading": 4260,
+  "markCompleted": true
+}
+
+###  completeOrder - complete the work
+
+POST http://localhost:4004/odata/v4/equipment-maintenance/completeOrder
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+ "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a",
+  "completionRemarks": "Hose replaced and press tested at full load",
+  "closureCode": "Replaced"
+}
+
+###  closeOrder - close the work order
+POST http://localhost:4004/odata/v4/equipment-maintenance/closeOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "0b2fb083-b2ee-4212-8681-ee699a079c5a"
+}
+
+###  Downtime events of the Hydraulic Press
+
+GET http://localhost:4004/odata/v4/equipment-maintenance/DowntimeEvents?$filter=equipment_ID eq 78693ca5-58c6-4493-9648-1f7cd4f900a8
+Authorization: Basic manager@company.com:xyz
+
+
+/// corrective work order for MR-0003 
+
+###  convertToWorkOrder - MR-0003 to Corrective work order
+POST http://localhost:4004/odata/v4/equipment-maintenance/convertToWorkOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "RequestID": "8f3c291a-cd24-4cc2-b684-d0796191b7f8",
+  "orderType": "Corrective",
+  "category": "Electrical",
+  "plannedStartDate": "2026-11-21T08:00:00Z",
+  "plannedEndDate": "2026-11-21T16:00:00Z",
+  "operations": [
+    {
+      "operationName": "Inspect motor and wiring",
+      "plannedHours": 2,
+      "isMandatory": true
+    },
+    {
+      "operationName": "Replace motor unit",
+      "plannedHours": 4,
+      "isMandatory": true
+    }
+  ]
+}
+
+### 24. Read the operations of the work order
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrderOperations?$filter=workOrder_ID eq 3db76763-8129-4214-9b2b-291c65f07843&$orderby=sequenceNumber
+Authorization: Basic planner@company.com:lmn
+
+### 25. assignTechnician
+POST http://localhost:4004/odata/v4/equipment-maintenance/assignTechnician
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "isLead": true
+}
+
+### 26. releaseOrder
+POST http://localhost:4004/odata/v4/equipment-maintenance/releaseOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843"
+}
+
+### 27. confirmOperation - operation 1 completed
+POST http://localhost:4004/odata/v4/equipment-maintenance/confirmOperation
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "OperationID": "17da6e23-e364-4e4b-bcca-b085e559b2b1",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "startTime": "2026-11-15T08:00:00Z",
+  "stopTime": "2026-11-15T10:00:00Z",
+  "workDescription": "Inspected motor and wiring",
+  "findings": "Motor windings burnt",
+  "markCompleted": true
+}
+
+### 28. consumePart - 2 pump units (cost above the approval limit)
+
+POST http://localhost:4004/odata/v4/equipment-maintenance/consumePart
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "OperationID": "74a44bdb-3c63-478d-8df3-60d8838763f5",
+  "SparePartID": "a0000004-0000-4000-8000-000000000002",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "quantity": 2
+}
+
+###  confirmOperation - operation 2 completed
+POST http://localhost:4004/odata/v4/equipment-maintenance/confirmOperation
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "OperationID": "74a44bdb-3c63-478d-8df3-60d8838763f5",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "startTime": "2026-11-15T10:00:00Z",
+  "stopTime": "2026-11-15T14:00:00Z",
+  "workDescription": "Replaced motor unit",
+  "findings": "New motor running normally",
+  "markCompleted": true
+}
+
+### 3 completeOrder - approval becomes Pending
+POST http://localhost:4004/odata/v4/equipment-maintenance/completeOrder
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "completionRemarks": "Motor replaced and tested",
+  "closureCode": "Replaced"
+}
+
+### 31. closeOrder before approval (rejected)
+POST http://localhost:4004/odata/v4/equipment-maintenance/closeOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843"
+}
+
+### 32. rejectWorkOrder - manager sends it back for rework
+POST http://localhost:4004/odata/v4/equipment-maintenance/rejectWorkOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "remarks": "Attach the test report and complete again"
+}
+
+### 33. completeOrder - technician completes again
+POST http://localhost:4004/odata/v4/equipment-maintenance/completeOrder
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "completionRemarks": "Motor replaced, test report attached",
+  "closureCode": "Replaced"
+}
+
+### 34. approveWorkOrder - manager approves
+POST http://localhost:4004/odata/v4/equipment-maintenance/approveWorkOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843",
+  "remarks": "Approved"
+}
+
+### 35. closeOrder
+POST http://localhost:4004/odata/v4/equipment-maintenance/closeOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "3db76763-8129-4214-9b2b-291c65f07843"
+}
+
+###
+
+### 36. closeOrder - WO-0002
+POST http://localhost:4004/odata/v4/equipment-maintenance/closeOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "a8398ec4-d2ed-46f8-b96a-2b01d33274b0"
+}
+
+###
+
+### 37. createPreventiveOrder 
+POST http://localhost:4004/odata/v4/equipment-maintenance/createPreventiveOrder
+Authorization: Basic planner@company.com:lmn
+
+### 38. createPreventiveOrder - MP-003 (not due yet, rejected)
+POST http://localhost:4004/odata/v4/equipment-maintenance/createPreventiveOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+
+### 39. createPreventiveOrder - MP-006 (Conveyor Motor, due)
+POST http://localhost:4004/odata/v4/equipment-maintenance/createPreventiveOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+
+###
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrders
+Authorization: Basic planner@company.com:lmn
+
+### 40. Read the operations of the preventive order
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrderOperations?$filter=workOrder_ID eq 9278c64f-542b-4889-a429-9e1a3d5ee94e&$orderby=sequenceNumber
+Authorization: Basic planner@company.com:lmn
+
+### 41. assignTechnician
+POST http://localhost:4004/odata/v4/equipment-maintenance/assignTechnician
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "9278c64f-542b-4889-a429-9e1a3d5ee94e",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "isLead": true
+}
+
+### 42. releaseOrder
+POST http://localhost:4004/odata/v4/equipment-maintenance/releaseOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "9278c64f-542b-4889-a429-9e1a3d5ee94e"
+}
+
+### 43. confirmOperation - with meter reading
+POST http://localhost:4004/odata/v4/equipment-maintenance/confirmOperation
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "9278c64f-542b-4889-a429-9e1a3d5ee94e",
+  "OperationID": "cd15ac7d-3f05-45d9-b83d-498be0d4f81d",
+  "TechnicianID": "a0000003-0000-4000-8000-000000000001",
+  "startTime": "2026-11-15T08:00:00Z",
+  "stopTime": "2026-11-15T10:00:00Z",
+  "workDescription": "Monthly inspection done",
+  "findings": "No issues found",
+  "meterReading": 4010,
+  "markCompleted": true
+}
+
+### 44. completeOrder
+POST http://localhost:4004/odata/v4/equipment-maintenance/completeOrder
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "9278c64f-542b-4889-a429-9e1a3d5ee94e",
+  "completionRemarks": "Inspection completed",
+  "closureCode": "NoFaultFound"
+}
+
+### 45. closeOrder
+POST http://localhost:4004/odata/v4/equipment-maintenance/closeOrder
+Authorization: Basic manager@company.com:xyz
+Content-Type: application/json
+
+{
+  "WorkOrderID": "9278c64f-542b-4889-a429-9e1a3d5ee94e"
+}
+
+### 46. MP-006 next due date moved forward after closing
+GET http://localhost:4004/odata/v4/equipment-maintenance/MaintenancePlans(a1111111-1111-4111-8111-111111111111)?$select=planCode,nextDueDate,lastMaintenanceDate,nextDueReading
+Authorization: Basic planner@company.com:lmn
+
+
+
+### 48. Equipment history
+GET http://localhost:4004/odata/v4/equipment-maintenance/EquipmentHistory
+Authorization: Basic manager@company.com:xyz
+
+###
+GET http://localhost:4004/odata/v4/equipment-maintenance/MaintenanceRequests?$select=requestNumber,symptom,status,workOrder_ID
+Authorization: Basic planner@company.com:lmn
+ 
+### 49. Repeat failures
+GET http://localhost:4004/odata/v4/equipment-maintenance/RepeatFailures
+Authorization: Basic manager@company.com:xyz
+
+### 50. Work orders list
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrders?$select=orderNumber,orderType,status,approvalStatus&$orderby=orderNumber
+Authorization: Basic manager@company.com:xyz
+
+###
+
+### 51. Production user tries to read work orders (not allowed)
+GET http://localhost:4004/odata/v4/equipment-maintenance/WorkOrders
+Authorization: Basic productionUser@company.com:abc
+
+
+### 52. Production user tries createPreventiveOrder (not allowed)
+POST http://localhost:4004/odata/v4/equipment-maintenance/createPreventiveOrder
+Authorization: Basic productionUser@company.com:abc
+Content-Type: application/json
+
+{
+  "PlanID": "a1111111-1111-4111-8111-111111111111"
+}
+
+### 53. Technician tries closeOrder (not allowed)
+POST http://localhost:4004/odata/v4/equipment-maintenance/closeOrder
+Authorization: Basic technician@company.com:pqr
+Content-Type: application/json
+
+{
+  "WorkOrderID": "a8398ec4-d2ed-46f8-b96a-2b01d33274b0"
+}
+
+### 54. Technician tries to read maintenance requests (not allowed)
+GET http://localhost:4004/odata/v4/equipment-maintenance/MaintenanceRequests
+Authorization: Basic technician@company.com:pqr
+
+### 55. Planner tries approveWorkOrder (not allowed)
+POST http://localhost:4004/odata/v4/equipment-maintenance/approveWorkOrder
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json
+
+{
+  "WorkOrderID": "a8398ec4-d2ed-46f8-b96a-2b01d33274b0",
+  "remarks": "ok"
+}
+
+
+### check SLA rules
+POST http://localhost:4004/odata/v4/equipment-maintenance/checkSLABreaches
+Authorization: Basic planner@company.com:lmn
+Content-Type: application/json

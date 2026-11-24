@@ -1,0 +1,69 @@
+{
+  "name": "equipmentmaintenance",
+  "version": "1.0.0",
+  "description": "Equipment Maintenance CAP project",
+  "main": "index.js",
+  "scripts": {
+    "start": "cds-serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@cap-js/hana": "^3.2.0",
+    "@sap_oss/alert-notification-client": "^1.14.0",
+    "@sap/cds": "^10.2.2",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3",
+    "@sap/cds-dk": "^9.9.7"
+  },
+  "cds": {
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "productionUser@company.com": {
+              "password": "abc",
+              "roles": [
+                "ProductionUser"
+              ]
+            },
+            "planner@company.com": {
+              "password": "lmn",
+              "roles": [
+                "MaintenancePlanner"
+              ]
+            },
+            "technician@company.com": {
+              "password": "pqr",
+              "roles": [
+                "Technician"
+              ]
+            },
+            "manager@company.com": {
+              "password": "xyz",
+              "roles": [
+                "MaintenanceManager"
+              ]
+            }
+          }
+        }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      },
+      "destinations": true
+    },
+    "server": {
+      "body_parser": {
+        "limit": "10mb"
+      },
+      "index": true
+    }
+  }
+}
