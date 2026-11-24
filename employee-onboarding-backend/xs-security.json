@@ -1,0 +1,86 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.HRCoordinator",
+      "description": "HRCoordinator"
+    },
+    {
+      "name": "$XSAPPNAME.ITSupport",
+      "description": "ITSupport"
+    },
+    {
+      "name": "$XSAPPNAME.FacilitiesCoordinator",
+      "description": "FacilitiesCoordinator"
+    },
+    {
+      "name": "$XSAPPNAME.HiringManager",
+      "description": "HiringManager"
+    },
+    {
+      "name": "$XSAPPNAME.NewEmployee",
+      "description": "NewEmployee"
+    },
+    {
+      "name": "$XSAPPNAME.DocumentViewer",
+      "description": "DocumentViewer"
+    },
+    {
+      "name": "$XSAPPNAME.WorkflowCallback",
+      "description": "Callback from SAP Build Process Automation workflow"
+    }
+  ],
+  "authorities": [
+    "$XSAPPNAME.WorkflowCallback"
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "HRCoordinator",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.HRCoordinator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "ITSupport",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.ITSupport"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "FacilitiesCoordinator",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.FacilitiesCoordinator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "HiringManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.HiringManager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "NewEmployee",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.NewEmployee"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "DocumentViewer",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.DocumentViewer"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+_schema-version: 3.3.0
+ID: employee-onboarding
+version: 1.0.0
+description: "Employee Onboarding and Asset Allocation - SAP CAP (Node.js) on SAP BTP"
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: employee-onboarding-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: employee-onboarding-auth
+      - name: employee-onboarding-db
+      - name: employee-onboarding-destination
+      - name: employee-onboarding-ans
+
+  - name: employee-onboarding-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: employee-onboarding-db
+
+  - name: employee-onboarding
+    type: approuter.nodejs
+    path: .deploy/app-router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: employee-onboarding-auth
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+resources:
+  - name: employee-onboarding-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: employee-onboarding-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+            - https://oauth.pstmn.io/v1/callback
+        role-collections:
+          - name: 'HRCoordinator (employee-onboarding ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.HRCoordinator'
+          - name: 'ITSupport (employee-onboarding ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.ITSupport'
+          - name: 'FacilitiesCoordinator (employee-onboarding ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.FacilitiesCoordinator'
+          - name: 'HiringManager (employee-onboarding ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.HiringManager'
+          - name: 'NewEmployee (employee-onboarding ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.NewEmployee'
+          - name: 'DocumentViewer (employee-onboarding ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.DocumentViewer'
+    requires:
+      - name: app-api
+
+  - name: employee-onboarding-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  - name: employee-onboarding-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+
+  - name: employee-onboarding-ans
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: onboarding-ans    

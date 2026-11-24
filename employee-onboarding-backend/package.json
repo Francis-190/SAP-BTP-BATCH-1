@@ -1,0 +1,106 @@
+{
+  "name": "employee-onboarding",
+  "version": "1.0.0",
+  "description": "Employee Onboarding and Asset Allocation - SAP CAP (Node.js) on SAP BTP",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/hana": "^3",
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/http-client": "^4.9.1",
+    "@sap/cds": "^10.2.2",
+    "@sap/xssec": "^4",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.20.0",
+    "@cap-js/sqlite": "^3",
+    "@sap/cds-dk": "^10.2.1"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "build": "cds build --production"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "cds": {
+    "server": {
+      "index": true
+    },
+    "requires": {
+      "onboarding-ans": {
+        "vcap": {
+          "name": "onboarding-ans"
+        }
+      },
+      "db": {
+        "[development]": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": ":memory:"
+          }
+        },
+        "[production]": {
+          "kind": "hana"
+        }
+      },
+      "auth": {
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "hr@company.com": {
+              "password": "pass",
+              "roles": [
+                "HRCoordinator"
+              ]
+            },
+            "manager@company.com": {
+              "password": "pass",
+              "roles": [
+                "HiringManager"
+              ]
+            },
+            "it@company.com": {
+              "password": "pass",
+              "roles": [
+                "ITSupport"
+              ]
+            },
+            "facilities@company.com": {
+              "password": "pass",
+              "roles": [
+                "FacilitiesCoordinator"
+              ]
+            },
+            "samuel.khan@laderatechnology.com": {
+              "password": "pass",
+              "roles": [
+                "NewEmployee"
+              ]
+            },
+            "auditor@company.com": {
+              "password": "pass",
+              "roles": [
+                "ITSupport",
+                "DocumentViewer"
+              ]
+            }
+          }
+        },
+        "[production]": {
+          "kind": "xsuaa"
+        }
+      },
+      "[production]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      }
+    },
+    "sql": {
+      "native_hana_associations": false
+    }
+  }
+}
