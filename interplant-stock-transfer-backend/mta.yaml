@@ -1,0 +1,108 @@
+_schema-version: 3.3.0
+ID: inter-plant-stock-transfer
+version: 1.0.0
+description: "Welcome to your new CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: inter-plant-stock-transfer-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: inter-plant-stock-transfer-auth
+      - name: inter-plant-stock-transfer-db
+      - name: alert
+
+  - name: inter-plant-stock-transfer-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: inter-plant-stock-transfer-db
+  - name: inter-plant-stock-transfer
+    type: approuter.nodejs
+    path: .deploy/app-router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: inter-plant-stock-transfer-auth
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+resources:
+  - name: alert
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: alert-notification
+      service-plan: standard
+  - name: inter-plant-stock-transfer-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: inter-plant-stock-transfer-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+            - https://oauth.pstmn.io/v1/callback
+        role-collections:
+          - name: 'WarehouseOperator (inter-plant-stock-transfer ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.WarehouseOperator'
+          - name: 'StoreManager (inter-plant-stock-transfer ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.StoreManager'
+          - name: 'InventoryController (inter-plant-stock-transfer ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.InventoryController'
+          - name: 'ReadOnlyPlanner (inter-plant-stock-transfer ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.ReadOnlyPlanner'
+          - name: 'JOBSCHEDULER (inter-plant-stock-transfer ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.JOBSCHEDULER'
+    requires:
+      - name: app-api
+  - name: inter-plant-stock-transfer-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared

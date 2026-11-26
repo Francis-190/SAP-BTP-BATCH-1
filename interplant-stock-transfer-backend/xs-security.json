@@ -1,0 +1,63 @@
+
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.WarehouseOperator",
+      "description": "WarehouseOperator"
+    },
+    {
+      "name": "$XSAPPNAME.StoreManager",
+      "description": "StoreManager"
+    },
+    {
+      "name": "$XSAPPNAME.InventoryController",
+      "description": "InventoryController"
+    },
+    {
+      "name": "$XSAPPNAME.ReadOnlyPlanner",
+      "description": "ReadOnlyPlanner"
+    },
+    {
+      "name": "$XSAPPNAME.JOBSCHEDULER",
+      "description": "Job Scheduler Scope",
+      "grant-as-authority-to-apps": [
+        "$XSSERVICENAME(job-schedular)"
+      ]
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "WarehouseOperator",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.WarehouseOperator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "StoreManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.StoreManager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "InventoryController",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.InventoryController"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "ReadOnlyPlanner",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.ReadOnlyPlanner"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

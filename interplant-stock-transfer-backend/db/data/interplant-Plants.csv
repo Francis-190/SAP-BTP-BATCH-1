@@ -1,0 +1,3 @@
+ID,plantCode,plantName,description,createdAt,createdBy,modifiedAt,modifiedBy
+20000000-0000-4000-8000-000000000001,P100,Pune Plant,Apex Components Manufacturing - Pune,2026-11-01T09:03:00.000Z,Admin,2026-11-01T09:03:00.000Z,Admin
+20000000-0000-4000-8000-000000000002,P200,Hosur Plant,Apex Components Manufacturing - Hosur,2026-11-01T09:04:00.000Z,Admin,2026-11-01T09:04:00.000Z,Admin
